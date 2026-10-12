@@ -28,8 +28,8 @@ interface InicioPeopleCarouselSectionProps {
 
 /**
  * Carrossel de pessoas no topo do Início, sobre o fundo da tela. Fotos redondas e ponto na
- * cor da situação. A fila desliza no estilo Stories: encaixa no próximo item e o último
- * aparece cortado na borda para indicar que há mais.
+ * cor da situação. A fila desliza no estilo Stories e encaixa no próximo item, com a
+ * mesma margem dos dois lados.
  */
 const CARD_GAP = 12;
 const CARD_MAX_WIDTH = 76;
@@ -203,13 +203,10 @@ function makeStyles(brand: BrandColors, cardWidth: number, itemHeight: number) {
     scroller: {
       flexGrow: 0,
       height: itemHeight,
-      // Vai até a borda da tela: o item cortado mostra que há mais para deslizar.
-      marginHorizontal: -PageGutter,
     },
     track: {
       gap: CARD_GAP,
       alignItems: 'flex-start',
-      paddingHorizontal: PageGutter,
     },
     item: {
       width: cardWidth,

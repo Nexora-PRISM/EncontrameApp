@@ -1,18 +1,9 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  BackHandler,
-  Keyboard,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { useMemo, useState } from 'react';
+import { Keyboard, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { Radius, type BrandColors } from '@/constants/brand';
-import { brandTiming, Motion } from '@/constants/motion';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useBrand } from '@/lib/brand-theme';
@@ -27,7 +18,7 @@ interface InicioTopBarSectionProps {
   showMenu?: boolean;
   /** Dentro de uma área que já tem a margem da página (lista da home recolhida). */
   embedded?: boolean;
-  /** Quando definido, a lupa filtra a lista em vez da busca do mapa. */
+  /** Quando definido, o campo filtra a lista em vez da busca do mapa. */
   browseQuery?: string;
   onBrowseQueryChange?: (value: string) => void;
 }
@@ -47,65 +38,24 @@ export function InicioTopBarSection({
     [brand, embedded, isWide],
   );
   const browsing = onBrowseQueryChange != null;
-  const { searchOpen, closeSearch, openSearch, handleSearch, clearSearch } = controller;
+  const { handleSearch, clearSearch } = controller;
   const searchValue = browsing ? (browseQuery ?? '') : controller.search;
-  const searchInputRef = useRef<TextInput>(null);
   const [menuHighlighted, setMenuHighlighted] = useState(false);
   const [searchHighlighted, setSearchHighlighted] = useState(false);
   const menuOpacity = useTimedOpacity(menuHighlighted ? 0.85 : 1);
   const searchPressOpacity = useTimedOpacity(searchHighlighted ? 0.85 : 1);
-  const searchProgress = useSharedValue(searchOpen ? 1 : 0);
-
-  useEffect(() => {
-    searchProgress.value = brandTiming(searchOpen ? 1 : 0);
-  }, [searchOpen, searchProgress]);
-
-  useEffect(() => {
-    if (!searchOpen) {
-      Keyboard.dismiss();
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      searchInputRef.current?.focus();
-    }, Motion.durationMs);
-    return () => clearTimeout(timeout);
-  }, [searchOpen]);
-
-  useEffect(() => {
-    if (!searchOpen) {
-      return;
-    }
-
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      closeSearch();
-      return true;
-    });
-    return () => sub.remove();
-  }, [closeSearch, searchOpen]);
-
-  const titleStyle = useAnimatedStyle(() => ({
-    opacity: 1 - searchProgress.value,
-    transform: [{ translateX: interpolate(searchProgress.value, [0, 1], [0, -12]) }],
-  }));
-
-  const searchFieldStyle = useAnimatedStyle(() => ({
-    opacity: searchProgress.value,
-    transform: [{ translateX: interpolate(searchProgress.value, [0, 1], [20, 0]) }],
-  }));
 
   const handleOpenMenu = () => {
     controller.openMenu();
   };
 
-  const handleSearchButton = () => {
-    if (searchOpen) {
-      if (!browsing) {
-        handleSearch();
-      }
+  const submitSearch = () => {
+    Keyboard.dismiss();
+    if (browsing) {
+      onBrowseQueryChange?.(searchValue.trim());
       return;
     }
-    openSearch();
+    handleSearch();
   };
 
   const handleClear = () => {
@@ -137,54 +87,37 @@ export function InicioTopBarSection({
             </Pressable>
           ) : null}
 
-          <View style={styles.middle}>
-            <Animated.View
-              style={[styles.titleWrap, titleStyle]}
-              pointerEvents={searchOpen ? 'none' : 'auto'}
-            >
-              <Text style={styles.title} numberOfLines={1}>
-                {t('Encontra-me')}
-              </Text>
-            </Animated.View>
-
-            <Animated.View
-              style={[styles.searchFieldWrap, searchFieldStyle]}
-              pointerEvents={searchOpen ? 'auto' : 'none'}
-            >
-              <View style={styles.searchField}>
-                <TextInput
-                  ref={searchInputRef}
-                  style={styles.searchInput}
-                  value={searchValue}
-                  onChangeText={browsing ? onBrowseQueryChange : controller.setSearch}
-                  placeholder={t('Nome, bairro ou cidade')}
-                  placeholderTextColor={brand.placeholder}
-                  returnKeyType="search"
-                  onSubmitEditing={browsing ? undefined : controller.handleSearch}
-                  accessibilityLabel={t('Buscar pessoas')}
-                />
-                {searchValue.length > 0 ? (
-                  <Pressable
-                    onPress={handleClear}
-                    hitSlop={8}
-                    accessibilityRole="button"
-                    accessibilityLabel={t('Limpar busca')}
-                  >
-                    <MaterialCommunityIcons name="close-circle" size={20} color={brand.placeholder} />
-                  </Pressable>
-                ) : null}
-              </View>
-            </Animated.View>
+          <View style={styles.searchField}>
+            <TextInput
+              style={styles.searchInput}
+              value={searchValue}
+              onChangeText={browsing ? onBrowseQueryChange : controller.setSearch}
+              placeholder={t('Nome, bairro ou cidade')}
+              placeholderTextColor={brand.placeholder}
+              returnKeyType="search"
+              onSubmitEditing={submitSearch}
+              accessibilityLabel={t('Buscar pessoas')}
+            />
+            {searchValue.length > 0 ? (
+              <Pressable
+                onPress={handleClear}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={t('Limpar busca')}
+              >
+                <MaterialCommunityIcons name="close-circle" size={20} color={brand.placeholder} />
+              </Pressable>
+            ) : null}
           </View>
 
           <Pressable
-            onPress={handleSearchButton}
+            onPress={submitSearch}
             onPressIn={() => setSearchHighlighted(true)}
             onPressOut={() => setSearchHighlighted(false)}
             onHoverIn={() => setSearchHighlighted(true)}
             onHoverOut={() => setSearchHighlighted(false)}
             accessibilityRole="button"
-            accessibilityLabel={searchOpen ? t('Buscar') : t('Abrir busca')}
+            accessibilityLabel={t('Buscar')}
           >
             <Animated.View style={[styles.searchButton, searchPressOpacity]}>
               <MaterialCommunityIcons name="magnify" size={22} color={brand.orange} />
@@ -226,27 +159,9 @@ function makeStyles(brand: BrandColors, isWide: boolean, embedded: boolean) {
     menuButton: {
       padding: 4,
     },
-    middle: {
-      flex: 1,
-      minWidth: 0,
-      height: isWide ? 38 : 46,
-      justifyContent: 'center',
-      overflow: 'hidden',
-    },
-    titleWrap: {
-      justifyContent: 'center',
-    },
-    title: {
-      fontSize: isWide ? 18 : 22,
-      fontWeight: '800',
-      color: brand.textDark,
-    },
-    searchFieldWrap: {
-      ...StyleSheet.absoluteFill,
-      justifyContent: 'center',
-    },
     searchField: {
       flex: 1,
+      minWidth: 0,
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,

@@ -24,7 +24,6 @@ export function useInicioController() {
   const { location: userLocation, denied: locationDenied } = useUserLocation();
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
-  const [searchOpen, setSearchOpen] = useState(false);
   const peopleQuery = useNearbyPeopleQuery({
     query,
     latitude: userLocation?.latitude,
@@ -94,18 +93,6 @@ export function useInicioController() {
     action();
   };
 
-  const openSearch = () => {
-    closeMenu();
-    setSearchOpen(true);
-  };
-
-  const closeSearch = () => setSearchOpen(false);
-
-  const setMapCollapsed = (collapsed: boolean) => {
-    setSearchOpen(false);
-    setMapCollapsedState(collapsed);
-  };
-
   const handleSearch = () => {
     setQuery(search.trim());
   };
@@ -171,9 +158,6 @@ export function useInicioController() {
     locationDenied,
     search,
     setSearch,
-    searchOpen,
-    openSearch,
-    closeSearch,
     handleSearch,
     clearSearch,
     loading: peopleQuery.isLoading || peopleQuery.isFetching,
@@ -186,12 +170,9 @@ export function useInicioController() {
     languagePreference,
     setLanguagePreference,
     mapCollapsed,
-    setMapCollapsed,
+    setMapCollapsed: setMapCollapsedState,
     menuOpen,
-    openMenu: () => {
-      closeSearch();
-      setMenuOpen(true);
-    },
+    openMenu: () => setMenuOpen(true),
     closeMenu,
     goToPerson: (personId: string) => router.push(`/pessoa/${personId}` as Href),
     goToChat: () =>

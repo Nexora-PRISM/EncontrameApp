@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomBar } from '@/components/bottom-bar';
@@ -7,7 +7,7 @@ import { type BrandMapHandle } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { SofiaFab } from '@/components/sofia-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
-import { InicioSidebarWidth, PageGutter } from '@/constants/theme';
+import { InicioSidebarWidth, PageGutter, Spacing } from '@/constants/theme';
 import { useInicioController, type InicioController } from '@/features/inicio/inicio.controller';
 import { InicioBrowseSection } from '@/features/inicio/sections/inicio-browse-section';
 import { InicioMapSection, MAP_PEEK_HEIGHT } from '@/features/inicio/sections/inicio-map-section';
@@ -33,7 +33,6 @@ export default function InicioPage() {
 }
 
 function WideInicio({ controller }: { controller: InicioController }) {
-  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeWideStyles(brand), [brand]);
   const mapRef = useRef<BrandMapHandle>(null);
@@ -55,14 +54,6 @@ function WideInicio({ controller }: { controller: InicioController }) {
     <View style={styles.container}>
       <InicioMapSection ref={mapRef} controller={controller} mapPadding={mapPadding} />
       <View style={styles.overlay} pointerEvents="box-none">
-        {controller.searchOpen ? (
-          <Pressable
-            style={styles.searchDismiss}
-            onPress={controller.closeSearch}
-            accessibilityRole="button"
-            accessibilityLabel={t('Fechar busca')}
-          />
-        ) : null}
         <SafeAreaView style={styles.overlayInner} edges={['top']} pointerEvents="box-none">
           <View style={styles.sidebar} pointerEvents="auto">
             <InicioTopBarSection controller={controller} />
@@ -109,6 +100,7 @@ function PhoneInicio({ controller }: { controller: InicioController }) {
             <InicioBrowseSection controller={controller} />
           ) : (
             <View
+              style={styles.openTop}
               onLayout={(event) => {
                 const height = event.nativeEvent.layout.height;
                 setOpenTopHeight((current) => (Math.abs(current - height) < 2 ? current : height));
@@ -174,9 +166,6 @@ function makeWideStyles(brand: BrandColors) {
     overlayFill: {
       flex: 1,
     },
-    searchDismiss: {
-      ...StyleSheet.absoluteFill,
-    },
   });
 }
 
@@ -193,6 +182,9 @@ function makePhoneStyles(brand: BrandColors) {
     top: {
       flex: 1,
       minHeight: 0,
+    },
+    openTop: {
+      paddingBottom: Spacing.three,
     },
     locationHint: {
       color: brand.textMuted,

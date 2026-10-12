@@ -809,12 +809,10 @@ export const es: Readonly<Record<string, string>> = {
   'Meu perfil': 'Mi perfil',
   'Configurações': 'Configuración',
   'Entrar': 'Entrar',
-  'Encontra-me': 'Encontra-me',
   'Nome, bairro ou cidade': 'Nombre, barrio o ciudad',
   'Buscar pessoas': 'Buscar personas',
   'Limpar busca': 'Borrar búsqueda',
   'Buscar': 'Buscar',
-  'Abrir busca': 'Abrir búsqueda',
   'Ative a localização para ver pessoas próximas.':
     'Activa la ubicación para ver personas cercanas.',
   'Fechar menu': 'Cerrar menú',
@@ -1223,8 +1221,6 @@ export const es: Readonly<Record<string, string>> = {
   'Compartilhar localização': 'Compartir ubicación',
   'Mande onde você está agora para alguém de confiança — por exemplo, ao voltar para casa sozinha ou ao sair com alguém que acabou de conhecer.':
     'Envía dónde estás ahora a alguien de confianza — por ejemplo, al volver sola a casa o al salir con alguien que acabas de conocer.',
-  // pages/inicio/index.tsx
-  'Fechar busca': 'Cerrar búsqueda',
   // pages/pessoa/[id]/index.tsx
   'Este cadastro não está mais neste aparelho: ele pode ter sido enviado ou apagado.':
     'Este registro ya no está en este dispositivo: puede haberse enviado o borrado.',
