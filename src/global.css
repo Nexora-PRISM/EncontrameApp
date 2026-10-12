@@ -40,6 +40,7 @@
   --chat-bubble-user: #1b4db8;
   --on-chat-bubble-user: #ffffff;
   --on-primary: #ffffff;
+  --scrim: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -76,6 +77,7 @@
     --chat-bubble-user: #3264d1;
     --on-chat-bubble-user: #ffffff;
     --on-primary: #ffffff;
+    --scrim: #000000;
   }
 }
 

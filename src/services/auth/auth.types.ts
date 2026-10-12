@@ -12,6 +12,8 @@ export interface SignupPayload {
   cep: string;
   clause: string;
   password: string;
+  /** Aceite das regras de uso (ISO). A API precisa gravar junto com a conta. */
+  termsAcceptedAt?: string;
 }
 
 export interface AuthUser {
@@ -41,4 +43,6 @@ export interface GoogleRegisterPayload {
   cpf: string;
   phone: string;
   cep: string;
+  /** Aceite das regras de uso (ISO). A API precisa gravar junto com a conta. */
+  termsAcceptedAt?: string;
 }

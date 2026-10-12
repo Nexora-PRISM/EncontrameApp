@@ -16,6 +16,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { resolvePersonStatusColor, resolvePersonStatusOnColor } from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
@@ -25,6 +26,7 @@ interface InicioPeopleSidebarSectionProps {
 
 /** Lista lateral da home no desktop, no formato do painel do Maps. */
 export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const { people, showPeopleSkeleton } = controller;
@@ -33,13 +35,13 @@ export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSe
   return (
     <View style={styles.panel}>
       <View style={styles.header}>
-        <Text style={styles.title}>Pessoas próximas</Text>
+        <Text style={styles.title}>{t('Pessoas próximas')}</Text>
         <Pressable
           onPress={controller.goToAllPeople}
           style={styles.allLink}
           accessibilityRole="button"
         >
-          <Text style={styles.allLinkText}>Ver todas</Text>
+          <Text style={styles.allLinkText}>{t('Ver todas')}</Text>
         </Pressable>
       </View>
 
@@ -66,7 +68,7 @@ export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSe
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <BrandEnter from="fade">
-              <Text style={styles.emptyText}>Nenhuma pessoa próxima.</Text>
+              <Text style={styles.emptyText}>{t('Nenhuma pessoa próxima.')}</Text>
             </BrandEnter>
           }
         />
@@ -90,7 +92,8 @@ function SidebarPersonCard({
   brand: BrandColors;
   styles: ReturnType<typeof makeStyles>;
 }) {
-  const statusLabel = person.statusDescription ?? '—';
+  const t = useT();
+  const statusLabel = person.statusDescription ? t(person.statusDescription) : '—';
   const badgeColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
   const badgeTextColor = resolvePersonStatusOnColor(brand);
   const location = controller.locationLine(person);
@@ -101,7 +104,7 @@ function SidebarPersonCard({
       style={styles.card}
       onPress={() => controller.goToPerson(person.id)}
       accessibilityRole="button"
-      accessibilityLabel={`Ver detalhes de ${person.fullName}`}
+      accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
     >
       <View style={styles.photo}>
         {person.photoUri ? (
@@ -121,7 +124,7 @@ function SidebarPersonCard({
           />
         </View>
         <Text style={styles.meta} numberOfLines={1}>
-          Idade: {person.age ?? '—'}
+          {t('Idade: {age}', { age: person.age ?? '—' })}
           {location ? ` · ${location}` : ''}
         </Text>
         <View style={styles.statusRow}>

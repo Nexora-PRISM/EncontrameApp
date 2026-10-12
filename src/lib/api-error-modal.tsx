@@ -6,9 +6,11 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import { setApiErrorHandler } from '@/lib/api-error-events';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 /** Modal global: qualquer falha da API aparece aqui (o Alert nativo não funciona no web). */
 export function ApiErrorModalProvider({ children }: { children: ReactNode }) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const [message, setMessage] = useState<string | null>(null);
@@ -29,9 +31,9 @@ export function ApiErrorModalProvider({ children }: { children: ReactNode }) {
       >
         <View style={styles.backdrop}>
           <View style={styles.card}>
-            <Text style={styles.title}>Algo deu errado</Text>
+            <Text style={styles.title}>{t('Algo deu errado')}</Text>
             <Text style={styles.body}>{message}</Text>
-            <BrandButton label="Entendi" onPress={() => setMessage(null)} />
+            <BrandButton label={t('Entendi')} onPress={() => setMessage(null)} />
           </View>
         </View>
       </Modal>

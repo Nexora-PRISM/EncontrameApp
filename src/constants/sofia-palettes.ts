@@ -1,4 +1,5 @@
 import type { BrandColors, ColorSchemeName } from '@/constants/brand';
+import { msg } from '@/lib/i18n-msg';
 
 export type SofiaPaletteId = 'green' | 'blue' | 'lavender' | 'sand';
 
@@ -28,7 +29,7 @@ const SOFIA_ON_BRAND = '#FFFFFF';
 const sofiaLight: Record<SofiaPaletteId, SofiaPalette> = {
   green: {
     id: 'green',
-    name: 'Verde acolhedor',
+    name: msg('Verde acolhedor'),
     brand: '#6A8A74',
     brandStrong: '#4E6B58',
     brandSoft: '#DCE4DF',
@@ -47,7 +48,7 @@ const sofiaLight: Record<SofiaPaletteId, SofiaPalette> = {
   },
   blue: {
     id: 'blue',
-    name: 'Azul sereno',
+    name: msg('Azul sereno'),
     brand: '#5F8AA6',
     brandStrong: '#3F6A85',
     brandSoft: '#D9E5EE',
@@ -66,7 +67,7 @@ const sofiaLight: Record<SofiaPaletteId, SofiaPalette> = {
   },
   lavender: {
     id: 'lavender',
-    name: 'Lavanda suave',
+    name: msg('Lavanda suave'),
     brand: '#8A7BA6',
     brandStrong: '#665A80',
     brandSoft: '#E4DEEE',
@@ -85,7 +86,7 @@ const sofiaLight: Record<SofiaPaletteId, SofiaPalette> = {
   },
   sand: {
     id: 'sand',
-    name: 'Areia quente',
+    name: msg('Areia quente'),
     brand: '#B5895A',
     brandStrong: '#8C663D',
     brandSoft: '#EFE1CE',
@@ -108,7 +109,7 @@ const sofiaLight: Record<SofiaPaletteId, SofiaPalette> = {
 const sofiaDark: Record<SofiaPaletteId, SofiaPalette> = {
   green: {
     id: 'green',
-    name: 'Verde acolhedor',
+    name: msg('Verde acolhedor'),
     brand: '#8AA894',
     brandStrong: '#6A8A74',
     brandSoft: '#1C2622',
@@ -127,7 +128,7 @@ const sofiaDark: Record<SofiaPaletteId, SofiaPalette> = {
   },
   blue: {
     id: 'blue',
-    name: 'Azul sereno',
+    name: msg('Azul sereno'),
     brand: '#7AA3BB',
     brandStrong: '#5F8AA6',
     brandSoft: '#1A242C',
@@ -146,7 +147,7 @@ const sofiaDark: Record<SofiaPaletteId, SofiaPalette> = {
   },
   lavender: {
     id: 'lavender',
-    name: 'Lavanda suave',
+    name: msg('Lavanda suave'),
     brand: '#A598BD',
     brandStrong: '#8A7BA6',
     brandSoft: '#1F1B28',
@@ -165,7 +166,7 @@ const sofiaDark: Record<SofiaPaletteId, SofiaPalette> = {
   },
   sand: {
     id: 'sand',
-    name: 'Areia quente',
+    name: msg('Areia quente'),
     brand: '#C9A074',
     brandStrong: '#B5895A',
     brandSoft: '#221C16',
@@ -202,31 +203,17 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Sobrepõe a paleta Sofia nos tokens de ação, fundo, texto e chat. */
+/** Aplica a cor da Sofia só nos tokens de destaque (botões, links, bolha do usuário). */
 export function applySofiaPaletteToBrand(base: BrandColors, palette: SofiaPalette): BrandColors {
   return {
     ...base,
+    orange: palette.brand,
+    orangeDark: palette.brandStrong,
     blue: palette.brand,
     blueDark: palette.brandStrong,
     blueClear: hexToRgba(palette.brand, 0),
-    white: palette.surface,
-    surface: palette.surfaceSecondary,
-    fieldBackground: palette.surface,
-    fieldBorder: palette.border,
-    label: palette.muted,
-    placeholder: palette.muted,
-    textDark: palette.onSurface,
-    textMuted: palette.onSurfaceSecondary,
-    divider: palette.border,
-    mapBackground: palette.brandSoft,
-    mapStroke: palette.border,
-    error: palette.error,
-    avatarBackground: palette.brandSoft,
-    avatarIcon: palette.muted,
-    cardInfo: palette.surfaceSecondary,
-    chatBubbleAI: palette.bubbleSofia,
-    chatBubbleUser: palette.bubbleUser,
-    onChatBubbleUser: palette.onSurface,
     onPrimary: palette.onBrand,
+    chatBubbleUser: palette.brand,
+    onChatBubbleUser: palette.onBrand,
   };
 }

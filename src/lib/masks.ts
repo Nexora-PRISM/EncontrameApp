@@ -35,3 +35,29 @@ export function maskCep(value: string) {
 
 /** Mantém só dígitos, útil para idade. */
 export const maskDigits = (value: string) => onlyDigits(value);
+
+/** dd/mm/aaaa */
+export function maskDate(value: string) {
+  const digits = onlyDigits(value).slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+}
+
+/** Converte dd/mm/aaaa em data ISO (meio-dia UTC, evita virar o dia por fuso). */
+export function dateToIso(value: string): string | null {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value.trim());
+  if (!match) return null;
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day, 12));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return date.toISOString();
+}

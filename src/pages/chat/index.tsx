@@ -21,9 +21,11 @@ import { ChatHeaderSection } from '@/features/chat/sections/chat-header-section'
 import { ChatInputSection } from '@/features/chat/sections/chat-input-section';
 import { ChatMessagesSection } from '@/features/chat/sections/chat-messages-section';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useComposerKeyboardPadding } from '@/lib/use-composer-keyboard-padding';
 
 export default function ChatPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useChatController();
@@ -76,16 +78,16 @@ export default function ChatPage() {
       >
         <View style={styles.modalBackdrop}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Apagar toda a conversa?</Text>
+            <Text style={styles.modalTitle}>{t('Apagar toda a conversa?')}</Text>
             <View style={styles.modalActions}>
               <Pressable
                 onPress={() => controller.setConfirmClear(false)}
                 style={styles.modalCancel}
               >
-                <Text style={styles.modalCancelText}>Cancelar</Text>
+                <Text style={styles.modalCancelText}>{t('Cancelar')}</Text>
               </Pressable>
               <Pressable onPress={() => void controller.handleClear()} style={styles.modalConfirm}>
-                <Text style={styles.modalConfirmText}>Apagar</Text>
+                <Text style={styles.modalConfirmText}>{t('Apagar')}</Text>
               </Pressable>
             </View>
           </View>

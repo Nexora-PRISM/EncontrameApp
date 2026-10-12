@@ -14,6 +14,8 @@ import {
   type BiometricCopy,
 } from '@/lib/biometric';
 import { generalErrorMessage } from '@/lib/error-messages';
+import { useT } from '@/lib/i18n';
+import { msg } from '@/lib/i18n-msg';
 import { hasStoredSession } from '@/lib/session';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import { collectErrors, textError } from '@/lib/validation';
@@ -23,10 +25,11 @@ import {
   useLoginMutation,
 } from '@/services/auth/auth.service';
 
-const BIOMETRIC_FAIL = 'Não foi possível entrar com a digital. Use e-mail e senha.';
+const BIOMETRIC_FAIL = msg('Não foi possível entrar com a digital. Use e-mail e senha.');
 
 /** Centraliza estado, validação e ações da tela de login. */
 export function useLoginController() {
+  const t = useT();
   const router = useRouter();
   const { returnTo } = useLocalSearchParams<{ returnTo?: string | string[] }>();
   const loginMutation = useLoginMutation();
@@ -35,6 +38,7 @@ export function useLoginController() {
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState('');
   const [biometricCopyState, setBiometricCopyState] = useState<BiometricCopy | null>(null);
   const [biometricSubmitting, setBiometricSubmitting] = useState(false);
@@ -79,13 +83,13 @@ export function useLoginController() {
     setFormError('');
     try {
       const copy = biometricCopyState ?? biometricCopy(await getBiometricKind());
-      const ok = await authenticate(copy.loginPrompt);
+      const ok = await authenticate(t(copy.loginPrompt));
       if (!ok) return;
 
       await unlockAndRefreshSession();
       router.replace(dest);
     } catch {
-      setFormError(BIOMETRIC_FAIL);
+      setFormError(t(BIOMETRIC_FAIL));
       await revokeStoredSession();
       setBiometricCopyState(null);
     } finally {
@@ -150,7 +154,7 @@ export function useLoginController() {
       }
 
       if (code === 'invalid_credentials') {
-        setFormError(generalErrorMessage(code));
+        setFormError(t(generalErrorMessage(code)));
       }
     }
   };
@@ -162,6 +166,8 @@ export function useLoginController() {
     password,
     setPassword: changePassword,
     blurPassword,
+    showPassword,
+    toggleShowPassword: () => setShowPassword((value) => !value),
     errors,
     fieldError,
     formError: formError || google.error,
@@ -174,7 +180,7 @@ export function useLoginController() {
     goToSignup: () => router.push('/signup'),
     enroll,
     biometricAvailable: biometricCopyState != null,
-    biometricLabel: biometricCopyState?.loginButton ?? 'Entrar com a digital',
+    biometricLabel: t(biometricCopyState?.loginButton ?? 'Entrar com a digital'),
     biometricIcon: biometricCopyState?.icon ?? 'fingerprint',
     biometricSubmitting,
     handleBiometricLogin,

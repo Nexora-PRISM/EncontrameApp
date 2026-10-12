@@ -1,26 +1,30 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMemo } from 'react';
 import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BrandButton } from '@/components/brand-button';
 import { BrandEnter } from '@/components/brand-enter';
+import { SettingsSegmented } from '@/components/settings-list';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { LANGUAGE_SHORT_OPTIONS, useT } from '@/lib/i18n';
+import { msg } from '@/lib/i18n-msg';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 const STEPS = [
   {
-    title: 'Várias pessoas podem precisar da nossa ajuda neste momento.',
-    message: 'Nos ajude a encontrá-las.',
+    title: msg('Crianças, mulheres e muitas outras pessoas podem precisar de ajuda agora.'),
+    message: msg('Juntos, ajudamos a encontrá-las.'),
   },
   {
-    title: 'Cadastre pessoas desaparecidas que você conhece.',
-    message: 'Receba ajuda para encontrá-las.',
+    title: msg('Cadastre quem desapareceu e conte com a comunidade.'),
+    message: msg('Em perigo, use o botão vermelho "Pedir ajuda".'),
   },
   {
-    title: 'Como você quer começar?',
+    title: msg('Como você quer começar?'),
     message: null,
   },
 ] as const;
@@ -30,6 +34,7 @@ type Props = {
 };
 
 export function InicioOnboardingSection({ controller }: Props) {
+  const t = useT();
   const brand = useBrand();
   const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
@@ -52,17 +57,31 @@ export function InicioOnboardingSection({ controller }: Props) {
               source={require('@/assets/images/sofia-avatar.jpg')}
               style={styles.avatar}
               resizeMode="cover"
-              accessibilityLabel="Sofia"
+              accessibilityLabel={t('Sofia')}
             />
-            <Text style={styles.name}>Oi, eu sou a Sofia.</Text>
+            <Text style={styles.name}>{t('Oi, eu sou a Sofia.')}</Text>
             <BrandEnter key={step} from="fade">
-              <Text style={styles.title}>{copy.title}</Text>
-              {copy.message ? <Text style={styles.message}>{copy.message}</Text> : null}
+              <Text style={styles.title}>{t(copy.title)}</Text>
+              {copy.message ? <Text style={styles.message}>{t(copy.message)}</Text> : null}
             </BrandEnter>
           </View>
 
           <View style={styles.footer}>
-            <View style={styles.dots} accessibilityLabel={`Passo ${step + 1} de ${STEPS.length}`}>
+            {step === 0 ? (
+              // Quem não lê português escolhe o idioma logo na primeira tela.
+              <View style={styles.languageRow}>
+                <MaterialCommunityIcons name="translate" size={20} color={brand.label} />
+                <View style={styles.languageSegment}>
+                  <SettingsSegmented
+                    label={t('Idioma')}
+                    options={LANGUAGE_SHORT_OPTIONS}
+                    value={controller.languagePreference}
+                    onChange={controller.setLanguagePreference}
+                  />
+                </View>
+              </View>
+            ) : null}
+            <View style={styles.dots} accessibilityLabel={t('Passo {value} de {count}', { value: step + 1, count: STEPS.length })}>
               {STEPS.map((_, index) => (
                 <View
                   key={index}
@@ -74,13 +93,13 @@ export function InicioOnboardingSection({ controller }: Props) {
             {isLast ? (
               <View style={styles.actions}>
                 <BrandButton
-                  label="Avistei uma pessoa — quero reportar"
+                  label={t('Avistei uma pessoa — quero reportar')}
                   variant="orange"
                   onPress={controller.onboardingReport}
                   style={styles.actionBtn}
                 />
                 <BrandButton
-                  label="Quero cadastrar uma pessoa desaparecida"
+                  label={t('Quero cadastrar uma pessoa desaparecida')}
                   variant="outline"
                   onPress={controller.onboardingRegister}
                   style={styles.actionBtn}
@@ -89,13 +108,13 @@ export function InicioOnboardingSection({ controller }: Props) {
                   onPress={controller.onboardingExplore}
                   hitSlop={8}
                   accessibilityRole="button"
-                  accessibilityLabel="Quero só explorar o mapa"
+                  accessibilityLabel={t('Quero só explorar o mapa')}
                 >
-                  <Text style={styles.skip}>Quero só explorar o mapa</Text>
+                  <Text style={styles.skip}>{t('Quero só explorar o mapa')}</Text>
                 </Pressable>
               </View>
             ) : (
-              <BrandButton label="Continuar" variant="orange" onPress={controller.onboardingContinue} />
+              <BrandButton label={t('Continuar')} variant="orange" onPress={controller.onboardingContinue} />
             )}
           </View>
         </SafeAreaView>
@@ -163,6 +182,16 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       paddingBottom: 16,
       paddingTop: 8,
       gap: 16,
+    },
+    languageRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 4,
+    },
+    languageSegment: {
+      flex: 1,
+      maxWidth: 320,
     },
     dots: {
       flexDirection: 'row',

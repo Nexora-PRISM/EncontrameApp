@@ -52,27 +52,45 @@ function mixHex(from: string, toward: string, amount: number): string {
   });
 }
 
+/** Empurra um cinza um pouco para o frio, sem usar a cor de destaque. */
+function coolHex(color: string, amount: number): string {
+  const parsed = parseHex(color);
+  if (!parsed) {
+    return color;
+  }
+
+  const t = Math.min(1, Math.max(0, amount));
+  return toHex({
+    r: Math.round(parsed.r * (1 - t * 0.45)),
+    g: Math.round(parsed.g * (1 - t * 0.08)),
+    b: Math.min(255, Math.round(parsed.b + (255 - parsed.b) * t * 0.35)),
+  });
+}
+
 /**
- * Mapa desaturado com contraste alto entre terreno, ruas e água.
- * A paleta só dá um toque; não precisa espelhar a UI.
+ * Mapa em cinza neutro (claro ou escuro).
+ * A água fica um pouco mais fria para continuar legível, sem a cor de destaque.
  */
 export function brandMapStyle(brand: BrandColors, scheme: ColorSchemeName): MapStyleRule[] {
   const isDark = scheme === 'dark';
   const land = isDark
-    ? mixHex(brand.mapBackground, brand.navyDeep, 0.38)
+    ? mixHex(brand.mapBackground, brand.textDark, 0.08)
     : mixHex(brand.mapBackground, brand.textDark, 0.22);
   const road = isDark
-    ? mixHex(land, brand.textDark, 0.34)
+    ? mixHex(land, brand.textDark, 0.28)
     : mixHex(brand.white, brand.mapBackground, 0.05);
   const roadStroke = isDark
-    ? mixHex(land, brand.navyDeep, 0.25)
+    ? mixHex(land, brand.textDark, 0.14)
     : mixHex(land, brand.textDark, 0.16);
-  const localRoad = isDark ? mixHex(road, land, 0.18) : mixHex(road, land, 0.08);
+  const localRoad = isDark ? mixHex(road, land, 0.35) : mixHex(road, land, 0.08);
   const highway = isDark
-    ? mixHex(road, brand.blue, 0.2)
+    ? mixHex(road, brand.textDark, 0.16)
     : mixHex(road, brand.textDark, 0.12);
-  const water = mixHex(land, brand.blue, isDark ? 0.48 : 0.55);
-  const park = mixHex(land, brand.blue, isDark ? 0.28 : 0.32);
+  const water = coolHex(
+    isDark ? mixHex(land, brand.textDark, 0.1) : mixHex(land, brand.white, 0.2),
+    isDark ? 0.45 : 0.32,
+  );
+  const park = isDark ? mixHex(land, brand.textDark, 0.12) : mixHex(land, brand.white, 0.28);
   const labels = mixHex(brand.textMuted, brand.textDark, 0.55);
   const labelStroke = land;
 

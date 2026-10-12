@@ -13,6 +13,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { GrupoChatController } from '@/features/grupo-chat/grupo-chat.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useDesktopChatEnterSubmit } from '@/lib/use-desktop-chat-enter-submit';
 
 const COMPOSER_SIZE = 40;
@@ -25,6 +26,7 @@ interface GrupoChatInputSectionProps {
 }
 
 export function GrupoChatInputSection({ controller }: GrupoChatInputSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const [draft, setDraft] = useState('');
@@ -62,7 +64,7 @@ export function GrupoChatInputSection({ controller }: GrupoChatInputSectionProps
           value={draft}
           onChangeText={setDraft}
           onContentSizeChange={onContentSizeChange}
-          placeholder="Digite sua mensagem aqui..."
+          placeholder={t('Digite sua mensagem aqui...')}
           placeholderTextColor={brand.placeholder}
           multiline
           textAlignVertical="center"
@@ -75,7 +77,7 @@ export function GrupoChatInputSection({ controller }: GrupoChatInputSectionProps
             onPress={sendDraft}
             disabled={!canSend}
             accessibilityRole="button"
-            accessibilityLabel="Enviar"
+            accessibilityLabel={t('Enviar')}
           >
             <MaterialCommunityIcons name="send" size={14} color={brand.onPrimary} />
           </Pressable>

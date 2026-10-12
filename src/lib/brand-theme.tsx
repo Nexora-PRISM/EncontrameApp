@@ -20,7 +20,13 @@ import {
   getSofiaPalette,
   type SofiaPaletteId,
 } from '@/constants/sofia-palettes';
-import { loadThemePrefs, saveThemePalette, saveThemeScheme } from '@/lib/sofia-prefs';
+import { msg } from '@/lib/i18n-msg';
+import {
+  clearThemeScheme,
+  loadThemePrefs,
+  saveThemePalette,
+  saveThemeScheme,
+} from '@/lib/sofia-prefs';
 
 type BrandThemeValue = {
   brand: BrandColors;
@@ -28,8 +34,20 @@ type BrandThemeValue = {
   paletteId: SofiaPaletteId | null;
   setPalette: (id: SofiaPaletteId) => void;
   setScheme: (scheme: ColorSchemeName) => void;
+  /** Preferência de aparência das Configurações: não altera a paleta da Sofia. */
+  appearance: AppearancePreference;
+  setAppearance: (value: AppearancePreference) => void;
   hydrated: boolean;
 };
+
+export type AppearancePreference = 'system' | ColorSchemeName;
+
+/** Opções de tema mostradas no menu do Início e em Configurações. */
+export const APPEARANCE_OPTIONS: { value: AppearancePreference; label: string }[] = [
+  { value: 'system', label: msg('Automático') },
+  { value: 'light', label: msg('Claro') },
+  { value: 'dark', label: msg('Escuro') },
+];
 
 const BrandThemeContext = createContext<BrandThemeValue>({
   brand: Brand,
@@ -37,6 +55,8 @@ const BrandThemeContext = createContext<BrandThemeValue>({
   paletteId: null,
   setPalette: () => {},
   setScheme: () => {},
+  appearance: 'system',
+  setAppearance: () => {},
   hydrated: false,
 });
 
@@ -76,6 +96,7 @@ function applyWebCssVars(
   root.style.setProperty('--chat-bubble-user', brand.chatBubbleUser);
   root.style.setProperty('--on-chat-bubble-user', brand.onChatBubbleUser);
   root.style.setProperty('--on-primary', brand.onPrimary);
+  root.style.setProperty('--scrim', brand.scrim);
 }
 
 export function BrandThemeProvider({ children }: { children: ReactNode }) {
@@ -136,6 +157,18 @@ export function BrandThemeProvider({ children }: { children: ReactNode }) {
     [paletteId],
   );
 
+  const setAppearance = useCallback((next: AppearancePreference) => {
+    if (next === 'system') {
+      setSchemePreference(null);
+      void clearThemeScheme();
+      return;
+    }
+    setSchemePreference(next);
+    void saveThemeScheme(next);
+  }, []);
+
+  const appearance: AppearancePreference = schemePreference ?? 'system';
+
   const value = useMemo(
     () => ({
       brand,
@@ -143,9 +176,11 @@ export function BrandThemeProvider({ children }: { children: ReactNode }) {
       paletteId,
       setPalette,
       setScheme,
+      appearance,
+      setAppearance,
       hydrated,
     }),
-    [brand, colorScheme, paletteId, setPalette, setScheme, hydrated],
+    [brand, colorScheme, paletteId, setPalette, setScheme, appearance, setAppearance, hydrated],
   );
 
   return <BrandThemeContext.Provider value={value}>{children}</BrandThemeContext.Provider>;

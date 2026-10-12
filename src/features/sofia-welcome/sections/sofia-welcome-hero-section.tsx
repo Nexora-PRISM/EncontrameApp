@@ -7,12 +7,14 @@ import { Radius } from '@/constants/brand';
 import type { SofiaPalette } from '@/constants/sofia-palettes';
 import { PageGutter } from '@/constants/theme';
 import type { SofiaWelcomeController } from '@/features/sofia-welcome/sofia-welcome.controller';
+import { useT } from '@/lib/i18n';
 
 type Props = {
   controller: SofiaWelcomeController;
 };
 
 export function SofiaWelcomeHeroSection({ controller }: Props) {
+  const t = useT();
   const insets = useSafeAreaInsets();
   const { palette } = controller;
   const styles = useMemo(() => makeStyles(palette), [palette]);
@@ -36,7 +38,7 @@ export function SofiaWelcomeHeroSection({ controller }: Props) {
       >
         <View style={styles.badge}>
           <View style={styles.dot} />
-          <Text style={styles.badgeText}>Espaço seguro • 100% confidencial</Text>
+          <Text style={styles.badgeText}>{t('Espaço seguro • 100% confidencial')}</Text>
         </View>
 
         <View style={styles.avatarRing}>
@@ -45,16 +47,15 @@ export function SofiaWelcomeHeroSection({ controller }: Props) {
               source={require('@/assets/images/sofia-avatar.jpg')}
               style={styles.avatar}
               resizeMode="cover"
-              accessibilityLabel="Sofia"
+              accessibilityLabel={t('Sofia')}
             />
           </View>
         </View>
 
         <View style={styles.textBlock}>
-          <Text style={styles.hello}>Oi, eu sou a Sofia</Text>
+          <Text style={styles.hello}>{t('Oi, eu sou a Sofia')}</Text>
           <Text style={styles.subtitle}>
-            Uma IA de apoio emocional, pronta para te escutar sem pressa e sem julgamento. Não
-            substitui um profissional.
+            {t('Uma IA de apoio emocional, pronta para te escutar sem pressa e sem julgamento. Não substitui um profissional.')}
           </Text>
         </View>
 
@@ -64,9 +65,9 @@ export function SofiaWelcomeHeroSection({ controller }: Props) {
           onPress={controller.continueToTheme}
           style={({ pressed }) => [styles.cta, pressed && styles.ctaPressed]}
           accessibilityRole="button"
-          accessibilityLabel="Continuar"
+          accessibilityLabel={t('Continuar')}
         >
-          <Text style={styles.ctaText}>Continuar</Text>
+          <Text style={styles.ctaText}>{t('Continuar')}</Text>
         </Pressable>
       </View>
     </View>

@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { isPersonAlertStatus } from '@/lib/person-status';
 
 type PersonAlertIconProps = {
@@ -15,6 +16,7 @@ export function PersonAlertIcon({
   statusDescription,
   size = 14,
 }: PersonAlertIconProps) {
+  const t = useT();
   const brand = useBrand();
   if (!isPersonAlertStatus(statusId, statusDescription)) {
     return null;
@@ -25,7 +27,7 @@ export function PersonAlertIcon({
       name="alert"
       size={size}
       color={brand.statusAlerta}
-      accessibilityLabel="Alerta"
+      accessibilityLabel={t('Alerta')}
     />
   );
 }

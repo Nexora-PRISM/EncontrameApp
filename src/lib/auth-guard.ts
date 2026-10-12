@@ -6,10 +6,21 @@ const PROTECTED_PREFIXES = [
   '/sofia-welcome',
   '/sofia-theme',
   '/sofia-perfil',
+  '/perfil',
+  '/cadastrar-pet',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */
-const ALLOWED_RETURN_TO = [...PROTECTED_PREFIXES, '/inicio', '/pessoa'] as const;
+const ALLOWED_RETURN_TO = [
+  ...PROTECTED_PREFIXES,
+  '/inicio',
+  '/pessoa',
+  '/configuracoes',
+  '/ajuda',
+  '/pets',
+  '/regras',
+  '/premium',
+] as const;
 
 function stripQueryAndHash(pathname: string) {
   const withoutHash = pathname.split('#')[0] ?? pathname;

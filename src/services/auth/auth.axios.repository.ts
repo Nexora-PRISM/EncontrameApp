@@ -62,6 +62,7 @@ export const authAxiosRepository: AuthRepository = {
       cellPhone: onlyDigits(payload.phone),
       cep: onlyDigits(payload.cep),
       password: payload.password,
+      termsAcceptedAt: payload.termsAcceptedAt ?? null,
     });
     return mapAuthResult(data);
   },
@@ -93,6 +94,7 @@ export const authAxiosRepository: AuthRepository = {
       document: onlyDigits(payload.cpf),
       cellPhone: onlyDigits(payload.phone),
       cep: onlyDigits(payload.cep),
+      termsAcceptedAt: payload.termsAcceptedAt ?? null,
     });
     return mapAuthResult(data);
   },

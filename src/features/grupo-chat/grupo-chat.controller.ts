@@ -21,7 +21,7 @@ function todayLabel() {
   return `${day}/${month}/${now.getFullYear()}`;
 }
 
-/** Centraliza estado e envio de mensagens do chat em grupo (Grupo do apoio). */
+/** Centraliza estado e envio de mensagens do chat em grupo (Grupo de apoio). */
 export function useGrupoChatController() {
   const historyQuery = useGroupChatHistoryQuery();
   const sendMutation = useSendGroupMessageMutation();

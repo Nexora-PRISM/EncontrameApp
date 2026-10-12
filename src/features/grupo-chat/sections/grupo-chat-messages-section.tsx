@@ -7,6 +7,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { GrupoChatController } from '@/features/grupo-chat/grupo-chat.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useScrollListToEnd } from '@/lib/use-scroll-list-to-end';
 import type { GroupChatMessage } from '@/services/grupo-chat/grupo-chat.types';
 
@@ -15,6 +16,7 @@ interface GrupoChatMessagesSectionProps {
 }
 
 export function GrupoChatMessagesSection({ controller }: GrupoChatMessagesSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const lastMessageId = controller.messages.at(-1)?.id;
@@ -41,7 +43,7 @@ export function GrupoChatMessagesSection({ controller }: GrupoChatMessagesSectio
           <View style={styles.avatar}>
             <MaterialCommunityIcons name="account" size={20} color={brand.avatarIcon} />
           </View>
-          <Text style={styles.senderName}>{item.sender.name}</Text>
+          <Text style={styles.senderName}>{item.sender.name || t('Usuário')}</Text>
         </View>
         <View style={[styles.bubble, styles.bubbleOther]}>
           <Text style={[styles.text, styles.textOther]}>{item.text}</Text>

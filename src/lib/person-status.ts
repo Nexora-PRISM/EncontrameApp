@@ -1,11 +1,26 @@
 import type { BrandColors } from '@/constants/brand';
+import { msg } from '@/lib/i18n-msg';
 
 /** Prefixo dos IDs gravados só no aparelho, antes do sync com a API. */
 export const LOCAL_PERSON_ID_PREFIX = 'local-';
 
 /** Sentinel de client: não colide com StatusIds da API (Pendente=1, …). */
 export const LOCAL_PERSON_STATUS_ID = 0;
-export const LOCAL_PERSON_STATUS_LABEL = 'Cadastro pendente';
+export const LOCAL_PERSON_STATUS_LABEL = msg('Cadastro pendente');
+
+/**
+ * Situações que a API devolve em `statusDescription`. O texto vem em português e é traduzido na
+ * tela com `t(person.statusDescription)`; esta lista existe para essas palavras entrarem no
+ * dicionário de traduções (scripts/check-i18n.js).
+ */
+export const KNOWN_STATUS_LABELS = [
+  msg('Pendente'),
+  msg('Procurado'),
+  msg('Procurando'),
+  msg('Encontrado'),
+  msg('Alerta'),
+  msg('Cancelado'),
+] as const;
 
 const STATUS_PENDENTE = 1;
 const STATUS_PROCURADO = 2;

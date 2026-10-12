@@ -8,22 +8,37 @@ import { BrandMap } from '@/components/brand-map';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface PessoaDetalheSightingSectionProps {
   controller: PessoaDetalheController;
 }
 
 export function PessoaDetalheSightingSection({ controller }: PessoaDetalheSightingSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
   return (
     <View style={styles.wrap}>
       {controller.sightingBlockedMessage ? (
-        <Text style={styles.message}>{controller.sightingBlockedMessage}</Text>
+        <>
+          <Text style={styles.message}>{controller.sightingBlockedMessage}</Text>
+          {controller.isLocalPerson ? (
+            controller.isLoggedIn ? (
+              <BrandButton
+                label={t('Revisar e enviar')}
+                variant="orange"
+                onPress={controller.reviewLocalDraft}
+              />
+            ) : (
+              <BrandButton label={t('Entrar na conta')} variant="blue" onPress={controller.goToLogin} />
+            )
+          ) : null}
+        </>
       ) : (
         <BrandButton
-          label="Vi essa pessoa por perto"
+          label={t('Vi essa pessoa por perto')}
           variant="orange"
           onPress={controller.openSightingForm}
         />
@@ -36,17 +51,17 @@ export function PessoaDetalheSightingSection({ controller }: PessoaDetalheSighti
           <View style={styles.form}>
           <View>
             <BrandField
-              label="Onde você viu?"
+              label={t('Onde você viu?')}
               value={controller.address}
               onChangeText={controller.setAddress}
-              placeholder="Digite para buscar o endereço"
+              placeholder={t('Digite para buscar o endereço')}
               autoCapitalize="words"
               autoComplete="off"
               trailingIcon="map-marker-outline"
               error={controller.addressError}
             />
             {controller.suggesting ? (
-              <Text style={styles.hint}>Buscando endereços…</Text>
+              <Text style={styles.hint}>{t('Buscando endereços…')}</Text>
             ) : null}
             {controller.suggestions.length > 0 ? (
               <View style={styles.suggestions}>
@@ -72,15 +87,15 @@ export function PessoaDetalheSightingSection({ controller }: PessoaDetalheSighti
               onPinDragEnd={controller.handlePinDragEnd}
             />
           </View>
-          <Text style={styles.hint}>Toque no mapa ou arraste o pin para indicar o local.</Text>
+          <Text style={styles.hint}>{t('Toque no mapa ou arraste o pin para indicar o local.')}</Text>
           <BrandButton
-            label="Usar minha localização"
+            label={t('Usar minha localização')}
             variant="outline"
             loading={controller.locating}
             onPress={controller.useCurrentLocation}
           />
           <BrandButton
-            label="Registrar avistamento"
+            label={t('Registrar avistamento')}
             variant="orange"
             loading={controller.submitting}
             onPress={controller.submitSighting}

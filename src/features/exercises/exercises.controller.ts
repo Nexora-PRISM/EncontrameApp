@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useT } from '@/lib/i18n';
 import { useExercisesQuery } from '@/services/exercises/exercises.service';
 import type { Exercise } from '@/services/exercises/exercises.types';
 
 export type BreathPhase = 'in' | 'hold' | 'out';
 
 export function useExercisesController() {
+  const t = useT();
   const query = useExercisesQuery();
   const [active, setActive] = useState<Exercise | null>(null);
   const [gratitudes, setGratitudes] = useState(['', '', '']);
@@ -64,7 +66,7 @@ export function useExercisesController() {
   };
 
   const breathLabel =
-    breathPhase === 'in' ? 'Inspire' : breathPhase === 'hold' ? 'Segure' : 'Expire';
+    breathPhase === 'in' ? t('Inspire') : breathPhase === 'hold' ? t('Segure') : t('Expire');
 
   return {
     exercises: query.data ?? [],

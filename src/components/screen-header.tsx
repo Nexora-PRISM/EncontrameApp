@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useSafeBack } from '@/lib/safe-back';
 import { useTimedOpacity } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export function ScreenHeader({ title, onBack, accessory }: Props) {
+  const t = useT();
   const brand = useBrand();
   const { control } = useWideLayout();
   const defaultBack = useSafeBack('/inicio');
@@ -27,6 +29,8 @@ export function ScreenHeader({ title, onBack, accessory }: Props) {
       <Pressable
         onPress={handleBack}
         hitSlop={12}
+        accessibilityRole="button"
+        accessibilityLabel={t('Voltar')}
         onPressIn={() => setHighlighted(true)}
         onPressOut={() => setHighlighted(false)}
         onHoverIn={() => setHighlighted(true)}

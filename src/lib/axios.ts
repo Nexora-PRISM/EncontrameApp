@@ -5,6 +5,7 @@ import { apiErrorDisplayMessage } from '@/lib/api-errors';
 import { notifySessionExpired } from '@/lib/auth-events';
 import { getBiometricEnabled } from '@/lib/biometric';
 import { env } from '@/lib/env';
+import { getActiveLanguage } from '@/lib/i18n';
 import { isAccessTokenExpiring } from '@/lib/jwt';
 import {
   clearSession,
@@ -58,6 +59,8 @@ api.interceptors.request.use(async (config) => {
   if (env.appKey) {
     config.headers['X-App-Key'] = env.appKey;
   }
+  // Idioma escolhido no app, para a API poder responder no mesmo idioma (se ela usar este header).
+  config.headers['Accept-Language'] = getActiveLanguage();
   return config;
 });
 
@@ -93,12 +96,26 @@ api.interceptors.response.use(
       }
     }
 
-    if (!url.includes('/Auth/refresh') && !url.includes('/Auth/logout')) {
+    if (!isQuietErrorPath(url)) {
       notifyApiError(apiErrorDisplayMessage(error));
     }
     return Promise.reject(error);
   },
 );
+
+/**
+ * Falhas que a própria tela trata, sem o modal global de erro. O alerta de emergência mostra o
+ * resultado na tela dele ("não foi possível confirmar — ligue 190"): um modal por cima atrapalharia.
+ * A situação do Premium aparece em Configurações e na tela Premium ("não foi possível verificar").
+ */
+function isQuietErrorPath(url: string) {
+  return (
+    url.includes('/Auth/refresh') ||
+    url.includes('/Auth/logout') ||
+    url.includes('/EmergencyAlert') ||
+    url.includes('/Subscription/me')
+  );
+}
 
 function isAuthPublicPath(url: string) {
   return (

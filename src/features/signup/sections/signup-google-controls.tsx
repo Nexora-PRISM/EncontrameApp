@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { GoogleAuthButton } from '@/components/google-auth-button';
 import { useGoogleAuth } from '@/features/google-auth/use-google-auth';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface SignupGoogleControlsProps {
   onNeedsRegistration: () => void;
@@ -17,6 +18,7 @@ export function SignupGoogleControls({
   onNeedsRegistration,
   disabled = false,
 }: SignupGoogleControlsProps) {
+  const t = useT();
   const brand = useBrand();
   const google = useGoogleAuth({ onNeedsRegistration });
 
@@ -32,7 +34,7 @@ export function SignupGoogleControls({
       />
       <View style={styles.orWrap}>
         <View style={[styles.orLine, { backgroundColor: brand.fieldBorder }]} />
-        <Text style={[styles.orLabel, { color: brand.placeholder }]}>ou preencha os dados</Text>
+        <Text style={[styles.orLabel, { color: brand.placeholder }]}>{t('ou preencha os dados')}</Text>
         <View style={[styles.orLine, { backgroundColor: brand.fieldBorder }]} />
       </View>
     </>

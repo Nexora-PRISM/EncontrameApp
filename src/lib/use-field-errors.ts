@@ -1,10 +1,12 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { fieldErrorMessage } from '@/lib/error-messages';
+import { useT } from '@/lib/i18n';
 import type { ErrorCode, FieldErrors } from '@/lib/validation';
 
 /** Guarda os códigos de erro por campo e resolve o texto exibido no formulário. */
 export function useFieldErrors() {
+  const t = useT();
   const [errors, setErrorsState] = useState<FieldErrors>({});
   const [dirty, setDirty] = useState<Record<string, boolean>>({});
   const dirtyRef = useRef<Record<string, boolean>>({});
@@ -56,9 +58,9 @@ export function useFieldErrors() {
     (field: string) => {
       if (!dirty[field]) return undefined;
       const code = errors[field];
-      return code ? fieldErrorMessage(field, code) : undefined;
+      return code ? t(fieldErrorMessage(field, code)) : undefined;
     },
-    [dirty, errors],
+    [dirty, errors, t],
   );
 
   return { errors, setErrors, setFieldCode, markDirty, markAllDirty, isDirty, fieldError };

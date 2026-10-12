@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { type Href, Stack, usePathname, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -11,9 +12,9 @@ import { ApiErrorModalProvider } from '@/lib/api-error-modal';
 import { setSessionExpiredHandler } from '@/lib/auth-events';
 import { isProtectedPath } from '@/lib/auth-guard';
 import { BrandThemeProvider, useBrand, useBrandColorScheme } from '@/lib/brand-theme';
+import { I18nProvider, useI18n } from '@/lib/i18n';
 import { queryClient } from '@/lib/query-client';
 import { getSessionUser, hydrateSession } from '@/lib/session';
-import { syncLocalPeople } from '@/services/people/people.sync';
 
 // Só no popup do OAuth (tem opener). Completa e deixa o app pai fechar a janela
 // antes do Expo Router redirecionar `/` → `/inicio` → `/login`.
@@ -26,6 +27,7 @@ function RootLayoutInner() {
   const pathname = usePathname();
   const brand = useBrand();
   const colorScheme = useBrandColorScheme();
+  const { ready: languageReady } = useI18n();
   const [sessionReady, setSessionReady] = useState(false);
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -38,9 +40,6 @@ function RootLayoutInner() {
       await hydrateSession();
       if (!cancelled) {
         setSessionReady(true);
-      }
-      if (!cancelled && getSessionUser() != null) {
-        void syncLocalPeople();
       }
     })();
 
@@ -59,7 +58,8 @@ function RootLayoutInner() {
     router.replace({ pathname: '/login', params: { returnTo: pathname } } as Href);
   }, [blocked, pathname, router]);
 
-  const showStack = sessionReady && !blocked;
+  // Espera o idioma salvo para não abrir a tela num idioma e trocar logo depois.
+  const showStack = sessionReady && languageReady && !blocked;
 
   return (
     <>
@@ -88,6 +88,18 @@ function RootLayoutInner() {
           <Stack.Screen name="sofia-welcome" />
           <Stack.Screen name="sofia-theme" />
           <Stack.Screen name="sofia-perfil" />
+          <Stack.Screen name="perfil" />
+          <Stack.Screen name="configuracoes" />
+          <Stack.Screen name="ajuda" />
+          <Stack.Screen name="sobre" />
+          <Stack.Screen name="pedir-ajuda" />
+          <Stack.Screen name="pets" />
+          <Stack.Screen name="cadastrar-pet" />
+          <Stack.Screen name="regras" />
+          <Stack.Screen name="alerta-emergencia" />
+          <Stack.Screen name="compartilhar-localizacao" />
+          <Stack.Screen name="contatos-confianca" />
+          <Stack.Screen name="premium" />
         </Stack>
       ) : (
         <View style={styles.boot}>
@@ -100,17 +112,23 @@ function RootLayoutInner() {
 
 export default function RootLayout() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <BrandThemeProvider>
-          <ApiErrorModalProvider>
-            <RootLayoutInner />
-          </ApiErrorModalProvider>
-        </BrandThemeProvider>
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={rootStyle}>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <I18nProvider>
+            <BrandThemeProvider>
+              <ApiErrorModalProvider>
+                <RootLayoutInner />
+              </ApiErrorModalProvider>
+            </BrandThemeProvider>
+          </I18nProvider>
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
+
+const rootStyle = { flex: 1 } as const;
 
 function makeStyles(brand: BrandColors) {
   return StyleSheet.create({

@@ -15,6 +15,7 @@ export type GoogleMarker = {
   setMap: (map: GoogleMap | null) => void;
   setPosition: (latLng: LatLngLiteral) => void;
   setIcon: (icon: unknown) => void;
+  setTitle?: (title: string) => void;
   setDraggable?: (draggable: boolean) => void;
   setOpacity?: (opacity: number) => void;
   setZIndex?: (zIndex: number) => void;

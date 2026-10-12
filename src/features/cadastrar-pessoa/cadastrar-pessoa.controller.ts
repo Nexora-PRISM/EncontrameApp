@@ -1,41 +1,75 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
 
+import { draftToFormValues } from '@/features/cadastrar-pessoa/draft-review';
+import {
+  RELATIONSHIP_OPTIONS,
+  ageError,
+  isMinorAge,
+  policeReportError,
+} from '@/features/cadastrar-pessoa/legitimacy';
 import { parseApiError } from '@/lib/api-errors';
-import { maskDigits, maskPhone } from '@/lib/masks';
+import { showAlert } from '@/lib/dialog';
+import { tr, useT } from '@/lib/i18n';
+import { msg } from '@/lib/i18n-msg';
+import { maskDate, maskDigits, maskPhone } from '@/lib/masks';
+import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import {
   NAME_MIN_LENGTH,
   collectErrors,
   formatError,
+  isPastDate,
   isPhone,
+  optionalFormatError,
   optionalRangeError,
   textError,
 } from '@/lib/validation';
-import { useCreatePersonMutation } from '@/services/people/people.service';
+import {
+  getLocalDraft,
+  useCreatePersonMutation,
+  useSubmitLocalDraftMutation,
+} from '@/services/people/people.service';
 import type { CreatePersonPayload } from '@/services/people/people.types';
 
-export const ETHNICITY_OPTIONS = ['Branca', 'Preta', 'Parda', 'Amarela', 'Indígena'] as const;
-export const BUILD_OPTIONS = ['Magro', 'Médio', 'Atlético', 'Forte'] as const;
+export { RELATIONSHIP_OPTIONS };
+
+export const ETHNICITY_OPTIONS = [msg('Branca'), msg('Preta'), msg('Parda'), msg('Amarela'), msg('Indígena')] as const;
+export const BUILD_OPTIONS = [msg('Magro'), msg('Médio'), msg('Atlético'), msg('Forte')] as const;
 
 const SUBMIT_END_THRESHOLD = 120;
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
 const ALLOWED_WEB_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg']);
-const AGE_MIN = 0;
-const AGE_MAX = 130;
 const HEIGHT_MIN_CM = 30;
 const HEIGHT_MAX_CM = 250;
 
 /** Campos da API que têm outro nome no formulário. */
-const API_FIELD_MAP = { name: 'fullName', height: 'heightCm' };
+const API_FIELD_MAP = {
+  name: 'fullName',
+  height: 'heightCm',
+  location: 'localidade',
+  city: 'localidade',
+  contactPhone: 'phone',
+};
 
-/** Centraliza estado, validação e cadastro de uma nova pessoa desaparecida. */
+/**
+ * Centraliza estado, validação e cadastro de uma nova pessoa desaparecida.
+ *
+ * Com `?rascunho=<id local>`, o mesmo formulário serve para REVISAR um cadastro feito sem conta
+ * neste aparelho: a pessoa logada confere os dados, completa o que faltar, aceita a declaração
+ * e só então o caso é enviado pela conta dela.
+ */
 export function useCadastrarPessoaController() {
+  const t = useT();
   const router = useRouter();
+  const params = useLocalSearchParams<{ rascunho?: string | string[] }>();
+  const rawDraftId = Array.isArray(params.rascunho) ? params.rascunho[0] : params.rascunho;
+  const draftId = rawDraftId && isLocalPersonId(rawDraftId) ? rawDraftId : null;
   const createMutation = useCreatePersonMutation();
+  const submitDraftMutation = useSubmitLocalDraftMutation();
   const { errors, setErrors, setFieldCode, markDirty, isDirty, fieldError } = useFieldErrors();
 
   const [photoUri, setPhotoUri] = useState('');
@@ -58,8 +92,80 @@ export function useCadastrarPessoaController() {
   const [originNeighborhood, setOriginNeighborhood] = useState('');
   const [lastSeen, setLastSeen] = useState('');
   const [phone, setPhone] = useState('');
+  const [reporterRelationship, setReporterRelationshipState] = useState('');
+  const [policeReport, setPoliceReport] = useState('');
+  const [declarationAccepted, setDeclarationAccepted] = useState(false);
+  const [draftLoading, setDraftLoading] = useState(draftId != null);
+  /** Rascunho já aplicado ao formulário — evita sobrescrever o que a pessoa editou. */
+  const appliedDraftRef = useRef<string | null>(null);
+  const isMinor = isMinorAge(age);
   /** True quando o botão "Cadastrar" do formulário entra na área visível. */
   const [nearFormEnd, setNearFormEnd] = useState(false);
+
+  // Revisão de rascunho local: carrega uma vez e preenche o formulário (sem a declaração).
+  useEffect(() => {
+    if (!draftId || appliedDraftRef.current === draftId) return;
+
+    if (getSessionUser() == null) {
+      showAlert(
+        tr('Entre na sua conta'),
+        tr('Para revisar e enviar um cadastro feito neste aparelho, entre na sua conta.'),
+      );
+      router.replace({ pathname: '/login', params: { returnTo: `/pessoa/${draftId}` } } as Href);
+      return;
+    }
+
+    let cancelled = false;
+    void getLocalDraft(draftId)
+      .then((draft) => {
+        if (cancelled) return;
+        if (!draft) {
+          showAlert(
+            tr('Cadastro não encontrado'),
+            tr('Ele pode já ter sido enviado ou apagado deste aparelho.'),
+          );
+          router.dismissTo('/perfil' as Href);
+          return;
+        }
+        appliedDraftRef.current = draftId;
+        const values = draftToFormValues(draft.payload);
+        setPhotoUri(values.photoUri);
+        setPhotoBase64(values.photoBase64);
+        setFullName(values.fullName);
+        setNickname(values.nickname);
+        setAge(values.age);
+        setHeightCm(values.heightCm);
+        setEthnicity(values.ethnicity);
+        setBuild(values.build);
+        setClothes(values.clothes);
+        setHair(values.hair);
+        setEyes(values.eyes);
+        setTattoo(values.tattoo);
+        setAccessories(values.accessories);
+        setLocation(values.location);
+        setOriginCity(values.originCity);
+        setOriginState(values.originState);
+        setOriginCountry(values.originCountry);
+        setOriginNeighborhood(values.originNeighborhood);
+        setLastSeen(values.lastSeen);
+        setPhone(values.phone);
+        setReporterRelationshipState(values.reporterRelationship);
+        setPoliceReport(values.policeReport);
+        setDeclarationAccepted(false);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          showAlert(tr('Não foi possível abrir o cadastro'), tr('Tente novamente em instantes.'));
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setDraftLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [draftId, router]);
 
   const changeFullName = (value: string) => {
     setFullName(value);
@@ -71,14 +177,15 @@ export function useCadastrarPessoaController() {
     setFieldCode('fullName', textError(fullName, NAME_MIN_LENGTH));
   };
 
+  // "Localidade": onde a pessoa foi vista pela última vez (vai para `location` na API).
   const changeLocation = (value: string) => {
     setLocation(value);
-    if (isDirty('location')) setFieldCode('location', textError(value));
+    if (isDirty('localidade')) setFieldCode('localidade', textError(value));
   };
 
   const blurLocation = () => {
-    markDirty('location');
-    setFieldCode('location', textError(location));
+    markDirty('localidade');
+    setFieldCode('localidade', textError(location));
   };
 
   const changePhone = (value: string) => {
@@ -92,15 +199,52 @@ export function useCadastrarPessoaController() {
     setFieldCode('phone', formatError(phone, isPhone));
   };
 
+  const changeLastSeen = (value: string) => {
+    const next = maskDate(value);
+    setLastSeen(next);
+    if (isDirty('lastSeen')) setFieldCode('lastSeen', optionalFormatError(next, isPastDate));
+  };
+
+  const blurLastSeen = () => {
+    markDirty('lastSeen');
+    setFieldCode('lastSeen', optionalFormatError(lastSeen, isPastDate));
+  };
+
   const changeAge = (value: string) => {
     const next = maskDigits(value);
     setAge(next);
-    if (isDirty('age')) setFieldCode('age', optionalRangeError(next, AGE_MIN, AGE_MAX));
+    if (isDirty('age')) setFieldCode('age', ageError(next));
+    // Se a idade passa a ser de menor, o boletim de ocorrência vira obrigatório.
+    if (isDirty('policeReport')) {
+      setFieldCode('policeReport', policeReportError(policeReport, isMinorAge(next)));
+    }
+  };
+
+  const setReporterRelationship = (value: string) => {
+    setReporterRelationshipState(value);
+    markDirty('reporterRelationship');
+    setFieldCode('reporterRelationship', textError(value));
+  };
+
+  const changePoliceReport = (value: string) => {
+    setPoliceReport(value);
+    if (isDirty('policeReport')) setFieldCode('policeReport', policeReportError(value, isMinor));
+  };
+
+  const blurPoliceReport = () => {
+    markDirty('policeReport');
+    setFieldCode('policeReport', policeReportError(policeReport, isMinor));
+  };
+
+  const toggleDeclaration = () => {
+    const next = !declarationAccepted;
+    setDeclarationAccepted(next);
+    if (isDirty('declaration')) setFieldCode('declaration', next ? undefined : 'required');
   };
 
   const blurAge = () => {
     markDirty('age');
-    setFieldCode('age', optionalRangeError(age, AGE_MIN, AGE_MAX));
+    setFieldCode('age', ageError(age));
   };
 
   const changeHeightCm = (value: string) => {
@@ -119,10 +263,14 @@ export function useCadastrarPessoaController() {
   const validate = () =>
     collectErrors({
       fullName: textError(fullName, NAME_MIN_LENGTH),
-      location: textError(location),
+      localidade: textError(location),
       phone: formatError(phone, isPhone),
-      age: optionalRangeError(age, AGE_MIN, AGE_MAX),
+      age: ageError(age),
       heightCm: optionalRangeError(heightCm, HEIGHT_MIN_CM, HEIGHT_MAX_CM),
+      lastSeen: optionalFormatError(lastSeen, isPastDate),
+      reporterRelationship: textError(reporterRelationship),
+      policeReport: policeReportError(policeReport, isMinor),
+      declaration: declarationAccepted ? undefined : 'required',
     });
 
   const updateSubmitVisibility = (metrics: {
@@ -141,11 +289,11 @@ export function useCadastrarPessoaController() {
     const normalized = stripDataUrlPrefix(base64OrDataUrl);
     const size = estimateBase64Bytes(normalized);
     if (size > MAX_PHOTO_BYTES) {
-      Alert.alert('Foto muito grande', 'A foto deve ter no máximo 2 MB.');
+      showAlert(t('Foto muito grande'), t('A foto deve ter no máximo 2 MB.'));
       return;
     }
     if (size <= 0) {
-      Alert.alert('Foto inválida', 'Não foi possível ler a imagem selecionada.');
+      showAlert(t('Foto inválida'), t('Não foi possível ler a imagem selecionada.'));
       return;
     }
     setPhotoUri(uri);
@@ -155,7 +303,7 @@ export function useCadastrarPessoaController() {
   const pickFromLibrary = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
-      Alert.alert('Permissão necessária', 'Autorize o acesso à galeria para escolher uma foto.');
+      showAlert(t('Permissão necessária'), t('Autorize o acesso à galeria para escolher uma foto.'));
       return;
     }
 
@@ -169,7 +317,7 @@ export function useCadastrarPessoaController() {
     if (result.canceled || !result.assets[0]) return;
     const asset = result.assets[0];
     if (!asset.base64) {
-      Alert.alert('Foto inválida', 'Não foi possível ler a imagem selecionada.');
+      showAlert(t('Foto inválida'), t('Não foi possível ler a imagem selecionada.'));
       return;
     }
     applyPhoto(asset.uri, asset.base64);
@@ -178,7 +326,7 @@ export function useCadastrarPessoaController() {
   const pickFromCamera = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (!permission.granted) {
-      Alert.alert('Permissão necessária', 'Autorize o acesso à câmera para tirar uma foto.');
+      showAlert(t('Permissão necessária'), t('Autorize o acesso à câmera para tirar uma foto.'));
       return;
     }
 
@@ -192,7 +340,7 @@ export function useCadastrarPessoaController() {
     if (result.canceled || !result.assets[0]) return;
     const asset = result.assets[0];
     if (!asset.base64) {
-      Alert.alert('Foto inválida', 'Não foi possível ler a imagem capturada.');
+      showAlert(t('Foto inválida'), t('Não foi possível ler a imagem capturada.'));
       return;
     }
     applyPhoto(asset.uri, asset.base64);
@@ -209,12 +357,12 @@ export function useCadastrarPessoaController() {
       if (!file) return;
 
       if (!ALLOWED_WEB_MIME.has(file.type) && !/\.(png|jpe?g)$/i.test(file.name)) {
-        Alert.alert('Formato inválido', 'Envie apenas fotos PNG ou JPG.');
+        showAlert(t('Formato inválido'), t('Envie apenas fotos PNG ou JPG.'));
         return;
       }
 
       if (file.size > MAX_PHOTO_BYTES) {
-        Alert.alert('Foto muito grande', 'A foto deve ter no máximo 2 MB.');
+        showAlert(t('Foto muito grande'), t('A foto deve ter no máximo 2 MB.'));
         return;
       }
 
@@ -222,13 +370,13 @@ export function useCadastrarPessoaController() {
       reader.onload = () => {
         const result = typeof reader.result === 'string' ? reader.result : '';
         if (!result) {
-          Alert.alert('Foto inválida', 'Não foi possível ler o arquivo selecionado.');
+          showAlert(t('Foto inválida'), t('Não foi possível ler o arquivo selecionado.'));
           return;
         }
         applyPhoto(result, result);
       };
       reader.onerror = () => {
-        Alert.alert('Foto inválida', 'Não foi possível ler o arquivo selecionado.');
+        showAlert(t('Foto inválida'), t('Não foi possível ler o arquivo selecionado.'));
       };
       reader.readAsDataURL(file);
     };
@@ -241,10 +389,10 @@ export function useCadastrarPessoaController() {
       return;
     }
 
-    Alert.alert('Adicionar foto', 'Escolha a origem da imagem', [
-      { text: 'Câmera', onPress: () => void pickFromCamera() },
-      { text: 'Galeria', onPress: () => void pickFromLibrary() },
-      { text: 'Cancelar', style: 'cancel' },
+    Alert.alert(t('Adicionar foto'), t('Escolha a origem da imagem'), [
+      { text: t('Câmera'), onPress: () => void pickFromCamera() },
+      { text: t('Galeria'), onPress: () => void pickFromLibrary() },
+      { text: t('Cancelar'), style: 'cancel' },
     ]);
   };
 
@@ -253,14 +401,19 @@ export function useCadastrarPessoaController() {
     setPhotoBase64('');
   };
 
-  const handleLocationSearch = () => {
-    // TODO: buscar coordenadas a partir do endereço na integração do mapa.
-  };
-
   const handleRegister = async () => {
     const found = validate();
     setErrors(found);
-    if (Object.keys(found).length > 0) return;
+    if (Object.keys(found).length > 0) {
+      // Esses campos ficam no fim do formulário: avisa quem tocou no botão flutuante lá em cima.
+      if (found.reporterRelationship || found.policeReport || found.declaration) {
+        showAlert(
+          t('Falta pouco'),
+          t('No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes) e confirme a declaração.'),
+        );
+      }
+      return;
+    }
 
     const payload: CreatePersonPayload = {
       fullName,
@@ -283,16 +436,35 @@ export function useCadastrarPessoaController() {
       phone,
       photoUri: photoUri || undefined,
       photo: photoBase64 || undefined,
+      reporterRelationship,
+      policeReportNumber: policeReport.trim(),
+      declarationAcceptedAt: new Date().toISOString(),
     };
 
     try {
+      if (draftId) {
+        if (getSessionUser() == null) {
+          showAlert(t('Entre na sua conta'), t('Sua sessão terminou. Entre de novo para enviar este cadastro.'));
+          router.replace({ pathname: '/login', params: { returnTo: `/pessoa/${draftId}` } } as Href);
+          return;
+        }
+        await submitDraftMutation.mutateAsync({ draftId, payload });
+        showAlert(
+          t('Cadastro enviado'),
+          t('O caso foi enviado pela sua conta e saiu da lista de cadastros deste aparelho.'),
+        );
+        // Volta ao perfil (onde ficam os outros cadastros para revisar), sem empilhar outra cópia.
+        router.dismissTo('/perfil' as Href);
+        return;
+      }
+
       const loggedIn = getSessionUser() != null;
       await createMutation.mutateAsync(payload);
-      Alert.alert(
-        'Cadastro concluído',
+      showAlert(
+        t('Cadastro concluído'),
         loggedIn
-          ? 'A pessoa foi cadastrada com sucesso.'
-          : 'Cadastro salvo neste aparelho. Entre na sua conta para enviar.',
+          ? t('A pessoa foi cadastrada com sucesso.')
+          : t('Cadastro salvo só neste aparelho. Para enviá-lo, entre na sua conta e toque em "Revisar e enviar" no próprio cadastro ou em Meu perfil.'),
       );
       router.replace('/inicio');
     } catch (error) {
@@ -347,18 +519,30 @@ export function useCadastrarPessoaController() {
     originNeighborhood,
     setOriginNeighborhood,
     lastSeen,
-    setLastSeen,
+    setLastSeen: changeLastSeen,
+    isMinor,
+    reporterRelationship,
+    setReporterRelationship,
+    policeReport,
+    setPoliceReport: changePoliceReport,
+    blurPoliceReport,
+    declarationAccepted,
+    toggleDeclaration,
+    goToRules: () => router.push('/regras' as Href),
+    blurLastSeen,
     phone,
     setPhone: changePhone,
     blurPhone,
     errors,
     fieldError,
-    submitting: createMutation.isPending,
+    submitting: createMutation.isPending || submitDraftMutation.isPending,
+    /** Revisando um cadastro feito sem conta neste aparelho (`?rascunho=`). */
+    reviewingDraft: draftId != null,
+    draftLoading,
     nearFormEnd,
     updateSubmitVisibility,
     handlePickPhoto,
     handleRemovePhoto,
-    handleLocationSearch,
     handleRegister,
   };
 }

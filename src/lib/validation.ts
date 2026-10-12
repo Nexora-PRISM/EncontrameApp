@@ -3,7 +3,7 @@
  * Alterar as duas pontas juntas.
  */
 
-import { onlyDigits } from '@/lib/masks';
+import { dateToIso, onlyDigits } from '@/lib/masks';
 
 export type ErrorCode =
   | 'required'
@@ -19,7 +19,21 @@ export type ErrorCode =
 export type FieldErrors = Record<string, ErrorCode>;
 
 export const NAME_MIN_LENGTH = 3;
+/** Mínimo aceito pela API (login e contas antigas continuam valendo). */
 export const PASSWORD_MIN_LENGTH = 6;
+/**
+ * Regra do app para senhas NOVAS (cadastro): 8+ caracteres, com letra e número.
+ * É mais rígida que a API (6) de propósito — subir a regra no servidor também (ver docs/AUDITORIA §11).
+ */
+export const SIGNUP_PASSWORD_MIN_LENGTH = 8;
+
+/** Senha nova: obrigatória, 8+ caracteres e com pelo menos uma letra e um número. */
+export function newPasswordError(value: string): ErrorCode | undefined {
+  if (!value) return 'required';
+  if (value.length < SIGNUP_PASSWORD_MIN_LENGTH) return 'too_short';
+  if (!/[A-Za-zÀ-ÿ]/.test(value) || !/\d/.test(value)) return 'invalid_format';
+  return undefined;
+}
 
 const EMAIL_REGEX = /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/;
 
@@ -57,6 +71,14 @@ function checkDigit(digits: string, position: number) {
 }
 
 /** Obrigatório + tamanho mínimo. */
+/** Data dd/mm/aaaa válida, não futura e a partir de 1900. */
+export function isPastDate(value: string) {
+  const iso = dateToIso(value);
+  if (!iso) return false;
+  const time = new Date(iso).getTime();
+  return time <= Date.now() + 24 * 60 * 60 * 1000 && new Date(iso).getUTCFullYear() >= 1900;
+}
+
 export function textError(value: string, minLength = 0): ErrorCode | undefined {
   const trimmed = value.trim();
   if (!trimmed) return 'required';

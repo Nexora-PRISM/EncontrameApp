@@ -6,31 +6,33 @@ import { BrandField } from '@/components/brand-field';
 import { type BrandColors } from '@/constants/brand';
 import type { ExercisesController } from '@/features/exercises/exercises.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 type Props = {
   controller: ExercisesController;
 };
 
 export function ExerciseGratitudeSection({ controller }: Props) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
   return (
     <View style={styles.wrap}>
-      <Text style={styles.prompt}>Pelo que você é grata(o) agora?</Text>
+      <Text style={styles.prompt}>{t('Pelo que você é grata(o) agora?')}</Text>
       {controller.gratitudes.map((value, index) => (
         <BrandField
           key={index}
           label={`${index + 1}.`}
           value={value}
           onChangeText={(text) => controller.setGratitudeAt(index, text)}
-          placeholder="Escreva algo aqui…"
+          placeholder={t('Escreva algo aqui…')}
         />
       ))}
       {controller.gratitudeSaved ? (
-        <Text style={styles.saved}>Guardado com carinho</Text>
+        <Text style={styles.saved}>{t('Guardado com carinho')}</Text>
       ) : null}
-      <BrandButton label="Guardar" onPress={controller.saveGratitudes} />
+      <BrandButton label={t('Guardar')} onPress={controller.saveGratitudes} />
     </View>
   );
 }

@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Text,
   View,
+  type StyleProp,
+  type ViewStyle,
 } from 'react-native';
 
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
@@ -15,6 +17,7 @@ import { PersonAlertIcon } from '@/components/person-alert-icon';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { PessoasDesaparecidasController } from '@/features/pessoas-desaparecidas/pessoas-desaparecidas.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { resolvePersonStatusColor, resolvePersonStatusOnColor } from '@/lib/person-status';
 import { useWideLayout } from '@/lib/use-wide-layout';
 import type { Person } from '@/services/people/people.types';
@@ -22,12 +25,17 @@ import type { Person } from '@/services/people/people.types';
 interface PessoasDesaparecidasListSectionProps {
   controller: PessoasDesaparecidasController;
   header?: ReactElement;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export function PessoasDesaparecidasListSection({
   controller,
   header,
+  style,
+  contentContainerStyle,
 }: PessoasDesaparecidasListSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
@@ -47,13 +55,14 @@ export function PessoasDesaparecidasListSection({
 
   return (
     <FlatList
+      style={style}
       data={controller.people}
       key={isWide ? 'wide' : 'narrow'}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       numColumns={isWide ? 2 : 1}
       columnWrapperStyle={isWide ? styles.row : undefined}
-      contentContainerStyle={styles.list}
+      contentContainerStyle={[styles.list, contentContainerStyle]}
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       onEndReached={controller.loadMore}
@@ -64,7 +73,7 @@ export function PessoasDesaparecidasListSection({
           <ActivityIndicator color={brand.blue} style={styles.empty} />
         ) : (
           <BrandEnter from="fade">
-            <Text style={styles.emptyText}>Nenhuma pessoa encontrada com esses filtros.</Text>
+            <Text style={styles.emptyText}>{t('Nenhuma pessoa encontrada com esses filtros.')}</Text>
           </BrandEnter>
         )
       }
@@ -92,7 +101,8 @@ function PersonCard({
   styles: ReturnType<typeof makeStyles>;
   isWide: boolean;
 }) {
-  const statusLabel = person.statusDescription ?? '—';
+  const t = useT();
+  const statusLabel = person.statusDescription ? t(person.statusDescription) : '—';
   const badgeColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
   const badgeTextColor = resolvePersonStatusOnColor(brand);
   const location = controller.locationLine(person);
@@ -103,7 +113,7 @@ function PersonCard({
       style={styles.card}
       onPress={() => controller.goToPerson(person.id)}
       accessibilityRole="button"
-      accessibilityLabel={`Ver detalhes de ${person.fullName}`}
+      accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
     >
       <View style={styles.photo}>
         {person.photoUri ? (
@@ -123,7 +133,7 @@ function PersonCard({
             size={16}
           />
         </View>
-        <Text style={styles.meta}>Idade: {person.age ?? '—'}</Text>
+        <Text style={styles.meta}>{t('Idade: {value}', { value: person.age ?? '—' })}</Text>
         {location ? (
           <Text style={styles.meta} numberOfLines={2}>
             {location}

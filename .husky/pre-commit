@@ -1,1 +1,3 @@
-npm run typecheck && npx lint-staged
+# No Windows o cmd.exe corta a linha em 8191 caracteres. O lint-staged mede o
+# comando sem as aspas, então um commit grande estoura o limite. 6000 deixa folga.
+npm run typecheck && npx lint-staged --max-arg-length 6000

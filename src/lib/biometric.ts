@@ -2,6 +2,9 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
+import { tr } from '@/lib/i18n';
+import { msg } from '@/lib/i18n-msg';
+
 const ENABLED_KEY = 'encontrame.auth.biometricEnabled';
 
 export type BiometricKind = 'fingerprint' | 'face' | 'generic';
@@ -51,35 +54,35 @@ export async function getBiometricKind(): Promise<BiometricKind> {
 export function biometricCopy(kind: BiometricKind): BiometricCopy {
   if (kind === 'face') {
     return {
-      enrollTitle: 'Entrar com Face ID?',
-      enrollBody: 'Quer entrar com a Face ID deste celular da próxima vez?',
-      enrollConfirm: 'Usar Face ID',
-      enrollPrompt: 'Confirme com a Face ID para ativar o login rápido.',
-      loginButton: 'Entrar com Face ID',
-      loginPrompt: 'Use a Face ID para entrar',
+      enrollTitle: msg('Entrar com Face ID?'),
+      enrollBody: msg('Quer entrar com a Face ID deste celular da próxima vez?'),
+      enrollConfirm: msg('Usar Face ID'),
+      enrollPrompt: msg('Confirme com a Face ID para ativar o login rápido.'),
+      loginButton: msg('Entrar com Face ID'),
+      loginPrompt: msg('Use a Face ID para entrar'),
       icon: 'face-recognition',
     };
   }
 
   if (kind === 'fingerprint') {
     return {
-      enrollTitle: 'Entrar com a digital?',
-      enrollBody: 'Quer entrar com a digital deste celular da próxima vez?',
-      enrollConfirm: 'Usar digital',
-      enrollPrompt: 'Confirme com a digital para ativar o login rápido.',
-      loginButton: 'Entrar com a digital',
-      loginPrompt: 'Use a digital para entrar',
+      enrollTitle: msg('Entrar com a digital?'),
+      enrollBody: msg('Quer entrar com a digital deste celular da próxima vez?'),
+      enrollConfirm: msg('Usar digital'),
+      enrollPrompt: msg('Confirme com a digital para ativar o login rápido.'),
+      loginButton: msg('Entrar com a digital'),
+      loginPrompt: msg('Use a digital para entrar'),
       icon: 'fingerprint',
     };
   }
 
   return {
-    enrollTitle: 'Entrar com biometria?',
-    enrollBody: 'Quer entrar com a biometria deste celular da próxima vez?',
-    enrollConfirm: 'Usar biometria',
-    enrollPrompt: 'Confirme a biometria para ativar o login rápido.',
-    loginButton: 'Entrar com biometria',
-    loginPrompt: 'Use a biometria para entrar',
+    enrollTitle: msg('Entrar com biometria?'),
+    enrollBody: msg('Quer entrar com a biometria deste celular da próxima vez?'),
+    enrollConfirm: msg('Usar biometria'),
+    enrollPrompt: msg('Confirme a biometria para ativar o login rápido.'),
+    loginButton: msg('Entrar com biometria'),
+    loginPrompt: msg('Use a biometria para entrar'),
     icon: 'fingerprint',
   };
 }
@@ -104,7 +107,7 @@ export async function authenticate(promptMessage: string): Promise<boolean> {
   try {
     const result = await LocalAuthentication.authenticateAsync({
       promptMessage,
-      cancelLabel: 'Cancelar',
+      cancelLabel: tr('Cancelar'),
       disableDeviceFallback: true,
     });
     return result.success;

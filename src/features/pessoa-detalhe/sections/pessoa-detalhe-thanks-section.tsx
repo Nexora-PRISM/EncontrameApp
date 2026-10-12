@@ -8,6 +8,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface PessoaDetalheThanksSectionProps {
@@ -15,6 +16,7 @@ interface PessoaDetalheThanksSectionProps {
 }
 
 export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
@@ -34,7 +36,7 @@ export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSe
             style={StyleSheet.absoluteFill}
             onPress={controller.closeThanks}
             accessibilityRole="button"
-            accessibilityLabel="Fechar"
+            accessibilityLabel={t('Fechar')}
           />
         ) : null}
         <SafeAreaView style={styles.panel} edges={['top', 'bottom']}>
@@ -44,7 +46,7 @@ export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSe
               hitSlop={12}
               style={styles.closeBtn}
               accessibilityRole="button"
-              accessibilityLabel="Fechar"
+              accessibilityLabel={t('Fechar')}
             >
               <MaterialCommunityIcons name="close" size={28} color={brand.textDark} />
             </Pressable>
@@ -55,20 +57,20 @@ export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSe
               source={require('@/assets/images/sofia-avatar.jpg')}
               style={styles.avatar}
               resizeMode="cover"
-              accessibilityLabel="Sofia"
+              accessibilityLabel={t('Sofia')}
             />
-            <Text style={styles.name}>Sofia</Text>
-            <Text style={styles.title}>Obrigada por ajudar</Text>
+            <Text style={styles.name}>{t('Sofia')}</Text>
+            <Text style={styles.title}>{t('Obrigada por ajudar')}</Text>
             <Text style={styles.message}>
               {personName
-                ? `Cada avistamento pode ser o passo que faltava para encontrar ${personName}. Sua ajuda é muito importante — de verdade.`
-                : 'Cada avistamento pode ser o passo que faltava para alguém voltar para casa. Sua ajuda é muito importante — de verdade.'}
+                ? t('Cada avistamento pode ser o passo que faltava para encontrar {personName}. Sua ajuda é muito importante — de verdade.', { personName })
+                : t('Cada avistamento pode ser o passo que faltava para alguém voltar para casa. Sua ajuda é muito importante — de verdade.')}
             </Text>
           </View>
 
           <View style={styles.footer}>
             <BrandButton
-              label="Voltar para o início"
+              label={t('Voltar para o início')}
               variant="orange"
               onPress={controller.goToInicio}
             />

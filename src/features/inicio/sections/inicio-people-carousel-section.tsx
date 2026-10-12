@@ -15,7 +15,9 @@ import { PersonAlertIcon } from '@/components/person-alert-icon';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
+import { AppInfo } from '@/lib/app-info';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { resolvePersonStatusColor } from '@/lib/person-status';
 import { useWideLayout } from '@/lib/use-wide-layout';
 import type { Person } from '@/services/people/people.types';
@@ -24,17 +26,23 @@ interface InicioPeopleCarouselSectionProps {
   controller: InicioController;
 }
 
+/**
+ * Carrossel de pessoas no topo do Início, sobre o fundo da tela. Fotos redondas e ponto na
+ * cor da situação. A fila desliza no estilo Stories: encaixa no próximo item e o último
+ * aparece cortado na borda para indicar que há mais.
+ */
 const CARD_GAP = 12;
-const CARD_MAX_WIDTH = 104;
+const CARD_MAX_WIDTH = 76;
 const NAME_GAP = 6;
-const NAME_LINE_HEIGHT = 16;
+const NAME_FONT = 12;
+const NAME_LINE_HEIGHT = 15;
 const NAME_PAD_V = 2;
-const NAME_BORDER = 1;
-const NAME_HEIGHT = NAME_LINE_HEIGHT + NAME_PAD_V * 2 + NAME_BORDER * 2;
+const NAME_HEIGHT = NAME_LINE_HEIGHT + NAME_PAD_V * 2;
 const SKELETON_COUNT = 4;
-const STATUS_BORDER_WIDTH = 3;
+const STATUS_DOT = 8;
 
 export function InicioPeopleCarouselSection({ controller }: InicioPeopleCarouselSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const { width, isWide } = useWideLayout();
   const visibleCards = isWide ? 5.5 : 3.6;
@@ -44,11 +52,14 @@ export function InicioPeopleCarouselSection({ controller }: InicioPeopleCarousel
     () => makeStyles(brand, cardWidth, itemHeight),
     [brand, cardWidth, itemHeight],
   );
-  const { people, showPeopleSkeleton } = controller;
+  const { carouselPeople, showPeopleSkeleton } = controller;
   const claimEnter = useEnterOnce();
 
   return (
     <View style={styles.wrapper} pointerEvents="box-none">
+      <Text style={styles.brand} accessibilityRole="header">
+        {AppInfo.name}
+      </Text>
       {showPeopleSkeleton ? (
         <ScrollView
           horizontal
@@ -61,18 +72,22 @@ export function InicioPeopleCarouselSection({ controller }: InicioPeopleCarousel
             <PersonCardSkeleton key={index} index={index} brand={brand} styles={styles} />
           ))}
         </ScrollView>
-      ) : people.length === 0 ? (
+      ) : carouselPeople.length === 0 ? (
         <BrandEnter from="fade" style={styles.empty}>
-          <Text style={styles.emptyText}>Nenhuma pessoa próxima.</Text>
+          <Text style={styles.emptyText}>{t('Nenhuma pessoa próxima.')}</Text>
         </BrandEnter>
       ) : (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
+          snapToInterval={cardWidth + CARD_GAP}
+          snapToAlignment="start"
+          decelerationRate="fast"
           style={styles.scroller}
           contentContainerStyle={styles.track}
+          accessibilityLabel={t('Pessoas desaparecidas. Deslize para o lado para ver mais.')}
         >
-          {people.map((person, index) => (
+          {carouselPeople.map((person, index) => (
             <CarouselCard
               key={person.id}
               person={person}
@@ -85,10 +100,6 @@ export function InicioPeopleCarouselSection({ controller }: InicioPeopleCarousel
           ))}
         </ScrollView>
       )}
-
-      <Pressable onPress={controller.goToAllPeople} style={styles.allLink} accessibilityRole="button">
-        <Text style={styles.allLinkText}>Ver todas</Text>
-      </Pressable>
     </View>
   );
 }
@@ -108,24 +119,26 @@ function CarouselCard({
   brand: BrandColors;
   styles: ReturnType<typeof makeStyles>;
 }) {
+  const t = useT();
   const statusColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
 
   return (
-    <BrandEnter from="right" index={index} skip={skip}>
+    <BrandEnter from="right" index={Math.min(index, 6)} skip={skip}>
       <Pressable
         style={styles.item}
         onPress={() => controller.goToPerson(person.id)}
         accessibilityRole="button"
-        accessibilityLabel={`Ver detalhes de ${person.fullName}`}
+        accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
       >
-        <View style={[styles.card, { borderColor: statusColor }]}>
+        <View style={styles.card}>
           {person.photoUri ? (
             <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
           ) : (
-            <MaterialCommunityIcons name="account" size={36} color={brand.avatarIcon} />
+            <MaterialCommunityIcons name="account" size={28} color={brand.avatarIcon} />
           )}
         </View>
-        <View style={styles.nameChip}>
+        <View style={styles.nameRow}>
+          <View style={[styles.statusDot, { backgroundColor: statusColor }]} />
           <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
             {person.fullName}
           </Text>
@@ -179,29 +192,24 @@ function makeStyles(brand: BrandColors, cardWidth: number, itemHeight: number) {
       flexShrink: 0,
       gap: 8,
       paddingHorizontal: PageGutter,
-      paddingTop: 8,
+      paddingTop: 4,
     },
-    allLink: {
-      alignSelf: 'flex-end',
-      paddingVertical: 4,
-      paddingHorizontal: 10,
-      borderRadius: Radius.pill,
-      backgroundColor: brand.surface,
-      borderWidth: 1,
-      borderColor: brand.fieldBorder,
-    },
-    allLinkText: {
-      color: brand.blue,
-      fontWeight: '700',
-      fontSize: 14,
+    brand: {
+      textAlign: 'center',
+      fontSize: 18,
+      fontWeight: '800',
+      color: brand.textDark,
     },
     scroller: {
       flexGrow: 0,
       height: itemHeight,
+      // Vai até a borda da tela: o item cortado mostra que há mais para deslizar.
+      marginHorizontal: -PageGutter,
     },
     track: {
       gap: CARD_GAP,
       alignItems: 'flex-start',
+      paddingHorizontal: PageGutter,
     },
     item: {
       width: cardWidth,
@@ -212,48 +220,44 @@ function makeStyles(brand: BrandColors, cardWidth: number, itemHeight: number) {
     card: {
       width: cardWidth,
       height: cardWidth,
-      borderRadius: Radius.xl,
+      borderRadius: cardWidth / 2,
       overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: brand.avatarBackground,
-      borderWidth: STATUS_BORDER_WIDTH,
-      borderColor: brand.divider,
     },
     photoImage: {
       width: '100%',
       height: '100%',
     },
-    nameChip: {
+    nameRow: {
       maxWidth: '100%',
       height: NAME_HEIGHT,
-      paddingHorizontal: 8,
-      paddingVertical: NAME_PAD_V,
-      borderRadius: Radius.pill,
-      backgroundColor: brand.surface,
-      borderWidth: NAME_BORDER,
-      borderColor: brand.fieldBorder,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       gap: 4,
       overflow: 'hidden',
     },
+    statusDot: {
+      width: STATUS_DOT,
+      height: STATUS_DOT,
+      borderRadius: Radius.pill,
+      flexShrink: 0,
+    },
     name: {
       flexShrink: 1,
       color: brand.textDark,
-      fontSize: 12,
+      fontSize: NAME_FONT,
       lineHeight: NAME_LINE_HEIGHT,
-      fontWeight: '400',
+      fontWeight: '700',
       textAlign: 'center',
     },
     skeletonName: {
       width: '72%',
       height: NAME_HEIGHT,
       borderRadius: Radius.pill,
-      backgroundColor: brand.surface,
-      borderWidth: NAME_BORDER,
-      borderColor: brand.fieldBorder,
+      backgroundColor: brand.divider,
     },
     empty: {
       minHeight: itemHeight,

@@ -1,4 +1,5 @@
 import { BrandFab } from '@/components/brand-fab';
+import { useT } from '@/lib/i18n';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 type Props = {
@@ -9,9 +10,10 @@ type Props = {
 
 /** FAB no estilo do Maps: centraliza na localização atual só no toque. */
 export function MapMyLocationFab({ onPress, disabled = false, style }: Props) {
+  const t = useT();
   return (
     <BrandFab
-      accessibilityLabel="Centralizar na minha localização"
+      accessibilityLabel={t('Centralizar na minha localização')}
       icon="crosshairs-gps"
       variant="surface"
       disabled={disabled}

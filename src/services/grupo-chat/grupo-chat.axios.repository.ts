@@ -67,7 +67,8 @@ function mapMessage(api: ApiGroupMessage): GroupChatMessage {
     id: String(api.id),
     sender: {
       id: String(api.userId),
-      name: isMine ? CURRENT_USER.name : api.userName || 'Usuário',
+      // Sem nome, a tela mostra "Usuário" no idioma do app.
+      name: isMine ? CURRENT_USER.name : api.userName || '',
     },
     text: api.message,
     time: formatTime(api.dtRegistration),

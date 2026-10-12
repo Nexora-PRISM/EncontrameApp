@@ -18,9 +18,12 @@ import { useCadastrarPessoaController } from '@/features/cadastrar-pessoa/cadast
 import { CadastrarPessoaBasicSection } from '@/features/cadastrar-pessoa/sections/cadastrar-pessoa-basic-section';
 import { CadastrarPessoaDetailsSection } from '@/features/cadastrar-pessoa/sections/cadastrar-pessoa-details-section';
 import { CadastrarPessoaSubmitFabSection } from '@/features/cadastrar-pessoa/sections/cadastrar-pessoa-submit-fab-section';
+import { FLOATING_GAP, FLOATING_SIZE } from '@/lib/bottom-bar-metrics';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function CadastrarPessoaPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useCadastrarPessoaController();
@@ -65,7 +68,9 @@ export default function CadastrarPessoaPage() {
           }}
         >
           <ContentShell>
-            <ScreenHeader title="Cadastrar uma pessoa" />
+            <ScreenHeader
+              title={controller.reviewingDraft ? t('Revisar e enviar') : t('Cadastrar uma pessoa')}
+            />
             <View style={styles.form}>
               <CadastrarPessoaBasicSection controller={controller} />
               <CadastrarPessoaDetailsSection controller={controller} />
@@ -91,7 +96,8 @@ function makeStyles(brand: BrandColors) {
     content: {
       flexGrow: 1,
       paddingTop: 8,
-      paddingBottom: 24,
+      // Folga para o botão flutuante: o último campo sempre consegue subir acima dele.
+      paddingBottom: FLOATING_SIZE + FLOATING_GAP * 3,
     },
     form: {
       marginTop: 16,

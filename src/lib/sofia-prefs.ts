@@ -48,6 +48,11 @@ export async function saveThemeScheme(scheme: ColorSchemeName): Promise<void> {
   await storageSet(SCHEME_KEY, scheme);
 }
 
+/** Remove a escolha manual de claro/escuro: o app volta a seguir o sistema. */
+export async function clearThemeScheme(): Promise<void> {
+  await storageSet(SCHEME_KEY, '');
+}
+
 async function storageGet(key: string): Promise<string | null> {
   if (Platform.OS === 'web') {
     return webGet(key);

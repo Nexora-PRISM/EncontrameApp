@@ -16,6 +16,7 @@ import {
   type GooglePolyline,
   type LatLngLiteral,
 } from '@/lib/google-maps-web';
+import { useT } from '@/lib/i18n';
 import { brandMapStyle } from '@/lib/map-style';
 import { type UserLocation, userAccuracyRadius } from '@/lib/use-user-location';
 
@@ -228,6 +229,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   },
   ref,
 ) {
+  const t = useT();
   const brand = useBrand();
   const colorScheme = useBrandColorScheme();
   const styles = useMemo(() => makeStyles(brand), [brand]);
@@ -535,7 +537,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       const marker = new gmaps.Marker({
         map,
         position,
-        title: 'Você está aqui',
+        title: t('Você está aqui'),
         zIndex: 10,
         icon: {
           url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
@@ -555,6 +557,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       userMarkerRef.current = marker;
     } else {
       userMarkerRef.current.setPosition(position);
+      userMarkerRef.current.setTitle?.(t('Você está aqui'));
       userMarkerRef.current.setIcon({
         url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
           userDotSvg(brand.blue, brand.onPrimary),
@@ -585,12 +588,12 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       fillColor: brand.blue,
       strokeColor: brand.blue,
     });
-  }, [brand.blue, brand.onPrimary, status, userLocation]);
+  }, [brand.blue, brand.onPrimary, status, t, userLocation]);
 
   const fallbackMessage =
     status === 'missing-key'
-      ? 'Defina EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY no ambiente'
-      : 'Não foi possível carregar o mapa';
+      ? t('Defina EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY no ambiente')
+      : t('Não foi possível carregar o mapa');
   const mapBoxStyle = [styles.map, rounded && styles.rounded, style];
   const flattened = StyleSheet.flatten(mapBoxStyle) as ViewStyle;
   const fillsParent = flattened.height == null && flattened.minHeight == null;

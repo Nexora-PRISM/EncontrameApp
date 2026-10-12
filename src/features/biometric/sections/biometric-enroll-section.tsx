@@ -6,6 +6,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { BiometricEnrollController } from '@/features/biometric/use-biometric-enroll';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface BiometricEnrollSectionProps {
   controller: BiometricEnrollController;
@@ -13,6 +14,7 @@ interface BiometricEnrollSectionProps {
 
 /** Pergunta se o usuário quer entrar pela biometria deste celular da próxima vez. */
 export function BiometricEnrollSection({ controller }: BiometricEnrollSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -25,17 +27,17 @@ export function BiometricEnrollSection({ controller }: BiometricEnrollSectionPro
     >
       <View style={styles.backdrop}>
         <View style={styles.card}>
-          <Text style={styles.title}>{controller.copy.enrollTitle}</Text>
-          <Text style={styles.body}>{controller.copy.enrollBody}</Text>
+          <Text style={styles.title}>{t(controller.copy.enrollTitle)}</Text>
+          <Text style={styles.body}>{t(controller.copy.enrollBody)}</Text>
           <BrandButton
-            label={controller.copy.enrollConfirm}
+            label={t(controller.copy.enrollConfirm)}
             variant="orange"
             loading={controller.busy}
             onPress={controller.accept}
             trailingIcon={controller.copy.icon}
           />
           <BrandButton
-            label="Agora não"
+            label={t('Agora não')}
             variant="outline"
             disabled={controller.busy}
             onPress={controller.decline}

@@ -1,10 +1,17 @@
-import { useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { type Href, useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useBiometricEnroll } from '@/features/biometric/use-biometric-enroll';
 import { parseApiError } from '@/lib/api-errors';
 import { getGoogleSignupDraft, clearGoogleSignupDraft } from '@/lib/google-signup-draft';
+import { useT } from '@/lib/i18n';
 import { maskCep, maskCpf, maskPhone } from '@/lib/masks';
+import {
+  clearSignupDraft,
+  getSignupDraft,
+  setSignupDraft,
+  takeSignupReturnErrors,
+} from '@/lib/signup-draft';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import {
   collectErrors,
@@ -23,21 +30,41 @@ const API_FIELD_MAP = { document: 'cpf', cellPhone: 'phone' };
 
 /** Centraliza estado, validação e navegação da etapa 1 do cadastro (dados pessoais). */
 export function useSignupController() {
+  const t = useT();
   const router = useRouter();
   const { errors, setErrors, setFieldCode, markDirty, isDirty, fieldError } = useFieldErrors();
   const googleRegister = useGoogleRegisterMutation();
   const enroll = useBiometricEnroll();
 
   const initialDraft = getGoogleSignupDraft();
+  // Volta da etapa da senha com erro (ex.: CPF já cadastrado): os dados digitados continuam aqui.
+  const [restored] = useState(() => getSignupDraft());
 
-  const [name, setName] = useState(initialDraft?.name ?? '');
-  const [cpf, setCpf] = useState('');
-  const [email, setEmail] = useState(initialDraft?.email ?? '');
-  const [phone, setPhone] = useState('');
-  const [cep, setCep] = useState('');
-  const [clause, setClause] = useState('');
+  const [name, setName] = useState(restored?.name ?? initialDraft?.name ?? '');
+  const [cpf, setCpf] = useState(restored?.cpf ?? '');
+  const [email, setEmail] = useState(restored?.email ?? initialDraft?.email ?? '');
+  const [phone, setPhone] = useState(restored?.phone ?? '');
+  const [cep, setCep] = useState(restored?.cep ?? '');
+  const [rulesAccepted, setRulesAccepted] = useState(restored != null);
   const [fromGoogle, setFromGoogle] = useState(Boolean(initialDraft));
   const [formError, setFormError] = useState('');
+
+  // Ao sair do cadastro, o rascunho com CPF e contatos é apagado da memória.
+  useEffect(() => () => clearSignupDraft(), []);
+
+  // Erros da API sobre esta etapa (ex.: CPF já cadastrado) voltam da etapa da senha.
+  useFocusEffect(
+    useCallback(() => {
+      const returned = takeSignupReturnErrors();
+      if (returned) setErrors(returned);
+    }, [setErrors]),
+  );
+
+  const toggleRulesAccepted = () => {
+    const next = !rulesAccepted;
+    setRulesAccepted(next);
+    if (isDirty('rules')) setFieldCode('rules', next ? undefined : 'required');
+  };
 
   const applyGoogleDraft = useCallback(() => {
     const draft = getGoogleSignupDraft();
@@ -108,6 +135,7 @@ export function useSignupController() {
       email: formatError(email, isEmail),
       phone: formatError(phone, isPhone),
       cep: optionalFormatError(cep, isCep),
+      rules: rulesAccepted ? undefined : 'required',
     });
 
     setErrors(found);
@@ -123,6 +151,7 @@ export function useSignupController() {
           cpf,
           phone,
           cep,
+          termsAcceptedAt: new Date().toISOString(),
         });
         clearGoogleSignupDraft();
         await enroll.promptIfAvailable();
@@ -135,21 +164,16 @@ export function useSignupController() {
         }
         setFormError(
           code === 'invalid_credentials'
-            ? 'A sessão do Google expirou. Toque em Continuar com Google novamente.'
-            : 'Não foi possível concluir o cadastro.',
+            ? t('A sessão do Google expirou. Toque em Continuar com Google novamente.')
+            : t('Não foi possível concluir o cadastro.'),
         );
       }
       return;
     }
 
-    router.push({
-      pathname: '/signup-password',
-      params: { name, cpf, email, phone, cep, clause },
-    });
-  };
-
-  const handleCepSearch = () => {
-    // TODO: buscar endereço a partir do CEP (ex.: ViaCEP) e preencher campos.
+    // Os dados pessoais seguem em memória — nunca na URL (no navegador ela fica no histórico).
+    setSignupDraft({ name, cpf, email, phone, cep, termsAcceptedAt: new Date().toISOString() });
+    router.push('/signup-password');
   };
 
   return {
@@ -168,8 +192,9 @@ export function useSignupController() {
     cep,
     setCep: changeCep,
     blurCep,
-    clause,
-    setClause,
+    rulesAccepted,
+    toggleRulesAccepted,
+    goToRules: () => router.push('/regras' as Href),
     errors,
     fieldError,
     formError,
@@ -177,7 +202,6 @@ export function useSignupController() {
     applyGoogleDraft,
     submitting: googleRegister.isPending,
     handleNext,
-    handleCepSearch,
     enroll,
   };
 }

@@ -6,6 +6,7 @@ import Animated from 'react-native-reanimated';
 import { GOOGLE_G_IMAGE } from '@/components/google-g-mark';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useTimedOpacity } from '@/lib/use-brand-transition';
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 
 /** Botão de continuar com Google (web). */
 export function GoogleAuthButton({ onPress, loading = false, disabled = false, style }: Props) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const isInactive = disabled || loading;
@@ -38,7 +40,7 @@ export function GoogleAuthButton({ onPress, loading = false, disabled = false, s
       onHoverIn={() => setHighlight(true)}
       onHoverOut={() => setHighlight(false)}
       accessibilityRole="button"
-      accessibilityLabel="Continuar com Google"
+      accessibilityLabel={t('Continuar com Google')}
     >
       <Animated.View style={[styles.base, animatedStyle, style]}>
         {loading ? (
@@ -51,7 +53,7 @@ export function GoogleAuthButton({ onPress, loading = false, disabled = false, s
               contentFit="contain"
               accessibilityIgnoresInvertColors
             />
-            <Text style={styles.label}>Continuar com Google</Text>
+            <Text style={styles.label}>{t('Continuar com Google')}</Text>
           </View>
         )}
       </Animated.View>

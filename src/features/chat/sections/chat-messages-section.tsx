@@ -7,6 +7,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { ChatController } from '@/features/chat/chat.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useScrollListToEnd } from '@/lib/use-scroll-list-to-end';
 import type { ChatMessage } from '@/services/chat/chat.types';
 
@@ -15,6 +16,7 @@ interface ChatMessagesSectionProps {
 }
 
 export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const lastMessageId = controller.messages.at(-1)?.id;
@@ -43,7 +45,7 @@ export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator color={brand.blue} />
-        <Text style={styles.loadingText}>Um momento…</Text>
+        <Text style={styles.loadingText}>{t('Um momento…')}</Text>
       </View>
     );
   }

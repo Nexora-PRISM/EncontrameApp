@@ -5,20 +5,22 @@ import { BrandButton } from '@/components/brand-button';
 import { type BrandColors } from '@/constants/brand';
 import type { HomeController } from '@/features/home/home.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface HomeActionsSectionProps {
   controller: HomeController;
 }
 
 export function HomeActionsSection({ controller }: HomeActionsSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
   return (
     <View style={styles.actions}>
-      <BrandButton label="Começar" variant="orange" onPress={controller.goToSignup} />
+      <BrandButton label={t('Começar')} variant="orange" onPress={controller.goToSignup} />
       <Pressable onPress={controller.goToLogin} hitSlop={12}>
-        <Text style={styles.loginLink}>Já possuo uma conta ›</Text>
+        <Text style={styles.loginLink}>{t('Já possuo uma conta ›')}</Text>
       </Pressable>
     </View>
   );

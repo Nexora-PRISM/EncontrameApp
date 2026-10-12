@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 const BOUNCE_MS = 280;
 
@@ -45,6 +46,7 @@ function TypingDot({ delay, color }: DotProps) {
 
 /** Três bolinhas pulando — indicador clássico de “está digitando”. */
 export function ChatTypingDots() {
+  const t = useT();
   const brand = useBrand();
   const color = brand.textMuted;
   const delays = useMemo(() => [0, 140, 280], []);
@@ -53,7 +55,7 @@ export function ChatTypingDots() {
     <View
       style={styles.row}
       accessibilityRole="progressbar"
-      accessibilityLabel="Sofia está escrevendo"
+      accessibilityLabel={t('Sofia está escrevendo')}
     >
       {delays.map((delay) => (
         <TypingDot key={delay} delay={delay} color={color} />

@@ -6,12 +6,14 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { type BrandColors } from '@/constants/brand';
 import type { ChatController } from '@/features/chat/chat.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 type Props = {
   controller: ChatController;
 };
 
 export function ChatHeaderSection({ controller }: Props) {
+  const t = useT();
   const router = useRouter();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
@@ -25,7 +27,7 @@ export function ChatHeaderSection({ controller }: Props) {
         onPress={() => router.push('/sofia-perfil' as Href)}
         style={styles.identity}
         accessibilityRole="button"
-        accessibilityLabel="Sobre a Sofia"
+        accessibilityLabel={t('Sobre a Sofia')}
       >
         <Image
           source={require('@/assets/images/sofia-avatar.jpg')}
@@ -33,15 +35,15 @@ export function ChatHeaderSection({ controller }: Props) {
           resizeMode="cover"
         />
         <View style={styles.titles}>
-          <Text style={styles.name}>Sofia</Text>
-          <Text style={styles.subtitle}>aqui com você</Text>
+          <Text style={styles.name}>{t('Sofia')}</Text>
+          <Text style={styles.subtitle}>{t('aqui com você')}</Text>
         </View>
       </Pressable>
       <Pressable
         onPress={() => router.push('/exercises' as Href)}
         hitSlop={12}
         style={styles.iconBtn}
-        accessibilityLabel="Exercícios rápidos"
+        accessibilityLabel={t('Exercícios rápidos')}
       >
         <MaterialCommunityIcons name="heart-outline" size={22} color={brand.textDark} />
       </Pressable>
@@ -49,7 +51,7 @@ export function ChatHeaderSection({ controller }: Props) {
         onPress={() => controller.setConfirmClear(true)}
         hitSlop={12}
         style={styles.iconBtn}
-        accessibilityLabel="Apagar conversa"
+        accessibilityLabel={t('Apagar conversa')}
         disabled={controller.clearing}
       >
         <MaterialCommunityIcons name="trash-can-outline" size={22} color={brand.textMuted} />

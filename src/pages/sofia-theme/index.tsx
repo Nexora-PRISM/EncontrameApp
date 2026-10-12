@@ -10,8 +10,10 @@ import { PageGutter } from '@/constants/theme';
 import { SofiaThemePickerSection } from '@/features/sofia-theme/sections/sofia-theme-picker-section';
 import { useSofiaThemeController } from '@/features/sofia-theme/sofia-theme.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function SofiaThemePage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useSofiaThemeController();
@@ -20,13 +22,13 @@ export default function SofiaThemePage() {
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <ContentShell style={styles.shell} noGutter>
         <View style={styles.header}>
-          <ScreenHeader title="Personalizar Sofia" onBack={controller.goBack} />
+          <ScreenHeader title={t('Personalizar Sofia')} onBack={controller.goBack} />
         </View>
         <SofiaThemePickerSection controller={controller} />
         {controller.fromWelcome ? (
           <View style={styles.footer}>
             <BrandButton
-              label="Começar a conversar"
+              label={t('Começar a conversar')}
               variant="orange"
               onPress={controller.continueToChat}
             />

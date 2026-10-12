@@ -1,4 +1,5 @@
 import { api } from '@/lib/axios';
+import { dateToIso } from '@/lib/masks';
 import type { PeopleRepository } from '@/services/people/people.repository';
 import type {
   CreatePersonPayload,
@@ -112,13 +113,20 @@ export const peopleAxiosRepository: PeopleRepository = {
       location: payload.location || null,
       city: payload.location || null,
       photo: payload.photo || null,
+      // A API devolve `dtLastSeen`; o formulário coleta a data em dd/mm/aaaa.
+      dtLastSeen: payload.lastSeen ? dateToIso(payload.lastSeen) : null,
+      // Telefone de contato do caso (só dígitos). A API ainda não tem este campo — ver docs/AUDITORIA §11.
+      contactPhone: payload.phone ? payload.phone.replace(/\D/g, '') : null,
+      // Legitimidade e responsabilização — a API precisa gravar estes campos (ver docs/AUDITORIA).
+      reporterRelationship: payload.reporterRelationship || null,
+      policeReportNumber: payload.policeReportNumber?.trim() || null,
+      truthDeclarationAt: payload.declarationAcceptedAt || null,
     });
 
     const person = mapPerson(data);
     return {
       ...person,
       location: payload.location || person.location,
-      lastSeen: payload.lastSeen || person.lastSeen,
       originCity: payload.originCity || person.originCity,
       originState: payload.originState || person.originState,
       originCountry: payload.originCountry || person.originCountry,

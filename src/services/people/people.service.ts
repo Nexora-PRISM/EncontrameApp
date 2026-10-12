@@ -5,13 +5,14 @@ import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { useSessionUser } from '@/lib/use-session-user';
 import {
+  type LocalPendingPerson,
+  deleteLocalPending,
   getLocalPending,
   listLocalPending,
   mergeLocalPeople,
   saveLocalPending,
 } from '@/services/people/people.local.store';
 import { getPeopleRepository } from '@/services/people/people.repository';
-import { syncLocalPeople } from '@/services/people/people.sync';
 import type {
   CreatePersonPayload,
   NearbyPeopleParams,
@@ -61,7 +62,6 @@ export function usePeopleSearchQuery(params: PeopleSearchParams) {
     getNextPageParam: (lastPage: PeopleSearchPage) =>
       lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     queryFn: async ({ pageParam }) => {
-      await syncLocalPeople();
       const local = filterLocalSearch(await listLocalPersons(), { ...params, page: 1, pageSize: 1000 });
       try {
         const remote = await getPeopleRepository().search({
@@ -118,7 +118,6 @@ export function useNearbyPeopleQuery(params: {
         longitude: longitude!,
         radiusKm: params.radiusKm,
       };
-      await syncLocalPeople();
       const local = filterLocalNearby(await listLocalPersons(), nearbyParams);
       try {
         const remote = await getPeopleRepository().listNearby(nearbyParams);
@@ -129,6 +128,24 @@ export function useNearbyPeopleQuery(params: {
       }
     },
     placeholderData: keepPreviousData,
+  });
+}
+
+/**
+ * Casos mais recentes (1ª página da busca), usados para completar o carrossel do Início
+ * quando há poucas pessoas próximas — assim dá para continuar deslizando.
+ */
+export function useRecentPeopleQuery(enabled: boolean, pageSize = 20) {
+  const viewerId = viewerKey(useSessionUser()?.id);
+
+  return useQuery({
+    queryKey: ['people', 'recent', viewerId, pageSize] as const,
+    enabled,
+    staleTime: 60_000,
+    queryFn: async () => {
+      const page = await getPeopleRepository().search({ page: 1, pageSize });
+      return page.items;
+    },
   });
 }
 
@@ -143,7 +160,6 @@ export function usePersonQuery(id: string) {
         }
         return person;
       }
-      await syncLocalPeople();
       return getPeopleRepository().getById(id);
     },
     enabled: id.length > 0,
@@ -169,6 +185,41 @@ export function useCreatePersonMutation() {
       return getPeopleRepository().create(payload);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: peopleKeys.all });
+    },
+  });
+}
+
+/** Lê um cadastro feito sem conta neste aparelho, para a pessoa logada revisar antes de enviar. */
+export async function getLocalDraft(id: string): Promise<LocalPendingPerson | null> {
+  const items = await listLocalPending();
+  return items.find((item) => item.id === id) ?? null;
+}
+
+/**
+ * Envia um cadastro feito sem conta neste aparelho. Só é chamado depois que a pessoa logada
+ * revisou os dados e aceitou a declaração de veracidade (nada é enviado sozinho no login).
+ * O rascunho local só é apagado depois que a API confirma o cadastro.
+ */
+export function useSubmitLocalDraftMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ draftId, payload }: { draftId: string; payload: CreatePersonPayload }) => {
+      if (getSessionUser() == null) {
+        throw new Error('Entre na sua conta para enviar este cadastro.');
+      }
+      const person = await getPeopleRepository().create(payload);
+      try {
+        await deleteLocalPending(draftId);
+      } catch {
+        // Uma nova tentativa evita que o mesmo caso seja enviado duas vezes.
+        await deleteLocalPending(draftId).catch(() => undefined);
+      }
+      return person;
+    },
+    onSuccess: (_person, { draftId }) => {
+      queryClient.removeQueries({ queryKey: peopleKeys.detail(draftId) });
       queryClient.invalidateQueries({ queryKey: peopleKeys.all });
     },
   });

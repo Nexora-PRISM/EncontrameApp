@@ -5,12 +5,14 @@ import { BrandButton } from '@/components/brand-button';
 import { type BrandColors } from '@/constants/brand';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface PessoaDetalheInfoSectionProps {
   controller: PessoaDetalheController;
 }
 
 export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const { person } = controller;
@@ -21,16 +23,17 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
   const lastWhen = formatLastSeenDate(person.dtLastSeen);
 
   const rows = [
-    { label: 'Último local', value: person.lastSeen || person.location },
-    { label: 'Visto em', value: lastWhen },
-    { label: 'Altura', value: person.heightCm ? `${person.heightCm} cm` : undefined },
-    { label: 'Etnia', value: person.ethnicity },
-    { label: 'Porte', value: person.build },
-    { label: 'Roupas', value: person.clothes },
-    { label: 'Cabelo', value: person.hair },
-    { label: 'Olhos', value: person.eyes },
-    { label: 'Tatuagem', value: person.tattoo },
-    { label: 'Acessórios', value: person.accessories },
+    { label: t('Último local'), value: person.lastSeen || person.location },
+    { label: t('Visto em'), value: lastWhen },
+    { label: t('Altura'), value: person.heightCm ? `${person.heightCm} cm` : undefined },
+    // Etnia e porte vêm das opções do cadastro (em português): traduzidos na tela.
+    { label: t('Etnia'), value: person.ethnicity ? t(person.ethnicity) : undefined },
+    { label: t('Porte físico'), value: person.build ? t(person.build) : undefined },
+    { label: t('Roupas'), value: person.clothes },
+    { label: t('Cabelo'), value: person.hair },
+    { label: t('Olhos'), value: person.eyes },
+    { label: t('Tatuagem'), value: person.tattoo },
+    { label: t('Acessórios'), value: person.accessories },
   ].filter((row) => Boolean(row.value));
 
   return (
@@ -42,10 +45,13 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
         </View>
       ))}
       <BrandButton
-        label="Histórico de avistamentos"
+        label={t('Histórico de avistamentos')}
         variant="outline"
         onPress={controller.openHistory}
       />
+      {controller.isLocalPerson ? null : (
+        <BrandButton label={t('Divulgar este caso')} variant="outline" onPress={controller.shareCase} />
+      )}
     </View>
   );
 }

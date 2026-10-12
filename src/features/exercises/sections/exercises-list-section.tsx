@@ -7,6 +7,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { ExercisesController } from '@/features/exercises/exercises.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import type { ExerciseKind } from '@/services/exercises/exercises.types';
 
 type Props = {
@@ -20,12 +21,13 @@ function iconFor(kind: ExerciseKind): keyof typeof MaterialCommunityIcons.glyphM
 }
 
 export function ExercisesListSection({ controller }: Props) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
   return (
     <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-      <Text style={styles.subtitle}>Pequenos gestos que fazem muita diferença</Text>
+      <Text style={styles.subtitle}>{t('Pequenos gestos que fazem muita diferença')}</Text>
       {controller.exercises.map((exercise, index) => (
         <BrandEnter key={exercise.id} from="up" index={index}>
         <Pressable

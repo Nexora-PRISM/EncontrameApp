@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BrandButton } from '@/components/brand-button';
 import { BrandEnter } from '@/components/brand-enter';
@@ -13,14 +13,19 @@ import {
   type PessoasDesaparecidasController,
 } from '@/features/pessoas-desaparecidas/pessoas-desaparecidas.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface PessoasDesaparecidasFiltersSectionProps {
   controller: PessoasDesaparecidasController;
+  /** Na home recolhida a busca fica na barra Encontra-me. */
+  hideQueryField?: boolean;
 }
 
 export function PessoasDesaparecidasFiltersSection({
   controller,
+  hideQueryField = false,
 }: PessoasDesaparecidasFiltersSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const statusLabel =
@@ -31,21 +36,45 @@ export function PessoasDesaparecidasFiltersSection({
 
   return (
     <View style={styles.wrapper}>
-      <BrandField
-        label="Pesquisar"
-        value={controller.query}
-        onChangeText={controller.setQuery}
-        placeholder="Nome ou apelido"
-        trailingIcon="magnify"
-      />
+      {hideQueryField ? null : (
+        <BrandField
+          label={t('Pesquisar')}
+          value={controller.query}
+          onChangeText={controller.setQuery}
+          placeholder={t('Nome ou apelido')}
+          trailingIcon="magnify"
+        />
+      )}
+
+      <View style={styles.quickRow} accessibilityRole="radiogroup" accessibilityLabel={t('Faixa de idade')}>
+        {[
+          { on: false, label: t('Todas as idades') },
+          { on: true, label: t('Crianças e adolescentes') },
+        ].map((option) => {
+          const selected = controller.childrenOnly === option.on;
+          return (
+            <Pressable
+              key={option.label}
+              onPress={() => controller.setChildrenOnly(option.on)}
+              style={[styles.quickChip, selected && styles.quickChipSelected]}
+              accessibilityRole="radio"
+              accessibilityState={{ selected }}
+            >
+              <Text style={[styles.quickChipText, selected && styles.quickChipTextSelected]}>
+                {option.label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
 
       <BrandButton
         label={
           controller.filtersOpen
-            ? 'Ocultar filtros'
+            ? t('Ocultar filtros')
             : controller.hasActiveFilters
-              ? 'Filtros (ativos)'
-              : 'Filtros'
+              ? t('Filtros (ativos)')
+              : t('Filtros')
         }
         variant="outline"
         trailingIcon="filter-outline"
@@ -56,7 +85,7 @@ export function PessoasDesaparecidasFiltersSection({
         <BrandEnter from="down" withExit>
           <View style={styles.panel}>
           <BrandSelect
-            label="Status"
+            label={t('Status')}
             value={statusLabel}
             options={STATUS_FILTER_OPTIONS.map((option) => option.label)}
             onSelect={(label) => {
@@ -66,14 +95,14 @@ export function PessoasDesaparecidasFiltersSection({
           />
           <FormRow>
             <BrandField
-              label="Idade mínima"
+              label={t('Idade mínima')}
               value={controller.ageMin}
               onChangeText={controller.setAgeMin}
               placeholder="18"
               keyboardType="number-pad"
             />
             <BrandField
-              label="Idade máxima"
+              label={t('Idade máxima')}
               value={controller.ageMax}
               onChangeText={controller.setAgeMax}
               placeholder="60"
@@ -81,7 +110,7 @@ export function PessoasDesaparecidasFiltersSection({
             />
           </FormRow>
           <BrandSelect
-            label="Endereço considerado"
+            label={t('Endereço considerado')}
             value={scopeLabel}
             options={ADDRESS_SCOPE_OPTIONS.map((option) => option.label)}
             onSelect={(label) => {
@@ -91,33 +120,33 @@ export function PessoasDesaparecidasFiltersSection({
           />
           <FormRow>
             <BrandField
-              label="Cidade"
+              label={t('Cidade')}
               value={controller.city}
               onChangeText={controller.setCity}
-              placeholder="Belo Horizonte"
+              placeholder={t('Belo Horizonte')}
               autoCapitalize="words"
             />
             <BrandField
-              label="Estado"
+              label={t('Estado')}
               value={controller.state}
               onChangeText={controller.setState}
-              placeholder="MG"
+              placeholder={t('MG')}
               autoCapitalize="characters"
             />
           </FormRow>
           <FormRow>
             <BrandField
-              label="Bairro"
+              label={t('Bairro')}
               value={controller.neighborhood}
               onChangeText={controller.setNeighborhood}
-              placeholder="Savassi"
+              placeholder={t('Savassi')}
               autoCapitalize="words"
             />
             <BrandField
-              label="País"
+              label={t('País')}
               value={controller.country}
               onChangeText={controller.setCountry}
-              placeholder="Brasil"
+              placeholder={t('Brasil')}
               autoCapitalize="words"
             />
           </FormRow>
@@ -132,6 +161,32 @@ function makeStyles(brand: BrandColors) {
   return StyleSheet.create({
     wrapper: {
       gap: 10,
+    },
+    quickRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    quickChip: {
+      minHeight: 40,
+      justifyContent: 'center',
+      paddingHorizontal: 14,
+      borderRadius: Radius.pill,
+      borderWidth: 1,
+      borderColor: brand.fieldBorder,
+      backgroundColor: brand.fieldBackground,
+    },
+    quickChipSelected: {
+      backgroundColor: brand.blue,
+      borderColor: brand.blue,
+    },
+    quickChipText: {
+      fontSize: 14,
+      fontWeight: '700',
+      color: brand.textDark,
+    },
+    quickChipTextSelected: {
+      color: brand.onPrimary,
     },
     panel: {
       gap: 14,

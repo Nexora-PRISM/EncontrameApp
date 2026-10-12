@@ -8,6 +8,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface PessoaDetalheHistorySectionProps {
@@ -15,6 +16,7 @@ interface PessoaDetalheHistorySectionProps {
 }
 
 export function PessoaDetalheHistorySection({ controller }: PessoaDetalheHistorySectionProps) {
+  const t = useT();
   const brand = useBrand();
   const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
@@ -36,18 +38,18 @@ export function PessoaDetalheHistorySection({ controller }: PessoaDetalheHistory
             style={StyleSheet.absoluteFill}
             onPress={controller.closeHistory}
             accessibilityRole="button"
-            accessibilityLabel="Fechar"
+            accessibilityLabel={t('Fechar')}
           />
         ) : null}
         <SafeAreaView style={styles.panel} edges={['top', 'bottom']}>
           <View style={styles.header}>
-            <Text style={styles.title}>Histórico de avistamentos</Text>
+            <Text style={styles.title}>{t('Histórico de avistamentos')}</Text>
             <Pressable
               onPress={controller.closeHistory}
               hitSlop={12}
               style={styles.closeBtn}
               accessibilityRole="button"
-              accessibilityLabel="Fechar"
+              accessibilityLabel={t('Fechar')}
             >
               <MaterialCommunityIcons name="close" size={28} color={brand.textDark} />
             </Pressable>
@@ -60,11 +62,11 @@ export function PessoaDetalheHistorySection({ controller }: PessoaDetalheHistory
               </View>
             ) : showError ? (
               <View style={styles.center}>
-                <Text style={styles.empty}>Não foi possível carregar o histórico.</Text>
+                <Text style={styles.empty}>{t('Não foi possível carregar o histórico.')}</Text>
               </View>
             ) : showEmpty ? (
               <View style={styles.center}>
-                <Text style={styles.empty}>Ainda não há avistamentos com localização.</Text>
+                <Text style={styles.empty}>{t('Ainda não há avistamentos com localização.')}</Text>
               </View>
             ) : (
               <BrandMap

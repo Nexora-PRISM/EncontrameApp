@@ -14,18 +14,19 @@ import type {
   LoginPayload,
   SignupPayload,
 } from '@/services/auth/auth.types';
-import { syncLocalPeople } from '@/services/people/people.sync';
 
 /**
  * Camada de acesso à API de autenticação exposta como hooks do React Query.
  * O repositório (axios ou mock) é resolvido por env dentro de cada chamada.
+ *
+ * Entrar na conta NÃO envia os cadastros feitos sem conta neste aparelho: a pessoa logada
+ * revisa e confirma cada um em Meu perfil › Revisar e enviar (ver people.service.ts).
  */
 export function useLoginMutation() {
   return useMutation({
     mutationFn: async (payload: LoginPayload) => {
       const result = await getAuthRepository().login(payload);
       await saveSession(result);
-      await syncLocalPeople();
       return result;
     },
   });
@@ -36,7 +37,6 @@ export function useSignupMutation() {
     mutationFn: async (payload: SignupPayload) => {
       const result = await getAuthRepository().signup(payload);
       await saveSession(result);
-      await syncLocalPeople();
       return result;
     },
   });
@@ -48,7 +48,6 @@ export function useGoogleStartMutation() {
       const result = await getAuthRepository().googleStart(idToken);
       if (result.status === 'authenticated') {
         await saveSession(result.session);
-        await syncLocalPeople();
       }
       return result;
     },
@@ -60,7 +59,6 @@ export function useGoogleRegisterMutation() {
     mutationFn: async (payload: GoogleRegisterPayload) => {
       const result = await getAuthRepository().googleRegister(payload);
       await saveSession(result);
-      await syncLocalPeople();
       return result;
     },
   });
@@ -86,7 +84,6 @@ export async function unlockAndRefreshSession(): Promise<AuthResult> {
     user,
   };
   await saveSession(next);
-  await syncLocalPeople();
   return next;
 }
 

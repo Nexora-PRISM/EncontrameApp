@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "Encontra-me uses Face ID to sign in to your account on this phone.",
+    "NSLocationWhenInUseUsageDescription": "Encontra-me uses your location while the app is open to show nearby cases, mark sightings and, when you ask, send your location to a contact.",
+    "NSCameraUsageDescription": "Encontra-me uses the camera to take the photo for a person's or a pet's registration.",
+    "NSPhotoLibraryUsageDescription": "Encontra-me accesses your photos so you can choose the photo for a person's or a pet's registration."
+  }
+}

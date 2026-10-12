@@ -1,6 +1,7 @@
 import { isAxiosError } from 'axios';
 
 import { fieldErrorMessage, generalErrorMessage } from '@/lib/error-messages';
+import { tr } from '@/lib/i18n';
 import type { ErrorCode, FieldErrors } from '@/lib/validation';
 
 interface ApiFieldError {
@@ -54,26 +55,26 @@ function isSnakeCode(value: string) {
 export function apiErrorDisplayMessage(error: unknown): string {
   if (isAxiosError(error) && !error.response) {
     if (error.code === 'ECONNABORTED') {
-      return 'A requisição demorou demais. Tente novamente.';
+      return tr('A requisição demorou demais. Tente novamente.');
     }
-    return 'Não foi possível conectar. Verifique sua internet.';
+    return tr('Não foi possível conectar. Verifique sua internet.');
   }
 
   const { code, fields } = parseApiError(error);
   const fieldMessages = Object.entries(fields).map(([field, fieldCode]) =>
-    fieldErrorMessage(field, fieldCode),
+    tr(fieldErrorMessage(field, fieldCode)),
   );
   if (fieldMessages.length === 1) return fieldMessages[0];
   if (fieldMessages.length > 1) return fieldMessages.join('\n');
 
   if (code) {
-    if (isSnakeCode(code)) return generalErrorMessage(code);
-    return code;
+    if (isSnakeCode(code)) return tr(generalErrorMessage(code));
+    return tr(code);
   }
 
   if (error instanceof Error && error.message.trim()) {
-    return error.message;
+    return tr(error.message);
   }
 
-  return generalErrorMessage();
+  return tr(generalErrorMessage());
 }

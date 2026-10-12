@@ -4,8 +4,15 @@
  * Fonte: env da máquina / Netlify, depois `.env.local` / `.env.production` (ver AGENTS.md).
  */
 export const env = {
-  /** Quando true, os services usam os repositórios mockados (sem depender da API). */
-  useMocks: process.env.EXPO_PUBLIC_USE_MOCKS !== 'false',
+  /**
+   * Quando true, os services usam os repositórios mockados (sem depender da API).
+   * Em desenvolvimento o padrão continua sendo mock (a menos que a env seja "false").
+   * Em build de produção só usa mock se a env for explicitamente "true" — assim um
+   * deploy com a variável vazia não publica dados fictícios nem login que aceita qualquer senha.
+   */
+  useMocks:
+    process.env.EXPO_PUBLIC_USE_MOCKS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_USE_MOCKS !== 'false'),
   /** URL base da API (já inclui /api; usada quando useMocks = false). */
   apiUrl: process.env.EXPO_PUBLIC_API_URL ?? '',
   /** Client ID web do OAuth Google (público; audience do ID token). */
@@ -14,4 +21,26 @@ export const env = {
   googleMapsWebApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY ?? '',
   /** Chave fixa enviada no header X-App-Key (consulta pública pelo app). */
   appKey: process.env.EXPO_PUBLIC_APP_KEY ?? '',
+  /**
+   * Pets desaparecidos (recurso do Premium). Em desenvolvimento fica ligado (com mocks);
+   * em produção só aparece com EXPO_PUBLIC_ENABLE_PETS=true — ligue quando a API
+   * (/MissingPet e /Subscription/me) e a assinatura estiverem prontas.
+   */
+  petsEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_PETS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_PETS !== 'false'),
+  /**
+   * Envio do alerta de emergência para o servidor (POST /EmergencyAlert), ao fim da contagem.
+   * Em desenvolvimento fica ligado (com mocks); em produção só com
+   * EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT=true — ligue quando a API receber o alerta e avisar
+   * os contatos. Desligado, a contagem só abre o telefone com o 190.
+   */
+  emergencyAlertEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT !== 'false'),
+  /**
+   * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
+   * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
+   */
+  webUrl: (process.env.EXPO_PUBLIC_WEB_URL ?? '').trim().replace(/\/+$/, ''),
 } as const;

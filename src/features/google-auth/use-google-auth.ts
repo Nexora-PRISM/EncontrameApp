@@ -11,9 +11,11 @@ import {
   clearGoogleSignupDraft,
   setGoogleSignupDraft,
 } from '@/lib/google-signup-draft';
+import { tr } from '@/lib/i18n';
+import { msg } from '@/lib/i18n-msg';
 import { useGoogleStartMutation } from '@/services/auth/auth.service';
 
-const GOOGLE_ERROR = 'Não foi possível entrar com o Google.';
+const GOOGLE_ERROR = msg('Não foi possível entrar com o Google.');
 
 function googleRedirectUri() {
   if (typeof window === 'undefined') return undefined;
@@ -56,13 +58,13 @@ export function useGoogleAuth(options: UseGoogleAuthOptions = {}) {
       WebBrowser.dismissAuthSession();
 
       if (authResult.type !== 'success') {
-        if (authResult.type === 'error') setError(GOOGLE_ERROR);
+        if (authResult.type === 'error') setError(tr(GOOGLE_ERROR));
         return;
       }
 
       const idToken = authResult.params.id_token;
       if (!idToken) {
-        setError(GOOGLE_ERROR);
+        setError(tr(GOOGLE_ERROR));
         return;
       }
 
@@ -88,7 +90,7 @@ export function useGoogleAuth(options: UseGoogleAuthOptions = {}) {
     } catch (caught) {
       WebBrowser.dismissAuthSession();
       const { code } = parseApiError(caught);
-      setError(code === 'invalid_credentials' ? GOOGLE_ERROR : generalErrorMessage(code));
+      setError(tr(code === 'invalid_credentials' ? GOOGLE_ERROR : generalErrorMessage(code)));
     } finally {
       setPrompting(false);
     }

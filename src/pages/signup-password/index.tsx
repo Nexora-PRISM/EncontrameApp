@@ -9,8 +9,10 @@ import { type BrandColors } from '@/constants/brand';
 import { SignupPasswordFormSection } from '@/features/signup-password/sections/signup-password-form-section';
 import { useSignupPasswordController } from '@/features/signup-password/signup-password.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function SignupPasswordPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useSignupPasswordController();
@@ -23,7 +25,7 @@ export default function SignupPasswordPage() {
       >
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <ContentShell>
-            <ScreenHeader title="Criar uma conta" />
+            <ScreenHeader title={t('Criar uma conta')} />
             <SignupPasswordFormSection controller={controller} />
           </ContentShell>
         </ScrollView>

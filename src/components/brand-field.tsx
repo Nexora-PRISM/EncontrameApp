@@ -13,7 +13,8 @@ import Animated from 'react-native-reanimated';
 
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { ControlMetrics } from '@/constants/theme';
-import { useBrand } from '@/lib/brand-theme';
+import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useTimedColor } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
@@ -27,6 +28,8 @@ type Props = {
   autoCapitalize?: TextInputProps['autoCapitalize'];
   trailingIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
   onTrailingPress?: () => void;
+  /** Nome do botão do ícone no leitor de tela (ex.: "Mostrar senha"). */
+  trailingAccessibilityLabel?: string;
   /** Labels claros para fundos escuros (ex.: home navy). */
   tone?: 'default' | 'onDark';
   /** Marca o campo como obrigatório (asterisco no label). */
@@ -38,6 +41,8 @@ type Props = {
   /** Quando false, o campo não aceita edição (ex.: e-mail vindo do Google). */
   editable?: boolean;
   autoComplete?: TextInputProps['autoComplete'];
+  /** Limite de caracteres digitados. */
+  maxLength?: number;
 };
 
 export function BrandField({
@@ -50,14 +55,18 @@ export function BrandField({
   autoCapitalize,
   trailingIcon,
   onTrailingPress,
+  trailingAccessibilityLabel,
   tone = 'default',
   required,
   error,
   onBlur,
   editable = true,
   autoComplete,
+  maxLength,
 }: Props) {
+  const t = useT();
   const brand = useBrand();
+  const colorScheme = useBrandColorScheme();
   const { control } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, control), [brand, control]);
   const [focused, setFocused] = useState(false);
@@ -80,6 +89,10 @@ export function BrandField({
           keyboardType={keyboardType}
           autoCapitalize={autoCapitalize}
           autoComplete={autoComplete}
+          maxLength={maxLength}
+          // O rótulo visual não fica ligado ao campo no leitor de tela: repete aqui.
+          accessibilityLabel={required ? t('{label}, obrigatório', { label }) : label}
+          keyboardAppearance={colorScheme}
           onFocus={() => setFocused(true)}
           onBlur={() => {
             setFocused(false);
@@ -87,10 +100,23 @@ export function BrandField({
           }}
           editable={editable}
         />
-        {trailingIcon ? (
-          <Pressable onPress={onTrailingPress} hitSlop={8}>
+        {trailingIcon && onTrailingPress ? (
+          <Pressable
+            onPress={onTrailingPress}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={trailingAccessibilityLabel}
+          >
             <MaterialCommunityIcons name={trailingIcon} size={control.icon} color={brand.placeholder} />
           </Pressable>
+        ) : trailingIcon ? (
+          <MaterialCommunityIcons
+            name={trailingIcon}
+            size={control.icon}
+            color={brand.placeholder}
+            accessibilityElementsHidden
+            importantForAccessibility="no"
+          />
         ) : null}
       </Animated.View>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}

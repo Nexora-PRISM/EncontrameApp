@@ -1,7 +1,8 @@
 import { useRouter } from 'expo-router';
 
 import { BrandFab } from '@/components/brand-fab';
-import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
+import { useFloatingPlacement } from '@/lib/bottom-bar-metrics';
+import { useT } from '@/lib/i18n';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 type Props = {
@@ -13,24 +14,25 @@ type Props = {
 
 /**
  * FAB para cadastrar pessoa em telas largas — substitui a aba do BottomBar.
- * Na listagem (`always`) fica fixo no canto inferior direito em qualquer largura.
+ * Na listagem (`always`) fica fixo no canto inferior direito em qualquer largura,
+ * sempre acima da barra inferior medida e escondido enquanto o teclado está aberto.
  */
 export function RegisterFab({ always = false, extraBottom = 0 }: Props) {
+  const t = useT();
   const router = useRouter();
-  const bottomInset = useBottomSafeInset();
   const { isWide } = useWideLayout();
+  const placement = useFloatingPlacement();
 
   if (!always && !isWide) {
     return null;
   }
 
-  const bottom = (always && !isWide ? bottomInset + 72 : bottomInset + 8) + extraBottom;
-
   return (
     <BrandFab
-      accessibilityLabel="Cadastrar uma pessoa"
+      accessibilityLabel={t('Cadastrar uma pessoa')}
       onPress={() => router.push('/cadastrar-pessoa')}
-      style={{ bottom, right: 24, zIndex: 30, elevation: 12 }}
+      visible={!placement.hidden}
+      style={{ bottom: placement.bottom + extraBottom, right: 24, zIndex: 30, elevation: 12 }}
     />
   );
 }

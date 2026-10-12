@@ -11,9 +11,11 @@ import { useGrupoChatController } from '@/features/grupo-chat/grupo-chat.control
 import { GrupoChatInputSection } from '@/features/grupo-chat/sections/grupo-chat-input-section';
 import { GrupoChatMessagesSection } from '@/features/grupo-chat/sections/grupo-chat-messages-section';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useComposerKeyboardPadding } from '@/lib/use-composer-keyboard-padding';
 
 export default function GrupoChatPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useGrupoChatController();
@@ -31,7 +33,7 @@ export default function GrupoChatPage() {
         >
           <Animated.View style={[styles.flex, composerPadding]}>
             <View style={styles.header}>
-              <ScreenHeader title="Grupo do apoio" />
+              <ScreenHeader title={t('Grupo de apoio')} />
             </View>
             <View style={styles.messages}>
               <GrupoChatMessagesSection controller={controller} />

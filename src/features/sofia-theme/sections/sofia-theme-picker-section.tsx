@@ -6,12 +6,14 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { SofiaThemeController } from '@/features/sofia-theme/sofia-theme.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 type Props = {
   controller: SofiaThemeController;
 };
 
 export function SofiaThemePickerSection({ controller }: Props) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -24,19 +26,19 @@ export function SofiaThemePickerSection({ controller }: Props) {
           resizeMode="cover"
         />
         <View style={styles.previewTexts}>
-          <Text style={styles.previewName}>Sofia</Text>
-          <Text style={styles.previewMsg}>aqui com você</Text>
+          <Text style={styles.previewName}>{t('Sofia')}</Text>
+          <Text style={styles.previewMsg}>{t('aqui com você')}</Text>
         </View>
         <View style={styles.previewDot} />
       </View>
 
-      <Text style={styles.sectionTitle}>Aparência</Text>
+      <Text style={styles.sectionTitle}>{t('Aparência')}</Text>
       <View style={styles.segment}>
         <Pressable
           onPress={() => controller.setScheme('light')}
           style={[styles.segmentBtn, controller.colorScheme === 'light' && styles.segmentBtnActive]}
           accessibilityRole="button"
-          accessibilityLabel="Tema claro"
+          accessibilityLabel={t('Tema claro')}
         >
           <Text
             style={[
@@ -44,14 +46,14 @@ export function SofiaThemePickerSection({ controller }: Props) {
               controller.colorScheme === 'light' && styles.segmentTextActive,
             ]}
           >
-            Claro
+            {t('Claro')}
           </Text>
         </Pressable>
         <Pressable
           onPress={() => controller.setScheme('dark')}
           style={[styles.segmentBtn, controller.colorScheme === 'dark' && styles.segmentBtnActive]}
           accessibilityRole="button"
-          accessibilityLabel="Tema escuro"
+          accessibilityLabel={t('Tema escuro')}
         >
           <Text
             style={[
@@ -59,12 +61,12 @@ export function SofiaThemePickerSection({ controller }: Props) {
               controller.colorScheme === 'dark' && styles.segmentTextActive,
             ]}
           >
-            Escuro
+            {t('Escuro')}
           </Text>
         </Pressable>
       </View>
 
-      <Text style={styles.sectionTitle}>Cor da Sofia</Text>
+      <Text style={styles.sectionTitle}>{t('Cor da Sofia')}</Text>
       <View style={styles.paletteRow}>
         {controller.palettes.map((palette) => {
           const selected = palette.id === controller.selectedId;
@@ -82,7 +84,7 @@ export function SofiaThemePickerSection({ controller }: Props) {
                 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel={palette.name}
+              accessibilityLabel={t(palette.name)}
               accessibilityState={{ selected }}
             >
               <View style={styles.swatchGroup}>
@@ -95,7 +97,7 @@ export function SofiaThemePickerSection({ controller }: Props) {
                   ]}
                 />
               </View>
-              <Text style={[styles.paletteName, { color: palette.onSurface }]}>{palette.name}</Text>
+              <Text style={[styles.paletteName, { color: palette.onSurface }]}>{t(palette.name)}</Text>
               {selected ? (
                 <View style={[styles.checkBadge, { backgroundColor: palette.brand }]}>
                   <MaterialCommunityIcons name="check" size={12} color={palette.onBrand} />

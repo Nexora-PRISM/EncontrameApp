@@ -13,8 +13,10 @@ import { ExerciseGratitudeSection } from '@/features/exercises/sections/exercise
 import { ExerciseGroundingSection } from '@/features/exercises/sections/exercise-grounding-section';
 import { ExercisesListSection } from '@/features/exercises/sections/exercises-list-section';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function ExercisesPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useExercisesController();
@@ -24,7 +26,7 @@ export default function ExercisesPage() {
       <ContentShell style={styles.shell} noGutter>
         <View style={styles.header}>
           <ScreenHeader
-            title={controller.active ? controller.active.title : 'Exercícios rápidos'}
+            title={controller.active ? controller.active.title : t('Exercícios rápidos')}
             onBack={controller.active ? controller.closeActive : undefined}
           />
         </View>
@@ -44,7 +46,7 @@ export default function ExercisesPage() {
               <ExerciseGratitudeSection controller={controller} />
             ) : null}
             <View style={styles.close}>
-              <BrandButton label="Fechar" variant="outline" onPress={controller.closeActive} />
+              <BrandButton label={t('Fechar')} variant="outline" onPress={controller.closeActive} />
             </View>
           </ScrollView>
         ) : (

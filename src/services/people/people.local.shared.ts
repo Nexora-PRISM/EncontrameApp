@@ -2,6 +2,7 @@ import {
   LOCAL_PERSON_STATUS_ID,
   LOCAL_PERSON_STATUS_LABEL,
 } from '@/lib/person-status';
+import { dateToIso } from '@/lib/masks';
 import type { CreatePersonPayload, Person } from '@/services/people/people.types';
 
 export interface PendingRow {
@@ -48,7 +49,8 @@ export function toPerson(id: string, payload: CreatePersonPayload): Person {
     tattoo: payload.tattoo || undefined,
     accessories: payload.accessories || undefined,
     location: payload.location || undefined,
-    lastSeen: payload.lastSeen || undefined,
+    // `lastSeen` do formulário é a data (dd/mm/aaaa); em Person, `lastSeen` é um local.
+    dtLastSeen: payload.lastSeen ? (dateToIso(payload.lastSeen) ?? undefined) : undefined,
     originCity: payload.originCity || undefined,
     originState: payload.originState || undefined,
     originCountry: payload.originCountry || undefined,

@@ -4,19 +4,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export function ExerciseGroundingSection() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
   return (
     <View style={styles.box}>
       <Text style={styles.text}>
-        Encontre com calma:{'\n'}
-        5 coisas que você vê{'\n'}
-        4 que pode tocar{'\n'}
-        3 que ouve{'\n'}
-        2 que sente cheiro{'\n'}1 que pode saborear
+        {t('Encontre com calma:\n5 coisas que você vê\n4 que pode tocar\n3 que ouve\n2 que sente cheiro\n1 que pode saborear')}
       </Text>
     </View>
   );

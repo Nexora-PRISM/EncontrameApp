@@ -9,8 +9,10 @@ import { PageGutter } from '@/constants/theme';
 import { SofiaPerfilHeroSection } from '@/features/sofia-perfil/sections/sofia-perfil-hero-section';
 import { useSofiaPerfilController } from '@/features/sofia-perfil/sofia-perfil.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function SofiaPerfilPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useSofiaPerfilController();
@@ -19,7 +21,7 @@ export default function SofiaPerfilPage() {
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <ContentShell style={styles.shell} noGutter>
         <View style={styles.header}>
-          <ScreenHeader title="Sofia" onBack={controller.goBackToChat} />
+          <ScreenHeader title={t('Sofia')} onBack={controller.goBackToChat} />
         </View>
         <SofiaPerfilHeroSection controller={controller} />
       </ContentShell>

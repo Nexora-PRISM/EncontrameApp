@@ -6,12 +6,14 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { SofiaPerfilController } from '@/features/sofia-perfil/sofia-perfil.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 type Props = {
   controller: SofiaPerfilController;
 };
 
 export function SofiaPerfilHeroSection({ controller }: Props) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -22,14 +24,14 @@ export function SofiaPerfilHeroSection({ controller }: Props) {
           source={require('@/assets/images/sofia-avatar.jpg')}
           style={styles.avatar}
           resizeMode="cover"
-          accessibilityLabel="Sofia"
+          accessibilityLabel={t('Sofia')}
         />
-        <Text style={styles.name}>Sofia</Text>
+        <Text style={styles.name}>{t('Sofia')}</Text>
         <View style={styles.statusRow}>
           <View style={styles.statusDot} />
-          <Text style={styles.status}>aqui com você</Text>
+          <Text style={styles.status}>{t('aqui com você')}</Text>
         </View>
-        <Text style={styles.role}>IA de apoio emocional do Encontra-me</Text>
+        <Text style={styles.role}>{t('IA de apoio emocional do Encontra-me')}</Text>
       </View>
 
       <View style={styles.actions}>
@@ -37,53 +39,48 @@ export function SofiaPerfilHeroSection({ controller }: Props) {
           onPress={controller.goBackToChat}
           style={({ pressed }) => [styles.action, pressed && styles.actionPressed]}
           accessibilityRole="button"
-          accessibilityLabel="Conversar"
+          accessibilityLabel={t('Conversar')}
         >
           <View style={styles.actionIcon}>
             <MaterialCommunityIcons name="message-text-outline" size={22} color={brand.blue} />
           </View>
-          <Text style={styles.actionLabel}>Conversar</Text>
+          <Text style={styles.actionLabel}>{t('Conversar')}</Text>
         </Pressable>
         <Pressable
           onPress={controller.goToExercises}
           style={({ pressed }) => [styles.action, pressed && styles.actionPressed]}
           accessibilityRole="button"
-          accessibilityLabel="Exercícios"
+          accessibilityLabel={t('Exercícios')}
         >
           <View style={styles.actionIcon}>
             <MaterialCommunityIcons name="heart-outline" size={22} color={brand.blue} />
           </View>
-          <Text style={styles.actionLabel}>Exercícios</Text>
+          <Text style={styles.actionLabel}>{t('Exercícios')}</Text>
         </Pressable>
         <Pressable
           onPress={controller.goToTheme}
           style={({ pressed }) => [styles.action, pressed && styles.actionPressed]}
           accessibilityRole="button"
-          accessibilityLabel="Personalizar cores"
+          accessibilityLabel={t('Personalizar cores')}
         >
           <View style={styles.actionIcon}>
             <MaterialCommunityIcons name="palette-outline" size={22} color={brand.blue} />
           </View>
-          <Text style={styles.actionLabel}>Cores</Text>
+          <Text style={styles.actionLabel}>{t('Cores')}</Text>
         </Pressable>
       </View>
 
-      <Text style={styles.sectionTitle}>Sobre</Text>
+      <Text style={styles.sectionTitle}>{t('Sobre')}</Text>
       <View style={styles.aboutCard}>
         <Text style={styles.aboutText}>
-          Sofia é uma inteligência artificial criada para conversar e oferecer apoio. Ela não é
-          psicóloga, terapeuta ou médica e não substitui atendimento humano profissional. Não
-          realiza diagnósticos, tratamentos ou atendimento de emergência.
+          {t('Sofia é uma inteligência artificial criada para conversar e oferecer apoio. Ela não é psicóloga, terapeuta ou médica e não substitui atendimento humano profissional. Não realiza diagnósticos, tratamentos ou atendimento de emergência.')}
         </Text>
       </View>
 
-      <Text style={styles.sectionTitle}>Em emergência no Brasil</Text>
+      <Text style={styles.sectionTitle}>{t('Em emergência no Brasil')}</Text>
       <View style={styles.aboutCard}>
         <Text style={styles.aboutText}>
-          188 · CVV (apoio emocional){'\n'}
-          192 · SAMU{'\n'}
-          193 · Bombeiros{'\n'}
-          190 · Polícia Militar
+          {t('188 · CVV (apoio emocional)\n192 · SAMU\n193 · Bombeiros\n190 · Polícia Militar')}
         </Text>
       </View>
     </ScrollView>

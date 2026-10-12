@@ -12,15 +12,17 @@ import { usePessoasDesaparecidasController } from '@/features/pessoas-desapareci
 import { PessoasDesaparecidasFiltersSection } from '@/features/pessoas-desaparecidas/sections/pessoas-desaparecidas-filters-section';
 import { PessoasDesaparecidasListSection } from '@/features/pessoas-desaparecidas/sections/pessoas-desaparecidas-list-section';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function PessoasDesaparecidasPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = usePessoasDesaparecidasController();
 
   const listHeader = (
     <View style={styles.header}>
-      <ScreenHeader title="Pessoas desaparecidas" />
+      <ScreenHeader title={t('Pessoas desaparecidas')} />
       {controller.totalCount > 0 ? (
         <Text style={styles.count}>
           {controller.totalCount} {controller.totalCount === 1 ? 'pessoa' : 'pessoas'}

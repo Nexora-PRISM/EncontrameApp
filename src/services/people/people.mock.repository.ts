@@ -1,4 +1,5 @@
 import { DEFAULT_NEARBY_RADIUS_KM, haversineKm } from '@/lib/geo';
+import { dateToIso } from '@/lib/masks';
 import type { PeopleRepository } from '@/services/people/people.repository';
 import type {
   CreatePersonPayload,
@@ -330,7 +331,7 @@ export const peopleMockRepository: PeopleRepository = {
       tattoo: payload.tattoo,
       accessories: payload.accessories,
       location: payload.location,
-      lastSeen: payload.lastSeen,
+      dtLastSeen: payload.lastSeen ? (dateToIso(payload.lastSeen) ?? undefined) : undefined,
       originCity: payload.originCity || undefined,
       originState: payload.originState || undefined,
       originCountry: payload.originCountry || undefined,

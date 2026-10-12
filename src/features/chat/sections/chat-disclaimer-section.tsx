@@ -5,6 +5,7 @@ import { BrandButton } from '@/components/brand-button';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 type Props = {
   visible: boolean;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function ChatDisclaimerSection({ visible, onAccept }: Props) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -19,27 +21,19 @@ export function ChatDisclaimerSection({ visible, onAccept }: Props) {
     <Modal visible={visible} transparent animationType="fade" onRequestClose={() => {}}>
       <View style={styles.backdrop}>
         <View style={styles.card}>
-          <Text style={styles.title}>Antes de conversar com a Sofia</Text>
+          <Text style={styles.title}>{t('Antes de conversar com a Sofia')}</Text>
           <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
             <Text style={styles.body}>
-              Sofia é uma inteligência artificial criada para conversar e oferecer apoio e
-              informações. Ela não substitui um terapeuta, psicólogo, psiquiatra, médico ou outro
-              profissional de saúde qualificado.{'\n\n'}
-              Sofia não realiza diagnósticos, tratamentos ou atendimento de emergência.{'\n\n'}
-              Se você estiver em perigo ou passando por uma situação de emergência, procure ajuda
-              profissional ou um serviço de emergência da sua região.
+              {t('Sofia é uma inteligência artificial criada para conversar e oferecer apoio e informações. Ela não substitui um terapeuta, psicólogo, psiquiatra, médico ou outro profissional de saúde qualificado.\n\nSofia não realiza diagnósticos, tratamentos ou atendimento de emergência.\n\nSe você estiver em perigo ou passando por uma situação de emergência, procure ajuda profissional ou um serviço de emergência da sua região.')}
             </Text>
             <View style={styles.emergencyBox}>
-              <Text style={styles.emergencyTitle}>Em emergência no Brasil, ligue:</Text>
+              <Text style={styles.emergencyTitle}>{t('Em emergência no Brasil, ligue:')}</Text>
               <Text style={styles.emergencyList}>
-                188 · CVV (apoio emocional){'\n'}
-                192 · SAMU{'\n'}
-                193 · Bombeiros{'\n'}
-                190 · Polícia Militar
+                {t('188 · CVV (apoio emocional)\n192 · SAMU\n193 · Bombeiros\n190 · Polícia Militar')}
               </Text>
             </View>
           </ScrollView>
-          <BrandButton label="Entendi, continuar" onPress={onAccept} />
+          <BrandButton label={t('Entendi, continuar')} onPress={onAccept} />
         </View>
       </View>
     </Modal>

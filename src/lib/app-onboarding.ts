@@ -13,6 +13,11 @@ export async function completeAppOnboarding(): Promise<void> {
   await storageSet(ONBOARDING_KEY, '1');
 }
 
+/** Faz a apresentação aparecer de novo na próxima vez que o Início abrir. */
+export async function resetAppOnboarding(): Promise<void> {
+  await storageSet(ONBOARDING_KEY, '0');
+}
+
 async function storageGet(key: string): Promise<string | null> {
   if (Platform.OS === 'web') {
     return webGet(key);

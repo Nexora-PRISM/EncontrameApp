@@ -6,6 +6,7 @@ import type { HomeController } from '@/features/home/home.controller';
 import type { LoginController } from '@/features/login/login.controller';
 import { LoginFormSection } from '@/features/login/sections/login-form-section';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface HomeDesktopAuthSectionProps {
   home: HomeController;
@@ -14,6 +15,7 @@ interface HomeDesktopAuthSectionProps {
 
 /** Login embutido na home em telas largas — evita ir para /login. */
 export function HomeDesktopAuthSection({ home, login }: HomeDesktopAuthSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -23,7 +25,7 @@ export function HomeDesktopAuthSection({ home, login }: HomeDesktopAuthSectionPr
         <LoginFormSection controller={login} compact />
       </View>
       <Pressable onPress={home.goToSignup} hitSlop={12} style={styles.signupHit}>
-        <Text style={styles.signupLink}>Criar uma conta</Text>
+        <Text style={styles.signupLink}>{t('Criar uma conta')}</Text>
       </Pressable>
     </View>
   );

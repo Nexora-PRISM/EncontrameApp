@@ -64,6 +64,12 @@ export interface CreatePersonPayload {
   photoUri?: string;
   /** Base64 puro da foto (sem prefixo data URL), enviado à API. */
   photo?: string;
+  /** Vínculo de quem cadastra com a pessoa (ex.: "Mãe ou pai"). */
+  reporterRelationship?: string;
+  /** Número do boletim de ocorrência (obrigatório para menores de 18). */
+  policeReportNumber?: string;
+  /** Momento em que quem cadastra aceitou a declaração de veracidade (ISO). */
+  declarationAcceptedAt?: string;
 }
 
 /** Avistamento enviado ao registrar um last-seen. */

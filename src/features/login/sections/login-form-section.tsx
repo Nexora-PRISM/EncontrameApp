@@ -8,6 +8,7 @@ import type { BrandColors } from '@/constants/brand';
 import { BiometricEnrollSection } from '@/features/biometric/sections/biometric-enroll-section';
 import type { LoginController } from '@/features/login/login.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 interface LoginFormSectionProps {
   controller: LoginController;
@@ -22,6 +23,7 @@ export function LoginFormSection({
   tone = 'default',
   compact = false,
 }: LoginFormSectionProps) {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
@@ -37,14 +39,14 @@ export function LoginFormSection({
             onPress={controller.handleBiometricLogin}
             trailingIcon={controller.biometricIcon}
           />
-          <Text style={[styles.orLabel, tone === 'onDark' && styles.orLabelOnDark]}>ou</Text>
+          <Text style={[styles.orLabel, tone === 'onDark' && styles.orLabelOnDark]}>{t('ou')}</Text>
         </>
       ) : null}
       <BrandField
-        label="E-mail / CPF"
+        label={t('E-mail / CPF')}
         value={controller.identifier}
         onChangeText={controller.setIdentifier}
-        placeholder="exemplo@email.com"
+        placeholder={t('exemplo@email.com')}
         keyboardType="email-address"
         autoCapitalize="none"
         tone={tone}
@@ -53,11 +55,15 @@ export function LoginFormSection({
         onBlur={controller.blurIdentifier}
       />
       <BrandField
-        label="Senha"
+        label={t('Senha')}
         value={controller.password}
         onChangeText={controller.setPassword}
         placeholder="••••••••••••••"
-        secureTextEntry
+        secureTextEntry={!controller.showPassword}
+        trailingIcon={controller.showPassword ? 'eye-off-outline' : 'eye-outline'}
+        onTrailingPress={controller.toggleShowPassword}
+        trailingAccessibilityLabel={controller.showPassword ? t('Ocultar senha') : t('Mostrar senha')}
+        autoComplete="current-password"
         tone={tone}
         required
         error={controller.fieldError('password')}
@@ -67,7 +73,7 @@ export function LoginFormSection({
         <Text style={styles.formError}>{controller.formError}</Text>
       ) : null}
       <BrandButton
-        label="Entrar"
+        label={t('Entrar')}
         variant="orange"
         loading={controller.submitting}
         disabled={controller.biometricSubmitting}
@@ -76,7 +82,7 @@ export function LoginFormSection({
       />
       {controller.googleAvailable ? (
         <>
-          <Text style={[styles.orLabel, tone === 'onDark' && styles.orLabelOnDark]}>ou</Text>
+          <Text style={[styles.orLabel, tone === 'onDark' && styles.orLabelOnDark]}>{t('ou')}</Text>
           <GoogleAuthButton
             onPress={controller.handleGoogle}
             loading={controller.googleSubmitting}
@@ -86,7 +92,7 @@ export function LoginFormSection({
       ) : null}
       <Pressable onPress={controller.goToSignup} hitSlop={12} style={styles.signupHit}>
         <Text style={[styles.signupLink, tone === 'onDark' && styles.signupLinkOnDark]}>
-          Se cadastrar
+          {t('Se cadastrar')}
         </Text>
       </Pressable>
       {controller.biometricAvailable ? (
@@ -96,7 +102,7 @@ export function LoginFormSection({
           style={styles.signupHit}
         >
           <Text style={[styles.otherAccount, tone === 'onDark' && styles.signupLinkOnDark]}>
-            Usar outra conta
+            {t('Usar outra conta')}
           </Text>
         </Pressable>
       ) : null}

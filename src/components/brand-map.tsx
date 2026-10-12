@@ -6,6 +6,7 @@ import MapView, { Callout, Circle, Marker, Polyline, type Region } from 'react-n
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { brandMapStyle, hexToRgba } from '@/lib/map-style';
 import { type UserLocation, userAccuracyRadius } from '@/lib/use-user-location';
 
@@ -118,6 +119,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   },
   ref,
 ) {
+  const t = useT();
   const brand = useBrand();
   const colorScheme = useBrandColorScheme();
   const styles = useMemo(() => makeStyles(brand), [brand]);
@@ -223,7 +225,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
               anchor={{ x: 0.5, y: 0.5 }}
               tracksViewChanges={false}
               zIndex={10}
-              title="Você está aqui"
+              title={t('Você está aqui')}
               onPress={
                 onPress
                   ? (event) => {

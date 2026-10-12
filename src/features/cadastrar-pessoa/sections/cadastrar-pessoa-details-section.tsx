@@ -4,52 +4,59 @@ import { BrandButton } from '@/components/brand-button';
 import { BrandField } from '@/components/brand-field';
 import { FormRow } from '@/components/form-row';
 import type { CadastrarPessoaController } from '@/features/cadastrar-pessoa/cadastrar-pessoa.controller';
+import { CadastrarPessoaResponsibilitySection } from '@/features/cadastrar-pessoa/sections/cadastrar-pessoa-responsibility-section';
+import { useT } from '@/lib/i18n';
 
 interface CadastrarPessoaDetailsSectionProps {
   controller: CadastrarPessoaController;
 }
 
 export function CadastrarPessoaDetailsSection({ controller }: CadastrarPessoaDetailsSectionProps) {
+  const t = useT();
   return (
     <View style={styles.form}>
       <FormRow>
         <BrandField
-          label="Cabelo"
+          label={t('Cabelo')}
           value={controller.hair}
           onChangeText={controller.setHair}
-          placeholder="Cabelo preto cacheado"
+          placeholder={t('Cabelo preto cacheado')}
         />
         <BrandField
-          label="Olhos"
+          label={t('Olhos')}
           value={controller.eyes}
           onChangeText={controller.setEyes}
-          placeholder="Olhos castanhos"
+          placeholder={t('Olhos castanhos')}
         />
       </FormRow>
       <FormRow>
         <BrandField
-          label="Tatuagem"
+          label={t('Tatuagem')}
           value={controller.tattoo}
           onChangeText={controller.setTattoo}
-          placeholder="Tatuagem de leão no braço esquerdo"
+          placeholder={t('Tatuagem de leão no braço esquerdo')}
         />
         <BrandField
-          label="Acessórios"
+          label={t('Acessórios')}
           value={controller.accessories}
           onChangeText={controller.setAccessories}
-          placeholder="Brincos, colar, pulseiras, etc..."
+          placeholder={t('Brincos, colar, pulseiras etc.')}
         />
       </FormRow>
       <BrandField
-        label="Última aparição"
+        label={t('Data em que foi vista pela última vez')}
         value={controller.lastSeen}
         onChangeText={controller.setLastSeen}
-        placeholder="01/01/2001"
+        onBlur={controller.blurLastSeen}
+        placeholder={t('dd/mm/aaaa')}
         keyboardType="numeric"
+        error={controller.fieldError('lastSeen')}
       />
 
+      <CadastrarPessoaResponsibilitySection controller={controller} />
+
       <BrandButton
-        label="Cadastrar"
+        label={controller.reviewingDraft ? t('Enviar cadastro') : t('Cadastrar')}
         variant="orange"
         loading={controller.submitting}
         disabled={!controller.nearFormEnd}

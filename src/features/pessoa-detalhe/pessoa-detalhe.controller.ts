@@ -3,6 +3,14 @@ import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { MapPin, MapPolyline } from '@/components/brand-map';
+import {
+  type CaseFeedbackKind,
+  buildCaseFeedbackMessage,
+} from '@/features/pessoa-detalhe/case-feedback';
+import { buildPersonShareMessage } from '@/features/pessoa-detalhe/person-share';
+import { AppInfo } from '@/lib/app-info';
+import { showAlert } from '@/lib/dialog';
+import { env } from '@/lib/env';
 import { fieldErrorMessage } from '@/lib/error-messages';
 import {
   geocodeAddress,
@@ -11,8 +19,12 @@ import {
   suggestAddresses,
   type AddressSuggestion,
 } from '@/lib/geocode';
+import { useT } from '@/lib/i18n';
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
+import { shareText } from '@/lib/share';
+import { openSupportEmail } from '@/lib/support';
+import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
 import { usePersonQuery, useLastSeenHistoryQuery, useReportLastSeenMutation } from '@/services/people/people.service';
 import type { PersonLastSeen } from '@/services/people/people.types';
@@ -23,6 +35,7 @@ const HISTORY_PREVIOUS_OPACITY = 0.55;
 
 /** Centraliza dados, avistamento e navegação da tela de detalhe. */
 export function usePessoaDetalheController() {
+  const t = useT();
   const router = useRouter();
   const params = useLocalSearchParams<{ id?: string | string[] }>();
   const id = Array.isArray(params.id) ? params.id[0] : (params.id ?? '');
@@ -45,12 +58,31 @@ export function usePessoaDetalheController() {
   const historyQuery = useLastSeenHistoryQuery(id, historyOpen);
 
   const person = personQuery.data ?? null;
+  const sessionUser = useSessionUser();
   const isLocalPerson = isLocalPersonId(id);
   const sightingBlockedMessage = isLocalPerson
-    ? getSessionUser() == null
-      ? 'Entre na sua conta para enviar este cadastro e registrar avistamentos.'
-      : 'Este cadastro ainda não foi enviado. Conecte-se à internet e tente novamente.'
+    ? sessionUser == null
+      ? t('Este cadastro está salvo só neste aparelho. Entre na sua conta para revisar e enviar — depois disso ele pode receber avistamentos.')
+      : t('Este cadastro foi feito neste aparelho e ainda não foi enviado. Revise os dados e confirme para enviá-lo pela sua conta.')
     : undefined;
+
+  /** Correção/atualização ou denúncia do caso, pelo e-mail do suporte (sem API de moderação ainda). */
+  const sendCaseFeedback = (kind: CaseFeedbackKind) => {
+    if (!person || isLocalPerson) return;
+    void (async () => {
+      const opened = await openSupportEmail({
+        topic: kind,
+        message: buildCaseFeedbackMessage(kind, { id: person.id, fullName: person.fullName }, t),
+        accountEmail: sessionUser?.email,
+      });
+      if (!opened) {
+        showAlert(
+          t('Não foi possível abrir o e-mail'),
+          t('Escreva para {supportEmail} e informe a identificação do caso: {id}.', { supportEmail: AppInfo.supportEmail, id: person.id }),
+        );
+      }
+    })();
+  };
 
   useEffect(() => {
     if (!formOpen) {
@@ -107,7 +139,7 @@ export function usePessoaDetalheController() {
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
-          setAddressError('Permita o acesso à localização para usar este recurso.');
+          setAddressError(t('Permita o acesso à localização para usar este recurso.'));
           return;
         }
 
@@ -120,9 +152,9 @@ export function usePessoaDetalheController() {
         };
         setCoords(next);
         const label = await reverseGeocode(next.latitude, next.longitude);
-        setAddress(label ?? 'Localização atual');
+        setAddress(label ?? t('Localização atual'));
       } catch {
-        setAddressError('Não foi possível obter sua localização.');
+        setAddressError(t('Não foi possível obter sua localização.'));
       } finally {
         setLocating(false);
       }
@@ -134,7 +166,7 @@ export function usePessoaDetalheController() {
       setAddressError(undefined);
       const resolved = await resolveAddressSuggestion(suggestion);
       if (!resolved) {
-        setAddressError('Não encontramos esse endereço. Tente outro ou use sua localização.');
+        setAddressError(t('Não encontramos esse endereço. Tente outro ou use sua localização.'));
         return;
       }
 
@@ -157,7 +189,7 @@ export function usePessoaDetalheController() {
       if (generation !== suggestGen.current) {
         return;
       }
-      setAddress(label ?? 'Localização atual');
+      setAddress(label ?? t('Localização atual'));
     });
   };
 
@@ -232,10 +264,10 @@ export function usePessoaDetalheController() {
       zIndex: index + 1,
       tooltip: {
         title: formatSightingDate(item.dtRegistration),
-        subtitle: formatSightingAddress(item),
+        subtitle: formatSightingAddress(item) || t('Local não informado'),
       },
     }));
-  }, [mappedSightings, person?.photoUri]);
+  }, [mappedSightings, person?.photoUri, t]);
 
   const historyPolylines: MapPolyline[] = useMemo(() => {
     if (mappedSightings.length < 2) {
@@ -272,25 +304,25 @@ export function usePessoaDetalheController() {
       const trimmed = address.trim();
       if (!point) {
         if (!trimmed) {
-          setAddressError(fieldErrorMessage('location', 'required'));
+          setAddressError(t(fieldErrorMessage('location', 'required')));
           return;
         }
 
         if (suggestions.length > 0) {
-          setAddressError('Escolha um endereço da lista.');
+          setAddressError(t('Escolha um endereço da lista.'));
           return;
         }
 
         point = await geocodeAddress(trimmed);
         if (!point) {
-          setAddressError('Não encontramos esse endereço. Tente outro ou use sua localização.');
+          setAddressError(t('Não encontramos esse endereço. Tente outro ou use sua localização.'));
           return;
         }
       }
 
       try {
         await reportMutation.mutateAsync({
-          location: trimmed || 'Localização atual',
+          location: trimmed || t('Localização atual'),
           latitude: point.latitude,
           longitude: point.longitude,
         });
@@ -300,7 +332,7 @@ export function usePessoaDetalheController() {
         setSuggestions([]);
         setThanksOpen(true);
       } catch {
-        setFormMessage('Não foi possível registrar o avistamento. Tente novamente.');
+        setFormMessage(t('Não foi possível registrar o avistamento. Tente novamente.'));
       }
     })();
   };
@@ -332,7 +364,19 @@ export function usePessoaDetalheController() {
     historyLoading: historyQuery.isLoading,
     historyError: historyQuery.isError,
     isLocalPerson,
+    isLoggedIn: sessionUser != null,
     sightingBlockedMessage,
+    /** Abre o formulário preenchido para a pessoa logada revisar e enviar o rascunho local. */
+    reviewLocalDraft: () =>
+      router.push({ pathname: '/cadastrar-pessoa', params: { rascunho: id } } as Href),
+    goToLogin: () => router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href),
+    requestCorrection: () => sendCaseFeedback('correcao'),
+    /** Divulga o caso publicado pelo compartilhamento do celular (rascunho local não é divulgado). */
+    shareCase: () => {
+      if (!person || isLocalPerson) return;
+      void shareText(buildPersonShareMessage(person, env.webUrl, t), t('Pessoa desaparecida'));
+    },
+    reportCase: () => sendCaseFeedback('denuncia'),
     sightingPins,
     historyPins,
     historyPolylines,
@@ -376,5 +420,5 @@ function formatSightingAddress(item: PersonLastSeen) {
       unique.push(part);
     }
   }
-  return unique.join(', ') || 'Local não informado';
+  return unique.join(', ');
 }

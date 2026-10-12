@@ -6,6 +6,7 @@ import Animated from 'react-native-reanimated';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { ControlMetrics } from '@/constants/theme';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { useTimedColor, useTimedOpacity } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
@@ -30,6 +31,7 @@ function SelectOption({
   brand: BrandColors;
   styles: ReturnType<typeof makeStyles>;
 }) {
+  const t = useT();
   const [highlighted, setHighlighted] = useState(false);
   const bgStyle = useTimedColor(
     selected || highlighted,
@@ -45,9 +47,11 @@ function SelectOption({
       onPressOut={() => setHighlighted(false)}
       onHoverIn={() => setHighlighted(true)}
       onHoverOut={() => setHighlighted(false)}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
     >
       <Animated.View style={[styles.option, bgStyle]}>
-        <Text style={[styles.optionLabel, selected && styles.optionLabelSelected]}>{option}</Text>
+        <Text style={[styles.optionLabel, selected && styles.optionLabelSelected]}>{t(option)}</Text>
         {selected ? (
           <MaterialCommunityIcons name="check" size={20} color={brand.blue} />
         ) : null}
@@ -56,7 +60,12 @@ function SelectOption({
   );
 }
 
-export function BrandSelect({ label, value, options, onSelect, placeholder = 'Escolher' }: Props) {
+/**
+ * Seletor de opções. Os VALORES ficam em português (são gravados e enviados à API);
+ * só o texto exibido passa pela tradução.
+ */
+export function BrandSelect({ label, value, options, onSelect, placeholder }: Props) {
+  const t = useT();
   const brand = useBrand();
   const { control } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, control), [brand, control]);
@@ -81,7 +90,7 @@ export function BrandSelect({ label, value, options, onSelect, placeholder = 'Es
       >
         <Animated.View style={[styles.field, fieldOpacity]}>
           <Text style={[styles.value, !value && styles.placeholder]} numberOfLines={1}>
-            {value || placeholder}
+            {value ? t(value) : (placeholder ?? t('Escolher'))}
           </Text>
           <MaterialCommunityIcons name="chevron-down" size={control.icon} color={brand.placeholder} />
         </Animated.View>

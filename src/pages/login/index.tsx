@@ -9,8 +9,10 @@ import { type BrandColors } from '@/constants/brand';
 import { useLoginController } from '@/features/login/login.controller';
 import { LoginFormSection } from '@/features/login/sections/login-form-section';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 
 export default function LoginPage() {
+  const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useLoginController();
@@ -23,7 +25,7 @@ export default function LoginPage() {
       >
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <ContentShell>
-            <ScreenHeader title="Entrar" />
+            <ScreenHeader title={t('Entrar')} />
             <LoginFormSection controller={controller} />
           </ContentShell>
         </ScrollView>

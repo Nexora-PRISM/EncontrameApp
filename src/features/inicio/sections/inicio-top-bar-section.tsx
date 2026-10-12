@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   BackHandler,
   Keyboard,
-  Modal,
   Pressable,
   StyleSheet,
   Text,
@@ -11,99 +10,55 @@ import {
   View,
 } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Radius, type BrandColors } from '@/constants/brand';
 import { brandTiming, Motion } from '@/constants/motion';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useBrand } from '@/lib/brand-theme';
+import { useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
-import { useTimedColor, useTimedOpacity } from '@/lib/use-brand-transition';
+import { useTimedOpacity } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
-
-const DRAWER_MAX_WIDTH = 320;
-const DRAWER_SCREEN_RATIO = 0.86;
 
 interface InicioTopBarSectionProps {
   controller: InicioController;
+  /** No celular o menu fica no rodapé. No layout largo o botão continua nesta barra. */
+  showMenu?: boolean;
+  /** Dentro de uma área que já tem a margem da página (lista da home recolhida). */
+  embedded?: boolean;
+  /** Quando definido, a lupa filtra a lista em vez da busca do mapa. */
+  browseQuery?: string;
+  onBrowseQueryChange?: (value: string) => void;
 }
 
-type MenuItem = {
-  key: string;
-  label: string;
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-  onPress: () => void;
-  danger?: boolean;
-};
-
-function MenuItemRow({
-  item,
-  brand,
-  styles,
-}: {
-  item: MenuItem;
-  brand: BrandColors;
-  styles: ReturnType<typeof makeStyles>;
-}) {
-  const [highlighted, setHighlighted] = useState(false);
-  const bgStyle = useTimedColor(highlighted, 'transparent', brand.divider, 'backgroundColor');
-
-  return (
-    <Pressable
-      onPress={item.onPress}
-      onPressIn={() => setHighlighted(true)}
-      onPressOut={() => setHighlighted(false)}
-      onHoverIn={() => setHighlighted(true)}
-      onHoverOut={() => setHighlighted(false)}
-      android_ripple={{ color: brand.divider }}
-    >
-      <Animated.View style={[styles.menuItem, bgStyle]}>
-        <MaterialCommunityIcons
-          name={item.icon}
-          size={22}
-          color={item.danger ? brand.orangeDark : brand.blue}
-        />
-        <Text style={[styles.menuLabel, item.danger && styles.menuLabelDanger]}>{item.label}</Text>
-      </Animated.View>
-    </Pressable>
-  );
-}
-
-export function InicioTopBarSection({ controller }: InicioTopBarSectionProps) {
+export function InicioTopBarSection({
+  controller,
+  showMenu = true,
+  embedded = false,
+  browseQuery,
+  onBrowseQueryChange,
+}: InicioTopBarSectionProps) {
+  const t = useT();
   const brand = useBrand();
-  const insets = useSafeAreaInsets();
-  const { isWide, width } = useWideLayout();
-  const drawerWidth = Math.min(DRAWER_MAX_WIDTH, Math.round(width * DRAWER_SCREEN_RATIO));
+  const { isWide } = useWideLayout();
   const styles = useMemo(
-    () => makeStyles(brand, isWide, drawerWidth),
-    [brand, isWide, drawerWidth],
+    () => makeStyles(brand, isWide, embedded),
+    [brand, embedded, isWide],
   );
+  const browsing = onBrowseQueryChange != null;
   const { searchOpen, closeSearch, openSearch, handleSearch, clearSearch } = controller;
+  const searchValue = browsing ? (browseQuery ?? '') : controller.search;
   const searchInputRef = useRef<TextInput>(null);
   const [menuHighlighted, setMenuHighlighted] = useState(false);
   const [searchHighlighted, setSearchHighlighted] = useState(false);
   const menuOpacity = useTimedOpacity(menuHighlighted ? 0.85 : 1);
   const searchPressOpacity = useTimedOpacity(searchHighlighted ? 0.85 : 1);
   const searchProgress = useSharedValue(searchOpen ? 1 : 0);
-  const drawerProgress = useSharedValue(0);
 
   useEffect(() => {
     searchProgress.value = brandTiming(searchOpen ? 1 : 0);
   }, [searchOpen, searchProgress]);
-
-  useEffect(() => {
-    if (!controller.menuOpen) {
-      drawerProgress.value = 0;
-      return;
-    }
-
-    drawerProgress.value = 0;
-    const frame = requestAnimationFrame(() => {
-      drawerProgress.value = brandTiming(1);
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [controller.menuOpen, drawerProgress]);
 
   useEffect(() => {
     if (!searchOpen) {
@@ -139,102 +94,48 @@ export function InicioTopBarSection({ controller }: InicioTopBarSectionProps) {
     transform: [{ translateX: interpolate(searchProgress.value, [0, 1], [20, 0]) }],
   }));
 
-  const drawerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: interpolate(drawerProgress.value, [0, 1], [-drawerWidth, 0]) }],
-  }));
-
-  const scrimStyle = useAnimatedStyle(() => ({
-    opacity: drawerProgress.value,
-  }));
-
-  const menuItems: MenuItem[] = [
-    ...(isWide
-      ? [
-          {
-            key: 'home',
-            label: 'Início',
-            icon: 'home-outline' as const,
-            onPress: controller.goToHomeFromMenu,
-          },
-        ]
-      : []),
-    {
-      key: 'chat',
-      label: 'Chat com a Sofia (IA)',
-      icon: 'robot-happy-outline',
-      onPress: controller.goToChat,
-    },
-    {
-      key: 'grupo-chat',
-      label: 'Grupo do apoio',
-      icon: 'account-group-outline',
-      onPress: controller.goToGroupChat,
-    },
-    {
-      key: 'register',
-      label: 'Cadastrar uma pessoa',
-      icon: 'account-plus-outline',
-      onPress: controller.goToRegisterFromMenu,
-    },
-    {
-      key: 'all-people',
-      label: 'Pessoas desaparecidas',
-      icon: 'account-search-outline',
-      onPress: controller.goToAllPeopleFromMenu,
-    },
-    {
-      key: 'settings',
-      label: 'Configurações',
-      icon: 'cog-outline',
-      onPress: controller.goToTheme,
-    },
-    controller.loggedIn
-      ? {
-          key: 'logout',
-          label: 'Sair',
-          icon: 'logout' as const,
-          onPress: controller.logout,
-          danger: true,
-        }
-      : {
-          key: 'login',
-          label: 'Entrar',
-          icon: 'login' as const,
-          onPress: controller.goToLogin,
-        },
-  ];
-
-  const accountItem = menuItems[menuItems.length - 1];
-  const navItems = menuItems.slice(0, -1);
-
   const handleOpenMenu = () => {
     controller.openMenu();
   };
 
   const handleSearchButton = () => {
     if (searchOpen) {
-      handleSearch();
+      if (!browsing) {
+        handleSearch();
+      }
       return;
     }
     openSearch();
+  };
+
+  const handleClear = () => {
+    if (browsing) {
+      onBrowseQueryChange?.('');
+      return;
+    }
+    clearSearch();
   };
 
   return (
     <View style={styles.wrap} pointerEvents="box-none">
       <View style={styles.panel}>
         <View style={styles.brand}>
-          <Pressable
-            hitSlop={8}
-            onPress={handleOpenMenu}
-            onPressIn={() => setMenuHighlighted(true)}
-            onPressOut={() => setMenuHighlighted(false)}
-            onHoverIn={() => setMenuHighlighted(true)}
-            onHoverOut={() => setMenuHighlighted(false)}
-          >
-            <Animated.View style={[styles.menuButton, menuOpacity]}>
-              <MaterialCommunityIcons name="menu" size={26} color={brand.label} />
-            </Animated.View>
-          </Pressable>
+          {showMenu ? (
+            <Pressable
+              hitSlop={8}
+              onPress={handleOpenMenu}
+              onPressIn={() => setMenuHighlighted(true)}
+              onPressOut={() => setMenuHighlighted(false)}
+              onHoverIn={() => setMenuHighlighted(true)}
+              onHoverOut={() => setMenuHighlighted(false)}
+              accessibilityRole="button"
+              accessibilityLabel={t('Menu')}
+            >
+              <Animated.View style={[styles.menuButton, menuOpacity]}>
+                <MaterialCommunityIcons name="menu" size={26} color={brand.label} />
+              </Animated.View>
+            </Pressable>
+          ) : null}
 
           <View style={styles.middle}>
             <Animated.View
@@ -242,7 +143,7 @@ export function InicioTopBarSection({ controller }: InicioTopBarSectionProps) {
               pointerEvents={searchOpen ? 'none' : 'auto'}
             >
               <Text style={styles.title} numberOfLines={1}>
-                Encontra-me
+                {t('Encontra-me')}
               </Text>
             </Animated.View>
 
@@ -254,20 +155,20 @@ export function InicioTopBarSection({ controller }: InicioTopBarSectionProps) {
                 <TextInput
                   ref={searchInputRef}
                   style={styles.searchInput}
-                  value={controller.search}
-                  onChangeText={controller.setSearch}
-                  placeholder="Nome, bairro ou cidade"
+                  value={searchValue}
+                  onChangeText={browsing ? onBrowseQueryChange : controller.setSearch}
+                  placeholder={t('Nome, bairro ou cidade')}
                   placeholderTextColor={brand.placeholder}
                   returnKeyType="search"
-                  onSubmitEditing={controller.handleSearch}
-                  accessibilityLabel="Buscar pessoas"
+                  onSubmitEditing={browsing ? undefined : controller.handleSearch}
+                  accessibilityLabel={t('Buscar pessoas')}
                 />
-                {controller.search.length > 0 ? (
+                {searchValue.length > 0 ? (
                   <Pressable
-                    onPress={clearSearch}
+                    onPress={handleClear}
                     hitSlop={8}
                     accessibilityRole="button"
-                    accessibilityLabel="Limpar busca"
+                    accessibilityLabel={t('Limpar busca')}
                   >
                     <MaterialCommunityIcons name="close-circle" size={20} color={brand.placeholder} />
                   </Pressable>
@@ -283,7 +184,7 @@ export function InicioTopBarSection({ controller }: InicioTopBarSectionProps) {
             onHoverIn={() => setSearchHighlighted(true)}
             onHoverOut={() => setSearchHighlighted(false)}
             accessibilityRole="button"
-            accessibilityLabel={searchOpen ? 'Buscar' : 'Abrir busca'}
+            accessibilityLabel={searchOpen ? t('Buscar') : t('Abrir busca')}
           >
             <Animated.View style={[styles.searchButton, searchPressOpacity]}>
               <MaterialCommunityIcons name="magnify" size={22} color={brand.orange} />
@@ -292,59 +193,17 @@ export function InicioTopBarSection({ controller }: InicioTopBarSectionProps) {
         </View>
 
         {controller.locationDenied ? (
-          <Text style={styles.locationHint}>Ative a localização para ver pessoas próximas.</Text>
+          <Text style={styles.locationHint}>{t('Ative a localização para ver pessoas próximas.')}</Text>
         ) : null}
       </View>
-
-      <Modal
-        visible={controller.menuOpen}
-        transparent
-        animationType="none"
-        statusBarTranslucent
-        onRequestClose={controller.closeMenu}
-      >
-        <View style={styles.drawerRoot} pointerEvents="box-none">
-          <Pressable
-            style={styles.drawerScrimHit}
-            onPress={controller.closeMenu}
-            accessibilityRole="button"
-            accessibilityLabel="Fechar menu"
-          >
-            <Animated.View style={[styles.drawerScrim, scrimStyle]} />
-          </Pressable>
-          <Animated.View style={[styles.drawer, drawerStyle]} pointerEvents="auto">
-            <View style={[styles.drawerHeader, { paddingTop: insets.top + 12 }]}>
-              <Text style={styles.menuTitle}>Menu</Text>
-              <Pressable
-                onPress={controller.closeMenu}
-                hitSlop={8}
-                accessibilityRole="button"
-                accessibilityLabel="Fechar menu"
-              >
-                <MaterialCommunityIcons name="close" size={24} color={brand.label} />
-              </Pressable>
-            </View>
-            <View style={styles.drawerNav}>
-              {navItems.map((item) => (
-                <MenuItemRow key={item.key} item={item} brand={brand} styles={styles} />
-              ))}
-            </View>
-            {accountItem ? (
-              <View style={[styles.drawerFooter, { paddingBottom: Math.max(insets.bottom, 16) }]}>
-                <MenuItemRow item={accountItem} brand={brand} styles={styles} />
-              </View>
-            ) : null}
-          </Animated.View>
-        </View>
-      </Modal>
     </View>
   );
 }
 
-function makeStyles(brand: BrandColors, isWide: boolean, drawerWidth: number) {
+function makeStyles(brand: BrandColors, isWide: boolean, embedded: boolean) {
   return StyleSheet.create({
     wrap: {
-      paddingHorizontal: isWide ? 4 : PageGutter,
+      paddingHorizontal: isWide ? 4 : embedded ? 0 : PageGutter,
       paddingTop: isWide ? 4 : 8,
     },
     panel: {
@@ -416,71 +275,6 @@ function makeStyles(brand: BrandColors, isWide: boolean, drawerWidth: number) {
       color: brand.textMuted,
       fontSize: 13,
       fontWeight: '600',
-    },
-    drawerRoot: {
-      flex: 1,
-    },
-    drawerScrimHit: {
-      ...StyleSheet.absoluteFill,
-    },
-    drawerScrim: {
-      ...StyleSheet.absoluteFill,
-      backgroundColor: brand.overlay,
-    },
-    drawer: {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      zIndex: 2,
-      width: drawerWidth,
-      backgroundColor: brand.surface,
-      // borderRightWidth: 1,
-      // borderRightColor: brand.fieldBorder,
-      paddingHorizontal: 8,
-      elevation: 16,
-      shadowColor: brand.navyDeep,
-      shadowOpacity: 0.28,
-      shadowRadius: 24,
-      shadowOffset: { width: 8, height: 0 },
-    },
-    drawerHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: 12,
-      paddingBottom: 12,
-    },
-    drawerNav: {
-      flex: 1,
-      gap: 2,
-    },
-    drawerFooter: {
-      borderTopWidth: 1,
-      borderTopColor: brand.divider,
-      paddingTop: 8,
-      paddingHorizontal: 0,
-    },
-    menuTitle: {
-      fontSize: 18,
-      fontWeight: '800',
-      color: brand.textDark,
-    },
-    menuItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
-      paddingVertical: 14,
-      paddingHorizontal: 12,
-      borderRadius: Radius.md,
-    },
-    menuLabel: {
-      fontSize: 15,
-      fontWeight: '600',
-      color: brand.textDark,
-    },
-    menuLabelDanger: {
-      color: brand.orangeDark,
     },
   });
 }

@@ -9,6 +9,7 @@ import {
   setBiometricEnabled,
   type BiometricCopy,
 } from '@/lib/biometric';
+import { tr } from '@/lib/i18n';
 
 /** Oferece ativar biometria após cadastro/login, se o aparelho tiver digital/Face ID. */
 export function useBiometricEnroll() {
@@ -42,7 +43,7 @@ export function useBiometricEnroll() {
   const accept = async () => {
     setBusy(true);
     try {
-      const ok = await authenticate(enrollPromptRef.current);
+      const ok = await authenticate(tr(enrollPromptRef.current));
       if (ok) await setBiometricEnabled(true);
     } finally {
       finish();

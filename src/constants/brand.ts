@@ -8,6 +8,8 @@ const BrandLight = {
   navyDeep: '#081B33',
   orange: '#F5822E',
   orangeDark: '#E06F1E',
+  /** Texto laranja sobre fundo claro (contraste ≥ 4.5:1) — ex.: "Sair" */
+  orangeText: '#B4570F',
   cream: '#F4E4C1',
   blue: '#1B4DB8',
   blueDark: '#163F97',
@@ -42,7 +44,7 @@ const BrandLight = {
   onStatusBadge: '#FFFFFF',
   chatBubbleAI: '#ECEBF6',
   chatBubbleUser: '#1B4DB8',
-  /** Texto sobre a bolha do usuário (branco na identidade; escuro nas paletas Sofia) */
+  /** Texto sobre a bolha do usuário */
   onChatBubbleUser: '#FFFFFF',
   /** Azul transparente para interpolateColor (não usar `transparent`) */
   blueClear: 'rgba(27, 77, 184, 0)',
@@ -50,6 +52,14 @@ const BrandLight = {
   onPrimary: '#FFFFFF',
   /** Overlay de modal */
   overlay: 'rgba(11, 36, 66, 0.45)',
+  /** Botão "Pedir ajuda" (emergência) — vermelho reservado só para isso */
+  emergency: '#C62828',
+  emergencyDark: '#A31F1F',
+  /** Fundo suave de cartões de emergência */
+  emergencySoft: '#FDECEC',
+  onEmergency: '#FFFFFF',
+  /** Véu sobre o mapa (preto neutro, igual nos dois esquemas) */
+  scrim: '#000000',
 } as const;
 
 const BrandDark = {
@@ -57,6 +67,7 @@ const BrandDark = {
   navyDeep: '#081B33',
   orange: '#F5822E',
   orangeDark: '#E06F1E',
+  orangeText: '#F08A3E',
   cream: '#F4E4C1',
   blue: '#3264D1',
   blueDark: '#4073E2',
@@ -89,6 +100,11 @@ const BrandDark = {
   blueClear: 'rgba(50, 100, 209, 0)',
   onPrimary: '#FFFFFF',
   overlay: 'rgba(0, 0, 0, 0.75)',
+  emergency: '#D93036',
+  emergencyDark: '#B8262B',
+  emergencySoft: '#2A1416',
+  onEmergency: '#FFFFFF',
+  scrim: '#000000',
 } as const;
 
 export type ColorSchemeName = 'light' | 'dark';

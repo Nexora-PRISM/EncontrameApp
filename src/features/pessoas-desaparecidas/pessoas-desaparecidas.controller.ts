@@ -1,22 +1,25 @@
 import { type Href, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 
+import { msg } from '@/lib/i18n-msg';
 import { usePeopleSearchQuery } from '@/services/people/people.service';
 import type { AddressScope, Person } from '@/services/people/people.types';
 
 const SEARCH_DEBOUNCE_MS = 350;
+/** Atalho "Crianças e adolescentes": até 17 anos (ECA). */
+const CHILD_MAX_AGE = '17';
 const PAGE_SIZE = 12;
 
 export const STATUS_FILTER_OPTIONS = [
-  { id: '', label: 'Todos' },
-  { id: '2', label: 'Procurado' },
-  { id: '3', label: 'Encontrado' },
-  { id: '4', label: 'Alerta' },
+  { id: '', label: msg('Todos') },
+  { id: '2', label: msg('Procurado') },
+  { id: '3', label: msg('Encontrado') },
+  { id: '4', label: msg('Alerta') },
 ] as const;
 
 export const ADDRESS_SCOPE_OPTIONS = [
-  { id: 'lastSeen' as const, label: 'Última vez vista' },
-  { id: 'origin' as const, label: 'De onde é' },
+  { id: 'lastSeen' as const, label: msg('Última vez vista') },
+  { id: 'origin' as const, label: msg('De onde é') },
 ];
 
 /** Centraliza filtros, paginação e navegação da listagem de pessoas. */
@@ -80,9 +83,16 @@ export function usePessoasDesaparecidasController() {
     );
   };
 
+  const childrenOnly = ageMax === CHILD_MAX_AGE && !ageMin;
+
   return {
     query,
     setQuery,
+    childrenOnly,
+    setChildrenOnly: (on: boolean) => {
+      setAgeMin('');
+      setAgeMax(on ? CHILD_MAX_AGE : '');
+    },
     filtersOpen,
     toggleFilters: () => setFiltersOpen((open) => !open),
     statusId,
