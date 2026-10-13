@@ -56,6 +56,13 @@ const config = {
     ],
     'expo-sqlite',
   ],
+  extra: {
+    ...appJson.expo.extra,
+    eas: {
+      ...appJson.expo.extra?.eas,
+      projectId: '27a85005-d936-4e6e-b952-8ddaebea8da1',
+    },
+  },
 };
 
 module.exports = { expo: config };

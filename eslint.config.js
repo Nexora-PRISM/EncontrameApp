@@ -8,7 +8,7 @@ module.exports = defineConfig([
     ignores: ['dist/*'],
   },
   {
-    files: ['scripts/**/*.js'],
+    files: ['scripts/**/*.js', 'app.config.js', 'eslint.config.js'],
     languageOptions: {
       sourceType: 'commonjs',
       globals: {

@@ -296,7 +296,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'conta',
     question: msg('Quais são as regras de uso?'),
     answer:
-      msg('Estão em Configurações > Regras de uso e privacidade. Em resumo: cadastre só casos reais, com vínculo ou autorização da família; não use o app para expor ou perseguir ninguém; e saiba que o uso não é anônimo — seus dados de cadastro identificam sua conta e podem ser usados para apurar abusos. Os Termos de Uso e a Política de Privacidade completos estão em revisão jurídica.'),
+      msg('Estão em Configurações > Regras de uso e privacidade. Em resumo: cadastre só casos reais, com vínculo ou autorização da família; não use o app para expor ou perseguir ninguém; e saiba que o uso não é anônimo — seus dados de cadastro identificam sua conta e podem ser usados para apurar abusos. A Política de Privacidade completa está publicada no site e em Sobre. Os Termos de Uso completos ainda estão em revisão jurídica.'),
     keywords: msg('regras termos uso política privacidade responsabilidade'),
   },
   {

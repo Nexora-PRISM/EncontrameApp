@@ -1,5 +1,6 @@
 import { type Href, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
+import { Platform } from 'react-native';
 
 import type { MapPin } from '@/components/brand-map';
 import { buildCarouselPeople } from '@/features/inicio/carousel-people';
@@ -90,7 +91,8 @@ export function useInicioController() {
   /** Fecha o menu e navega para a rota escolhida. */
   const goTo = (action: () => void) => {
     closeMenu();
-    action();
+    // No Android, navegar no mesmo instante em que o menu fecha derruba o app.
+    setTimeout(action, Platform.OS === 'android' ? 50 : 0);
   };
 
   const handleSearch = () => {

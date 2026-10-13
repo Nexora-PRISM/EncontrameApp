@@ -23,6 +23,8 @@ export function useSobreController() {
     openEmail: () =>
       open(`mailto:${AppInfo.supportEmail}`, t('Escreva para {email}.', { email: AppInfo.supportEmail })),
     openSite: () => open(AppInfo.companySite, t('Acesse {site}.', { site: AppInfo.companySite })),
+    openPrivacyPolicy: () =>
+      open(AppInfo.privacyPolicyUrl, t('Acesse {site}.', { site: AppInfo.privacyPolicyUrl })),
     goToRules: () => router.push('/regras' as Href),
   };
 }

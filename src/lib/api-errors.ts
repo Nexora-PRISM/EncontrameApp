@@ -39,7 +39,8 @@ export function parseApiError(
   if (typeof body === 'string') return { code: body, fields: {} };
 
   const fields: FieldErrors = {};
-  for (const item of body.errors ?? []) {
+  const list = Array.isArray(body.errors) ? body.errors : [];
+  for (const item of list) {
     if (!item?.field || !item.error) continue;
     fields[fieldMap[item.field] ?? item.field] = item.error as ErrorCode;
   }

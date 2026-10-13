@@ -35,6 +35,11 @@ export function RegrasContentSection({ controller }: Props) {
 
       <Text style={styles.note}>{t(controller.legalNote)}</Text>
       <BrandButton
+        label={t('Ler a política de privacidade')}
+        variant="blue"
+        onPress={controller.openPrivacyPolicy}
+      />
+      <BrandButton
         label={t('Dúvidas sobre seus dados')}
         variant="outline"
         onPress={controller.goToPrivacyContact}

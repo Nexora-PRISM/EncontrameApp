@@ -45,7 +45,7 @@ Telas: `/` (boas-vindas), `/login`, `/signup`, `/signup-password`, `/inicio` (ma
 - **Ligação para o 190 com um toque** (corrigido nesta rodada): sem confirmação, sujeito a ligação acidental.
 - **Avistamento vira "último local" automaticamente**: o mock (e, pelo nome do endpoint, provavelmente a API) atualiza `lastSeen` com o relato sem revisão — contraria a regra de não tratar relato como verdade. Precisa de status "não verificado" no backend.
 - **Sincronização de cadastros offline**: qualquer conta que fizer login no aparelho publica os cadastros pendentes feitos por visitantes antes dela. Em aparelho compartilhado, uma pessoa publica o cadastro de outra.
-- **Identificação Android**: `com.anonymous.EncontrameApp`. Precisa virar algo como `br.com.nexoraprism.encontrame` **antes** da primeira publicação na Play Store (não dá para trocar depois). Exige refazer a restrição da chave do Maps e o SHA-1 do OAuth.
+- **Identificação Android**: `com.nexoraprism.encontrame`. Precisa virar algo como `br.com.nexoraprism.encontrame` **antes** da primeira publicação na Play Store (não dá para trocar depois). Exige refazer a restrição da chave do Maps e o SHA-1 do OAuth.
 - **Foto em base64 dentro do JSON**: até ~2,7 MB por requisição, sem compressão/redimensionamento; pesado em rede móvel e no banco.
 - Arquivos de template do Expo ainda no repositório (`README.md` padrão, `scripts/reset-project.js`, imagens `react-logo*`, `expo-*`).
 

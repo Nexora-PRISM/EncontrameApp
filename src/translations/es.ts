@@ -232,8 +232,8 @@ export const es: Readonly<Record<string, string>> = {
     'En la pantalla de entrada, elige crear cuenta. Se piden nombre, CPF (documento brasileño), correo electrónico, celular y CEP (código postal), la aceptación de las reglas de uso y, después, una contraseña. También es posible empezar con tu cuenta de Google. Tu CPF no aparece para otras personas en la app.',
   'cadastro registrar criar conta google': 'registro registrar crear cuenta google',
   'Quais são as regras de uso?': '¿Cuáles son las reglas de uso?',
-  'Estão em Configurações > Regras de uso e privacidade. Em resumo: cadastre só casos reais, com vínculo ou autorização da família; não use o app para expor ou perseguir ninguém; e saiba que o uso não é anônimo — seus dados de cadastro identificam sua conta e podem ser usados para apurar abusos. Os Termos de Uso e a Política de Privacidade completos estão em revisão jurídica.':
-    'Están en Configuración > Reglas de uso y privacidad. En resumen: registra solo casos reales, con vínculo o autorización de la familia; no uses la app para exponer o perseguir a nadie; y ten en cuenta que el uso no es anónimo — tus datos de registro identifican tu cuenta y pueden usarse para investigar abusos. Los Términos de Uso y la Política de Privacidad completos están en revisión jurídica.',
+  'Estão em Configurações > Regras de uso e privacidade. Em resumo: cadastre só casos reais, com vínculo ou autorização da família; não use o app para expor ou perseguir ninguém; e saiba que o uso não é anônimo — seus dados de cadastro identificam sua conta e podem ser usados para apurar abusos. A Política de Privacidade completa está publicada no site e em Sobre. Os Termos de Uso completos ainda estão em revisão jurídica.':
+    'Están en Configuración > Reglas de uso y privacidad. En resumen: registra solo casos reales, con vínculo o autorización de la familia; no uses la app para exponer o perseguir a nadie; y ten en cuenta que el uso no es anónimo — tus datos de registro identifican tu cuenta y pueden usarse para investigar abusos. La Política de Privacidad completa está publicada en el sitio y en Acerca de. Los Términos de Uso completos siguen en revisión jurídica.',
   'regras termos uso política privacidade responsabilidade':
     'reglas términos uso política privacidad responsabilidad',
   'Esqueci minha senha. E agora?': 'Olvidé mi contraseña. ¿Y ahora?',
@@ -679,8 +679,8 @@ export const es: Readonly<Record<string, string>> = {
   '{localPendingCount} aguardando envio. Toque para apagar.':
     '{localPendingCount} esperando envío. Toca para borrar.',
   'Como usamos seus dados': 'Cómo usamos tus datos',
-  'Resumo. A política completa está em revisão jurídica.':
-    'Resumen. La política completa está en revisión jurídica.',
+  'Resumo no app. A política completa está no site.':
+    'Resumen en la app. La política completa está en el sitio.',
   'Segurança': 'Seguridad',
   'Pede sua digital ou rosto para abrir a conta neste celular.':
     'Pide tu huella o tu rostro para abrir la cuenta en este celular.',
@@ -1029,8 +1029,9 @@ export const es: Readonly<Record<string, string>> = {
     'Huella o rostro: los verifica el propio celular. La app no recibe tu biometría.',
   'Você pode pedir acesso, correção ou exclusão dos seus dados (LGPD) pela Central de Ajuda.':
     'Puedes pedir acceso, corrección o eliminación de tus datos (LGPD) en el Centro de Ayuda.',
-  'Os Termos de Uso e a Política de Privacidade completos estão em revisão jurídica e serão publicados antes do lançamento.':
-    'Los Términos de Uso y la Política de Privacidad completos están en revisión jurídica y se publicarán antes del lanzamiento.',
+  'A Política de Privacidade completa está publicada. Os Termos de Uso completos ainda estão em revisão jurídica.':
+    'La Política de Privacidad completa está publicada. Los Términos de Uso completos siguen en revisión jurídica.',
+  'Ler a política de privacidade': 'Leer la política de privacidad',
   // features/regras/sections/regras-content-section.tsx
   'Dúvidas sobre seus dados': 'Dudas sobre tus datos',
   // features/signup-password/sections/signup-password-form-section.tsx
@@ -1063,8 +1064,9 @@ export const es: Readonly<Record<string, string>> = {
   'Contato': 'Contacto',
   'Site da Nexora Prism': 'Sitio de Nexora Prism',
   'Documentos': 'Documentos',
-  'Os termos de uso e a política de privacidade completos estão em revisão jurídica e serão publicados antes do lançamento.':
-    'Los términos de uso y la política de privacidad completos están en revisión jurídica y se publicarán antes del lanzamiento.',
+  'A política de privacidade está publicada. Os termos de uso completos ainda estão em revisão jurídica.':
+    'La política de privacidad está publicada. Los términos de uso completos siguen en revisión jurídica.',
+  'Texto completo, publicado no site.': 'Texto completo, publicado en el sitio.',
   'Resumo das regras da comunidade e do uso dos seus dados.':
     'Resumen de las reglas de la comunidad y del uso de tus datos.',
   'Termos de uso': 'Términos de uso',

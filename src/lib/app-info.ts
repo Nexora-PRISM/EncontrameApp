@@ -12,6 +12,8 @@ export const AppInfo = {
     msg('Mobilização social para encontrar pessoas desaparecidas, com prioridade para a proteção de crianças e mulheres — e aberta a toda a sociedade.'),
   companySite: 'https://nexoraprism.com.br',
   supportEmail: 'contato@nexoraprism.com.br',
+  /** Página HTML pública (Play Store e link dentro do app). */
+  privacyPolicyUrl: 'https://encontrame.nexoraprism.com.br/privacidade',
 } as const;
 
 /** Versão do app definida em app.json (`expo.version`). */

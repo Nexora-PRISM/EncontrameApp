@@ -56,7 +56,7 @@ export function SobreInfoSection({ controller }: Props) {
 
       <SettingsGroup
         title={t('Documentos')}
-        footer={t('Os termos de uso e a política de privacidade completos estão em revisão jurídica e serão publicados antes do lançamento.')}
+        footer={t('A política de privacidade está publicada. Os termos de uso completos ainda estão em revisão jurídica.')}
       >
         <SettingsRow
           icon="clipboard-check-outline"
@@ -65,7 +65,12 @@ export function SobreInfoSection({ controller }: Props) {
           onPress={controller.goToRules}
         />
         <SettingsRow icon="file-document-outline" label={t('Termos de uso')} unavailable />
-        <SettingsRow icon="shield-account-outline" label={t('Política de privacidade')} unavailable />
+        <SettingsRow
+          icon="shield-account-outline"
+          label={t('Política de privacidade')}
+          description={t('Texto completo, publicado no site.')}
+          onPress={controller.openPrivacyPolicy}
+        />
       </SettingsGroup>
     </View>
   );

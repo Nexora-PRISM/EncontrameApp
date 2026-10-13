@@ -227,8 +227,8 @@ export const en: Readonly<Record<string, string>> = {
     'On the welcome screen, choose to create an account. You are asked for your name, CPF (Brazilian taxpayer ID), email, mobile number and CEP (postal code), to accept the terms of use and then to choose a password. You can also start with your Google account. Your CPF is not shown to other people in the app.',
   'cadastro registrar criar conta google': 'registration register create account google sign up',
   'Quais são as regras de uso?': 'What are the terms of use?',
-  'Estão em Configurações > Regras de uso e privacidade. Em resumo: cadastre só casos reais, com vínculo ou autorização da família; não use o app para expor ou perseguir ninguém; e saiba que o uso não é anônimo — seus dados de cadastro identificam sua conta e podem ser usados para apurar abusos. Os Termos de Uso e a Política de Privacidade completos estão em revisão jurídica.':
-    "They are in Settings > Terms of use and privacy. In short: register only real cases, with a relationship to the person or the family's authorization; do not use the app to expose or stalk anyone; and know that use is not anonymous — your registration data identifies your account and may be used to investigate abuse. The full Terms of Use and Privacy Policy are under legal review.",
+  'Estão em Configurações > Regras de uso e privacidade. Em resumo: cadastre só casos reais, com vínculo ou autorização da família; não use o app para expor ou perseguir ninguém; e saiba que o uso não é anônimo — seus dados de cadastro identificam sua conta e podem ser usados para apurar abusos. A Política de Privacidade completa está publicada no site e em Sobre. Os Termos de Uso completos ainda estão em revisão jurídica.':
+    "They are in Settings > Terms of use and privacy. In short: register only real cases, with a relationship to the person or the family's authorization; do not use the app to expose or stalk anyone; and know that use is not anonymous — your registration data identifies your account and may be used to investigate abuse. The full Privacy Policy is published on the website and in About. The full Terms of Use are still under legal review.",
   'regras termos uso política privacidade responsabilidade':
     'rules terms use policy privacy responsibility',
   'Esqueci minha senha. E agora?': 'I forgot my password. What now?',
@@ -671,8 +671,8 @@ export const en: Readonly<Record<string, string>> = {
   '{localPendingCount} aguardando envio. Toque para apagar.':
     '{localPendingCount} waiting to be sent. Tap to delete.',
   'Como usamos seus dados': 'How we use your data',
-  'Resumo. A política completa está em revisão jurídica.':
-    'Summary. The full policy is under legal review.',
+  'Resumo no app. A política completa está no site.':
+    'Summary in the app. The full policy is on the website.',
   'Segurança': 'Security',
   'Pede sua digital ou rosto para abrir a conta neste celular.':
     'Asks for your fingerprint or face to open the account on this phone.',
@@ -1018,8 +1018,9 @@ export const en: Readonly<Record<string, string>> = {
     'Fingerprint or face: checked by the phone itself. The app does not receive your biometrics.',
   'Você pode pedir acesso, correção ou exclusão dos seus dados (LGPD) pela Central de Ajuda.':
     'You can request access to, correction of or deletion of your data (LGPD) through the Help Center.',
-  'Os Termos de Uso e a Política de Privacidade completos estão em revisão jurídica e serão publicados antes do lançamento.':
-    'The full Terms of Use and Privacy Policy are under legal review and will be published before launch.',
+  'A Política de Privacidade completa está publicada. Os Termos de Uso completos ainda estão em revisão jurídica.':
+    'The full Privacy Policy is published. The full Terms of Use are still under legal review.',
+  'Ler a política de privacidade': 'Read the privacy policy',
   // features/regras/sections/regras-content-section.tsx
   'Dúvidas sobre seus dados': 'Questions about your data',
   // features/signup-password/sections/signup-password-form-section.tsx
@@ -1052,8 +1053,9 @@ export const en: Readonly<Record<string, string>> = {
   'Contato': 'Contact',
   'Site da Nexora Prism': 'Nexora Prism website',
   'Documentos': 'Documents',
-  'Os termos de uso e a política de privacidade completos estão em revisão jurídica e serão publicados antes do lançamento.':
-    'The full terms of use and privacy policy are under legal review and will be published before launch.',
+  'A política de privacidade está publicada. Os termos de uso completos ainda estão em revisão jurídica.':
+    'The privacy policy is published. The full terms of use are still under legal review.',
+  'Texto completo, publicado no site.': 'Full text, published on the website.',
   'Resumo das regras da comunidade e do uso dos seus dados.':
     'Summary of the community rules and how your data is used.',
   'Termos de uso': 'Terms of use',

@@ -27,6 +27,18 @@ import {
 
 const BIOMETRIC_FAIL = msg('Não foi possível entrar com a digital. Use e-mail e senha.');
 
+/** Volta para o Início que já está aberto. Empilhar outro mapa no Android fecha o app. */
+function finishLogin(
+  router: { canGoBack: () => boolean; back: () => void; replace: (href: Href) => void },
+  dest: Href,
+) {
+  if (dest === '/inicio' && router.canGoBack()) {
+    router.back();
+    return;
+  }
+  router.replace(dest);
+}
+
 /** Centraliza estado, validação e ações da tela de login. */
 export function useLoginController() {
   const t = useT();
@@ -87,7 +99,7 @@ export function useLoginController() {
       if (!ok) return;
 
       await unlockAndRefreshSession();
-      router.replace(dest);
+      finishLogin(router, dest);
     } catch {
       setFormError(t(BIOMETRIC_FAIL));
       await revokeStoredSession();
@@ -144,7 +156,7 @@ export function useLoginController() {
     try {
       await loginMutation.mutateAsync({ identifier, password });
       await enroll.promptIfAvailable();
-      router.replace(dest);
+      finishLogin(router, dest);
     } catch (error) {
       const { code, fields } = parseApiError(error);
 
@@ -153,9 +165,7 @@ export function useLoginController() {
         return;
       }
 
-      if (code === 'invalid_credentials') {
-        setFormError(t(generalErrorMessage(code)));
-      }
+      setFormError(t(generalErrorMessage(code)));
     }
   };
 

@@ -2,8 +2,8 @@ import { msg } from '@/lib/i18n-msg';
 
 /**
  * Regras de uso e resumo de privacidade exibidos no app (/regras).
- * Regra: só afirmar o que o app faz de verdade. Os Termos de Uso e a Política de Privacidade
- * completos dependem de revisão jurídica e ainda não foram publicados.
+ * Regra: só afirmar o que o app faz de verdade. A política completa está em
+ * `public/privacidade/index.html`. Os Termos de Uso completos ainda não foram publicados.
  */
 export type RulesSection = {
   id: string;
@@ -56,4 +56,4 @@ export const RULES_SECTIONS: RulesSection[] = [
 ];
 
 export const RULES_LEGAL_NOTE =
-  msg('Os Termos de Uso e a Política de Privacidade completos estão em revisão jurídica e serão publicados antes do lançamento.');
+  msg('A Política de Privacidade completa está publicada. Os Termos de Uso completos ainda estão em revisão jurídica.');

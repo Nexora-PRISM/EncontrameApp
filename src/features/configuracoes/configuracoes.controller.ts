@@ -277,6 +277,11 @@ export function useConfiguracoesController() {
     goToScamTips: () => router.push({ pathname: '/ajuda', params: { categoria: 'golpes' } } as Href),
     goToSobre: () => router.push('/sobre' as Href),
     goToRules: () => router.push('/regras' as Href),
+    openPrivacyPolicy: () => {
+      void Linking.openURL(AppInfo.privacyPolicyUrl).catch(() =>
+        showAlert(t('Não foi possível abrir'), t('Acesse {site}.', { site: AppInfo.privacyPolicyUrl })),
+      );
+    },
     goToSofiaTheme: () => router.push('/sofia-theme' as Href),
     petsEnabled: env.petsEnabled,
     goToPets: () => router.push('/pets' as Href),

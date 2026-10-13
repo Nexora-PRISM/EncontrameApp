@@ -193,8 +193,14 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
         <SettingsRow
           icon="shield-account-outline"
           label={t('Como usamos seus dados')}
-          description={t('Resumo. A política completa está em revisão jurídica.')}
+          description={t('Resumo no app. A política completa está no site.')}
           onPress={c.goToRules}
+        />
+        <SettingsRow
+          icon="file-document-outline"
+          label={t('Política de privacidade')}
+          description={t('Texto completo, publicado no site.')}
+          onPress={c.openPrivacyPolicy}
         />
       </SettingsGroup>
 

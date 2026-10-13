@@ -2,6 +2,19 @@
   command = "npx expo export --platform web"
   publish = "dist"
 
+# Página estática da política. Sem force, o rewrite do app (abaixo) engoliria /privacidade.
+[[redirects]]
+  from = "/privacidade"
+  to = "/privacidade/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/privacidade/"
+  to = "/privacidade/index.html"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
