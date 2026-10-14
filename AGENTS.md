@@ -202,6 +202,15 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.
 
+## Branches e pull requests
+
+Quando a pessoa pedir uma **feature** para a IA implementar:
+
+1. Crie uma branch nova a partir da `main` atualizada (`git fetch`, `git checkout main`, `git pull`, depois `git checkout -b feature/<descricao-curta>` em kebab-case), **antes** de editar código.
+2. Faça todas as alterações dessa feature nessa branch. Não commite nem faça push direto na `main`.
+3. Para subir o trabalho à `main`, abra um pull request da branch `feature/...` para `main`. Esse é o único caminho: sem merge local na `main` e sem push direto na `main`.
+4. Assim que o PR existir, copie a URL para a área de transferência e envie o mesmo link no chat, para quem precisar encaminhar a outra pessoa aprovar. No PowerShell: `Set-Clipboard -Value "<url>"`. Confirme no chat que o link já está copiado.
+
 ## Regras de trabalho para o agente
 
 1. **Sempre rode `npm run check` antes de concluir** e só finalize com saída limpa (exit 0).
@@ -215,3 +224,6 @@ No Netlify: Site configuration → Environment variables (disponíveis no **buil
 6. Feature nova sempre com repositório mock além do axios; o service escolhe por env.
 7. Se as rotas tipadas quebrarem (`.expo/types/router.d.ts` com caminhos estranhos), rode
    `npx expo start --clear` para regenerar antes do `npm run check`.
+8. Feature pedida à IA: branch `feature/...` a partir da `main`, e subida à `main` só por pull request.
+   Ao abrir o PR, copie a URL para a área de transferência e mande o link no chat
+   (veja **Branches e pull requests**).
