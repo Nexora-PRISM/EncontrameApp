@@ -1,6 +1,6 @@
 import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { DEFAULT_NEARBY_RADIUS_KM, haversineKm, snapNearbyCoord } from '@/lib/geo';
+import { snapNearbyCoord } from '@/lib/geo';
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { useSessionUser } from '@/lib/use-session-user';
@@ -12,6 +12,7 @@ import {
   mergeLocalPeople,
   saveLocalPending,
 } from '@/services/people/people.local.store';
+import { filterLocalNearby, filterLocalSearch } from '@/services/people/people.filters';
 import { getPeopleRepository } from '@/services/people/people.repository';
 import type {
   CreatePersonPayload,
@@ -242,55 +243,4 @@ export function useReportLastSeenMutation(id: string) {
 async function listLocalPersons(): Promise<Person[]> {
   const pending = await listLocalPending();
   return pending.map((item) => item.person);
-}
-
-function filterLocalNearby(people: Person[], params: NearbyPeopleParams): Person[] {
-  const radius = params.radiusKm ?? DEFAULT_NEARBY_RADIUS_KM;
-  const nearby = people.filter((person) => {
-    if (!person.coords) return true;
-    return (
-      haversineKm(params.latitude, params.longitude, person.coords.latitude, person.coords.longitude) <=
-      radius
-    );
-  });
-  return filterLocalByQuery(nearby, params.query ?? '');
-}
-
-function filterLocalSearch(people: Person[], params: PeopleSearchParams): Person[] {
-  const byName = filterLocalByQuery(people, params.query ?? '');
-  const useOrigin = params.addressScope === 'origin';
-  return byName.filter((person) => {
-    if (params.statusId != null && person.statusId !== params.statusId) return false;
-    if (params.ageMin != null && (person.age == null || person.age < params.ageMin)) return false;
-    if (params.ageMax != null && (person.age == null || person.age > params.ageMax)) return false;
-    if (params.city && !includesField(useOrigin ? person.originCity : person.city, params.city)) return false;
-    if (params.state && !includesField(useOrigin ? person.originState : person.state, params.state)) return false;
-    if (params.country && !includesField(useOrigin ? person.originCountry : person.country, params.country)) {
-      return false;
-    }
-    if (
-      params.neighborhood &&
-      !includesField(useOrigin ? person.originNeighborhood : person.neighborhood, params.neighborhood)
-    ) {
-      return false;
-    }
-    return true;
-  });
-}
-
-function filterLocalByQuery(people: Person[], query: string): Person[] {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return people;
-
-  return people.filter((person) => {
-    const haystack = [person.fullName, person.nickname, person.location, person.lastSeen]
-      .filter(Boolean)
-      .join(' ')
-      .toLowerCase();
-    return haystack.includes(needle);
-  });
-}
-
-function includesField(value: string | undefined, needle: string) {
-  return Boolean(value?.toLowerCase().includes(needle.trim().toLowerCase()));
 }

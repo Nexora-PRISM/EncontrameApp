@@ -30,6 +30,22 @@ export type SupportDraft = {
   accountEmail?: string;
 };
 
+/** Mínimo para a equipe conseguir entender o pedido. */
+export const SUPPORT_MESSAGE_MIN = 10;
+/** Teto do texto colado no e-mail de suporte. */
+export const SUPPORT_MESSAGE_MAX = 2000;
+
+/** Mensagem curta demais para enviar ao suporte. */
+export function supportMessageError(message: string): 'too_short' | undefined {
+  if (message.trim().length < SUPPORT_MESSAGE_MIN) return 'too_short';
+  return undefined;
+}
+
+/** Corta o que passar do teto, para o campo não crescer sem limite. */
+export function clampSupportMessage(value: string): string {
+  return value.slice(0, SUPPORT_MESSAGE_MAX);
+}
+
 /**
  * Monta o e-mail de suporte. Não existe API de chamados ainda: a solicitação só
  * chega à equipe quando a pessoa envia o e-mail no próprio app de e-mail.

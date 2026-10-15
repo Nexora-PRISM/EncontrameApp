@@ -10,11 +10,15 @@ import {
 import { AppInfo } from '@/lib/app-info';
 import { useT } from '@/lib/i18n';
 import { useSafeBack } from '@/lib/safe-back';
-import { openSupportEmail, type SupportTopic } from '@/lib/support';
+import {
+  SUPPORT_MESSAGE_MAX,
+  SUPPORT_MESSAGE_MIN,
+  clampSupportMessage,
+  openSupportEmail,
+  supportMessageError,
+  type SupportTopic,
+} from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
-
-const MESSAGE_MIN = 10;
-const MESSAGE_MAX = 2000;
 
 type ContactResult = 'opened' | 'no-mail-app' | null;
 
@@ -63,14 +67,14 @@ export function useAjudaController() {
   };
 
   const changeMessage = (value: string) => {
-    setMessage(value.slice(0, MESSAGE_MAX));
+    setMessage(clampSupportMessage(value));
     if (messageError) setMessageError(undefined);
   };
 
   const submitContact = () => {
     const trimmed = message.trim();
-    if (trimmed.length < MESSAGE_MIN) {
-      setMessageError(t('Escreva pelo menos {MESSAGE_MIN} caracteres para podermos ajudar.', { MESSAGE_MIN }));
+    if (supportMessageError(trimmed)) {
+      setMessageError(t('Escreva pelo menos {MESSAGE_MIN} caracteres para podermos ajudar.', { MESSAGE_MIN: SUPPORT_MESSAGE_MIN }));
       return;
     }
 
@@ -119,7 +123,7 @@ export function useAjudaController() {
     setTopic,
     message,
     setMessage: changeMessage,
-    messageMax: MESSAGE_MAX,
+    messageMax: SUPPORT_MESSAGE_MAX,
     messageError,
     sending,
     submitContact,

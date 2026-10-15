@@ -8,6 +8,22 @@ module.exports = defineConfig([
     ignores: ['dist/*'],
   },
   {
+    files: ['**/*.test.ts'],
+    languageOptions: {
+      globals: {
+        afterAll: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        beforeEach: 'readonly',
+        describe: 'readonly',
+        expect: 'readonly',
+        it: 'readonly',
+        jest: 'readonly',
+        test: 'readonly',
+      },
+    },
+  },
+  {
     files: ['scripts/**/*.js', 'app.config.js', 'eslint.config.js'],
     languageOptions: {
       sourceType: 'commonjs',

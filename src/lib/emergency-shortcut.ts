@@ -28,13 +28,40 @@ export type ShortcutAvailability =
   /** Android anterior ao 7.1. */
   | 'unsupported';
 
+/**
+ * Decide se o atalho pode ser oferecido, sem tocar no módulo nativo.
+ * `supported === null` significa que a consulta ao Android falhou.
+ */
+export function resolveShortcutAvailability(input: {
+  os: string;
+  modulePresent: boolean;
+  supported: boolean | null;
+}): ShortcutAvailability {
+  if (input.os !== 'android') return 'android-only';
+  if (!input.modulePresent || input.supported == null) return 'needs-update';
+  return input.supported ? 'available' : 'unsupported';
+}
+
 export function emergencyShortcutAvailability(): ShortcutAvailability {
-  if (Platform.OS !== 'android') return 'android-only';
-  if (!EmergencyShortcut) return 'needs-update';
+  if (!EmergencyShortcut) {
+    return resolveShortcutAvailability({
+      os: Platform.OS,
+      modulePresent: false,
+      supported: false,
+    });
+  }
   try {
-    return EmergencyShortcut.isSupported() ? 'available' : 'unsupported';
+    return resolveShortcutAvailability({
+      os: Platform.OS,
+      modulePresent: true,
+      supported: EmergencyShortcut.isSupported(),
+    });
   } catch {
-    return 'needs-update';
+    return resolveShortcutAvailability({
+      os: Platform.OS,
+      modulePresent: true,
+      supported: null,
+    });
   }
 }
 

@@ -16,6 +16,7 @@ import { useFieldErrors } from '@/lib/use-field-errors';
 import {
   collectErrors,
   formatError,
+  rulesAcceptedError,
   isCep,
   isCpf,
   isEmail,
@@ -135,7 +136,7 @@ export function useSignupController() {
       email: formatError(email, isEmail),
       phone: formatError(phone, isPhone),
       cep: optionalFormatError(cep, isCep),
-      rules: rulesAccepted ? undefined : 'required',
+      rules: rulesAcceptedError(rulesAccepted),
     });
 
     setErrors(found);

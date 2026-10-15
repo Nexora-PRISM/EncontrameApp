@@ -1,6 +1,7 @@
 import { type Href, useRouter } from 'expo-router';
 import { useState } from 'react';
 
+import { type PetFormField, petFieldError, validatePetForm } from '@/features/cadastrar-pet/pet-form';
 import { parseApiError } from '@/lib/api-errors';
 import { showAlert } from '@/lib/dialog';
 import { env } from '@/lib/env';
@@ -11,21 +12,11 @@ import { useSafeBack } from '@/lib/safe-back';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import { usePhotoPicker } from '@/lib/use-photo-picker';
 import { useSessionUser } from '@/lib/use-session-user';
-import {
-  collectErrors,
-  formatError,
-  isPastDate,
-  isPhone,
-  optionalFormatError,
-  textError,
-} from '@/lib/validation';
 import { useCreatePetMutation } from '@/services/pets/pets.service';
 import { PET_SIZE_OPTIONS, PET_SPECIES_OPTIONS } from '@/services/pets/pets.types';
 import { usePremiumStatusQuery } from '@/services/premium/premium.service';
 
 export { PET_SIZE_OPTIONS, PET_SPECIES_OPTIONS };
-
-const PET_NAME_MIN = 2;
 
 /** Campos da API que têm outro nome no formulário. */
 const API_FIELD_MAP = { name: 'petName' };
@@ -53,32 +44,18 @@ export function useCadastrarPetController() {
   const [lastSeen, setLastSeen] = useState('');
   const [contactPhone, setContactPhone] = useState('');
 
-  const rules = {
-    petName: (value: string) => textError(value, PET_NAME_MIN),
-    species: (value: string) => textError(value),
-    city: (value: string) => textError(value),
-    lastSeen: (value: string) => optionalFormatError(value, isPastDate),
-    contactPhone: (value: string) => formatError(value, isPhone),
-  };
-
-  const change = (field: keyof typeof rules, value: string, set: (next: string) => void) => {
+  const change = (field: PetFormField, value: string, set: (next: string) => void) => {
     set(value);
-    if (isDirty(field)) setFieldCode(field, rules[field](value));
+    if (isDirty(field)) setFieldCode(field, petFieldError(field, value));
   };
 
-  const blur = (field: keyof typeof rules, value: string) => {
+  const blur = (field: PetFormField, value: string) => {
     markDirty(field);
-    setFieldCode(field, rules[field](value));
+    setFieldCode(field, petFieldError(field, value));
   };
 
   const handleSubmit = async () => {
-    const found = collectErrors({
-      petName: rules.petName(petName),
-      species: rules.species(species),
-      city: rules.city(city),
-      lastSeen: rules.lastSeen(lastSeen),
-      contactPhone: rules.contactPhone(contactPhone),
-    });
+    const found = validatePetForm({ petName, species, city, lastSeen, contactPhone });
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
@@ -123,7 +100,7 @@ export function useCadastrarPetController() {
     setSpecies: (value: string) => {
       setSpecies(value);
       markDirty('species');
-      setFieldCode('species', rules.species(value));
+      setFieldCode('species', petFieldError('species', value));
     },
     breed,
     setBreed,

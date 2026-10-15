@@ -35,6 +35,16 @@ export function newPasswordError(value: string): ErrorCode | undefined {
   return undefined;
 }
 
+/** Confirmação da senha: obrigatória e igual à senha digitada. */
+export function confirmPasswordError(password: string, confirm: string): ErrorCode | undefined {
+  return textError(confirm) ?? (password !== confirm ? 'invalid_format' : undefined);
+}
+
+/** Cadastro só segue depois do aceite das regras de uso. */
+export function rulesAcceptedError(accepted: boolean): ErrorCode | undefined {
+  return accepted ? undefined : 'required';
+}
+
 const EMAIL_REGEX = /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/;
 
 export const isEmail = (value: string) => EMAIL_REGEX.test(value.trim());

@@ -4,9 +4,9 @@ import { Alert, Platform } from 'react-native';
 
 import { showAlert } from '@/lib/dialog';
 import { useT } from '@/lib/i18n';
+import { MAX_PHOTO_BYTES, isAllowedPhotoFile, photoSizeError, stripDataUrlPrefix } from '@/lib/photo';
 
-const DEFAULT_MAX_BYTES = 2 * 1024 * 1024;
-const ALLOWED_WEB_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg']);
+const DEFAULT_MAX_BYTES = MAX_PHOTO_BYTES;
 
 /**
  * Escolha de foto (câmera/galeria no celular, arquivo no web), com limite de tamanho.
@@ -20,12 +20,12 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
 
   const applyPhoto = (uri: string, base64OrDataUrl: string) => {
     const normalized = stripDataUrlPrefix(base64OrDataUrl);
-    const size = estimateBase64Bytes(normalized);
-    if (size > maxBytes) {
+    const problem = photoSizeError(normalized, maxBytes);
+    if (problem === 'photo_too_large') {
       showAlert(t('Foto muito grande'), t('A foto deve ter no máximo {maxMb} MB.', { maxMb }));
       return;
     }
-    if (size <= 0) {
+    if (problem === 'photo_empty') {
       showAlert(t('Foto inválida'), t('Não foi possível ler a imagem selecionada.'));
       return;
     }
@@ -83,7 +83,7 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
     input.onchange = () => {
       const file = input.files?.[0];
       if (!file) return;
-      if (!ALLOWED_WEB_MIME.has(file.type) && !/\.(png|jpe?g)$/i.test(file.name)) {
+      if (!isAllowedPhotoFile(file.type, file.name)) {
         showAlert(t('Formato inválido'), t('Envie apenas fotos PNG ou JPG.'));
         return;
       }
@@ -126,19 +126,4 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
   };
 
   return { photoUri, photoBase64, pickPhoto, removePhoto };
-}
-
-function stripDataUrlPrefix(value: string): string {
-  const trimmed = value.trim();
-  const comma = trimmed.indexOf(',');
-  if (trimmed.startsWith('data:') && comma >= 0) {
-    return trimmed.slice(comma + 1);
-  }
-  return trimmed;
-}
-
-function estimateBase64Bytes(base64: string): number {
-  if (!base64) return 0;
-  const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
-  return Math.floor((base64.length * 3) / 4) - padding;
 }

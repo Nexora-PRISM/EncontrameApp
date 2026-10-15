@@ -10,17 +10,27 @@ import {
   isMinorAge,
   policeReportError,
 } from '@/features/cadastrar-pessoa/legitimacy';
+import {
+  HEIGHT_MAX_CM,
+  HEIGHT_MIN_CM,
+  validatePersonForm,
+} from '@/features/cadastrar-pessoa/person-form';
 import { parseApiError } from '@/lib/api-errors';
 import { showAlert } from '@/lib/dialog';
 import { tr, useT } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
 import { maskDate, maskDigits, maskPhone } from '@/lib/masks';
 import { isLocalPersonId } from '@/lib/person-status';
+import {
+  MAX_PHOTO_BYTES,
+  isAllowedPhotoFile,
+  photoSizeError,
+  stripDataUrlPrefix,
+} from '@/lib/photo';
 import { getSessionUser } from '@/lib/session';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import {
   NAME_MIN_LENGTH,
-  collectErrors,
   formatError,
   isPastDate,
   isPhone,
@@ -41,10 +51,6 @@ export const ETHNICITY_OPTIONS = [msg('Branca'), msg('Preta'), msg('Parda'), msg
 export const BUILD_OPTIONS = [msg('Magro'), msg('Médio'), msg('Atlético'), msg('Forte')] as const;
 
 const SUBMIT_END_THRESHOLD = 120;
-const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
-const ALLOWED_WEB_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg']);
-const HEIGHT_MIN_CM = 30;
-const HEIGHT_MAX_CM = 250;
 
 /** Campos da API que têm outro nome no formulário. */
 const API_FIELD_MAP = {
@@ -261,16 +267,16 @@ export function useCadastrarPessoaController() {
   };
 
   const validate = () =>
-    collectErrors({
-      fullName: textError(fullName, NAME_MIN_LENGTH),
-      localidade: textError(location),
-      phone: formatError(phone, isPhone),
-      age: ageError(age),
-      heightCm: optionalRangeError(heightCm, HEIGHT_MIN_CM, HEIGHT_MAX_CM),
-      lastSeen: optionalFormatError(lastSeen, isPastDate),
-      reporterRelationship: textError(reporterRelationship),
-      policeReport: policeReportError(policeReport, isMinor),
-      declaration: declarationAccepted ? undefined : 'required',
+    validatePersonForm({
+      fullName,
+      location,
+      phone,
+      age,
+      heightCm,
+      lastSeen,
+      reporterRelationship,
+      policeReport,
+      declarationAccepted,
     });
 
   const updateSubmitVisibility = (metrics: {
@@ -287,12 +293,12 @@ export function useCadastrarPessoaController() {
 
   const applyPhoto = (uri: string, base64OrDataUrl: string) => {
     const normalized = stripDataUrlPrefix(base64OrDataUrl);
-    const size = estimateBase64Bytes(normalized);
-    if (size > MAX_PHOTO_BYTES) {
+    const problem = photoSizeError(normalized);
+    if (problem === 'photo_too_large') {
       showAlert(t('Foto muito grande'), t('A foto deve ter no máximo 2 MB.'));
       return;
     }
-    if (size <= 0) {
+    if (problem === 'photo_empty') {
       showAlert(t('Foto inválida'), t('Não foi possível ler a imagem selecionada.'));
       return;
     }
@@ -356,7 +362,7 @@ export function useCadastrarPessoaController() {
       const file = input.files?.[0];
       if (!file) return;
 
-      if (!ALLOWED_WEB_MIME.has(file.type) && !/\.(png|jpe?g)$/i.test(file.name)) {
+      if (!isAllowedPhotoFile(file.type, file.name)) {
         showAlert(t('Formato inválido'), t('Envie apenas fotos PNG ou JPG.'));
         return;
       }
@@ -548,18 +554,3 @@ export function useCadastrarPessoaController() {
 }
 
 export type CadastrarPessoaController = ReturnType<typeof useCadastrarPessoaController>;
-
-function stripDataUrlPrefix(value: string): string {
-  const trimmed = value.trim();
-  const comma = trimmed.indexOf(',');
-  if (trimmed.startsWith('data:') && comma >= 0) {
-    return trimmed.slice(comma + 1);
-  }
-  return trimmed;
-}
-
-function estimateBase64Bytes(base64: string): number {
-  if (!base64) return 0;
-  const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
-  return Math.floor((base64.length * 3) / 4) - padding;
-}

@@ -5,16 +5,12 @@ import { useBiometricEnroll } from '@/features/biometric/use-biometric-enroll';
 import { parseApiError } from '@/lib/api-errors';
 import { clearSignupDraft, getSignupDraft, setSignupReturnErrors } from '@/lib/signup-draft';
 import { useFieldErrors } from '@/lib/use-field-errors';
-import { collectErrors, newPasswordError, textError, type ErrorCode } from '@/lib/validation';
+import { collectErrors, confirmPasswordError, newPasswordError } from '@/lib/validation';
 import { useSignupMutation } from '@/services/auth/auth.service';
 import type { SignupPayload } from '@/services/auth/auth.types';
 
 /** Campos da API que têm outro nome no formulário. */
 const API_FIELD_MAP = { document: 'cpf', cellPhone: 'phone' };
-
-function confirmError(password: string, confirm: string): ErrorCode | undefined {
-  return textError(confirm) ?? (password !== confirm ? 'invalid_format' : undefined);
-}
 
 /** Centraliza validação e cadastro da etapa 2 (senha). */
 export function useSignupPasswordController() {
@@ -38,7 +34,7 @@ export function useSignupPasswordController() {
   const changePassword = (value: string) => {
     setPassword(value);
     if (isDirty('password')) setFieldCode('password', newPasswordError(value));
-    if (isDirty('confirm')) setFieldCode('confirm', confirmError(value, confirm));
+    if (isDirty('confirm')) setFieldCode('confirm', confirmPasswordError(value, confirm));
   };
 
   const blurPassword = () => {
@@ -48,18 +44,18 @@ export function useSignupPasswordController() {
 
   const changeConfirm = (value: string) => {
     setConfirm(value);
-    if (isDirty('confirm')) setFieldCode('confirm', confirmError(password, value));
+    if (isDirty('confirm')) setFieldCode('confirm', confirmPasswordError(password, value));
   };
 
   const blurConfirm = () => {
     markDirty('confirm');
-    setFieldCode('confirm', confirmError(password, confirm));
+    setFieldCode('confirm', confirmPasswordError(password, confirm));
   };
 
   const handleRegister = async () => {
     const found = collectErrors({
       password: newPasswordError(password),
-      confirm: confirmError(password, confirm),
+      confirm: confirmPasswordError(password, confirm),
     });
 
     setErrors(found);

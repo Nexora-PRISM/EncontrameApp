@@ -164,10 +164,19 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   junto com a cobrança pela loja (Google Play Billing) e a API de assinaturas. Recurso Premium planejado aparece como
   "Em breve". A situação da assinatura vem de `GET /Subscription/me` (sem o endpoint, 404 = plano gratuito).
 
+## Testes
+
+Jest (`jest-expo`) cobre as **regras de negócio**: validação, legitimidade, Premium, filtros, textos que prometem comportamento. Ficam em `*.test.ts` ao lado do módulo. Não coloque teste em `src/pages` (o Expo Router trata todo `.ts` dali como rota).
+
+- Feature ou correção que **adiciona ou muda uma decisão** (validação, permissão, filtro, texto que promete comportamento, preço/Premium) entrega o teste na mesma mudança, com o caminho feliz e pelo menos uma falha.
+- A função nova fica **exportada e pura**; o controller só chama. Tela, estilo e chamada HTTP sem regra nova não exigem teste.
+- `npm run check` inclui `npm run test` e falha se algum teste quebrar.
+
 ## Comandos
 
 ```bash
-npm run check       # typecheck + lint + traduções — RODAR ANTES DE FINALIZAR QUALQUER TAREFA
+npm run check       # typecheck + lint + traduções + testes — RODAR ANTES DE FINALIZAR QUALQUER TAREFA
+npm run test        # Jest: regras de negócio (*.test.ts)
 npm run i18n:check  # só as traduções (textos sem tradução, variáveis {nome} trocadas)
 npm run typecheck   # só tipos (tsc --noEmit)
 npm run lint        # só ESLint
