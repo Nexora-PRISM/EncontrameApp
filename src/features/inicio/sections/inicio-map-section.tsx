@@ -154,7 +154,7 @@ function CategoryChips({
           >
             <MaterialCommunityIcons
               name={filter.icon}
-              size={17}
+              size={16}
               color={selected ? brand.onCategory : color}
             />
             <Text style={[styles.chipText, selected && { color: brand.onCategory }]}>
@@ -217,15 +217,15 @@ function makeCardStyles(brand: BrandColors) {
       zIndex: 3,
     },
     chipsTrack: {
-      gap: 8,
-      paddingHorizontal: 12,
+      gap: 6,
+      paddingHorizontal: 10,
     },
     chip: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 6,
+      gap: 4,
       height: 42,
-      paddingHorizontal: 13,
+      paddingHorizontal: 10,
       borderRadius: Radius.pill,
       borderWidth: 1.5,
       backgroundColor: brand.surface,
@@ -236,7 +236,7 @@ function makeCardStyles(brand: BrandColors) {
       elevation: 4,
     },
     chipText: {
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: '800',
       color: brand.textDark,
     },

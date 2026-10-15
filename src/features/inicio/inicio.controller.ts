@@ -16,6 +16,7 @@ import {
 } from '@/lib/person-category';
 import { signOut } from '@/lib/sign-out';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
+import { useSplashDone } from '@/lib/splash-state';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
 import { useNearbyPeopleQuery, useRecentPeopleQuery } from '@/services/people/people.service';
@@ -59,6 +60,8 @@ export function useInicioController() {
   const [onboardingVisible, setOnboardingVisible] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const loggedIn = sessionUser != null;
+  /** O passo a passo só aparece depois da abertura (senão o Modal cobriria a logo). */
+  const splashDone = useSplashDone();
 
   // Confere a cada volta ao Início (não só na montagem): "Ver o passo a passo de novo", em
   // Configurações, precisa abrir o tutorial quando a pessoa volta para cá.
@@ -256,7 +259,7 @@ export function useInicioController() {
       goTo(() => router.push((sessionUser ? '/perfil' : '/login') as Href)),
     logout,
     locationLine,
-    onboardingVisible,
+    onboardingVisible: onboardingVisible && splashDone,
     onboardingStep,
     onboardingContinue,
     onboardingBack,

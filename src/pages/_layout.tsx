@@ -3,7 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { type Href, Stack, usePathname, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -16,6 +16,7 @@ import { BrandThemeProvider, useBrand, useBrandColorScheme } from '@/lib/brand-t
 import { I18nProvider, useI18n } from '@/lib/i18n';
 import { queryClient } from '@/lib/query-client';
 import { getSessionUser, hydrateSession } from '@/lib/session';
+import { markSplashDone, useSplashDone } from '@/lib/splash-state';
 
 // Só no popup do OAuth (tem opener). Completa e deixa o app pai fechar a janela
 // antes do Expo Router redirecionar `/` → `/inicio` → `/login`.
@@ -30,9 +31,8 @@ function RootLayoutInner() {
   const colorScheme = useBrandColorScheme();
   const { ready: languageReady } = useI18n();
   const [sessionReady, setSessionReady] = useState(false);
-  const [splashDone, setSplashDone] = useState(false);
+  const splashDone = useSplashDone();
   const styles = useMemo(() => makeStyles(brand), [brand]);
-  const finishSplash = useCallback(() => setSplashDone(true), []);
 
   const blocked = sessionReady && isProtectedPath(pathname) && getSessionUser() == null;
 
@@ -108,7 +108,7 @@ function RootLayoutInner() {
         <View style={styles.boot} />
       )}
       {/* Abertura com "Um produto da Nexora Prism" no rodapé; some sozinha quando o app está pronto. */}
-      {splashDone ? null : <BrandSplash ready={showStack} onDone={finishSplash} />}
+      {splashDone ? null : <BrandSplash ready={showStack} onDone={markSplashDone} />}
     </>
   );
 }
