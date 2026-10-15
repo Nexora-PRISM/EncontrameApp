@@ -23,11 +23,13 @@ export function usePremiumController() {
   const router = useRouter();
   const goBack = useSafeBack('/configuracoes' as Href);
   const user = useSessionUser();
-  const statusQuery = usePremiumStatusQuery();
+  const statusQuery = usePremiumStatusQuery(env.premiumEnabled);
   const loggedIn = user != null;
   const annual = annualPriceCents();
 
   return {
+    /** Premium retirado por agora (env.premiumEnabled): a rota volta para o Início. */
+    enabled: env.premiumEnabled,
     goBack,
     loggedIn,
     onSale: PREMIUM_PLAN.onSale,

@@ -1,15 +1,14 @@
-import { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { NexoraSignature } from '@/components/nexora-signature';
 import {
   SettingsChoiceList,
   SettingsGroup,
   SettingsRow,
   SettingsSegmented,
 } from '@/components/settings-list';
-import { type BrandColors } from '@/constants/brand';
 import type { ConfiguracoesController } from '@/features/configuracoes/configuracoes.controller';
-import { APPEARANCE_OPTIONS, useBrand } from '@/lib/brand-theme';
+import { APPEARANCE_OPTIONS } from '@/lib/brand-theme';
 import type { ShortcutAvailability } from '@/lib/emergency-shortcut';
 import { useT } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
@@ -25,8 +24,6 @@ const SHORTCUT_UNAVAILABLE_TEXT: Record<ShortcutAvailability, string> = {
 
 export function ConfiguracoesGroupsSection({ controller: c }: Props) {
   const t = useT();
-  const brand = useBrand();
-  const styles = useMemo(() => makeStyles(brand), [brand]);
 
   return (
     <View style={styles.wrap}>
@@ -263,43 +260,45 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
         />
         <SettingsRow
           icon="school-outline"
-          label={t('Ver a apresentação novamente')}
+          label={t('Ver o passo a passo de novo')}
           onPress={c.replayTutorial}
         />
       </SettingsGroup>
 
-      <SettingsGroup
-        title={t('Premium')}
-        footer={t('Busca de pessoas desaparecidas e funções de emergência são sempre grátis.')}
-      >
-        <SettingsRow
-          icon="star-four-points-outline"
-          label={t('Conhecer o Premium')}
-          description={t('Grátis × Premium, preço e o que já está pronto.')}
-          onPress={c.goToPremium}
-        />
-        <SettingsRow
-          icon="star-circle-outline"
-          label={t('Minha assinatura')}
-          value={c.subscriptionLoading ? '…' : c.subscription.label}
-          description={c.subscriptionLoading ? undefined : c.subscription.description}
-        />
-        {c.petsEnabled ? (
+      {c.premiumEnabled ? (
+        <SettingsGroup
+          title={t('Premium')}
+          footer={t('Busca de pessoas desaparecidas e funções de emergência são sempre grátis.')}
+        >
           <SettingsRow
-            icon="paw"
-            label={t('Pets desaparecidos')}
-            description={t('Cadastre e divulgue animais de estimação perdidos.')}
-            onPress={c.goToPets}
+            icon="star-four-points-outline"
+            label={t('Conhecer o Premium')}
+            description={t('Grátis × Premium, preço e o que já está pronto.')}
+            onPress={c.goToPremium}
           />
-        ) : (
           <SettingsRow
-            icon="paw"
-            label={t('Pets desaparecidos')}
-            description={t('Cadastrar e divulgar animais de estimação perdidos.')}
-            unavailable
+            icon="star-circle-outline"
+            label={t('Minha assinatura')}
+            value={c.subscriptionLoading ? '…' : c.subscription.label}
+            description={c.subscriptionLoading ? undefined : c.subscription.description}
           />
-        )}
-      </SettingsGroup>
+          {c.petsEnabled ? (
+            <SettingsRow
+              icon="paw"
+              label={t('Pets desaparecidos')}
+              description={t('Cadastre e divulgue animais de estimação perdidos.')}
+              onPress={c.goToPets}
+            />
+          ) : (
+            <SettingsRow
+              icon="paw"
+              label={t('Pets desaparecidos')}
+              description={t('Cadastrar e divulgar animais de estimação perdidos.')}
+              unavailable
+            />
+          )}
+        </SettingsGroup>
+      ) : null}
 
       <SettingsGroup title={t('Ajuda e informações')}>
         <SettingsRow icon="help-circle-outline" label={t('Ajuda e suporte')} onPress={c.goToHelp} />
@@ -316,20 +315,17 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
         />
       </SettingsGroup>
 
-      <Text style={styles.company}>{c.companyLine}</Text>
+      <NexoraSignature style={styles.company} />
     </View>
   );
 }
 
-function makeStyles(brand: BrandColors) {
-  return StyleSheet.create({
-    wrap: {
-      gap: 24,
-    },
-    company: {
-      textAlign: 'center',
-      fontSize: 13,
-      color: brand.textMuted,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  wrap: {
+    gap: 24,
+  },
+  company: {
+    paddingTop: 4,
+    paddingBottom: 8,
+  },
+});

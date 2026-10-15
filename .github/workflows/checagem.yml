@@ -1,0 +1,70 @@
+# Checagem automática do app a cada envio para a branch de desenvolvimento e a cada pull request.
+# Roda as mesmas verificações exigidas antes de um PR (npm run check) e o build web do Netlify.
+# Também gera prints das telas principais (modo demonstração, dados fictícios) para revisão visual.
+name: Checagem do app
+
+on:
+  push:
+    branches: [desenvolvimento, 'feature/**', 'fix/**']
+  pull_request:
+    branches: [main, desenvolvimento]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checagem-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checagem:
+    name: Tipos, lint, traduções e build web
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Checagem (tipos + lint + traduções)
+        run: npm run check
+
+      - name: Formatação (Biome, só informativo)
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: Build web (o mesmo do Netlify)
+        run: npx expo export --platform web
+
+      - name: Build web de demonstração (dados fictícios, para os prints)
+        # --clear: sem ele, o cache do Metro reaproveita o EXPO_PUBLIC_USE_MOCKS do build anterior.
+        run: npx expo export --platform web --output-dir dist-demo --clear
+        env:
+          EXPO_PUBLIC_USE_MOCKS: 'true'
+          EXPO_PUBLIC_ENABLE_PETS: 'true'
+          EXPO_PUBLIC_ENABLE_SAFETY_NOTES: 'true'
+
+      - name: Prints das telas (celular, claro e escuro)
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.49.1 serve@14.2.4
+          npx playwright install --with-deps chromium
+          npx serve dist-demo -l 4173 > /tmp/serve.log 2>&1 &
+          sleep 3
+          node .github/scripts/preview-screenshots.js http://localhost:4173 prints
+        continue-on-error: true
+
+      - name: Guardar os prints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prints-das-telas
+          path: prints/
+          retention-days: 14
+          if-no-files-found: ignore

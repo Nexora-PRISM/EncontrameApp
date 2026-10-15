@@ -129,13 +129,6 @@ export const en: Readonly<Record<string, string>> = {
     'It is a social mobilization app to help find missing people. You can see cases near you on the map, register a missing person and report where you saw someone. Encontra-me is a Nexora Prism product.',
   'sobre app objetivo': 'about app purpose',
   'Como vejo pessoas desaparecidas perto de mim?': 'How do I see missing people near me?',
-  'Na tela Início, permita o acesso à localização. O mapa e o carrossel mostram casos próximos. Para ver a busca e a lista, arraste o mapa para baixo. Dá para filtrar por cidade, estado, bairro, idade e situação. O menu na barra inferior também abre "Pessoas desaparecidas".':
-    'On the Home screen, allow location access. The map and the carousel show nearby cases. To see search and the list, drag the map down. You can filter by city, state, neighborhood, age and status. The menu on the bottom bar also opens "Missing people".',
-  'mapa lista perto localização filtro': 'map list nearby location filter',
-  'Como vejo a apresentação do app de novo?': "How do I see the app's introduction again?",
-  'Vá em Configurações > Aparência e acessibilidade > "Ver a apresentação novamente". Ela aparece na próxima vez que você abrir o Início.':
-    'Go to Settings > Appearance and accessibility > "See the introduction again". It appears the next time you open Home.',
-  'tutorial apresentação onboarding': 'tutorial introduction onboarding',
   'Como deixo o app claro ou escuro?': 'How do I make the app light or dark?',
   'No menu do Início (ícone de três linhas na barra inferior), em "Tema do app", escolha Auto, Claro ou Escuro. A mesma opção fica em Configurações › Aparência e acessibilidade. Auto (automático) acompanha o modo do celular.':
     'In the Home menu (three-line icon on the bottom bar), under "App theme", choose Auto, Light or Dark. The same option is in Settings › Appearance and accessibility. Auto (automatic) follows your phone\'s mode.',
@@ -596,8 +589,6 @@ export const en: Readonly<Record<string, string>> = {
   'Os cadastros salvos neste aparelho foram apagados.':
     'The registrations saved on this device were deleted.',
   'Não foi possível apagar': 'Could not delete',
-  'Apresentação reativada': 'Introduction turned back on',
-  'Ela vai aparecer quando você voltar ao Início.': 'It will appear when you go back to Home.',
   'Sair da conta?': 'Sign out?',
   'Com a biometria ligada, sua conta fica travada neste aparelho até você entrar de novo.':
     'With biometrics on, your account stays locked on this device until you sign in again.',
@@ -689,7 +680,6 @@ export const en: Readonly<Record<string, string>> = {
     "Theme: Automatic follows your phone's light or dark mode. The text size follows the device's font setting.",
   'Tema': 'Theme',
   'Cores do chat da Sofia': 'Sofia chat colors',
-  'Ver a apresentação novamente': 'See the introduction again',
   'Premium': 'Premium',
   'Pets desaparecidos': 'Missing pets',
   'Cadastre e divulgue animais de estimação perdidos.': 'Register and share lost pets.',
@@ -768,28 +758,14 @@ export const en: Readonly<Record<string, string>> = {
   // features/home/sections/home-desktop-auth-section.tsx
   'Criar uma conta': 'Create an account',
   // features/inicio/sections/inicio-onboarding-section.tsx
-  'Crianças, mulheres e muitas outras pessoas podem precisar de ajuda agora.':
-    'Children, women and many other people may need help right now.',
-  'Juntos, ajudamos a encontrá-las.': 'Together, we help find them.',
-  'Cadastre quem desapareceu e conte com a comunidade.':
-    'Register who has disappeared and count on the community.',
-  'Em perigo, use o botão vermelho "Pedir ajuda".':
-    'If you are in danger, use the red "Get help" button.',
-  'Como você quer começar?': 'How do you want to start?',
-  'Oi, eu sou a Sofia.': "Hi, I'm Sofia.",
   'Passo {value} de {count}': 'Step {value} of {count}',
   'Avistei uma pessoa — quero reportar': 'I spotted a person — I want to report it',
   'Quero cadastrar uma pessoa desaparecida': 'I want to register a missing person',
-  'Quero só explorar o mapa': 'I just want to explore the map',
-  // features/inicio/sections/inicio-people-carousel-section.tsx
+  // features/inicio/sections/inicio-alerts-section.tsx
   'Nenhuma pessoa próxima.': 'No people nearby.',
   'Pessoas desaparecidas. Deslize para o lado para ver mais.':
     'Missing people. Swipe sideways to see more.',
   'Ver todas': 'See all',
-  'Recolher mapa': 'Collapse map',
-  'Expandir mapa': 'Expand map',
-  '{count} pessoa': '{count} person',
-  '{count} pessoas': '{count} people',
   'Ver detalhes de {fullName}': 'See details for {fullName}',
   // features/inicio/sections/inicio-people-sidebar-section.tsx
   'Pessoas próximas': 'People nearby',
@@ -1231,10 +1207,10 @@ export const en: Readonly<Record<string, string>> = {
   'Pequeno': 'Small',
   'Grande': 'Large',
   // Premium: plano, assinatura e textos relacionados
-  'O monitoramento ampliado de trajetos fará parte do plano Premium e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
-    'Extended route monitoring will be part of the Premium plan and is not available yet. When it is launched, it will only work with your permission and will end as soon as you reach your destination. Sending your current location to a contact already works and is free.',
-  'É um recurso futuro do plano Premium para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
-    "It is a future Premium feature for sharing your safety with people you trust, always with each person's invitation and consent. It is not available yet and will never allow tracking someone without that person knowing and agreeing.",
+  'O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
+    'Extended route monitoring is a future feature and is not available yet. When it is launched, it will only work with your permission and will end as soon as you reach your destination. Sending your current location to a contact already works and is free.',
+  'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
+    "It is a future feature for sharing your safety with people you trust, always with each person's invitation and consent. It is not available yet and will never allow tracking someone without that person knowing and agreeing.",
   'Não. A busca de pessoas desaparecidas e as funções de emergência são gratuitas e vão continuar assim. O plano Premium está em preparação, com preço de referência de {price} por mês; a venda ainda não começou e nada é cobrado no app. O primeiro recurso Premium já pronto é o cadastro e a divulgação de pets desaparecidos. Veja o que é grátis e o que é Premium em Configurações › Premium.':
     'No. The missing people search and the emergency features are free and will stay that way. The Premium plan is being prepared, with a reference price of {price} per month; sales have not started and nothing is charged in the app. The first Premium feature already available is registering and sharing missing pets. See what is free and what is Premium in Settings › Premium.',
   'premium assinatura pagamento preço grátis mensalidade':
@@ -1330,4 +1306,166 @@ export const en: Readonly<Record<string, string>> = {
   'Expirado': 'Expired',
   'O Premium terminou em {date}.': 'Premium ended on {date}.',
   'O Premium terminou.': 'Premium has ended.',
+  // Rodada 3 — Início novo, passo a passo e filtros por idade
+  'Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
+    'On the Home screen, allow location access. The "Recent alerts" cards and the map show nearby cases. The colored buttons at the top of the map show only children and teenagers, adults or older people, and the satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status.',
+  'mapa lista perto localização filtro satélite crianças idosos':
+    'map list near location filter satellite children older people',
+  'Como vejo o passo a passo do app de novo?': 'How do I see the app walkthrough again?',
+  'Toque no "?" no alto da tela Início, ou abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.':
+    'Tap the "?" at the top of the Home screen, or open the Menu and tap "How to use the app". You can also go to Settings > Appearance and accessibility > "See the walkthrough again". On any step, "Skip" closes the walkthrough.',
+  'tutorial apresentação onboarding passo a passo como usar ajuda':
+    'tutorial walkthrough onboarding step by step how to use help',
+  'Passo a passo reativado': 'Walkthrough turned back on',
+  'Ele vai aparecer quando você voltar ao Início.': 'It will appear when you go back to Home.',
+  'Ver o passo a passo de novo': 'See the walkthrough again',
+  'Alertas recentes': 'Recent alerts',
+  'Ver todas as pessoas desaparecidas': 'See all missing people',
+  'Ver todos': 'See all',
+  'Nenhum alerta nesta faixa de idade por aqui.': 'No alerts for this age group around here.',
+  'Olá, {name}!': 'Hi, {name}!',
+  'Olá!': 'Hi!',
+  'Entre ou crie sua conta': 'Sign in or create your account',
+  'Ver meu perfil': 'See my profile',
+  'Para cadastrar e acompanhar casos': 'To register and follow cases',
+  'Como usar o app': 'How to use the app',
+  'Ver mapa comum': 'See regular map',
+  'Ver imagem de satélite': 'See satellite image',
+  'Nenhuma pessoa no mapa por aqui.': 'No one on the map around here.',
+  'Nenhuma pessoa desta faixa de idade no mapa.': 'No one from this age group on the map.',
+  'Filtrar por faixa de idade': 'Filter by age group',
+  'Pessoas': 'People',
+  'Apoio': 'Support',
+  'Sua conta': 'Your account',
+  'Pular': 'Skip',
+  'Fecha o passo a passo. Você pode ver de novo pelo botão "?" do Início.':
+    'Closes the walkthrough. You can see it again with the "?" button on Home.',
+  'Começar a usar': 'Start using',
+  'Começar o passo a passo': 'Start the walkthrough',
+  'Crianças': 'Children',
+  'Idosos': 'Older people',
+  'Oi! Eu sou a Sofia.': 'Hi! I\'m Sofia.',
+  'Vou te mostrar, em poucos passos, como usar o Encontra-me. Se já conhece, toque em "Pular".':
+    'In a few steps, I will show you how to use Encontra-me. If you already know it, tap "Skip".',
+  'Veja quem está desaparecido perto de você': 'See who is missing near you',
+  'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.':
+    'The alerts are at the top of the screen. Tap a card to see the photo and details of the person.',
+  'Use o mapa': 'Use the map',
+  'Viu alguém? Avise.': 'Saw someone? Let us know.',
+  'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
+    'On the person\'s page, tap "I saw this person nearby" and mark where you saw them. This helps the family.',
+  'Em perigo? Botão vermelho.': 'In danger? Red button.',
+  'O botão "Pedir ajuda" fica sempre embaixo, no meio. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
+    'The "Get help" button is always at the bottom, in the middle. It shows the emergency numbers, like 190. The app does not call the police on its own.',
+  'Cadastrar e Menu': 'Register and Menu',
+  'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
+    'To report a disappearance, tap "Register". The "Menu" has Sofia, your profile, settings and help.',
+  'Pronto! Como você quer começar?': 'All set! How do you want to start?',
+  'Para ver este passo a passo de novo, toque no "?" no alto da tela.':
+    'To see this walkthrough again, tap the "?" at the top of the screen.',
+  'Adultos': 'Adults',
+  'Adolescente': 'Teenager',
+  'Criança': 'Child',
+  'Pessoa idosa': 'Older person',
+  'Adulto': 'Adult',
+  // Rodada 4 — Avisos de segurança no mapa e cartão flutuante
+  'Posso avisar sobre uma rua perigosa?': 'Can I warn about a dangerous street?',
+  'Os avisos de segurança estão em teste e podem ainda não aparecer na sua versão do app. Quando estão ativos, o mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".':
+    'Safety notes are being tested and may not appear in your version of the app yet. When they are active, the Home map shows yellow diamonds with community notes, such as "frequent robberies" or "deserted street at night". Tap a note to see the time and the place reference and mark "Still like this" or "No longer like this". To add one, sign in and tap "Add note". Talk about the place, never about people: no names, license plates or phone numbers. A note disappears after 30 days if nobody confirms it. They are unverified community reports and do not replace the police: if you are in danger, use "Get help".',
+  'aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa':
+    'note dangerous street robbery deserted dark lighting time safety community map',
+  'Localização indisponível': 'Location unavailable',
+  'Permita o acesso à localização ou toque no mapa para marcar o lugar.':
+    'Allow location access or tap the map to mark the place.',
+  'Não coloque telefone, CPF, e-mail ou perfil. Fale do lugar, não de pessoas.':
+    'Do not include phone numbers, CPF, e-mail or profiles. Talk about the place, not about people.',
+  'Marque o local no mapa.': 'Mark the place on the map.',
+  'Escolha o tipo de aviso.': 'Choose the type of note.',
+  'Escreva uma referência do local (rua, praça ou ponto conhecido).':
+    'Write a reference for the place (street, square or landmark).',
+  'Confirme a declaração para publicar.': 'Confirm the statement to publish.',
+  'Aviso publicado': 'Note published',
+  'Ele aparece no mapa para quem estiver por perto e fica {days} dias, ou mais se outras pessoas confirmarem.':
+    'It shows on the map for people nearby and stays for {days} days, or longer if others confirm it.',
+  'Não foi possível publicar': 'Could not publish',
+  'Tente de novo em instantes.': 'Try again in a moment.',
+  'Local do aviso': 'Note location',
+  'Ajude quem passa por aqui': 'Help people who pass by here',
+  'Avise sobre um lugar, não sobre pessoas. É um relato da comunidade e não substitui a polícia: em perigo, use "Pedir ajuda".':
+    'Warn about a place, not about people. It is a community report and does not replace the police: if you are in danger, use "Get help".',
+  'Onde?': 'Where?',
+  'Toque no mapa ou arraste o marcador para ajustar.': 'Tap the map or drag the marker to adjust.',
+  'Toque no mapa para marcar o lugar.': 'Tap the map to mark the place.',
+  'O que acontece neste lugar?': 'What happens at this place?',
+  'Em que horário?': 'At what time?',
+  'Referência do local': 'Place reference',
+  'Rua, praça ou ponto conhecido': 'Street, square or landmark',
+  'Ex.: Rua das Flores, perto da praça': 'E.g.: Rua das Flores, near the square',
+  'Observação (opcional)': 'Note (optional)',
+  'Ex.: Prefira a avenida depois das 20h.': 'E.g.: Use the avenue after 8 p.m.',
+  'Antes de publicar': 'Before publishing',
+  'Fale do lugar, não de pessoas: sem nomes, placas, telefones ou aparência de ninguém.':
+    'Talk about the place, not about people: no names, license plates, phone numbers or anyone\'s appearance.',
+  'Seu nome não aparece no mapa, mas o aviso fica ligado à sua conta. Não é anônimo.':
+    'Your name does not appear on the map, but the note is linked to your account. It is not anonymous.',
+  'O aviso some em {days} dias se ninguém confirmar. Quem passar por lá pode marcar "Não está mais assim".':
+    'The note disappears after {days} days if nobody confirms it. People who pass by can mark "No longer like this".',
+  'Avisos falsos, ofensivos ou preconceituosos violam as regras de uso e podem ser removidos.':
+    'False, offensive or prejudiced notes break the rules of use and may be removed.',
+  'Ler as regras de uso': 'Read the rules of use',
+  'Declaro que este aviso é verdadeiro, fala só do lugar e não cita pessoas.':
+    'I declare that this note is true, talks only about the place and does not mention people.',
+  'Publicar aviso': 'Publish note',
+  'Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.':
+    'To confirm or update a note, sign in. That way each person votes once.',
+  'Escreva para {supportEmail} e informe a identificação do aviso: {id}.':
+    'Write to {supportEmail} and include the note ID: {id}.',
+  'Ver detalhes': 'See details',
+  'Na página da pessoa você pode avisar que a viu por perto.':
+    'On the person\'s page you can report that you saw them nearby.',
+  'Aviso da comunidade': 'Community note',
+  '{count} confirmação': '{count} confirmation',
+  '{count} confirmações': '{count} confirmations',
+  'Continua assim': 'Still like this',
+  'Não está mais assim': 'No longer like this',
+  'Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".':
+    'Unverified community report. If you are in danger, use "Get help".',
+  'Denunciar este aviso': 'Report this note',
+  'Denunciar': 'Report',
+  'Esconder avisos de segurança': 'Hide safety notes',
+  'Mostrar avisos de segurança': 'Show safety notes',
+  'Adicionar aviso de segurança': 'Add safety note',
+  'Avise sobre uma rua ou lugar perigoso': 'Warn about a dangerous street or place',
+  'Adicionar aviso': 'Add note',
+  'Avisar sobre um lugar perigoso': 'Warn about a dangerous place',
+  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.':
+    'Each photo on the map is a person being searched for: tap it to see a summary. The colored buttons show only children, adults or older people.',
+  'Avisos de segurança': 'Safety notes',
+  'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".':
+    'The yellow diamonds are community notes, such as "deserted street at night". Tap to see and confirm them. To warn about a place, use "Add note".',
+  'Atenção redobrada': 'Extra caution',
+  'Lugar arriscado: fique atento ao passar.': 'Risky place: stay alert when passing by.',
+  'Assaltos frequentes': 'Frequent robberies',
+  'Relatos repetidos de roubo ou furto.': 'Repeated reports of robbery or theft.',
+  'Rua deserta': 'Deserted street',
+  'Pouco movimento e pouca gente por perto.': 'Little movement and few people around.',
+  'Iluminação ruim': 'Poor lighting',
+  'Rua escura ou postes apagados.': 'Dark street or street lights off.',
+  'Evite neste horário': 'Avoid at this time',
+  'Tranquilo em parte do dia, arriscado em outra.': 'Calm at some times of day, risky at others.',
+  'Outro cuidado': 'Other caution',
+  'Outro motivo para redobrar a atenção.': 'Another reason to be extra careful.',
+  'Qualquer horário': 'Any time',
+  'Madrugada': 'Early morning',
+  'Manhã': 'Morning',
+  'Tarde': 'Afternoon',
+  'Noite': 'Night',
+  'Publicado hoje': 'Published today',
+  'Publicado ontem': 'Published yesterday',
+  'Publicado há {count} dias': 'Published {count} days ago',
+  'Aviso de segurança: {reference}': 'Safety note: {reference}',
+  'Identificação do aviso: {id}': 'Note ID: {id}',
+  'Motivo (aviso falso, ofensivo, preconceituoso, cita pessoas, já não é verdade, outro):':
+    'Reason (false, offensive, prejudiced, mentions people, no longer true, other):',
+  'Novo aviso de segurança': 'New safety note',
 };

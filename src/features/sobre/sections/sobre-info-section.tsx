@@ -2,6 +2,7 @@ import { Image } from 'expo-image';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { NexoraSignature } from '@/components/nexora-signature';
 import { SettingsGroup, SettingsRow } from '@/components/settings-list';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { SobreController } from '@/features/sobre/sobre.controller';
@@ -29,7 +30,7 @@ export function SobreInfoSection({ controller }: Props) {
           {info.name}
         </Text>
         <Text style={styles.slogan}>“{info.slogan}”</Text>
-        <Text style={styles.company}>{info.companyLine}</Text>
+        <NexoraSignature tone="onDark" style={styles.company} />
       </View>
 
       <Text style={styles.mission}>{t(info.mission)}</Text>
@@ -112,10 +113,7 @@ function makeStyles(brand: BrandColors) {
       paddingHorizontal: 8,
     },
     company: {
-      marginTop: 8,
-      fontSize: 14,
-      fontWeight: '600',
-      color: brand.onPrimary,
+      marginTop: 12,
     },
   });
 }

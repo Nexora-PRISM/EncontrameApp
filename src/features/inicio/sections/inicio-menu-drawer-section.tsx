@@ -1,9 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useMemo, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { NexoraSignature } from '@/components/nexora-signature';
 import { SettingsSegmented } from '@/components/settings-list';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { brandTiming } from '@/constants/motion';
@@ -11,6 +12,7 @@ import type { InicioController } from '@/features/inicio/inicio.controller';
 import { APPEARANCE_OPTIONS, useBrand } from '@/lib/brand-theme';
 import { env } from '@/lib/env';
 import { LANGUAGE_SHORT_OPTIONS, useT } from '@/lib/i18n';
+import { hexToRgba } from '@/lib/map-style';
 import { useTimedColor } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
@@ -31,7 +33,15 @@ type MenuItem = {
   label: string;
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
   onPress: () => void;
+  /** Cor do ícone (fundo do círculo é a mesma cor, bem clara). */
+  color?: string;
   danger?: boolean;
+};
+
+type MenuGroup = {
+  key: string;
+  title: string;
+  items: MenuItem[];
 };
 
 function MenuItemRow({
@@ -49,6 +59,8 @@ function MenuItemRow({
   return (
     <Pressable
       onPress={item.onPress}
+      accessibilityRole="button"
+      accessibilityLabel={item.label}
       onPressIn={() => setHighlighted(true)}
       onPressOut={() => setHighlighted(false)}
       onHoverIn={() => setHighlighted(true)}
@@ -56,12 +68,22 @@ function MenuItemRow({
       android_ripple={{ color: brand.divider }}
     >
       <Animated.View style={[styles.menuItem, bgStyle]}>
-        <MaterialCommunityIcons
-          name={item.icon}
-          size={22}
-          color={item.danger ? brand.orangeDark : brand.blue}
-        />
+        <View
+          style={[
+            styles.menuIcon,
+            { backgroundColor: hexToRgba(item.danger ? brand.orangeDark : (item.color ?? brand.blue), 0.14) },
+          ]}
+        >
+          <MaterialCommunityIcons
+            name={item.icon}
+            size={22}
+            color={item.danger ? brand.orangeDark : (item.color ?? brand.blue)}
+          />
+        </View>
         <Text style={[styles.menuLabel, item.danger && styles.menuLabelDanger]}>{item.label}</Text>
+        {item.danger ? null : (
+          <MaterialCommunityIcons name="chevron-right" size={20} color={brand.placeholder} />
+        )}
       </Animated.View>
     </Pressable>
   );
@@ -98,97 +120,146 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
     opacity: drawerProgress.value,
   }));
 
-  const menuItems: MenuItem[] = [
-    ...(isWide
-      ? [
-          {
-            key: 'home',
-            label: t('Início'),
-            icon: 'home-outline' as const,
-            onPress: controller.goToHomeFromMenu,
-          },
-        ]
-      : []),
+  const groups: MenuGroup[] = [
     {
-      key: 'chat',
-      label: t('Chat com a Sofia (IA)'),
-      icon: 'robot-happy-outline',
-      onPress: controller.goToChat,
-    },
-    {
-      key: 'grupo-chat',
-      label: t('Grupo de apoio'),
-      icon: 'account-group-outline',
-      onPress: controller.goToGroupChat,
-    },
-    {
-      key: 'register',
-      label: t('Cadastrar uma pessoa'),
-      icon: 'account-plus-outline',
-      onPress: controller.goToRegisterFromMenu,
-    },
-    {
-      key: 'all-people',
-      label: t('Pessoas desaparecidas'),
-      icon: 'account-search-outline',
-      onPress: controller.goToAllPeopleFromMenu,
-    },
-    ...(env.petsEnabled
-      ? [
-          {
-            key: 'pets',
-            label: t('Pets desaparecidos'),
-            icon: 'paw' as const,
-            onPress: controller.goToPetsFromMenu,
-          },
-        ]
-      : []),
-    {
-      key: 'premium',
-      label: t('Premium'),
-      icon: 'star-four-points-outline',
-      onPress: controller.goToPremiumFromMenu,
-    },
-    ...(controller.loggedIn
-      ? [
-          {
-            key: 'profile',
-            label: t('Meu perfil'),
-            icon: 'account-circle-outline' as const,
-            onPress: controller.goToProfile,
-          },
-        ]
-      : []),
-    {
-      key: 'settings',
-      label: t('Configurações'),
-      icon: 'cog-outline',
-      onPress: controller.goToSettings,
-    },
-    {
-      key: 'help',
-      label: t('Ajuda e suporte'),
-      icon: 'help-circle-outline',
-      onPress: controller.goToHelp,
-    },
-    controller.loggedIn
-      ? {
-          key: 'logout',
-          label: t('Sair'),
-          icon: 'logout' as const,
-          onPress: controller.logout,
-          danger: true,
-        }
-      : {
-          key: 'login',
-          label: t('Entrar'),
-          icon: 'login' as const,
-          onPress: controller.goToLogin,
+      key: 'people',
+      title: t('Pessoas'),
+      items: [
+        ...(isWide
+          ? [
+              {
+                key: 'home',
+                label: t('Início'),
+                icon: 'home-outline' as const,
+                color: brand.categoryAll,
+                onPress: controller.goToHomeFromMenu,
+              },
+            ]
+          : []),
+        {
+          key: 'register',
+          label: t('Cadastrar uma pessoa'),
+          icon: 'account-plus-outline',
+          color: brand.categoryAll,
+          onPress: controller.goToRegisterFromMenu,
         },
+        {
+          key: 'all-people',
+          label: t('Pessoas desaparecidas'),
+          icon: 'account-search-outline',
+          color: brand.categoryChild,
+          onPress: controller.goToAllPeopleFromMenu,
+        },
+        ...(controller.safetyNotesEnabled
+          ? [
+              {
+                key: 'safety-note',
+                label: t('Avisar sobre um lugar perigoso'),
+                icon: 'shield-alert-outline' as const,
+                color: brand.safetyNoteText,
+                onPress: controller.goToNewSafetyNote,
+              },
+            ]
+          : []),
+        ...(env.petsEnabled
+          ? [
+              {
+                key: 'pets',
+                label: t('Pets desaparecidos'),
+                icon: 'paw' as const,
+                color: brand.categoryElder,
+                onPress: controller.goToPetsFromMenu,
+              },
+            ]
+          : []),
+      ],
+    },
+    {
+      key: 'support',
+      title: t('Apoio'),
+      items: [
+        {
+          key: 'chat',
+          label: t('Chat com a Sofia (IA)'),
+          icon: 'robot-happy-outline',
+          color: brand.categoryChild,
+          onPress: controller.goToChat,
+        },
+        {
+          key: 'grupo-chat',
+          label: t('Grupo de apoio'),
+          icon: 'account-group-outline',
+          color: brand.categoryAdult,
+          onPress: controller.goToGroupChat,
+        },
+        {
+          key: 'tutorial',
+          label: t('Como usar o app'),
+          icon: 'school-outline',
+          color: brand.categoryAll,
+          onPress: controller.openTutorial,
+        },
+        {
+          key: 'help',
+          label: t('Ajuda e suporte'),
+          icon: 'lifebuoy',
+          color: brand.categoryAdult,
+          onPress: controller.goToHelp,
+        },
+      ],
+    },
+    {
+      key: 'account',
+      title: t('Sua conta'),
+      items: [
+        ...(controller.loggedIn
+          ? [
+              {
+                key: 'profile',
+                label: t('Meu perfil'),
+                icon: 'account-circle-outline' as const,
+                color: brand.categoryChild,
+                onPress: controller.goToProfile,
+              },
+            ]
+          : []),
+        ...(env.premiumEnabled
+          ? [
+              {
+                key: 'premium',
+                label: t('Premium'),
+                icon: 'star-four-points-outline' as const,
+                color: brand.categoryElder,
+                onPress: controller.goToPremiumFromMenu,
+              },
+            ]
+          : []),
+        {
+          key: 'settings',
+          label: t('Configurações'),
+          icon: 'cog-outline',
+          color: brand.textMuted,
+          onPress: controller.goToSettings,
+        },
+      ],
+    },
   ];
 
-  const accountItem = menuItems[menuItems.length - 1];
-  const navItems = menuItems.slice(0, -1);
+  const accountItem: MenuItem = controller.loggedIn
+    ? {
+        key: 'logout',
+        label: t('Sair'),
+        icon: 'logout',
+        onPress: controller.logout,
+        danger: true,
+      }
+    : {
+        key: 'login',
+        label: t('Entrar'),
+        icon: 'login',
+        color: brand.categoryChild,
+        onPress: controller.goToLogin,
+      };
 
   return (
     <Modal
@@ -209,7 +280,14 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
         </Pressable>
         <Animated.View style={[styles.drawer, drawerStyle]} pointerEvents="auto">
           <View style={[styles.drawerHeader, { paddingTop: insets.top + 12 }]}>
-            <Text style={styles.menuTitle}>{t('Menu')}</Text>
+            <View style={styles.menuTitleRow}>
+              <Image
+                source={require('@/assets/images/encontrame-mark.png')}
+                style={styles.menuMark}
+                resizeMode="contain"
+              />
+              <Text style={styles.menuTitle}>{t('Menu')}</Text>
+            </View>
             <Pressable
               onPress={controller.closeMenu}
               hitSlop={8}
@@ -225,9 +303,16 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.drawerNav}>
-              {navItems.map((item) => (
-                <MenuItemRow key={item.key} item={item} brand={brand} styles={styles} />
-              ))}
+              {groups.map((group) =>
+                group.items.length === 0 ? null : (
+                  <View key={group.key} style={styles.group}>
+                    <Text style={styles.groupTitle}>{group.title}</Text>
+                    {group.items.map((item) => (
+                      <MenuItemRow key={item.key} item={item} brand={brand} styles={styles} />
+                    ))}
+                  </View>
+                ),
+              )}
             </View>
             <View style={styles.themeBlock}>
               <Text style={styles.themeTitle}>{t('Tema do app')}</Text>
@@ -251,11 +336,11 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
               />
             </View>
           </ScrollView>
-          {accountItem ? (
-            <View style={[styles.drawerFooter, { paddingBottom: Math.max(insets.bottom, 16) }]}>
-              <MenuItemRow item={accountItem} brand={brand} styles={styles} />
-            </View>
-          ) : null}
+          <View style={[styles.drawerFooter, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+            <MenuItemRow item={accountItem} brand={brand} styles={styles} />
+            {/* Assinatura no rodapé, como o "from Meta". */}
+            <NexoraSignature size="sm" style={styles.signature} />
+          </View>
         </Animated.View>
       </View>
     </Modal>
@@ -304,7 +389,40 @@ function makeStyles(brand: BrandColors, drawerWidth: number) {
     },
     drawerNav: {
       flexGrow: 1,
+      gap: 10,
+      paddingBottom: 8,
+    },
+    group: {
       gap: 2,
+    },
+    groupTitle: {
+      paddingHorizontal: 12,
+      paddingTop: 6,
+      paddingBottom: 2,
+      fontSize: 12,
+      fontWeight: '800',
+      letterSpacing: 0.8,
+      textTransform: 'uppercase',
+      color: brand.label,
+    },
+    menuTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    menuMark: {
+      width: 28,
+      height: 28,
+    },
+    menuIcon: {
+      width: 38,
+      height: 38,
+      borderRadius: 19,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    signature: {
+      paddingTop: 10,
     },
     themeTitleRow: {
       flexDirection: 'row',
@@ -340,13 +458,15 @@ function makeStyles(brand: BrandColors, drawerWidth: number) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 12,
-      paddingVertical: 14,
-      paddingHorizontal: 12,
+      minHeight: 52,
+      paddingVertical: 7,
+      paddingHorizontal: 10,
       borderRadius: Radius.md,
     },
     menuLabel: {
-      fontSize: 15,
-      fontWeight: '600',
+      flex: 1,
+      fontSize: 16,
+      fontWeight: '700',
       color: brand.textDark,
     },
     menuLabelDanger: {

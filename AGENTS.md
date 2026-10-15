@@ -45,6 +45,7 @@ src/
     cadastrar-pet/index.tsx    # "/cadastrar-pet"    — cadastro de pet (login + Premium, chave em lib/premium-plan.ts)
     premium/index.tsx          # "/premium"          — grátis × Premium, preço de referência e situação da assinatura (sem login)
     regras/index.tsx           # "/regras"           — regras de uso e resumo de privacidade (sem login)
+    aviso-seguranca/index.tsx          # "/aviso-seguranca"          — publicar aviso de segurança (login; flag EXPO_PUBLIC_ENABLE_SAFETY_NOTES)
     alerta-emergencia/index.tsx        # "/alerta-emergencia"        — contagem de 10 s; depois abre o 190
     compartilhar-localizacao/index.tsx # "/compartilhar-localizacao" — localização por WhatsApp, SMS ou outro app
     contatos-confianca/index.tsx       # "/contatos-confianca"       — até 5 contatos, salvos só no aparelho
@@ -69,6 +70,8 @@ src/
     brand-field.tsx            # input com label
     screen-header.tsx          # cabeçalho com voltar + título
     bottom-bar.tsx             # barra inferior: Início · "Pedir ajuda" (centro) · Cadastrar; em tela larga, botão flutuante
+    brand-splash.tsx           # abertura do app: logo no centro + "Um produto da Nexora Prism" no rodapé (estilo "from Meta")
+    nexora-signature.tsx       # assinatura "Um produto da Nexora Prism" (abertura, menu, Sobre, Configurações)
     emergency-sheet.tsx        # folha "Pedir ajuda": 190/180/100/192/193 + comunicar desaparecimento / avistamento
     settings-list.tsx          # SettingsGroup / SettingsRow / SettingsSegmented / SettingsChoiceList (configurações, perfil, sobre)
   constants/
@@ -78,6 +81,9 @@ src/
     i18n.tsx                   # idiomas (pt-BR, en, es): I18nProvider, useT(), tr()
     i18n-msg.ts                # msg(): marca textos de listas/constantes para tradução
     premium-plan.ts            # preço (R$ 9,90/mês), plano anual/teste, grátis × Premium e texto da situação da assinatura
+    person-category.ts         # faixas de idade (crianças e adolescentes, adultos, idosos): filtros, rótulos, cores
+    splash-state.ts            # se a abertura já saiu (o passo a passo só abre depois)
+    safety-notes.ts            # avisos de segurança: tipos, horários, validade, bloqueio de dados pessoais, denúncia
   translations/                # dicionários en.ts e es.ts (a chave é o texto em português)
 assets/images/                 # imagens (logo.png é a logo oficial)
 locales/                       # textos das permissões do iOS por idioma (app.json → "locales")
@@ -133,6 +139,22 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Integração com API**: crie um service por API em `src/services/<api>/` com o par de repositórios
   (`*.axios.repository.ts` + `*.mock.repository.ts`) e o mock ligado por padrão (`EXPO_PUBLIC_USE_MOCKS=true`).
 
+## Início (celular) e passo a passo
+
+- Ordem da tela: faixa marinho (botão "?", logo, busca e saudação) → "Alertas recentes" (cartões) → mapa grande com
+  filtros por faixa de idade, satélite e "minha localização" → barra inferior. Seções em `features/inicio/sections/`.
+- Filtros só por idade (`lib/person-category.ts`), porque a API não informa o sexo. Não crie filtro "Mulheres" antes
+  de a API devolver esse dado.
+- Passo a passo: conteúdo em `features/inicio/tutorial-steps.ts`, desenhos em `sections/tutorial-art.tsx`. "Pular"
+  sempre visível, texto grande, um assunto por passo. Mudou um botão citado lá? Atualize o passo e o desenho.
+- Cores das faixas de idade: tokens `category*` em `constants/brand.ts` (nunca vermelho).
+- Tocar num pin abre o cartão flutuante (`sections/inicio-map-preview-section.tsx`); os cartões de alerta continuam
+  abrindo o detalhe direto.
+- **Avisos de segurança** (`lib/safety-notes.ts`, `services/safety-notes/`): falam do lugar, nunca de pessoas
+  (telefone/CPF/e-mail/@perfil bloqueados); publicar e votar exigem conta; validade de 30 dias renovada por
+  confirmação; denúncia por e-mail. Cor âmbar `safetyNote`. Sem API ainda: não ligue a flag em produção antes do
+  backend (contrato em `safety-notes.axios.repository.ts`).
+
 ## Regras de produto (honestidade da interface)
 
 - **Nada de botão decorativo.** Recurso que ainda não existe aparece com `SettingsRow unavailable`
@@ -159,6 +181,9 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   "recebido" com `alertId` + `receivedAt` na resposta. Sem isso: "não confirmado — ligue 190".
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
+- **Premium retirado por agora** (decisão dos sócios, 15/10/2026): `env.premiumEnabled` (`EXPO_PUBLIC_ENABLE_PREMIUM`)
+  fica desligado em todos os ambientes. Some o item do Menu, o grupo em Configurações, a rota `/premium` (volta ao
+  Início), a categoria da Ajuda e, por fazerem parte dele, os pets. O código continua no projeto.
 - **Premium** (`lib/premium-plan.ts`): preço, desconto anual, teste grátis, `onSale` e a lista grátis × Premium ficam
   só nesse arquivo. Busca de pessoas e emergência **nunca** vão para o Premium. Não há compra no app: só ligue `onSale`
   junto com a cobrança pela loja (Google Play Billing) e a API de assinaturas. Recurso Premium planejado aparece como
@@ -194,10 +219,12 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` — OAuth Google (client ID web).
 - `EXPO_PUBLIC_APP_KEY` — header `X-App-Key` (igual a `AppKey__Value` da API).
 - `GOOGLE_MAPS_API_KEY` — só build nativo Android; não vai no Netlify.
-- `EXPO_PUBLIC_ENABLE_PETS` — pets desaparecidos (Premium). Vazio: ligado em dev, desligado em produção.
+- `EXPO_PUBLIC_ENABLE_PREMIUM` — plano Premium. Retirado por agora: só aparece com `true` (em qualquer ambiente).
+- `EXPO_PUBLIC_ENABLE_PETS` — pets desaparecidos (Premium). Vazio: ligado em dev, desligado em produção. Exige o Premium ligado.
 - `EXPO_PUBLIC_MOCK_PREMIUM` — só no mock: vazio = Premium ativo; `false` = sem assinatura; `trial`, `grace` (pagamento recusado), `cancelled` ou `expired` simulam cada situação.
 - `EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT` — envio do alerta de emergência à API. Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_MOCK_EMERGENCY_FAIL` — só no mock: `true` simula falha no envio do alerta (para testar a tela "não confirmado").
+- `EXPO_PUBLIC_ENABLE_SAFETY_NOTES` — avisos de segurança no mapa. Vazio: ligado em dev (mock), desligado em produção (falta a API /SafetyNote).
 - `EXPO_PUBLIC_WEB_URL` — endereço público do app web (sem barra no fim); entra no texto de "Divulgar este caso".
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.

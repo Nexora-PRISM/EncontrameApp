@@ -27,6 +27,12 @@ export type MapPin = {
   emphasized?: boolean;
   zIndex?: number;
   tooltip?: MapPinTooltip;
+  /** Cor do anel em volta da foto/ícone (ex.: faixa de idade). Sem ela, o anel é branco. */
+  accentColor?: string;
+  /** `note`: aviso de segurança da comunidade (marcador âmbar com ícone, sem foto). */
+  variant?: 'person' | 'note';
+  /** Ícone do marcador `note` (no web o marcador usa sempre o "!"). */
+  icon?: keyof typeof MaterialCommunityIcons.glyphMap;
   onPress?: () => void;
 };
 
@@ -57,6 +63,8 @@ type Props = {
   rounded?: boolean;
   mapPadding?: MapPadding;
   showLocationFab?: boolean;
+  /** Imagem de satélite com nomes de ruas (Google "hybrid"). */
+  satellite?: boolean;
   style?: ViewStyle;
 };
 
@@ -115,6 +123,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     rounded = false,
     mapPadding,
     showLocationFab = true,
+    satellite = false,
     style,
   },
   ref,
@@ -160,7 +169,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       <MapView
         ref={mapRef}
         style={[styles.mapView, rounded && styles.roundedMap]}
-        customMapStyle={mapStyle}
+        customMapStyle={satellite ? undefined : mapStyle}
+        mapType={satellite ? 'hybrid' : 'standard'}
         initialRegion={region}
         userInterfaceStyle={colorScheme}
         onPress={(event) => {
@@ -269,6 +279,9 @@ function PersonPinMarker({
   onSelect: () => void;
 }) {
   const [photoReady, setPhotoReady] = useState(!pin.photoUri);
+  // Selecionado continua laranja; senão, o anel usa a cor do pin (ex.: faixa de idade).
+  const ring =
+    !emphasized && pin.accentColor && pin.variant !== 'note' ? { borderColor: pin.accentColor } : null;
 
   return (
     <Marker
@@ -293,14 +306,29 @@ function PersonPinMarker({
       }}
     >
       <View style={styles.pin}>
-        {pin.photoUri ? (
+        {pin.variant === 'note' ? (
+          <View
+            style={[
+              emphasized ? styles.noteBadgeLg : styles.noteBadge,
+              { backgroundColor: pin.accentColor ?? brand.safetyNote },
+            ]}
+          >
+            <View style={styles.noteIcon}>
+              <MaterialCommunityIcons
+                name={pin.icon ?? 'alert'}
+                size={emphasized ? 22 : 16}
+                color={brand.onSafetyNote}
+              />
+            </View>
+          </View>
+        ) : pin.photoUri ? (
           <Image
             source={{ uri: pin.photoUri }}
-            style={emphasized ? styles.pinPhotoLg : styles.pinPhoto}
+            style={[emphasized ? styles.pinPhotoLg : styles.pinPhoto, ring]}
             onLoad={() => setPhotoReady(true)}
           />
         ) : (
-          <View style={emphasized ? styles.pinBadgeLg : styles.pinBadge}>
+          <View style={[emphasized ? styles.pinBadgeLg : styles.pinBadge, ring]}>
             <MaterialCommunityIcons
               name={pin.locked ? 'lock' : 'account'}
               size={emphasized ? 20 : 16}
@@ -375,6 +403,29 @@ function makeStyles(brand: BrandColors) {
       justifyContent: 'center',
       borderWidth: 3,
       borderColor: brand.orange,
+    },
+    noteBadge: {
+      width: 30,
+      height: 30,
+      borderRadius: 9,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 2.5,
+      borderColor: brand.onPrimary,
+      transform: [{ rotate: '45deg' }],
+    },
+    noteBadgeLg: {
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 3,
+      borderColor: brand.orange,
+      transform: [{ rotate: '45deg' }],
+    },
+    noteIcon: {
+      transform: [{ rotate: '-45deg' }],
     },
     pinPhoto: {
       width: 36,

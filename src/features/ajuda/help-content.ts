@@ -1,5 +1,6 @@
 import type { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
 import { formatBRL, PREMIUM_PLAN } from '@/lib/premium-plan';
 
@@ -36,7 +37,7 @@ export type HelpArticle = {
   keywords?: string;
 };
 
-export const HELP_CATEGORIES: HelpCategory[] = [
+const ALL_CATEGORIES: HelpCategory[] = [
   { id: 'protecao', title: msg('Crianças e mulheres'), icon: 'heart-outline' },
   { id: 'inicio', title: msg('Primeiros passos'), icon: 'compass-outline' },
   { id: 'alertas', title: msg('Pessoas desaparecidas'), icon: 'account-search-outline' },
@@ -50,7 +51,7 @@ export const HELP_CATEGORIES: HelpCategory[] = [
   { id: 'premium', title: msg('Premium e pagamentos'), icon: 'star-outline' },
 ];
 
-export const HELP_ARTICLES: HelpArticle[] = [
+const ALL_ARTICLES: HelpArticle[] = [
   {
     id: 'prioridade',
     category: 'protecao',
@@ -112,16 +113,24 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'inicio',
     question: msg('Como vejo pessoas desaparecidas perto de mim?'),
     answer:
-      msg('Na tela Início, permita o acesso à localização. O mapa e o carrossel mostram casos próximos. Para ver a busca e a lista, arraste o mapa para baixo. Dá para filtrar por cidade, estado, bairro, idade e situação. O menu na barra inferior também abre "Pessoas desaparecidas".'),
-    keywords: msg('mapa lista perto localização filtro'),
+      msg('Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.'),
+    keywords: msg('mapa lista perto localização filtro satélite crianças idosos'),
+  },
+  {
+    id: 'avisos-seguranca',
+    category: 'relatos',
+    question: msg('Posso avisar sobre uma rua perigosa?'),
+    answer:
+      msg('Os avisos de segurança estão em teste e podem ainda não aparecer na sua versão do app. Quando estão ativos, o mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".'),
+    keywords: msg('aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa'),
   },
   {
     id: 'rever-tutorial',
     category: 'inicio',
-    question: msg('Como vejo a apresentação do app de novo?'),
+    question: msg('Como vejo o passo a passo do app de novo?'),
     answer:
-      msg('Vá em Configurações > Aparência e acessibilidade > "Ver a apresentação novamente". Ela aparece na próxima vez que você abrir o Início.'),
-    keywords: msg('tutorial apresentação onboarding'),
+      msg('Toque no "?" no alto da tela Início, ou abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.'),
+    keywords: msg('tutorial apresentação onboarding passo a passo como usar ajuda'),
   },
   {
     id: 'tema',
@@ -272,7 +281,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'rotas',
     question: msg('Posso acompanhar meu trajeto até chegar em casa?'),
     answer:
-      msg('O monitoramento ampliado de trajetos fará parte do plano Premium e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.'),
+      msg('O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.'),
     keywords: msg('rota trajeto acompanhar caminho'),
   },
   {
@@ -280,7 +289,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'rotas',
     question: msg('O que é o círculo familiar?'),
     answer:
-      msg('É um recurso futuro do plano Premium para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.'),
+      msg('É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.'),
     keywords: msg('família círculo compartilhar'),
   },
   {
@@ -412,6 +421,15 @@ export const HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('pet cachorro gato animal bicho perdido premium'),
   },
 ];
+
+/** Premium retirado por agora (env.premiumEnabled): a categoria e as perguntas dele somem da Ajuda. */
+export const HELP_CATEGORIES: HelpCategory[] = ALL_CATEGORIES.filter(
+  (category) => category.id !== 'premium' || env.premiumEnabled,
+);
+
+export const HELP_ARTICLES: HelpArticle[] = ALL_ARTICLES.filter(
+  (article) => article.category !== 'premium' || env.premiumEnabled,
+);
 
 /** Normaliza para busca sem acento e sem maiúsculas. */
 export function normalizeSearch(value: string): string {

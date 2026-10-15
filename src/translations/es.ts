@@ -130,13 +130,6 @@ export const es: Readonly<Record<string, string>> = {
     'Es una aplicación de movilización social para ayudar a encontrar personas desaparecidas. Puedes ver casos cerca de ti en el mapa, registrar a una persona desaparecida e informar dónde viste a alguien. Encontra-me es un producto de Nexora Prism.',
   'sobre app objetivo': 'sobre app objetivo',
   'Como vejo pessoas desaparecidas perto de mim?': '¿Cómo veo personas desaparecidas cerca de mí?',
-  'Na tela Início, permita o acesso à localização. O mapa e o carrossel mostram casos próximos. Para ver a busca e a lista, arraste o mapa para baixo. Dá para filtrar por cidade, estado, bairro, idade e situação. O menu na barra inferior também abre "Pessoas desaparecidas".':
-    'En la pantalla Inicio, permite el acceso a la ubicación. El mapa y el carrusel muestran casos cercanos. Para ver la búsqueda y la lista, arrastra el mapa hacia abajo. Puedes filtrar por ciudad, estado, barrio, edad y situación. El menú de la barra inferior también abre "Personas desaparecidas".',
-  'mapa lista perto localização filtro': 'mapa lista cerca ubicación filtro',
-  'Como vejo a apresentação do app de novo?': '¿Cómo veo de nuevo la presentación de la app?',
-  'Vá em Configurações > Aparência e acessibilidade > "Ver a apresentação novamente". Ela aparece na próxima vez que você abrir o Início.':
-    'Ve a Configuración > Apariencia y accesibilidad > "Ver la presentación de nuevo". Aparece la próxima vez que abras Inicio.',
-  'tutorial apresentação onboarding': 'tutorial presentación introducción',
   'Como deixo o app claro ou escuro?': '¿Cómo pongo la app en modo claro u oscuro?',
   'No menu do Início (ícone de três linhas na barra inferior), em "Tema do app", escolha Auto, Claro ou Escuro. A mesma opção fica em Configurações › Aparência e acessibilidade. Auto (automático) acompanha o modo do celular.':
     'En el menú de Inicio (ícono de tres líneas en la barra inferior), en "Tema de la app", elige Auto, Claro u Oscuro. La misma opción está en Configuración › Apariencia y accesibilidad. Auto (automático) sigue el modo del celular.',
@@ -603,8 +596,6 @@ export const es: Readonly<Record<string, string>> = {
   'Os cadastros salvos neste aparelho foram apagados.':
     'Se borraron los registros guardados en este dispositivo.',
   'Não foi possível apagar': 'No se pudo borrar',
-  'Apresentação reativada': 'Presentación reactivada',
-  'Ela vai aparecer quando você voltar ao Início.': 'Aparecerá cuando vuelvas a Inicio.',
   'Sair da conta?': '¿Cerrar sesión?',
   'Com a biometria ligada, sua conta fica travada neste aparelho até você entrar de novo.':
     'Con la biometría activada, tu cuenta queda bloqueada en este dispositivo hasta que vuelvas a entrar.',
@@ -697,7 +688,6 @@ export const es: Readonly<Record<string, string>> = {
     'Tema: Automático sigue el modo claro u oscuro del celular. El tamaño del texto sigue la configuración de fuente del dispositivo.',
   'Tema': 'Tema',
   'Cores do chat da Sofia': 'Colores del chat de Sofia',
-  'Ver a apresentação novamente': 'Ver la presentación de nuevo',
   'Premium': 'Premium',
   'Pets desaparecidos': 'Mascotas desaparecidas',
   'Cadastre e divulgue animais de estimação perdidos.': 'Registra y difunde mascotas perdidas.',
@@ -777,28 +767,14 @@ export const es: Readonly<Record<string, string>> = {
   // features/home/sections/home-desktop-auth-section.tsx
   'Criar uma conta': 'Crear una cuenta',
   // features/inicio/sections/inicio-onboarding-section.tsx
-  'Crianças, mulheres e muitas outras pessoas podem precisar de ajuda agora.':
-    'Niños, mujeres y muchas otras personas pueden necesitar ayuda ahora.',
-  'Juntos, ajudamos a encontrá-las.': 'Juntos, ayudamos a encontrarlas.',
-  'Cadastre quem desapareceu e conte com a comunidade.':
-    'Registra a quien desapareció y cuenta con la comunidad.',
-  'Em perigo, use o botão vermelho "Pedir ajuda".':
-    'Si estás en peligro, usa el botón rojo "Pedir ayuda".',
-  'Como você quer começar?': '¿Cómo quieres empezar?',
-  'Oi, eu sou a Sofia.': 'Hola, soy Sofia.',
   'Passo {value} de {count}': 'Paso {value} de {count}',
   'Avistei uma pessoa — quero reportar': 'Vi a una persona — quiero informarlo',
   'Quero cadastrar uma pessoa desaparecida': 'Quiero registrar a una persona desaparecida',
-  'Quero só explorar o mapa': 'Solo quiero explorar el mapa',
-  // features/inicio/sections/inicio-people-carousel-section.tsx
+  // features/inicio/sections/inicio-alerts-section.tsx
   'Nenhuma pessoa próxima.': 'Ninguna persona cercana.',
   'Pessoas desaparecidas. Deslize para o lado para ver mais.':
     'Personas desaparecidas. Desliza hacia un lado para ver más.',
   'Ver todas': 'Ver todas',
-  'Recolher mapa': 'Recoger mapa',
-  'Expandir mapa': 'Expandir mapa',
-  '{count} pessoa': '{count} persona',
-  '{count} pessoas': '{count} personas',
   'Ver detalhes de {fullName}': 'Ver detalles de {fullName}',
   // features/inicio/sections/inicio-people-sidebar-section.tsx
   'Pessoas próximas': 'Personas cercanas',
@@ -1244,10 +1220,10 @@ export const es: Readonly<Record<string, string>> = {
   'Pequeno': 'Pequeño',
   'Grande': 'Grande',
   // Premium: plano, assinatura e textos relacionados
-  'O monitoramento ampliado de trajetos fará parte do plano Premium e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
-    'El monitoreo ampliado de trayectos formará parte del plan Premium y todavía no está disponible. Cuando se lance, solo funcionará con tu permiso y terminará en cuanto llegues a tu destino. Enviar tu ubicación actual a un contacto ya funciona y es gratis.',
-  'É um recurso futuro do plano Premium para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
-    'Es una función futura del plan Premium para compartir tu seguridad con personas de confianza, siempre con invitación y aceptación de cada una. Todavía no está disponible y nunca permitirá seguir a alguien sin que esa persona lo sepa y esté de acuerdo.',
+  'O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
+    'El monitoreo ampliado de trayectos es una función futura y todavía no está disponible. Cuando se lance, solo funcionará con tu permiso y terminará en cuanto llegues a tu destino. Enviar tu ubicación actual a un contacto ya funciona y es gratis.',
+  'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
+    'Es una función futura para compartir tu seguridad con personas de confianza, siempre con invitación y aceptación de cada una. Todavía no está disponible y nunca permitirá seguir a alguien sin que esa persona lo sepa y esté de acuerdo.',
   'Não. A busca de pessoas desaparecidas e as funções de emergência são gratuitas e vão continuar assim. O plano Premium está em preparação, com preço de referência de {price} por mês; a venda ainda não começou e nada é cobrado no app. O primeiro recurso Premium já pronto é o cadastro e a divulgação de pets desaparecidos. Veja o que é grátis e o que é Premium em Configurações › Premium.':
     'No. La búsqueda de personas desaparecidas y las funciones de emergencia son gratuitas y seguirán siéndolo. El plan Premium está en preparación, con un precio de referencia de {price} por mes; la venta todavía no empezó y no se cobra nada en la app. La primera función Premium ya lista es el registro y la difusión de mascotas desaparecidas. Mira qué es gratis y qué es Premium en Configuración › Premium.',
   'premium assinatura pagamento preço grátis mensalidade':
@@ -1344,4 +1320,168 @@ export const es: Readonly<Record<string, string>> = {
   'Expirado': 'Vencido',
   'O Premium terminou em {date}.': 'Premium terminó el {date}.',
   'O Premium terminou.': 'Premium terminó.',
+  // Rodada 3 — Início novo, passo a passo e filtros por idade
+  'Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
+    'En la pantalla Inicio, permite el acceso a la ubicación. Las tarjetas de "Alertas recientes" y el mapa muestran casos cercanos. Los botones de colores en la parte superior del mapa muestran solo niños y adolescentes, adultos o personas mayores, y el botón de satélite cambia la imagen del mapa. Para buscar por nombre o ver la lista completa, toca la lupa en la parte superior de la pantalla o "Ver todos": allí puedes filtrar por ciudad, estado, barrio, edad y situación.',
+  'mapa lista perto localização filtro satélite crianças idosos':
+    'mapa lista cerca ubicación filtro satélite niños mayores',
+  'Como vejo o passo a passo do app de novo?': '¿Cómo veo de nuevo el paso a paso de la app?',
+  'Toque no "?" no alto da tela Início, ou abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.':
+    'Toca el "?" en la parte superior de la pantalla Inicio, o abre el Menú y toca "Cómo usar la app". También puedes ir a Configuración > Apariencia y accesibilidad > "Ver el paso a paso de nuevo". En cualquier paso, "Saltar" cierra el paso a paso.',
+  'tutorial apresentação onboarding passo a passo como usar ajuda':
+    'tutorial presentación onboarding paso a paso cómo usar ayuda',
+  'Passo a passo reativado': 'Paso a paso reactivado',
+  'Ele vai aparecer quando você voltar ao Início.': 'Aparecerá cuando vuelvas al Inicio.',
+  'Ver o passo a passo de novo': 'Ver el paso a paso de nuevo',
+  'Alertas recentes': 'Alertas recientes',
+  'Ver todas as pessoas desaparecidas': 'Ver todas las personas desaparecidas',
+  'Ver todos': 'Ver todos',
+  'Nenhum alerta nesta faixa de idade por aqui.': 'No hay alertas de este grupo de edad por aquí.',
+  'Olá, {name}!': '¡Hola, {name}!',
+  'Olá!': '¡Hola!',
+  'Entre ou crie sua conta': 'Inicia sesión o crea tu cuenta',
+  'Ver meu perfil': 'Ver mi perfil',
+  'Para cadastrar e acompanhar casos': 'Para registrar y seguir casos',
+  'Como usar o app': 'Cómo usar la app',
+  'Ver mapa comum': 'Ver mapa común',
+  'Ver imagem de satélite': 'Ver imagen de satélite',
+  'Nenhuma pessoa no mapa por aqui.': 'No hay personas en el mapa por aquí.',
+  'Nenhuma pessoa desta faixa de idade no mapa.':
+    'No hay personas de este grupo de edad en el mapa.',
+  'Filtrar por faixa de idade': 'Filtrar por grupo de edad',
+  'Pessoas': 'Personas',
+  'Apoio': 'Apoyo',
+  'Sua conta': 'Tu cuenta',
+  'Pular': 'Saltar',
+  'Fecha o passo a passo. Você pode ver de novo pelo botão "?" do Início.':
+    'Cierra el paso a paso. Puedes verlo de nuevo con el botón "?" del Inicio.',
+  'Começar a usar': 'Empezar a usar',
+  'Começar o passo a passo': 'Empezar el paso a paso',
+  'Crianças': 'Niños',
+  'Idosos': 'Mayores',
+  'Oi! Eu sou a Sofia.': '¡Hola! Soy Sofia.',
+  'Vou te mostrar, em poucos passos, como usar o Encontra-me. Se já conhece, toque em "Pular".':
+    'En pocos pasos te muestro cómo usar Encontra-me. Si ya la conoces, toca "Saltar".',
+  'Veja quem está desaparecido perto de você': 'Mira quién está desaparecido cerca de ti',
+  'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.':
+    'Las alertas están en la parte superior de la pantalla. Toca una tarjeta para ver la foto y los datos de la persona.',
+  'Use o mapa': 'Usa el mapa',
+  'Viu alguém? Avise.': '¿Viste a alguien? Avisa.',
+  'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
+    'En la página de la persona, toca "Vi a esta persona cerca" y marca dónde la viste. Eso ayuda a la familia.',
+  'Em perigo? Botão vermelho.': '¿En peligro? Botón rojo.',
+  'O botão "Pedir ajuda" fica sempre embaixo, no meio. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
+    'El botón "Pedir ayuda" está siempre abajo, en el centro. Muestra los números de emergencia, como el 190. La app no llama a la policía por sí sola.',
+  'Cadastrar e Menu': 'Registrar y Menú',
+  'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
+    'Para comunicar una desaparición, toca "Registrar". En el "Menú" están Sofia, tu perfil, la configuración y la ayuda.',
+  'Pronto! Como você quer começar?': '¡Listo! ¿Cómo quieres empezar?',
+  'Para ver este passo a passo de novo, toque no "?" no alto da tela.':
+    'Para ver este paso a paso de nuevo, toca el "?" en la parte superior de la pantalla.',
+  'Adultos': 'Adultos',
+  'Adolescente': 'Adolescente',
+  'Criança': 'Niño/a',
+  'Pessoa idosa': 'Persona mayor',
+  'Adulto': 'Adulto',
+  // Rodada 4 — Avisos de segurança no mapa e cartão flutuante
+  'Posso avisar sobre uma rua perigosa?': '¿Puedo avisar sobre una calle peligrosa?',
+  'Os avisos de segurança estão em teste e podem ainda não aparecer na sua versão do app. Quando estão ativos, o mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".':
+    'Los avisos de seguridad están en prueba y es posible que todavía no aparezcan en tu versión de la app. Cuando están activos, el mapa de Inicio muestra rombos amarillos con avisos de la comunidad, como "robos frecuentes" o "calle desierta de noche". Toca un aviso para ver el horario y la referencia del lugar y marcar "Sigue así" o "Ya no está así". Para avisar, inicia sesión y toca "Agregar aviso". Habla del lugar, nunca de personas: sin nombres, matrículas ni teléfonos. El aviso desaparece en 30 días si nadie lo confirma. Son relatos de la comunidad, no verificados, y no reemplazan a la policía: en peligro, usa "Pedir ayuda".',
+  'aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa':
+    'aviso calle peligrosa robo desierta oscura iluminación horario seguridad comunidad mapa',
+  'Localização indisponível': 'Ubicación no disponible',
+  'Permita o acesso à localização ou toque no mapa para marcar o lugar.':
+    'Permite el acceso a la ubicación o toca el mapa para marcar el lugar.',
+  'Não coloque telefone, CPF, e-mail ou perfil. Fale do lugar, não de pessoas.':
+    'No pongas teléfono, CPF, correo ni perfil. Habla del lugar, no de personas.',
+  'Marque o local no mapa.': 'Marca el lugar en el mapa.',
+  'Escolha o tipo de aviso.': 'Elige el tipo de aviso.',
+  'Escreva uma referência do local (rua, praça ou ponto conhecido).':
+    'Escribe una referencia del lugar (calle, plaza o punto conocido).',
+  'Confirme a declaração para publicar.': 'Confirma la declaración para publicar.',
+  'Aviso publicado': 'Aviso publicado',
+  'Ele aparece no mapa para quem estiver por perto e fica {days} dias, ou mais se outras pessoas confirmarem.':
+    'Aparece en el mapa para quien esté cerca y se queda {days} días, o más si otras personas lo confirman.',
+  'Não foi possível publicar': 'No se pudo publicar',
+  'Tente de novo em instantes.': 'Inténtalo de nuevo en un momento.',
+  'Local do aviso': 'Lugar del aviso',
+  'Ajude quem passa por aqui': 'Ayuda a quien pasa por aquí',
+  'Avise sobre um lugar, não sobre pessoas. É um relato da comunidade e não substitui a polícia: em perigo, use "Pedir ajuda".':
+    'Avisa sobre un lugar, no sobre personas. Es un relato de la comunidad y no reemplaza a la policía: en peligro, usa "Pedir ayuda".',
+  'Onde?': '¿Dónde?',
+  'Toque no mapa ou arraste o marcador para ajustar.':
+    'Toca el mapa o arrastra el marcador para ajustar.',
+  'Toque no mapa para marcar o lugar.': 'Toca el mapa para marcar el lugar.',
+  'O que acontece neste lugar?': '¿Qué pasa en este lugar?',
+  'Em que horário?': '¿En qué horario?',
+  'Referência do local': 'Referencia del lugar',
+  'Rua, praça ou ponto conhecido': 'Calle, plaza o punto conocido',
+  'Ex.: Rua das Flores, perto da praça': 'Ej.: Rua das Flores, cerca de la plaza',
+  'Observação (opcional)': 'Observación (opcional)',
+  'Ex.: Prefira a avenida depois das 20h.': 'Ej.: Prefiere la avenida después de las 20 h.',
+  'Antes de publicar': 'Antes de publicar',
+  'Fale do lugar, não de pessoas: sem nomes, placas, telefones ou aparência de ninguém.':
+    'Habla del lugar, no de personas: sin nombres, matrículas, teléfonos ni apariencia de nadie.',
+  'Seu nome não aparece no mapa, mas o aviso fica ligado à sua conta. Não é anônimo.':
+    'Tu nombre no aparece en el mapa, pero el aviso queda vinculado a tu cuenta. No es anónimo.',
+  'O aviso some em {days} dias se ninguém confirmar. Quem passar por lá pode marcar "Não está mais assim".':
+    'El aviso desaparece en {days} días si nadie lo confirma. Quien pase por allí puede marcar "Ya no está así".',
+  'Avisos falsos, ofensivos ou preconceituosos violam as regras de uso e podem ser removidos.':
+    'Los avisos falsos, ofensivos o con prejuicios violan las reglas de uso y pueden ser eliminados.',
+  'Ler as regras de uso': 'Leer las reglas de uso',
+  'Declaro que este aviso é verdadeiro, fala só do lugar e não cita pessoas.':
+    'Declaro que este aviso es verdadero, habla solo del lugar y no menciona a personas.',
+  'Publicar aviso': 'Publicar aviso',
+  'Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.':
+    'Para confirmar o actualizar un aviso, inicia sesión. Así cada persona vota una vez.',
+  'Escreva para {supportEmail} e informe a identificação do aviso: {id}.':
+    'Escribe a {supportEmail} e indica la identificación del aviso: {id}.',
+  'Ver detalhes': 'Ver detalles',
+  'Na página da pessoa você pode avisar que a viu por perto.':
+    'En la página de la persona puedes avisar que la viste cerca.',
+  'Aviso da comunidade': 'Aviso de la comunidad',
+  '{count} confirmação': '{count} confirmación',
+  '{count} confirmações': '{count} confirmaciones',
+  'Continua assim': 'Sigue así',
+  'Não está mais assim': 'Ya no está así',
+  'Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".':
+    'Relato de la comunidad, no verificado. En peligro, usa "Pedir ayuda".',
+  'Denunciar este aviso': 'Denunciar este aviso',
+  'Denunciar': 'Denunciar',
+  'Esconder avisos de segurança': 'Ocultar avisos de seguridad',
+  'Mostrar avisos de segurança': 'Mostrar avisos de seguridad',
+  'Adicionar aviso de segurança': 'Agregar aviso de seguridad',
+  'Avise sobre uma rua ou lugar perigoso': 'Avisa sobre una calle o lugar peligroso',
+  'Adicionar aviso': 'Agregar aviso',
+  'Avisar sobre um lugar perigoso': 'Avisar sobre un lugar peligroso',
+  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.':
+    'Cada foto en el mapa es una persona buscada: tócala para ver un resumen. Los botones de colores muestran solo niños, adultos o personas mayores.',
+  'Avisos de segurança': 'Avisos de seguridad',
+  'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".':
+    'Los rombos amarillos son avisos de la comunidad, como "calle desierta de noche". Tócalos para ver y confirmar. Para avisar sobre un lugar, usa "Agregar aviso".',
+  'Atenção redobrada': 'Atención redoblada',
+  'Lugar arriscado: fique atento ao passar.': 'Lugar riesgoso: mantente atento al pasar.',
+  'Assaltos frequentes': 'Robos frecuentes',
+  'Relatos repetidos de roubo ou furto.': 'Relatos repetidos de robo o hurto.',
+  'Rua deserta': 'Calle desierta',
+  'Pouco movimento e pouca gente por perto.': 'Poco movimiento y poca gente cerca.',
+  'Iluminação ruim': 'Mala iluminación',
+  'Rua escura ou postes apagados.': 'Calle oscura o postes apagados.',
+  'Evite neste horário': 'Evita en este horario',
+  'Tranquilo em parte do dia, arriscado em outra.': 'Tranquilo en parte del día, riesgoso en otra.',
+  'Outro cuidado': 'Otro cuidado',
+  'Outro motivo para redobrar a atenção.': 'Otro motivo para redoblar la atención.',
+  'Qualquer horário': 'Cualquier horario',
+  'Madrugada': 'Madrugada',
+  'Manhã': 'Mañana',
+  'Tarde': 'Tarde',
+  'Noite': 'Noche',
+  'Publicado hoje': 'Publicado hoy',
+  'Publicado ontem': 'Publicado ayer',
+  'Publicado há {count} dias': 'Publicado hace {count} días',
+  'Aviso de segurança: {reference}': 'Aviso de seguridad: {reference}',
+  'Identificação do aviso: {id}': 'Identificación del aviso: {id}',
+  'Motivo (aviso falso, ofensivo, preconceituoso, cita pessoas, já não é verdade, outro):':
+    'Motivo (aviso falso, ofensivo, con prejuicios, menciona a personas, ya no es verdad, otro):',
+  'Novo aviso de segurança': 'Nuevo aviso de seguridad',
 };

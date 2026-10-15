@@ -4,9 +4,10 @@ import { type Href, Stack, usePathname, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { BrandSplash } from '@/components/brand-splash';
 import type { BrandColors } from '@/constants/brand';
 import { ApiErrorModalProvider } from '@/lib/api-error-modal';
 import { setSessionExpiredHandler } from '@/lib/auth-events';
@@ -15,6 +16,7 @@ import { BrandThemeProvider, useBrand, useBrandColorScheme } from '@/lib/brand-t
 import { I18nProvider, useI18n } from '@/lib/i18n';
 import { queryClient } from '@/lib/query-client';
 import { getSessionUser, hydrateSession } from '@/lib/session';
+import { markSplashDone, useSplashDone } from '@/lib/splash-state';
 
 // Só no popup do OAuth (tem opener). Completa e deixa o app pai fechar a janela
 // antes do Expo Router redirecionar `/` → `/inicio` → `/login`.
@@ -29,6 +31,7 @@ function RootLayoutInner() {
   const colorScheme = useBrandColorScheme();
   const { ready: languageReady } = useI18n();
   const [sessionReady, setSessionReady] = useState(false);
+  const splashDone = useSplashDone();
   const styles = useMemo(() => makeStyles(brand), [brand]);
 
   const blocked = sessionReady && isProtectedPath(pathname) && getSessionUser() == null;
@@ -100,12 +103,13 @@ function RootLayoutInner() {
           <Stack.Screen name="compartilhar-localizacao" />
           <Stack.Screen name="contatos-confianca" />
           <Stack.Screen name="premium" />
+          <Stack.Screen name="aviso-seguranca" />
         </Stack>
       ) : (
-        <View style={styles.boot}>
-          <ActivityIndicator size="large" color={brand.orange} />
-        </View>
+        <View style={styles.boot} />
       )}
+      {/* Abertura com "Um produto da Nexora Prism" no rodapé; some sozinha quando o app está pronto. */}
+      {splashDone ? null : <BrandSplash ready={showStack} onDone={markSplashDone} />}
     </>
   );
 }
@@ -134,8 +138,6 @@ function makeStyles(brand: BrandColors) {
   return StyleSheet.create({
     boot: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: brand.navy,
     },
   });
