@@ -299,7 +299,7 @@ function makeStyles(brand: BrandColors) {
       fontWeight: '800',
       letterSpacing: 0.6,
       textTransform: 'uppercase',
-      color: brand.safetyNote,
+      color: brand.safetyNoteText,
     },
     title: {
       fontSize: 18,

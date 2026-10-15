@@ -46,7 +46,7 @@ export function AvisoSegurancaFormSection({ controller: c }: Props) {
   return (
     <View style={styles.wrap}>
       <View style={styles.intro}>
-        <MaterialCommunityIcons name="shield-alert-outline" size={28} color={brand.safetyNote} />
+        <MaterialCommunityIcons name="shield-alert-outline" size={28} color={brand.safetyNoteText} />
         <View style={styles.introText}>
           <Text style={styles.introTitle}>{t('Ajude quem passa por aqui')}</Text>
           <Text style={styles.introBody}>
@@ -97,7 +97,7 @@ export function AvisoSegurancaFormSection({ controller: c }: Props) {
                   <MaterialCommunityIcons
                     name={item.icon}
                     size={22}
-                    color={selected ? brand.onSafetyNote : brand.safetyNote}
+                    color={selected ? brand.onSafetyNote : brand.safetyNoteText}
                   />
                 </View>
                 <Text style={styles.categoryLabel}>{t(item.label)}</Text>
@@ -248,7 +248,7 @@ function makeStyles(brand: BrandColors) {
       borderRadius: Radius.lg,
       backgroundColor: soft,
       borderWidth: 1,
-      borderColor: hexToRgba(brand.safetyNote, 0.35),
+      borderColor: hexToRgba(brand.safetyNote, 0.6),
     },
     introText: {
       flex: 1,
@@ -319,7 +319,7 @@ function makeStyles(brand: BrandColors) {
       backgroundColor: brand.surface,
     },
     categorySelected: {
-      borderColor: brand.safetyNote,
+      borderColor: brand.safetyNoteText,
       borderWidth: 2.5,
       backgroundColor: soft,
     },

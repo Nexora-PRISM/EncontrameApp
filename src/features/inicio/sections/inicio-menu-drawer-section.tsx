@@ -156,7 +156,7 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
                 key: 'safety-note',
                 label: t('Avisar sobre um lugar perigoso'),
                 icon: 'shield-alert-outline' as const,
-                color: brand.safetyNote,
+                color: brand.safetyNoteText,
                 onPress: controller.goToNewSafetyNote,
               },
             ]

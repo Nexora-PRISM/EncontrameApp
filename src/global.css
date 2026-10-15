@@ -47,8 +47,9 @@
   --category-elder: #6d4ac9;
   --on-category: #ffffff;
   --nexora-pink: #d63375;
-  --safety-note: #a16207;
-  --on-safety-note: #ffffff;
+  --safety-note: #f2b705;
+  --on-safety-note: #0b2442;
+  --safety-note-text: #8a5a00;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -94,6 +95,7 @@
     --nexora-pink: #f0629a;
     --safety-note: #f5c542;
     --on-safety-note: #0b2442;
+    --safety-note-text: #f5c542;
   }
 }
 
