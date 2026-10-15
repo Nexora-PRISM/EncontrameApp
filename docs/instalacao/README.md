@@ -44,12 +44,19 @@ Nunca coloque valores reais em arquivos do Git (`.env.production` fica com as ch
 `netlify.toml` já define: comando `npx expo export --platform web`, pasta `dist` e o redirecionamento das rotas para
 `index.html` (com exceção de `/privacidade`).
 
-Para conferir ou ligar:
+**Situação (confirmada em 15/10/2026):** o Netlify está ligado ao repositório (projeto `encontrame`) e gera um
+**Deploy Preview para cada pull request**, no endereço `https://deploy-preview-<número do PR>--encontrame.netlify.app`.
+Exemplo: o PR #1 está em https://deploy-preview-1--encontrame.netlify.app/inicio. O preview é refeito a cada envio
+para a branch do PR, e o robô do Netlify comenta o link no próprio PR.
 
-1. app.netlify.com → o site do Encontra-me → **Site configuration → Build & deploy → Continuous deployment**.
-2. Repositório: `Nexora-PRISM/EncontrameApp`. **Production branch: `main`.**
-3. Recomendado: em **Deploy Previews**, ligar "Any pull request" — cada PR ganha um link de teste antes do merge.
-4. **Environment variables**: as da tabela acima. Depois de mudar uma variável, faça um novo deploy.
+- O preview usa as variáveis de ambiente do Netlify (API real e chave do Google Maps), então é o melhor lugar para
+  conferir o mapa, os pins e o cartão flutuante antes do merge.
+- Recursos com flag desligada em produção (avisos de segurança, Premium) também ficam desligados no preview. Para
+  testar os avisos no preview sem a API, dá para criar, só no contexto **Deploy Previews**, as variáveis
+  `EXPO_PUBLIC_USE_MOCKS=true` e `EXPO_PUBLIC_ENABLE_SAFETY_NOTES=true` (o preview passa a usar dados fictícios).
+
+Para conferir a configuração: app.netlify.com → projeto `encontrame` → **Site configuration → Build & deploy**
+(branch de produção: `main`) e **Environment variables** (as da tabela acima; depois de mudar, faça um novo deploy).
 
 ## Android (APK / AAB)
 

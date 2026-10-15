@@ -30,7 +30,8 @@ https://github.com/Nexora-PRISM/EncontrameApp/archive/3dfedad8c3e3a8c3ff10bd7215
    arquivos modificados, testes, resultados e pendências (use o modelo abaixo).
 6. Commit com mensagem que diga **por que** a mudança existe e `git push` para a `desenvolvimento`.
 7. Abrir (ou atualizar) o pull request **`desenvolvimento` → `main`**. A checagem automática roda no GitHub.
-8. Revisar os prints gerados pela checagem (aba *Actions* → execução → *Artifacts* → `prints-das-telas`).
+8. Abrir o **Deploy Preview do Netlify** (link comentado no PR, `https://deploy-preview-<nº>--encontrame.netlify.app`)
+   e conferir no celular. Os prints da checagem também ficam na aba *Actions* → execução → *Artifacts*.
 9. Um sócio aprova e faz o merge. **Nada entra na `main` sem essa aprovação.**
 
 ## Checagem automática (GitHub Actions)
@@ -52,7 +53,8 @@ Se a checagem ficar vermelha, o PR não deve ser aprovado até ser corrigido.
 ## Publicação
 
 - **Site (Netlify)**: publica a `main` com `npx expo export --platform web` e pasta `dist` (`netlify.toml`).
-  O merge na `main` dispara o deploy, se o Netlify estiver ligado ao repositório. Detalhes em `docs/instalacao/`.
+  O Netlify está ligado ao repositório: o merge na `main` publica o site e cada PR ganha um Deploy Preview.
+  Detalhes em `docs/instalacao/`.
 - **Android**: o deploy do site **não** atualiza o app instalado. É preciso gerar um novo AAB pelo EAS e enviar à
   Play Store (passo a passo em `docs/instalacao/README.md`).
 
