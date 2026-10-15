@@ -69,6 +69,8 @@ src/
     brand-field.tsx            # input com label
     screen-header.tsx          # cabeçalho com voltar + título
     bottom-bar.tsx             # barra inferior: Início · "Pedir ajuda" (centro) · Cadastrar; em tela larga, botão flutuante
+    brand-splash.tsx           # abertura do app: logo no centro + "Um produto da Nexora Prism" no rodapé (estilo "from Meta")
+    nexora-signature.tsx       # assinatura "Um produto da Nexora Prism" (abertura, menu, Sobre, Configurações)
     emergency-sheet.tsx        # folha "Pedir ajuda": 190/180/100/192/193 + comunicar desaparecimento / avistamento
     settings-list.tsx          # SettingsGroup / SettingsRow / SettingsSegmented / SettingsChoiceList (configurações, perfil, sobre)
   constants/
@@ -78,6 +80,8 @@ src/
     i18n.tsx                   # idiomas (pt-BR, en, es): I18nProvider, useT(), tr()
     i18n-msg.ts                # msg(): marca textos de listas/constantes para tradução
     premium-plan.ts            # preço (R$ 9,90/mês), plano anual/teste, grátis × Premium e texto da situação da assinatura
+    person-category.ts         # faixas de idade (crianças e adolescentes, adultos, idosos): filtros, rótulos, cores
+    splash-state.ts            # se a abertura já saiu (o passo a passo só abre depois)
   translations/                # dicionários en.ts e es.ts (a chave é o texto em português)
 assets/images/                 # imagens (logo.png é a logo oficial)
 locales/                       # textos das permissões do iOS por idioma (app.json → "locales")
@@ -132,6 +136,16 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Regra de negócio nas telas**: NÃO coloque regra na página. Estado/validação/handlers vão no controller.
 - **Integração com API**: crie um service por API em `src/services/<api>/` com o par de repositórios
   (`*.axios.repository.ts` + `*.mock.repository.ts`) e o mock ligado por padrão (`EXPO_PUBLIC_USE_MOCKS=true`).
+
+## Início (celular) e passo a passo
+
+- Ordem da tela: faixa marinho (botão "?", logo, busca e saudação) → "Alertas recentes" (cartões) → mapa grande com
+  filtros por faixa de idade, satélite e "minha localização" → barra inferior. Seções em `features/inicio/sections/`.
+- Filtros só por idade (`lib/person-category.ts`), porque a API não informa o sexo. Não crie filtro "Mulheres" antes
+  de a API devolver esse dado.
+- Passo a passo: conteúdo em `features/inicio/tutorial-steps.ts`, desenhos em `sections/tutorial-art.tsx`. "Pular"
+  sempre visível, texto grande, um assunto por passo. Mudou um botão citado lá? Atualize o passo e o desenho.
+- Cores das faixas de idade: tokens `category*` em `constants/brand.ts` (nunca vermelho).
 
 ## Regras de produto (honestidade da interface)
 

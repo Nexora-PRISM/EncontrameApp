@@ -101,8 +101,8 @@ function makeStyles(brand: BrandColors) {
     },
     glow: {
       position: 'absolute',
-      top: -90,
-      left: -90,
+      top: -78,
+      left: -72,
       width: 300,
       height: 300,
       opacity: 0.55,

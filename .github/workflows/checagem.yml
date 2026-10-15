@@ -11,8 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  # TEMPORÁRIO (revisão da IA): "write" só para publicar a prévia em refs/ci/*. Voltar para "read".
-  contents: write
+  contents: read
 
 concurrency:
   group: checagem-${{ github.ref }}
@@ -50,21 +49,6 @@ jobs:
         env:
           EXPO_PUBLIC_USE_MOCKS: 'true'
           EXPO_PUBLIC_ENABLE_PETS: 'true'
-
-      # TEMPORÁRIO (revisão da IA): guarda a prévia web numa ref interna (não aparece como branch).
-      - name: Publicar prévia web em ref interna
-        if: github.event_name == 'push'
-        run: |
-          cd dist-demo
-          git init -q -b preview
-          git config user.name "checagem-ci"
-          git config user.email "checagem-ci@users.noreply.github.com"
-          git add -A
-          git commit -qm "Prévia web de ${GITHUB_SHA}"
-          git push -q "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/ci/preview-${GITHUB_RUN_NUMBER}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
 
       - name: Prints das telas (celular, claro e escuro)
         run: |
