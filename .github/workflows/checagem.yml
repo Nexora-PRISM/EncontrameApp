@@ -50,6 +50,7 @@ jobs:
         env:
           EXPO_PUBLIC_USE_MOCKS: 'true'
           EXPO_PUBLIC_ENABLE_PETS: 'true'
+          EXPO_PUBLIC_ENABLE_SAFETY_NOTES: 'true'
 
       # TEMPORÁRIO (revisão da IA): guarda a prévia web numa ref interna (não aparece como branch).
       - name: Publicar prévia web em ref interna
