@@ -60,7 +60,7 @@ async function run(scheme) {
     await shot(page, `${scheme}-01-passo-a-passo`, 2500);
 
     for (let step = 2; step <= 8; step += 1) {
-      if (!(await tap(page, ['Próximo', 'Continuar']))) break;
+      if (!(await tap(page, ['Começar o passo a passo', 'Próximo', 'Continuar']))) break;
       await shot(page, `${scheme}-0${step}-passo-a-passo`);
     }
 

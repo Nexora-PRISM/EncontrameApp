@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMemo } from 'react';
-import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BrandButton } from '@/components/brand-button';
@@ -9,38 +9,29 @@ import { SettingsSegmented } from '@/components/settings-list';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
+import { TutorialArt } from '@/features/inicio/sections/tutorial-art';
+import { TUTORIAL_STEPS } from '@/features/inicio/tutorial-steps';
 import { useBrand } from '@/lib/brand-theme';
 import { LANGUAGE_SHORT_OPTIONS, useT } from '@/lib/i18n';
-import { msg } from '@/lib/i18n-msg';
 import { useWideLayout } from '@/lib/use-wide-layout';
-
-const STEPS = [
-  {
-    title: msg('Crianças, mulheres e muitas outras pessoas podem precisar de ajuda agora.'),
-    message: msg('Juntos, ajudamos a encontrá-las.'),
-  },
-  {
-    title: msg('Cadastre quem desapareceu e conte com a comunidade.'),
-    message: msg('Em perigo, use o botão vermelho "Pedir ajuda".'),
-  },
-  {
-    title: msg('Como você quer começar?'),
-    message: null,
-  },
-] as const;
 
 type Props = {
   controller: InicioController;
 };
 
+/**
+ * Passo a passo de como usar o app. Aparece na primeira abertura e pelo botão "?" do Início.
+ * "Pular" fica sempre visível no alto; texto grande, um assunto por passo e botões largos.
+ */
 export function InicioOnboardingSection({ controller }: Props) {
   const t = useT();
   const brand = useBrand();
   const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
-  const step = controller.onboardingStep;
-  const copy = STEPS[step] ?? STEPS[0];
-  const isLast = step === STEPS.length - 1;
+  const step = Math.min(controller.onboardingStep, TUTORIAL_STEPS.length - 1);
+  const copy = TUTORIAL_STEPS[step] ?? TUTORIAL_STEPS[0];
+  const isFirst = step === 0;
+  const isLast = step === TUTORIAL_STEPS.length - 1;
 
   return (
     <Modal
@@ -52,22 +43,50 @@ export function InicioOnboardingSection({ controller }: Props) {
     >
       <View style={styles.shell}>
         <SafeAreaView style={styles.panel} edges={['top', 'bottom']}>
-          <View style={styles.body}>
-            <Image
-              source={require('@/assets/images/sofia-avatar.jpg')}
-              style={styles.avatar}
-              resizeMode="cover"
-              accessibilityLabel={t('Sofia')}
-            />
-            <Text style={styles.name}>{t('Oi, eu sou a Sofia.')}</Text>
-            <BrandEnter key={step} from="fade">
-              <Text style={styles.title}>{t(copy.title)}</Text>
-              {copy.message ? <Text style={styles.message}>{t(copy.message)}</Text> : null}
-            </BrandEnter>
+          <View style={styles.topRow}>
+            <Text style={styles.progressText}>
+              {t('Passo {value} de {count}', { value: step + 1, count: TUTORIAL_STEPS.length })}
+            </Text>
+            {isLast ? null : (
+              <Pressable
+                onPress={controller.onboardingSkip}
+                hitSlop={12}
+                style={({ pressed }) => [styles.skip, pressed && styles.skipPressed]}
+                accessibilityRole="button"
+                accessibilityLabel={t('Pular')}
+                accessibilityHint={t('Fecha o passo a passo. Você pode ver de novo pelo botão "?" do Início.')}
+              >
+                <Text style={styles.skipText}>{t('Pular')}</Text>
+                <MaterialCommunityIcons name="chevron-double-right" size={20} color={brand.blue} />
+              </Pressable>
+            )}
           </View>
 
+          <View style={styles.progressBar}>
+            {TUTORIAL_STEPS.map((item, index) => (
+              <View
+                key={item.illustration}
+                style={[styles.progressSegment, index <= step && styles.progressSegmentDone]}
+              />
+            ))}
+          </View>
+
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.body}
+            showsVerticalScrollIndicator={false}
+          >
+            <BrandEnter key={step} from="fade" style={styles.stepContent}>
+              <TutorialArt kind={copy.illustration} />
+              <Text style={styles.title} accessibilityRole="header">
+                {t(copy.title)}
+              </Text>
+              <Text style={styles.message}>{t(copy.message)}</Text>
+            </BrandEnter>
+          </ScrollView>
+
           <View style={styles.footer}>
-            {step === 0 ? (
+            {isFirst ? (
               // Quem não lê português escolhe o idioma logo na primeira tela.
               <View style={styles.languageRow}>
                 <MaterialCommunityIcons name="translate" size={20} color={brand.label} />
@@ -81,14 +100,6 @@ export function InicioOnboardingSection({ controller }: Props) {
                 </View>
               </View>
             ) : null}
-            <View style={styles.dots} accessibilityLabel={t('Passo {value} de {count}', { value: step + 1, count: STEPS.length })}>
-              {STEPS.map((_, index) => (
-                <View
-                  key={index}
-                  style={[styles.dot, index === step ? styles.dotActive : styles.dotIdle]}
-                />
-              ))}
-            </View>
 
             {isLast ? (
               <View style={styles.actions}>
@@ -96,25 +107,43 @@ export function InicioOnboardingSection({ controller }: Props) {
                   label={t('Avistei uma pessoa — quero reportar')}
                   variant="orange"
                   onPress={controller.onboardingReport}
-                  style={styles.actionBtn}
+                  style={styles.tallButton}
                 />
                 <BrandButton
                   label={t('Quero cadastrar uma pessoa desaparecida')}
                   variant="outline"
                   onPress={controller.onboardingRegister}
-                  style={styles.actionBtn}
+                  style={styles.tallButton}
                 />
-                <Pressable
+                <BrandButton
+                  label={t('Começar a usar')}
+                  variant="blue"
                   onPress={controller.onboardingExplore}
-                  hitSlop={8}
-                  accessibilityRole="button"
-                  accessibilityLabel={t('Quero só explorar o mapa')}
-                >
-                  <Text style={styles.skip}>{t('Quero só explorar o mapa')}</Text>
-                </Pressable>
+                  style={styles.tallButton}
+                />
               </View>
             ) : (
-              <BrandButton label={t('Continuar')} variant="orange" onPress={controller.onboardingContinue} />
+              <View style={styles.navRow}>
+                {isFirst ? null : (
+                  <View style={styles.navBack}>
+                    <BrandButton
+                      label={t('Voltar')}
+                      variant="outline"
+                      onPress={controller.onboardingBack}
+                      style={styles.tallButton}
+                    />
+                  </View>
+                )}
+                <View style={styles.navNext}>
+                  <BrandButton
+                    label={isFirst ? t('Começar o passo a passo') : t('Próximo')}
+                    variant="orange"
+                    trailingIcon="arrow-right"
+                    onPress={controller.onboardingContinue}
+                    style={styles.tallButton}
+                  />
+                </View>
+              </View>
             )}
           </View>
         </SafeAreaView>
@@ -135,53 +164,94 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
     panel: {
       flex: isWide ? undefined : 1,
       width: '100%',
-      maxWidth: isWide ? 480 : undefined,
+      maxWidth: isWide ? 520 : undefined,
+      maxHeight: isWide ? 760 : undefined,
       backgroundColor: brand.white,
-      borderRadius: isWide ? Radius.lg : 0,
+      borderRadius: isWide ? Radius.xl : 0,
       overflow: 'hidden',
       zIndex: 1,
     },
-    body: {
-      flex: isWide ? undefined : 1,
+    topRow: {
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
+      minHeight: 52,
       paddingHorizontal: PageGutter,
-      paddingVertical: 24,
+      paddingTop: 8,
     },
-    avatar: {
-      width: 148,
-      height: 148,
-      borderRadius: 74,
-      backgroundColor: brand.avatarBackground,
-      borderWidth: 4,
-      borderColor: brand.orange,
-    },
-    name: {
-      marginTop: 16,
+    progressText: {
       fontSize: 15,
       fontWeight: '700',
       color: brand.textMuted,
     },
+    skip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 2,
+      minHeight: 44,
+      paddingHorizontal: 14,
+      borderRadius: Radius.pill,
+      borderWidth: 1.5,
+      borderColor: brand.blue,
+      backgroundColor: brand.surface,
+    },
+    skipPressed: {
+      opacity: 0.8,
+    },
+    skipText: {
+      fontSize: 16,
+      fontWeight: '800',
+      color: brand.blue,
+    },
+    progressBar: {
+      flexDirection: 'row',
+      gap: 6,
+      paddingHorizontal: PageGutter,
+      paddingTop: 10,
+    },
+    progressSegment: {
+      flex: 1,
+      height: 6,
+      borderRadius: Radius.pill,
+      backgroundColor: brand.divider,
+    },
+    progressSegmentDone: {
+      backgroundColor: brand.orange,
+    },
+    scroll: {
+      flex: isWide ? undefined : 1,
+    },
+    body: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      paddingHorizontal: PageGutter,
+      paddingVertical: 20,
+    },
+    stepContent: {
+      alignItems: 'center',
+      gap: 14,
+    },
     title: {
-      marginTop: 8,
-      fontSize: 24,
+      marginTop: 10,
+      fontSize: 26,
+      lineHeight: 32,
       fontWeight: '800',
       textAlign: 'center',
       color: brand.textDark,
+      maxWidth: 420,
     },
     message: {
-      marginTop: 12,
-      fontSize: 16,
-      lineHeight: 24,
+      fontSize: 18,
+      lineHeight: 27,
       textAlign: 'center',
       color: brand.textMuted,
-      maxWidth: 360,
+      maxWidth: 420,
     },
     footer: {
       paddingHorizontal: PageGutter,
       paddingBottom: 16,
       paddingTop: 8,
-      gap: 16,
+      gap: 14,
     },
     languageRow: {
       flexDirection: 'row',
@@ -193,38 +263,23 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       flex: 1,
       maxWidth: 320,
     },
-    dots: {
+    navRow: {
       flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 8,
-    },
-    dot: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
-    },
-    dotActive: {
-      backgroundColor: brand.orange,
-      width: 18,
-    },
-    dotIdle: {
-      backgroundColor: brand.divider,
-    },
-    actions: {
       gap: 12,
     },
-    actionBtn: {
-      height: 'auto',
-      minHeight: 54,
-      paddingVertical: 12,
+    navBack: {
+      flex: 1,
     },
-    skip: {
-      marginTop: 4,
-      fontSize: 15,
-      fontWeight: '600',
-      textAlign: 'center',
-      color: brand.textMuted,
+    navNext: {
+      flex: 2,
+    },
+    actions: {
+      gap: 10,
+    },
+    tallButton: {
+      height: 'auto',
+      minHeight: 58,
+      paddingVertical: 12,
     },
   });
 }

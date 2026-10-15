@@ -1,207 +1,173 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, type RefObject } from 'react';
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  type SharedValue,
-} from 'react-native-reanimated';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { forwardRef, useImperativeHandle, useMemo, useRef, type RefObject } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BrandMap, type BrandMapHandle, type MapPadding } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
-import { Motion } from '@/constants/motion';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
+import { hexToRgba } from '@/lib/map-style';
+import { CATEGORY_FILTERS, categoryColor } from '@/lib/person-category';
 
-/** Faixa que sobra do mapa quando a pessoa puxa o painel para baixo. */
-export const MAP_PEEK_HEIGHT = 150;
-const SHEET_RADIUS = 32;
-const HANDLE_HEIGHT = 44;
+const CARD_RADIUS = 28;
+/** Quanto o mapa sobe por cima da faixa marinho do topo (efeito de cartão). */
+export const MAP_CARD_OVERLAP = 18;
 
 interface InicioMapSectionProps {
   controller: InicioController;
   mapPadding?: MapPadding;
-  /** `overlay` cobre a tela (layout largo). `sheet` é o painel do celular. */
-  variant?: 'overlay' | 'sheet';
-  collapsed?: boolean;
-  expandedHeight?: number;
-  onCollapsedChange?: (collapsed: boolean) => void;
+  /** `overlay` cobre a tela (layout largo). `card` é o mapa grande do celular, com filtros. */
+  variant?: 'overlay' | 'card';
 }
 
 export const InicioMapSection = forwardRef<BrandMapHandle, InicioMapSectionProps>(
-  function InicioMapSection(
-    {
-      controller,
-      mapPadding,
-      variant = 'overlay',
-      collapsed = false,
-      expandedHeight = MAP_PEEK_HEIGHT,
-      onCollapsedChange,
-    },
-    ref,
-  ) {
+  function InicioMapSection({ controller, mapPadding, variant = 'overlay' }, ref) {
     const mapRef = useRef<BrandMapHandle>(null);
     useImperativeHandle(ref, () => ({
       recenterOnUser: () => mapRef.current?.recenterOnUser(),
     }));
 
-    if (variant === 'sheet') {
-      return (
-        <MapSheet
-          mapRef={mapRef}
-          controller={controller}
-          collapsed={collapsed}
-          expandedHeight={expandedHeight}
-          onCollapsedChange={onCollapsedChange}
-        />
-      );
+    if (variant === 'card') {
+      return <MapCard mapRef={mapRef} controller={controller} />;
     }
 
     return (
-      <View style={[StyleSheet.absoluteFill, styles.wrapper]}>
+      <View style={[StyleSheet.absoluteFill, overlayStyles.wrapper]}>
         <BrandMap
           ref={mapRef}
           pins={controller.pins}
           userLocation={controller.userLocation}
           mapPadding={mapPadding}
           showLocationFab={false}
-          style={styles.map}
+          satellite={controller.satellite}
+          style={overlayStyles.map}
         />
       </View>
     );
   },
 );
 
-function MapSheet({
+/** Mapa grande do celular: filtros por idade no alto, satélite e "minha localização" à direita. */
+function MapCard({
   mapRef,
   controller,
-  collapsed,
-  expandedHeight,
-  onCollapsedChange,
 }: {
   mapRef: RefObject<BrandMapHandle | null>;
   controller: InicioController;
-  collapsed: boolean;
-  expandedHeight: number;
-  onCollapsedChange?: (collapsed: boolean) => void;
 }) {
+  const t = useT();
   const brand = useBrand();
-  const styles = useMemo(() => makeSheetStyles(brand), [brand]);
-  const progress = useSharedValue(collapsed ? 1 : 0);
-  const expandedSv = useSharedValue(Math.max(expandedHeight, MAP_PEEK_HEIGHT));
-
-  useEffect(() => {
-    expandedSv.value = Math.max(expandedHeight, MAP_PEEK_HEIGHT);
-  }, [expandedHeight, expandedSv]);
-
-  useEffect(() => {
-    progress.value = withTiming(collapsed ? 1 : 0, { duration: Motion.durationMs });
-  }, [collapsed, progress]);
-
-  const heightStyle = useAnimatedStyle(() => {
-    const expanded = Math.max(expandedSv.value, MAP_PEEK_HEIGHT);
-    return {
-      height: expanded + (MAP_PEEK_HEIGHT - expanded) * progress.value,
-    };
-  });
+  const styles = useMemo(() => makeCardStyles(brand), [brand]);
+  const showEmpty = !controller.showPeopleSkeleton && controller.pins.length === 0;
 
   return (
-    <Animated.View style={[styles.sheetShadow, heightStyle]}>
-      <View style={styles.sheetClip}>
+    <View style={styles.cardShadow}>
+      <View style={styles.cardClip}>
         <BrandMap
           ref={mapRef}
           pins={controller.pins}
           userLocation={controller.userLocation}
           showLocationFab={false}
+          satellite={controller.satellite}
           style={styles.map}
         />
-        <SheetHandle
-          progress={progress}
-          expandedSv={expandedSv}
-          collapsed={collapsed}
-          onCollapsedChange={onCollapsedChange}
-          handleStyle={styles.handle}
-          grabberStyle={styles.grabber}
-        />
+
+        <CategoryChips controller={controller} brand={brand} styles={styles} />
+
+        <Pressable
+          onPress={controller.toggleSatellite}
+          style={({ pressed }) => [
+            styles.layerButton,
+            controller.satellite && styles.layerButtonActive,
+            pressed && styles.pressed,
+          ]}
+          accessibilityRole="button"
+          accessibilityLabel={controller.satellite ? t('Ver mapa comum') : t('Ver imagem de satélite')}
+          accessibilityState={{ selected: controller.satellite }}
+        >
+          <MaterialCommunityIcons
+            name={controller.satellite ? 'map-outline' : 'satellite-variant'}
+            size={24}
+            color={controller.satellite ? brand.onPrimary : brand.textDark}
+          />
+        </Pressable>
+
+        {showEmpty ? (
+          <View style={styles.emptyPill} pointerEvents="none">
+            <Text style={styles.emptyText}>
+              {controller.categoryFilter === 'all'
+                ? t('Nenhuma pessoa no mapa por aqui.')
+                : t('Nenhuma pessoa desta faixa de idade no mapa.')}
+            </Text>
+          </View>
+        ) : null}
+
         <MapMyLocationFab
           onPress={() => mapRef.current?.recenterOnUser()}
           disabled={!controller.userLocation}
           style={styles.locationFab}
         />
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
-function SheetHandle({
-  progress,
-  expandedSv,
-  collapsed,
-  onCollapsedChange,
-  handleStyle,
-  grabberStyle,
+function CategoryChips({
+  controller,
+  brand,
+  styles,
 }: {
-  progress: SharedValue<number>;
-  expandedSv: SharedValue<number>;
-  collapsed: boolean;
-  onCollapsedChange?: (collapsed: boolean) => void;
-  handleStyle: StyleProp<ViewStyle>;
-  grabberStyle: StyleProp<ViewStyle>;
+  controller: InicioController;
+  brand: BrandColors;
+  styles: CardStyles;
 }) {
   const t = useT();
-  const dragStart = useSharedValue(0);
-
-  const commit = (next: boolean) => {
-    if (next !== collapsed) {
-      onCollapsedChange?.(next);
-    }
-  };
-
-  const toggle = () => {
-    onCollapsedChange?.(!collapsed);
-  };
-
-  const pan = Gesture.Pan()
-    .activeOffsetY([-12, 12])
-    .onBegin(() => {
-      dragStart.value = progress.value;
-    })
-    .onUpdate((event) => {
-      const range = Math.max(expandedSv.value - MAP_PEEK_HEIGHT, 1);
-      const next = dragStart.value + event.translationY / range;
-      // Shared value do Reanimated: o gesto escreve o progresso do painel.
-      // eslint-disable-next-line react-hooks/immutability
-      progress.value = Math.min(1, Math.max(0, next));
-    })
-    .onEnd((event) => {
-      const projected = progress.value + event.velocityY / 1600;
-      const next = projected > 0.45;
-      // eslint-disable-next-line react-hooks/immutability
-      progress.value = withTiming(next ? 1 : 0, { duration: Motion.durationMs });
-      runOnJS(commit)(next);
-    });
-
-  const label = collapsed ? t('Expandir mapa') : t('Recolher mapa');
 
   return (
-    <GestureDetector gesture={pan}>
-      <Pressable
-        style={handleStyle}
-        onPress={toggle}
-        accessibilityRole="button"
-        accessibilityLabel={label}
-      >
-        <View style={grabberStyle} />
-      </Pressable>
-    </GestureDetector>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.chipsScroller}
+      contentContainerStyle={styles.chipsTrack}
+      accessibilityLabel={t('Filtrar por faixa de idade')}
+    >
+      {CATEGORY_FILTERS.map((filter) => {
+        const selected = controller.categoryFilter === filter.value;
+        const color = categoryColor(brand, filter.value);
+        return (
+          <Pressable
+            key={filter.value}
+            onPress={() => controller.setCategoryFilter(filter.value)}
+            hitSlop={4}
+            style={({ pressed }) => [
+              styles.chip,
+              selected
+                ? { backgroundColor: color, borderColor: color }
+                : { borderColor: hexToRgba(color, 0.55) },
+              pressed && styles.pressed,
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel={t(filter.accessibilityLabel)}
+            accessibilityState={{ selected }}
+          >
+            <MaterialCommunityIcons
+              name={filter.icon}
+              size={17}
+              color={selected ? brand.onCategory : color}
+            />
+            <Text style={[styles.chipText, selected && { color: brand.onCategory }]}>
+              {t(filter.label)}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+const overlayStyles = StyleSheet.create({
   wrapper: {
     zIndex: 0,
   },
@@ -211,60 +177,115 @@ const styles = StyleSheet.create({
   },
 });
 
-function makeSheetStyles(brand: BrandColors) {
+type CardStyles = ReturnType<typeof makeCardStyles>;
+
+function makeCardStyles(brand: BrandColors) {
   return StyleSheet.create({
-    sheetShadow: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      flexShrink: 0,
+    cardShadow: {
+      flex: 1,
+      minHeight: 0,
+      marginTop: -MAP_CARD_OVERLAP,
       zIndex: 2,
       backgroundColor: brand.mapBackground,
-      borderTopLeftRadius: SHEET_RADIUS,
-      borderTopRightRadius: SHEET_RADIUS,
+      borderTopLeftRadius: CARD_RADIUS,
+      borderTopRightRadius: CARD_RADIUS,
       shadowColor: brand.navyDeep,
-      shadowOpacity: 0.22,
-      shadowRadius: 16,
-      shadowOffset: { width: 0, height: -6 },
-      elevation: 12,
+      shadowOpacity: 0.25,
+      shadowRadius: 14,
+      shadowOffset: { width: 0, height: -4 },
+      elevation: 10,
     },
-    sheetClip: {
+    cardClip: {
       flex: 1,
       overflow: 'hidden',
-      borderTopLeftRadius: SHEET_RADIUS,
-      borderTopRightRadius: SHEET_RADIUS,
+      borderTopLeftRadius: CARD_RADIUS,
+      borderTopRightRadius: CARD_RADIUS,
       backgroundColor: brand.mapBackground,
     },
     map: {
       flex: 1,
-      borderTopLeftRadius: SHEET_RADIUS,
-      borderTopRightRadius: SHEET_RADIUS,
+      borderWidth: 0,
+      borderTopLeftRadius: CARD_RADIUS,
+      borderTopRightRadius: CARD_RADIUS,
     },
-    handle: {
+    chipsScroller: {
       position: 'absolute',
-      top: 0,
+      top: 12,
       left: 0,
       right: 0,
-      height: HANDLE_HEIGHT,
+      flexGrow: 0,
+      zIndex: 3,
+    },
+    chipsTrack: {
+      gap: 8,
+      paddingHorizontal: 12,
+    },
+    chip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      height: 42,
+      paddingHorizontal: 13,
+      borderRadius: Radius.pill,
+      borderWidth: 1.5,
+      backgroundColor: brand.surface,
+      shadowColor: brand.navyDeep,
+      shadowOpacity: 0.18,
+      shadowRadius: 6,
+      shadowOffset: { width: 0, height: 2 },
+      elevation: 4,
+    },
+    chipText: {
+      fontSize: 15,
+      fontWeight: '800',
+      color: brand.textDark,
+    },
+    pressed: {
+      opacity: 0.8,
+    },
+    layerButton: {
+      position: 'absolute',
+      top: 66,
+      right: 12,
+      zIndex: 3,
+      width: 48,
+      height: 48,
+      borderRadius: Radius.pill,
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 4,
-      elevation: 8,
-    },
-    grabber: {
-      width: 42,
-      height: 5,
-      borderRadius: Radius.pill,
-      backgroundColor: brand.onPrimary,
+      backgroundColor: brand.surface,
+      borderWidth: 1,
+      borderColor: brand.divider,
       shadowColor: brand.navyDeep,
-      shadowOpacity: 0.4,
-      shadowRadius: 4,
-      shadowOffset: { width: 0, height: 1 },
-      elevation: 3,
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 3 },
+      elevation: 6,
+    },
+    layerButtonActive: {
+      backgroundColor: brand.blue,
+      borderColor: brand.blue,
+    },
+    emptyPill: {
+      position: 'absolute',
+      top: 70,
+      left: 12,
+      right: 72,
+      alignItems: 'flex-start',
+      zIndex: 3,
+    },
+    emptyText: {
+      overflow: 'hidden',
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: Radius.md,
+      fontSize: 14,
+      fontWeight: '700',
+      color: brand.textDark,
+      backgroundColor: brand.surface,
     },
     locationFab: {
-      bottom: 12,
+      bottom: 14,
       right: 12,
       zIndex: 3,
       elevation: 6,

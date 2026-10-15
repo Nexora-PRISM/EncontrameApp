@@ -37,6 +37,8 @@ export type MapPin = {
   emphasized?: boolean;
   zIndex?: number;
   tooltip?: MapPinTooltip;
+  /** Cor do anel em volta da foto/ícone (ex.: faixa de idade). Sem ela, o anel é branco. */
+  accentColor?: string;
   onPress?: () => void;
 };
 
@@ -67,6 +69,8 @@ type Props = {
   rounded?: boolean;
   mapPadding?: MapPadding;
   showLocationFab?: boolean;
+  /** Imagem de satélite com nomes de ruas (Google "hybrid"). */
+  satellite?: boolean;
   style?: ViewStyle;
 };
 
@@ -100,7 +104,7 @@ function photoPinSvg(id: string, photoUri: string, ring: string) {
 }
 
 function pinIcon(pin: MapPin, brand: BrandColors, emphasized = false) {
-  const ring = emphasized ? brand.orange : brand.onPrimary;
+  const ring = emphasized ? brand.orange : (pin.accentColor ?? brand.onPrimary);
   if (pin.photoUri) {
     return photoPinSvg(pin.id, pin.photoUri, ring);
   }
@@ -225,6 +229,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     rounded = false,
     mapPadding,
     showLocationFab = true,
+    satellite = false,
     style,
   },
   ref,
@@ -235,6 +240,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const mapStyle = useMemo(() => brandMapStyle(brand, colorScheme), [brand, colorScheme]);
   const mapStyleRef = useRef(mapStyle);
+  const satelliteRef = useRef(satellite);
   const apiKey = env.googleMapsWebApiKey;
   const isPreview = Boolean(onPress);
   const [host, setHost] = useState<HTMLElement | null>(null);
@@ -280,8 +286,13 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
 
   useEffect(() => {
     mapStyleRef.current = mapStyle;
-    mapRef.current?.setOptions({ styles: mapStyle });
-  }, [mapStyle]);
+    satelliteRef.current = satellite;
+    // No satélite o estilo da marca não se aplica (o Google ignora); volta ao sair.
+    mapRef.current?.setOptions({
+      styles: satellite ? [] : mapStyle,
+      mapTypeId: satellite ? 'hybrid' : 'roadmap',
+    });
+  }, [mapStyle, satellite]);
 
   useEffect(() => {
     mapPaddingRef.current = mapPadding;
@@ -312,7 +323,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
-          styles: mapStyleRef.current,
+          styles: satelliteRef.current ? [] : mapStyleRef.current,
+          mapTypeId: satelliteRef.current ? 'hybrid' : 'roadmap',
           padding: mapPaddingRef.current,
         });
 

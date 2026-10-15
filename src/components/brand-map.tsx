@@ -27,6 +27,8 @@ export type MapPin = {
   emphasized?: boolean;
   zIndex?: number;
   tooltip?: MapPinTooltip;
+  /** Cor do anel em volta da foto/ícone (ex.: faixa de idade). Sem ela, o anel é branco. */
+  accentColor?: string;
   onPress?: () => void;
 };
 
@@ -57,6 +59,8 @@ type Props = {
   rounded?: boolean;
   mapPadding?: MapPadding;
   showLocationFab?: boolean;
+  /** Imagem de satélite com nomes de ruas (Google "hybrid"). */
+  satellite?: boolean;
   style?: ViewStyle;
 };
 
@@ -115,6 +119,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     rounded = false,
     mapPadding,
     showLocationFab = true,
+    satellite = false,
     style,
   },
   ref,
@@ -160,7 +165,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       <MapView
         ref={mapRef}
         style={[styles.mapView, rounded && styles.roundedMap]}
-        customMapStyle={mapStyle}
+        customMapStyle={satellite ? undefined : mapStyle}
+        mapType={satellite ? 'hybrid' : 'standard'}
         initialRegion={region}
         userInterfaceStyle={colorScheme}
         onPress={(event) => {
@@ -269,6 +275,8 @@ function PersonPinMarker({
   onSelect: () => void;
 }) {
   const [photoReady, setPhotoReady] = useState(!pin.photoUri);
+  // Selecionado continua laranja; senão, o anel usa a cor do pin (ex.: faixa de idade).
+  const ring = !emphasized && pin.accentColor ? { borderColor: pin.accentColor } : null;
 
   return (
     <Marker
@@ -296,11 +304,11 @@ function PersonPinMarker({
         {pin.photoUri ? (
           <Image
             source={{ uri: pin.photoUri }}
-            style={emphasized ? styles.pinPhotoLg : styles.pinPhoto}
+            style={[emphasized ? styles.pinPhotoLg : styles.pinPhoto, ring]}
             onLoad={() => setPhotoReady(true)}
           />
         ) : (
-          <View style={emphasized ? styles.pinBadgeLg : styles.pinBadge}>
+          <View style={[emphasized ? styles.pinBadgeLg : styles.pinBadge, ring]}>
             <MaterialCommunityIcons
               name={pin.locked ? 'lock' : 'account'}
               size={emphasized ? 20 : 16}

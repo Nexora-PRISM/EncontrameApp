@@ -171,7 +171,7 @@ export function useConfiguracoesController() {
   const replayTutorial = () => {
     void (async () => {
       await resetAppOnboarding();
-      showAlert(t('Apresentação reativada'), t('Ela vai aparecer quando você voltar ao Início.'));
+      showAlert(t('Passo a passo reativado'), t('Ele vai aparecer quando você voltar ao Início.'));
     })();
   };
 

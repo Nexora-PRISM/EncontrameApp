@@ -51,6 +51,9 @@ export function BrandButton({
     <Pressable
       onPress={onPress}
       disabled={isInactive}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: isInactive, busy: loading }}
       onPressIn={() => setHighlight(true)}
       onPressOut={() => setHighlight(false)}
       onHoverIn={() => setHighlight(true)}

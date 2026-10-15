@@ -1,5 +1,7 @@
-import { useMemo, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFocusEffect } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomBar } from '@/components/bottom-bar';
@@ -7,17 +9,16 @@ import { type BrandMapHandle } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { SofiaFab } from '@/components/sofia-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
-import { InicioSidebarWidth, PageGutter, Spacing } from '@/constants/theme';
+import { InicioSidebarWidth, PageGutter } from '@/constants/theme';
 import { useInicioController, type InicioController } from '@/features/inicio/inicio.controller';
-import { InicioBrowseSection } from '@/features/inicio/sections/inicio-browse-section';
-import { InicioMapSection, MAP_PEEK_HEIGHT } from '@/features/inicio/sections/inicio-map-section';
+import { InicioAlertsSection } from '@/features/inicio/sections/inicio-alerts-section';
+import { InicioHeaderSection } from '@/features/inicio/sections/inicio-header-section';
+import { InicioMapSection, MAP_CARD_OVERLAP } from '@/features/inicio/sections/inicio-map-section';
 import { InicioMenuDrawerSection } from '@/features/inicio/sections/inicio-menu-drawer-section';
 import { InicioOnboardingSection } from '@/features/inicio/sections/inicio-onboarding-section';
-import { InicioPeopleCarouselSection } from '@/features/inicio/sections/inicio-people-carousel-section';
 import { InicioPeopleSidebarSection } from '@/features/inicio/sections/inicio-people-sidebar-section';
 import { InicioTopBarSection } from '@/features/inicio/sections/inicio-top-bar-section';
-import { useBrand } from '@/lib/brand-theme';
-import { useT } from '@/lib/i18n';
+import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
@@ -75,56 +76,36 @@ function WideInicio({ controller }: { controller: InicioController }) {
   );
 }
 
+/**
+ * Início no celular, de cima para baixo: faixa marinho com logo, saudação e alertas recentes;
+ * mapa grande com filtros por idade; barra inferior (Menu · Pedir ajuda · Cadastrar).
+ */
 function PhoneInicio({ controller }: { controller: InicioController }) {
-  const t = useT();
   const brand = useBrand();
+  const colorScheme = useBrandColorScheme();
   const styles = useMemo(() => makePhoneStyles(brand), [brand]);
-  const [bodyHeight, setBodyHeight] = useState(0);
-  const [openTopHeight, setOpenTopHeight] = useState(0);
-  const expandedHeight =
-    bodyHeight > 0 && openTopHeight > 0
-      ? Math.max(MAP_PEEK_HEIGHT, bodyHeight - openTopHeight)
-      : MAP_PEEK_HEIGHT;
+  const [focused, setFocused] = useState(true);
+
+  // A faixa do topo é marinho: ícones claros na barra de status enquanto o Início está na frente.
+  useFocusEffect(
+    useCallback(() => {
+      setFocused(true);
+      return () => setFocused(false);
+    }, []),
+  );
+  const overLightSheet = controller.onboardingVisible || controller.menuOpen;
+  const statusStyle = overLightSheet && colorScheme !== 'dark' ? 'dark' : 'light';
 
   return (
     <View style={styles.container}>
-      <View
-        style={styles.column}
-        onLayout={(event) => {
-          const height = event.nativeEvent.layout.height;
-          setBodyHeight((current) => (Math.abs(current - height) < 2 ? current : height));
-        }}
-      >
-        <View style={styles.top}>
-          {controller.mapCollapsed ? (
-            <InicioBrowseSection controller={controller} />
-          ) : (
-            <View
-              style={styles.openTop}
-              onLayout={(event) => {
-                const height = event.nativeEvent.layout.height;
-                setOpenTopHeight((current) => (Math.abs(current - height) < 2 ? current : height));
-              }}
-            >
-              <SafeAreaView edges={['top']}>
-                <InicioPeopleCarouselSection controller={controller} />
-                {controller.locationDenied ? (
-                  <Text style={styles.locationHint}>
-                    {t('Ative a localização para ver pessoas próximas.')}
-                  </Text>
-                ) : null}
-              </SafeAreaView>
-            </View>
-          )}
-        </View>
-        <InicioMapSection
-          variant="sheet"
-          controller={controller}
-          collapsed={controller.mapCollapsed}
-          expandedHeight={expandedHeight}
-          onCollapsedChange={controller.setMapCollapsed}
-        />
+      {focused ? <StatusBar style={statusStyle} /> : null}
+      <View style={styles.hero}>
+        <SafeAreaView edges={['top']}>
+          <InicioHeaderSection controller={controller} />
+          <InicioAlertsSection controller={controller} />
+        </SafeAreaView>
       </View>
+      <InicioMapSection variant="card" controller={controller} />
       <BottomBar active="home" onMenuPress={controller.openMenu} />
       <SofiaFab onPress={controller.goToChat} />
       <InicioMenuDrawerSection controller={controller} />
@@ -173,25 +154,12 @@ function makePhoneStyles(brand: BrandColors) {
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: brand.white,
+      backgroundColor: brand.mapBackground,
     },
-    column: {
-      flex: 1,
-      minHeight: 0,
-    },
-    top: {
-      flex: 1,
-      minHeight: 0,
-    },
-    openTop: {
-      paddingBottom: Spacing.three,
-    },
-    locationHint: {
-      color: brand.textMuted,
-      fontSize: 13,
-      fontWeight: '600',
-      paddingHorizontal: PageGutter,
-      paddingBottom: 10,
+    hero: {
+      backgroundColor: brand.navy,
+      paddingBottom: MAP_CARD_OVERLAP + 14,
+      zIndex: 1,
     },
   });
 }
