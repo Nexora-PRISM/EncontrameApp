@@ -1,3 +1,4 @@
+import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
 
 /**
@@ -10,6 +11,7 @@ export type TutorialIllustration =
   | 'welcome'
   | 'alerts'
   | 'map'
+  | 'safety'
   | 'sighting'
   | 'emergency'
   | 'bottom-bar'
@@ -21,7 +23,7 @@ export type TutorialStep = {
   message: string;
 };
 
-export const TUTORIAL_STEPS: readonly TutorialStep[] = [
+const ALL_STEPS: readonly TutorialStep[] = [
   {
     illustration: 'welcome',
     title: msg('Oi! Eu sou a Sofia.'),
@@ -40,7 +42,14 @@ export const TUTORIAL_STEPS: readonly TutorialStep[] = [
     illustration: 'map',
     title: msg('Use o mapa'),
     message: msg(
-      'Cada foto no mapa é uma pessoa procurada. Os botões coloridos mostram só crianças, adultos ou idosos.',
+      'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.',
+    ),
+  },
+  {
+    illustration: 'safety',
+    title: msg('Avisos de segurança'),
+    message: msg(
+      'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".',
     ),
   },
   {
@@ -70,5 +79,10 @@ export const TUTORIAL_STEPS: readonly TutorialStep[] = [
     message: msg('Para ver este passo a passo de novo, toque no "?" no alto da tela.'),
   },
 ];
+
+/** O passo dos avisos só aparece quando o recurso está ligado nesta versão do app. */
+export const TUTORIAL_STEPS: readonly TutorialStep[] = ALL_STEPS.filter(
+  (step) => step.illustration !== 'safety' || env.safetyNotesEnabled,
+);
 
 export const TUTORIAL_LAST_STEP = TUTORIAL_STEPS.length - 1;

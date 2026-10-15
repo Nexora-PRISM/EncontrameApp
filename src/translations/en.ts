@@ -1351,8 +1351,6 @@ export const en: Readonly<Record<string, string>> = {
   'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.':
     'The alerts are at the top of the screen. Tap a card to see the photo and details of the person.',
   'Use o mapa': 'Use the map',
-  'Cada foto no mapa é uma pessoa procurada. Os botões coloridos mostram só crianças, adultos ou idosos.':
-    'Each photo on the map is a person being searched for. The colored buttons show only children, adults or older people.',
   'Viu alguém? Avise.': 'Saw someone? Let us know.',
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
     'On the person\'s page, tap "I saw this person nearby" and mark where you saw them. This helps the family.',
@@ -1370,4 +1368,104 @@ export const en: Readonly<Record<string, string>> = {
   'Criança': 'Child',
   'Pessoa idosa': 'Older person',
   'Adulto': 'Adult',
+  // Rodada 4 — Avisos de segurança no mapa e cartão flutuante
+  'Posso avisar sobre uma rua perigosa?': 'Can I warn about a dangerous street?',
+  'Os avisos de segurança estão em teste e podem ainda não aparecer na sua versão do app. Quando estão ativos, o mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".':
+    'Safety notes are being tested and may not appear in your version of the app yet. When they are active, the Home map shows yellow diamonds with community notes, such as "frequent robberies" or "deserted street at night". Tap a note to see the time and the place reference and mark "Still like this" or "No longer like this". To add one, sign in and tap "Add note". Talk about the place, never about people: no names, license plates or phone numbers. A note disappears after 30 days if nobody confirms it. They are unverified community reports and do not replace the police: if you are in danger, use "Get help".',
+  'aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa':
+    'note dangerous street robbery deserted dark lighting time safety community map',
+  'Localização indisponível': 'Location unavailable',
+  'Permita o acesso à localização ou toque no mapa para marcar o lugar.':
+    'Allow location access or tap the map to mark the place.',
+  'Não coloque telefone, CPF, e-mail ou perfil. Fale do lugar, não de pessoas.':
+    'Do not include phone numbers, CPF, e-mail or profiles. Talk about the place, not about people.',
+  'Marque o local no mapa.': 'Mark the place on the map.',
+  'Escolha o tipo de aviso.': 'Choose the type of note.',
+  'Escreva uma referência do local (rua, praça ou ponto conhecido).':
+    'Write a reference for the place (street, square or landmark).',
+  'Confirme a declaração para publicar.': 'Confirm the statement to publish.',
+  'Aviso publicado': 'Note published',
+  'Ele aparece no mapa para quem estiver por perto e fica {days} dias, ou mais se outras pessoas confirmarem.':
+    'It shows on the map for people nearby and stays for {days} days, or longer if others confirm it.',
+  'Não foi possível publicar': 'Could not publish',
+  'Tente de novo em instantes.': 'Try again in a moment.',
+  'Local do aviso': 'Note location',
+  'Ajude quem passa por aqui': 'Help people who pass by here',
+  'Avise sobre um lugar, não sobre pessoas. É um relato da comunidade e não substitui a polícia: em perigo, use "Pedir ajuda".':
+    'Warn about a place, not about people. It is a community report and does not replace the police: if you are in danger, use "Get help".',
+  'Onde?': 'Where?',
+  'Toque no mapa ou arraste o marcador para ajustar.': 'Tap the map or drag the marker to adjust.',
+  'Toque no mapa para marcar o lugar.': 'Tap the map to mark the place.',
+  'O que acontece neste lugar?': 'What happens at this place?',
+  'Em que horário?': 'At what time?',
+  'Referência do local': 'Place reference',
+  'Rua, praça ou ponto conhecido': 'Street, square or landmark',
+  'Ex.: Rua das Flores, perto da praça': 'E.g.: Rua das Flores, near the square',
+  'Observação (opcional)': 'Note (optional)',
+  'Ex.: Prefira a avenida depois das 20h.': 'E.g.: Use the avenue after 8 p.m.',
+  'Antes de publicar': 'Before publishing',
+  'Fale do lugar, não de pessoas: sem nomes, placas, telefones ou aparência de ninguém.':
+    'Talk about the place, not about people: no names, license plates, phone numbers or anyone\'s appearance.',
+  'Seu nome não aparece no mapa, mas o aviso fica ligado à sua conta. Não é anônimo.':
+    'Your name does not appear on the map, but the note is linked to your account. It is not anonymous.',
+  'O aviso some em {days} dias se ninguém confirmar. Quem passar por lá pode marcar "Não está mais assim".':
+    'The note disappears after {days} days if nobody confirms it. People who pass by can mark "No longer like this".',
+  'Avisos falsos, ofensivos ou preconceituosos violam as regras de uso e podem ser removidos.':
+    'False, offensive or prejudiced notes break the rules of use and may be removed.',
+  'Ler as regras de uso': 'Read the rules of use',
+  'Declaro que este aviso é verdadeiro, fala só do lugar e não cita pessoas.':
+    'I declare that this note is true, talks only about the place and does not mention people.',
+  'Publicar aviso': 'Publish note',
+  'Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.':
+    'To confirm or update a note, sign in. That way each person votes once.',
+  'Escreva para {supportEmail} e informe a identificação do aviso: {id}.':
+    'Write to {supportEmail} and include the note ID: {id}.',
+  'Ver detalhes': 'See details',
+  'Na página da pessoa você pode avisar que a viu por perto.':
+    'On the person\'s page you can report that you saw them nearby.',
+  'Aviso da comunidade': 'Community note',
+  '{count} confirmação': '{count} confirmation',
+  '{count} confirmações': '{count} confirmations',
+  'Continua assim': 'Still like this',
+  'Não está mais assim': 'No longer like this',
+  'Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".':
+    'Unverified community report. If you are in danger, use "Get help".',
+  'Denunciar este aviso': 'Report this note',
+  'Denunciar': 'Report',
+  'Esconder avisos de segurança': 'Hide safety notes',
+  'Mostrar avisos de segurança': 'Show safety notes',
+  'Adicionar aviso de segurança': 'Add safety note',
+  'Avise sobre uma rua ou lugar perigoso': 'Warn about a dangerous street or place',
+  'Adicionar aviso': 'Add note',
+  'Avisar sobre um lugar perigoso': 'Warn about a dangerous place',
+  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.':
+    'Each photo on the map is a person being searched for: tap it to see a summary. The colored buttons show only children, adults or older people.',
+  'Avisos de segurança': 'Safety notes',
+  'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".':
+    'The yellow diamonds are community notes, such as "deserted street at night". Tap to see and confirm them. To warn about a place, use "Add note".',
+  'Atenção redobrada': 'Extra caution',
+  'Lugar arriscado: fique atento ao passar.': 'Risky place: stay alert when passing by.',
+  'Assaltos frequentes': 'Frequent robberies',
+  'Relatos repetidos de roubo ou furto.': 'Repeated reports of robbery or theft.',
+  'Rua deserta': 'Deserted street',
+  'Pouco movimento e pouca gente por perto.': 'Little movement and few people around.',
+  'Iluminação ruim': 'Poor lighting',
+  'Rua escura ou postes apagados.': 'Dark street or street lights off.',
+  'Evite neste horário': 'Avoid at this time',
+  'Tranquilo em parte do dia, arriscado em outra.': 'Calm at some times of day, risky at others.',
+  'Outro cuidado': 'Other caution',
+  'Outro motivo para redobrar a atenção.': 'Another reason to be extra careful.',
+  'Qualquer horário': 'Any time',
+  'Madrugada': 'Early morning',
+  'Manhã': 'Morning',
+  'Tarde': 'Afternoon',
+  'Noite': 'Night',
+  'Publicado hoje': 'Published today',
+  'Publicado ontem': 'Published yesterday',
+  'Publicado há {count} dias': 'Published {count} days ago',
+  'Aviso de segurança: {reference}': 'Safety note: {reference}',
+  'Identificação do aviso: {id}': 'Note ID: {id}',
+  'Motivo (aviso falso, ofensivo, preconceituoso, cita pessoas, já não é verdade, outro):':
+    'Reason (false, offensive, prejudiced, mentions people, no longer true, other):',
+  'Novo aviso de segurança': 'New safety note',
 };

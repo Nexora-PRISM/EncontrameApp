@@ -1366,8 +1366,6 @@ export const es: Readonly<Record<string, string>> = {
   'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.':
     'Las alertas están en la parte superior de la pantalla. Toca una tarjeta para ver la foto y los datos de la persona.',
   'Use o mapa': 'Usa el mapa',
-  'Cada foto no mapa é uma pessoa procurada. Os botões coloridos mostram só crianças, adultos ou idosos.':
-    'Cada foto en el mapa es una persona buscada. Los botones de colores muestran solo niños, adultos o personas mayores.',
   'Viu alguém? Avise.': '¿Viste a alguien? Avisa.',
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
     'En la página de la persona, toca "Vi a esta persona cerca" y marca dónde la viste. Eso ayuda a la familia.',
@@ -1385,4 +1383,105 @@ export const es: Readonly<Record<string, string>> = {
   'Criança': 'Niño/a',
   'Pessoa idosa': 'Persona mayor',
   'Adulto': 'Adulto',
+  // Rodada 4 — Avisos de segurança no mapa e cartão flutuante
+  'Posso avisar sobre uma rua perigosa?': '¿Puedo avisar sobre una calle peligrosa?',
+  'Os avisos de segurança estão em teste e podem ainda não aparecer na sua versão do app. Quando estão ativos, o mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".':
+    'Los avisos de seguridad están en prueba y es posible que todavía no aparezcan en tu versión de la app. Cuando están activos, el mapa de Inicio muestra rombos amarillos con avisos de la comunidad, como "robos frecuentes" o "calle desierta de noche". Toca un aviso para ver el horario y la referencia del lugar y marcar "Sigue así" o "Ya no está así". Para avisar, inicia sesión y toca "Agregar aviso". Habla del lugar, nunca de personas: sin nombres, matrículas ni teléfonos. El aviso desaparece en 30 días si nadie lo confirma. Son relatos de la comunidad, no verificados, y no reemplazan a la policía: en peligro, usa "Pedir ayuda".',
+  'aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa':
+    'aviso calle peligrosa robo desierta oscura iluminación horario seguridad comunidad mapa',
+  'Localização indisponível': 'Ubicación no disponible',
+  'Permita o acesso à localização ou toque no mapa para marcar o lugar.':
+    'Permite el acceso a la ubicación o toca el mapa para marcar el lugar.',
+  'Não coloque telefone, CPF, e-mail ou perfil. Fale do lugar, não de pessoas.':
+    'No pongas teléfono, CPF, correo ni perfil. Habla del lugar, no de personas.',
+  'Marque o local no mapa.': 'Marca el lugar en el mapa.',
+  'Escolha o tipo de aviso.': 'Elige el tipo de aviso.',
+  'Escreva uma referência do local (rua, praça ou ponto conhecido).':
+    'Escribe una referencia del lugar (calle, plaza o punto conocido).',
+  'Confirme a declaração para publicar.': 'Confirma la declaración para publicar.',
+  'Aviso publicado': 'Aviso publicado',
+  'Ele aparece no mapa para quem estiver por perto e fica {days} dias, ou mais se outras pessoas confirmarem.':
+    'Aparece en el mapa para quien esté cerca y se queda {days} días, o más si otras personas lo confirman.',
+  'Não foi possível publicar': 'No se pudo publicar',
+  'Tente de novo em instantes.': 'Inténtalo de nuevo en un momento.',
+  'Local do aviso': 'Lugar del aviso',
+  'Ajude quem passa por aqui': 'Ayuda a quien pasa por aquí',
+  'Avise sobre um lugar, não sobre pessoas. É um relato da comunidade e não substitui a polícia: em perigo, use "Pedir ajuda".':
+    'Avisa sobre un lugar, no sobre personas. Es un relato de la comunidad y no reemplaza a la policía: en peligro, usa "Pedir ayuda".',
+  'Onde?': '¿Dónde?',
+  'Toque no mapa ou arraste o marcador para ajustar.':
+    'Toca el mapa o arrastra el marcador para ajustar.',
+  'Toque no mapa para marcar o lugar.': 'Toca el mapa para marcar el lugar.',
+  'O que acontece neste lugar?': '¿Qué pasa en este lugar?',
+  'Em que horário?': '¿En qué horario?',
+  'Referência do local': 'Referencia del lugar',
+  'Rua, praça ou ponto conhecido': 'Calle, plaza o punto conocido',
+  'Ex.: Rua das Flores, perto da praça': 'Ej.: Rua das Flores, cerca de la plaza',
+  'Observação (opcional)': 'Observación (opcional)',
+  'Ex.: Prefira a avenida depois das 20h.': 'Ej.: Prefiere la avenida después de las 20 h.',
+  'Antes de publicar': 'Antes de publicar',
+  'Fale do lugar, não de pessoas: sem nomes, placas, telefones ou aparência de ninguém.':
+    'Habla del lugar, no de personas: sin nombres, matrículas, teléfonos ni apariencia de nadie.',
+  'Seu nome não aparece no mapa, mas o aviso fica ligado à sua conta. Não é anônimo.':
+    'Tu nombre no aparece en el mapa, pero el aviso queda vinculado a tu cuenta. No es anónimo.',
+  'O aviso some em {days} dias se ninguém confirmar. Quem passar por lá pode marcar "Não está mais assim".':
+    'El aviso desaparece en {days} días si nadie lo confirma. Quien pase por allí puede marcar "Ya no está así".',
+  'Avisos falsos, ofensivos ou preconceituosos violam as regras de uso e podem ser removidos.':
+    'Los avisos falsos, ofensivos o con prejuicios violan las reglas de uso y pueden ser eliminados.',
+  'Ler as regras de uso': 'Leer las reglas de uso',
+  'Declaro que este aviso é verdadeiro, fala só do lugar e não cita pessoas.':
+    'Declaro que este aviso es verdadero, habla solo del lugar y no menciona a personas.',
+  'Publicar aviso': 'Publicar aviso',
+  'Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.':
+    'Para confirmar o actualizar un aviso, inicia sesión. Así cada persona vota una vez.',
+  'Escreva para {supportEmail} e informe a identificação do aviso: {id}.':
+    'Escribe a {supportEmail} e indica la identificación del aviso: {id}.',
+  'Ver detalhes': 'Ver detalles',
+  'Na página da pessoa você pode avisar que a viu por perto.':
+    'En la página de la persona puedes avisar que la viste cerca.',
+  'Aviso da comunidade': 'Aviso de la comunidad',
+  '{count} confirmação': '{count} confirmación',
+  '{count} confirmações': '{count} confirmaciones',
+  'Continua assim': 'Sigue así',
+  'Não está mais assim': 'Ya no está así',
+  'Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".':
+    'Relato de la comunidad, no verificado. En peligro, usa "Pedir ayuda".',
+  'Denunciar este aviso': 'Denunciar este aviso',
+  'Denunciar': 'Denunciar',
+  'Esconder avisos de segurança': 'Ocultar avisos de seguridad',
+  'Mostrar avisos de segurança': 'Mostrar avisos de seguridad',
+  'Adicionar aviso de segurança': 'Agregar aviso de seguridad',
+  'Avise sobre uma rua ou lugar perigoso': 'Avisa sobre una calle o lugar peligroso',
+  'Adicionar aviso': 'Agregar aviso',
+  'Avisar sobre um lugar perigoso': 'Avisar sobre un lugar peligroso',
+  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.':
+    'Cada foto en el mapa es una persona buscada: tócala para ver un resumen. Los botones de colores muestran solo niños, adultos o personas mayores.',
+  'Avisos de segurança': 'Avisos de seguridad',
+  'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".':
+    'Los rombos amarillos son avisos de la comunidad, como "calle desierta de noche". Tócalos para ver y confirmar. Para avisar sobre un lugar, usa "Agregar aviso".',
+  'Atenção redobrada': 'Atención redoblada',
+  'Lugar arriscado: fique atento ao passar.': 'Lugar riesgoso: mantente atento al pasar.',
+  'Assaltos frequentes': 'Robos frecuentes',
+  'Relatos repetidos de roubo ou furto.': 'Relatos repetidos de robo o hurto.',
+  'Rua deserta': 'Calle desierta',
+  'Pouco movimento e pouca gente por perto.': 'Poco movimiento y poca gente cerca.',
+  'Iluminação ruim': 'Mala iluminación',
+  'Rua escura ou postes apagados.': 'Calle oscura o postes apagados.',
+  'Evite neste horário': 'Evita en este horario',
+  'Tranquilo em parte do dia, arriscado em outra.': 'Tranquilo en parte del día, riesgoso en otra.',
+  'Outro cuidado': 'Otro cuidado',
+  'Outro motivo para redobrar a atenção.': 'Otro motivo para redoblar la atención.',
+  'Qualquer horário': 'Cualquier horario',
+  'Madrugada': 'Madrugada',
+  'Manhã': 'Mañana',
+  'Tarde': 'Tarde',
+  'Noite': 'Noche',
+  'Publicado hoje': 'Publicado hoy',
+  'Publicado ontem': 'Publicado ayer',
+  'Publicado há {count} dias': 'Publicado hace {count} días',
+  'Aviso de segurança: {reference}': 'Aviso de seguridad: {reference}',
+  'Identificação do aviso: {id}': 'Identificación del aviso: {id}',
+  'Motivo (aviso falso, ofensivo, preconceituoso, cita pessoas, já não é verdade, outro):':
+    'Motivo (aviso falso, ofensivo, con prejuicios, menciona a personas, ya no es verdad, otro):',
+  'Novo aviso de segurança': 'Nuevo aviso de seguridad',
 };

@@ -39,6 +39,10 @@ export type MapPin = {
   tooltip?: MapPinTooltip;
   /** Cor do anel em volta da foto/ícone (ex.: faixa de idade). Sem ela, o anel é branco. */
   accentColor?: string;
+  /** `note`: aviso de segurança da comunidade (marcador âmbar com ícone, sem foto). */
+  variant?: 'person' | 'note';
+  /** Ícone do marcador `note` (no web o marcador usa sempre o "!"). */
+  icon?: keyof typeof MaterialCommunityIcons.glyphMap;
   onPress?: () => void;
 };
 
@@ -103,7 +107,19 @@ function photoPinSvg(id: string, photoUri: string, ring: string) {
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36"><defs><clipPath id="${clipId}"><circle cx="18" cy="18" r="14"/></clipPath></defs><circle cx="18" cy="18" r="17" fill="${ring}"/><image href="${href}" xlink:href="${href}" x="4" y="4" width="28" height="28" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid slice"/></svg>`;
 }
 
+/** Aviso de segurança: losango âmbar com "!" (o ícone da categoria aparece no cartão). */
+function notePinSvg(fill: string, ring: string, mark: string) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect x="6" y="6" width="20" height="20" rx="5" transform="rotate(45 16 16)" fill="${fill}" stroke="${ring}" stroke-width="2.5"/><path d="M16 10.5v7" stroke="${mark}" stroke-width="2.8" stroke-linecap="round"/><circle cx="16" cy="21.5" r="1.7" fill="${mark}"/></svg>`;
+}
+
 function pinIcon(pin: MapPin, brand: BrandColors, emphasized = false) {
+  if (pin.variant === 'note') {
+    return notePinSvg(
+      pin.accentColor ?? brand.safetyNote,
+      emphasized ? brand.orange : brand.onPrimary,
+      brand.onSafetyNote,
+    );
+  }
   const ring = emphasized ? brand.orange : (pin.accentColor ?? brand.onPrimary);
   if (pin.photoUri) {
     return photoPinSvg(pin.id, pin.photoUri, ring);
@@ -113,6 +129,10 @@ function pinIcon(pin: MapPin, brand: BrandColors, emphasized = false) {
 }
 
 function pinIconSize(pin: MapPin, emphasized: boolean) {
+  if (pin.variant === 'note') {
+    const size = emphasized ? 42 : 32;
+    return { width: size, height: size, anchorX: size / 2, anchorY: size / 2 };
+  }
   const photo = Boolean(pin.photoUri);
   if (photo) {
     const size = emphasized ? 48 : 36;

@@ -103,6 +103,7 @@ function RootLayoutInner() {
           <Stack.Screen name="compartilhar-localizacao" />
           <Stack.Screen name="contatos-confianca" />
           <Stack.Screen name="premium" />
+          <Stack.Screen name="aviso-seguranca" />
         </Stack>
       ) : (
         <View style={styles.boot} />

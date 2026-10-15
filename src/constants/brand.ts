@@ -69,6 +69,9 @@ const BrandLight = {
   onCategory: '#FFFFFF',
   /** Rosa da Nexora Prism (assinatura "Um produto da Nexora Prism") */
   nexoraPink: '#D63375',
+  /** Avisos de segurança da comunidade no mapa (âmbar: atenção, não emergência) */
+  safetyNote: '#A16207',
+  onSafetyNote: '#FFFFFF',
 } as const;
 
 const BrandDark = {
@@ -120,6 +123,8 @@ const BrandDark = {
   categoryElder: '#B49CFF',
   onCategory: '#0B2442',
   nexoraPink: '#F0629A',
+  safetyNote: '#F5C542',
+  onSafetyNote: '#0B2442',
 } as const;
 
 export type ColorSchemeName = 'light' | 'dark';

@@ -5,22 +5,35 @@ import { Platform } from 'react-native';
 import type { MapPin } from '@/components/brand-map';
 import { buildCarouselPeople } from '@/features/inicio/carousel-people';
 import { TUTORIAL_LAST_STEP } from '@/features/inicio/tutorial-steps';
+import { AppInfo } from '@/lib/app-info';
 import { completeAppOnboarding, isAppOnboardingComplete } from '@/lib/app-onboarding';
 import { useBrand, useBrandTheme } from '@/lib/brand-theme';
-import { useI18n } from '@/lib/i18n';
+import { showAlert } from '@/lib/dialog';
+import { env } from '@/lib/env';
+import { useI18n, useT } from '@/lib/i18n';
 import {
   categoryColor,
   matchesCategory,
   personCategory,
   type CategoryFilter,
 } from '@/lib/person-category';
+import { buildSafetyNoteReportMessage, safetyNoteCategoryInfo } from '@/lib/safety-notes';
 import { signOut } from '@/lib/sign-out';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSplashDone } from '@/lib/splash-state';
+import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
 import { useNearbyPeopleQuery, useRecentPeopleQuery } from '@/services/people/people.service';
 import type { Person } from '@/services/people/people.types';
+import {
+  useNearbySafetyNotesQuery,
+  useVoteSafetyNoteMutation,
+} from '@/services/safety-notes/safety-notes.service';
+import type { SafetyNote, SafetyNoteVote } from '@/services/safety-notes/safety-notes.types';
+
+/** Item tocado no mapa: abre o cartão flutuante em vez de trocar de tela. */
+type MapSelection = { kind: 'person'; id: string } | { kind: 'note'; id: string } | null;
 
 /** Primeiro nome para a saudação ("Olá, Maria"). */
 function firstNameOf(name: string | undefined): string {
@@ -39,6 +52,7 @@ function initialsOf(name: string | undefined): string {
 /** Centraliza dados e navegação da tela inicial (dashboard). */
 export function useInicioController() {
   const router = useRouter();
+  const t = useT();
   const brand = useBrand();
   const sessionUser = useSessionUser();
   const { appearance, setAppearance } = useBrandTheme();
@@ -57,6 +71,10 @@ export function useInicioController() {
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
   /** Mapa com imagem de satélite (com nomes de ruas por cima). */
   const [satellite, setSatellite] = useState(false);
+  /** Avisos de segurança da comunidade no mapa (camada liga/desliga). */
+  const safetyNotesEnabled = env.safetyNotesEnabled;
+  const [showSafetyNotes, setShowSafetyNotes] = useState(true);
+  const [selection, setSelection] = useState<MapSelection>(null);
   const [onboardingVisible, setOnboardingVisible] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const loggedIn = sessionUser != null;
@@ -99,7 +117,17 @@ export function useInicioController() {
     peopleQuery.isPlaceholderData ||
     (peopleQuery.isFetching && people.length === 0);
 
-  const pins: MapPin[] = useMemo(
+  const notesQuery = useNearbySafetyNotesQuery(
+    userLocation ? { latitude: userLocation.latitude, longitude: userLocation.longitude } : null,
+    safetyNotesEnabled && showSafetyNotes,
+  );
+  const safetyNotes = useMemo<SafetyNote[]>(
+    () => (safetyNotesEnabled && showSafetyNotes ? (notesQuery.data ?? []) : []),
+    [notesQuery.data, safetyNotesEnabled, showSafetyNotes],
+  );
+  const voteMutation = useVoteSafetyNoteMutation();
+
+  const personPins: MapPin[] = useMemo(
     () =>
       people.flatMap((person) => {
         if (!person.coords || !matchesCategory(person, categoryFilter)) {
@@ -117,12 +145,83 @@ export function useInicioController() {
             label: person.nickname ?? person.fullName,
             // Anel do pin na cor da faixa de idade (sem idade informada, fica branco).
             accentColor: category ? categoryColor(brand, category) : undefined,
-            onPress: () => router.push(`/pessoa/${person.id}` as Href),
+            emphasized: selection?.kind === 'person' && selection.id === person.id,
+            zIndex: selection?.kind === 'person' && selection.id === person.id ? 20 : 2,
+            onPress: () => setSelection({ kind: 'person', id: person.id }),
           },
         ];
       }),
-    [brand, categoryFilter, people, router],
+    [brand, categoryFilter, people, selection],
   );
+
+  const notePins: MapPin[] = useMemo(
+    () =>
+      safetyNotes.map((note) => {
+        const info = safetyNoteCategoryInfo(note.category);
+        const selected = selection?.kind === 'note' && selection.id === note.id;
+        return {
+          id: `aviso-${note.id}`,
+          latitude: note.latitude,
+          longitude: note.longitude,
+          variant: 'note' as const,
+          icon: info.icon,
+          label: t(info.label),
+          emphasized: selected,
+          zIndex: selected ? 20 : 1,
+          onPress: () => setSelection({ kind: 'note', id: note.id }),
+        };
+      }),
+    [safetyNotes, selection, t],
+  );
+
+  const pins = useMemo(() => [...notePins, ...personPins], [notePins, personPins]);
+
+  const selectedPerson =
+    selection?.kind === 'person'
+      ? (people.find((person) => person.id === selection.id) ?? null)
+      : null;
+  const selectedNote =
+    selection?.kind === 'note'
+      ? (safetyNotes.find((note) => note.id === selection.id) ?? null)
+      : null;
+
+  const clearSelection = () => setSelection(null);
+
+  /** "Continua assim" / "Não está mais assim": exige conta (um voto por pessoa). */
+  const voteSafetyNote = (vote: SafetyNoteVote) => {
+    if (!selectedNote) return;
+    if (!loggedIn) {
+      showAlert(
+        t('Entre na sua conta'),
+        t('Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.'),
+      );
+      router.push({ pathname: '/login', params: { returnTo: '/inicio' } } as Href);
+      return;
+    }
+    voteMutation.mutate({ id: selectedNote.id, vote });
+  };
+
+  /** Denúncia pelo e-mail do suporte (ainda não há API de moderação). */
+  const reportSafetyNote = () => {
+    if (!selectedNote) return;
+    const note = selectedNote;
+    void (async () => {
+      const opened = await openSupportEmail({
+        topic: 'denuncia',
+        message: buildSafetyNoteReportMessage(note, t),
+        accountEmail: sessionUser?.email,
+      });
+      if (!opened) {
+        showAlert(
+          t('Não foi possível abrir o e-mail'),
+          t('Escreva para {supportEmail} e informe a identificação do aviso: {id}.', {
+            supportEmail: AppInfo.supportEmail,
+            id: note.id,
+          }),
+        );
+      }
+    })();
+  };
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -210,10 +309,32 @@ export function useInicioController() {
     carouselPeople,
     alertPeople,
     pins,
+    /** Pessoas no mapa com o filtro atual (sem contar os avisos). */
+    personPinsCount: personPins.length,
     categoryFilter,
-    setCategoryFilter,
+    setCategoryFilter: (value: CategoryFilter) => {
+      setCategoryFilter(value);
+      setSelection(null);
+    },
     satellite,
     toggleSatellite: () => setSatellite((current) => !current),
+    /** Avisos de segurança (só quando o recurso está ligado). */
+    safetyNotesEnabled,
+    showSafetyNotes,
+    toggleSafetyNotes: () => {
+      setShowSafetyNotes((current) => !current);
+      setSelection(null);
+    },
+    safetyNotesCount: safetyNotes.length,
+    goToNewSafetyNote: () => goTo(() => router.push('/aviso-seguranca' as Href)),
+    /** Cartão flutuante do item tocado no mapa. */
+    selectedPerson,
+    selectedNote,
+    hasSelection: selectedPerson != null || selectedNote != null,
+    clearSelection,
+    voteSafetyNote,
+    votingSafetyNote: voteMutation.isPending,
+    reportSafetyNote,
     userLocation,
     locationDenied,
     search,

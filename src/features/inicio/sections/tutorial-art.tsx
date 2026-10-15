@@ -37,6 +37,7 @@ export function TutorialArt({ kind }: Props) {
         {kind === 'welcome' ? <WelcomeArt styles={styles} /> : null}
         {kind === 'alerts' ? <AlertsArt brand={brand} styles={styles} /> : null}
         {kind === 'map' ? <MapArt brand={brand} styles={styles} /> : null}
+        {kind === 'safety' ? <SafetyArt brand={brand} styles={styles} /> : null}
         {kind === 'sighting' ? <SightingArt brand={brand} styles={styles} /> : null}
         {kind === 'emergency' ? <EmergencyArt brand={brand} styles={styles} /> : null}
         {kind === 'bottom-bar' ? <BottomBarArt brand={brand} styles={styles} /> : null}
@@ -126,6 +127,36 @@ function MapArt({ brand, styles }: ArtProps) {
         </View>
       ))}
       <View style={styles.userDot} />
+    </View>
+  );
+}
+
+function SafetyArt({ brand, styles }: ArtProps) {
+  const t = useT();
+  const notes = [
+    { icon: 'road-variant' as const, top: 40, left: 52 },
+    { icon: 'shield-alert-outline' as const, top: 92, left: 196 },
+    { icon: 'lightbulb-off-outline' as const, top: 30, left: 236 },
+  ];
+
+  return (
+    <View style={styles.mapBox}>
+      <View style={[styles.road, { top: 74, transform: [{ rotate: '6deg' }] }]} />
+      <View style={[styles.road, { top: 20, width: 6, height: 170, left: 150 }]} />
+      {notes.map((note) => (
+        <View
+          key={note.left}
+          style={[styles.noteDiamond, { top: note.top, left: note.left, backgroundColor: brand.safetyNote }]}
+        >
+          <View style={styles.noteDiamondIcon}>
+            <MaterialCommunityIcons name={note.icon} size={16} color={brand.onSafetyNote} />
+          </View>
+        </View>
+      ))}
+      <View style={styles.addNoteReplica}>
+        <MaterialCommunityIcons name="map-marker-plus-outline" size={18} color={brand.safetyNote} />
+        <Text style={styles.addNoteReplicaText}>{t('Adicionar aviso')}</Text>
+      </View>
     </View>
   );
 }
@@ -350,6 +381,37 @@ function makeStyles(brand: BrandColors) {
       borderWidth: 3,
       borderColor: brand.onPrimary,
       backgroundColor: brand.blue,
+    },
+    noteDiamond: {
+      position: 'absolute',
+      width: 32,
+      height: 32,
+      borderRadius: 9,
+      borderWidth: 2.5,
+      borderColor: brand.onPrimary,
+      alignItems: 'center',
+      justifyContent: 'center',
+      transform: [{ rotate: '45deg' }],
+    },
+    noteDiamondIcon: {
+      transform: [{ rotate: '-45deg' }],
+    },
+    addNoteReplica: {
+      position: 'absolute',
+      bottom: 12,
+      alignSelf: 'center',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      height: 38,
+      paddingHorizontal: 14,
+      borderRadius: Radius.pill,
+      backgroundColor: brand.navy,
+    },
+    addNoteReplicaText: {
+      fontSize: 14,
+      fontWeight: '800',
+      color: brand.onPrimary,
     },
     replicaButton: {
       flexDirection: 'row',

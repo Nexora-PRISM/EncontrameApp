@@ -6,6 +6,7 @@ import { BrandMap, type BrandMapHandle, type MapPadding } from '@/components/bra
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { InicioController } from '@/features/inicio/inicio.controller';
+import { InicioMapPreviewSection } from '@/features/inicio/sections/inicio-map-preview-section';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
@@ -42,6 +43,7 @@ export const InicioMapSection = forwardRef<BrandMapHandle, InicioMapSectionProps
           mapPadding={mapPadding}
           showLocationFab={false}
           satellite={controller.satellite}
+          onMapPress={controller.clearSelection}
           style={overlayStyles.map}
         />
       </View>
@@ -49,7 +51,11 @@ export const InicioMapSection = forwardRef<BrandMapHandle, InicioMapSectionProps
   },
 );
 
-/** Mapa grande do celular: filtros por idade no alto, satélite e "minha localização" à direita. */
+/**
+ * Mapa grande do celular: filtros por idade no alto; à direita, um grupo de controles (satélite e
+ * avisos de segurança); embaixo, "Adicionar aviso" e "minha localização". Tocar num pin abre um
+ * cartão flutuante com o resumo (tocar no mapa fecha).
+ */
 function MapCard({
   mapRef,
   controller,
@@ -60,7 +66,10 @@ function MapCard({
   const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeCardStyles(brand), [brand]);
-  const showEmpty = !controller.showPeopleSkeleton && controller.pins.length === 0;
+  const showEmpty =
+    !controller.showPeopleSkeleton && !controller.hasSelection && controller.personPinsCount === 0;
+  const showAddNote =
+    controller.safetyNotesEnabled && controller.showSafetyNotes && !controller.hasSelection;
 
   return (
     <View style={styles.cardShadow}>
@@ -71,28 +80,42 @@ function MapCard({
           userLocation={controller.userLocation}
           showLocationFab={false}
           satellite={controller.satellite}
+          onMapPress={controller.clearSelection}
           style={styles.map}
         />
 
         <CategoryChips controller={controller} brand={brand} styles={styles} />
 
-        <Pressable
-          onPress={controller.toggleSatellite}
-          style={({ pressed }) => [
-            styles.layerButton,
-            controller.satellite && styles.layerButtonActive,
-            pressed && styles.pressed,
-          ]}
-          accessibilityRole="button"
-          accessibilityLabel={controller.satellite ? t('Ver mapa comum') : t('Ver imagem de satélite')}
-          accessibilityState={{ selected: controller.satellite }}
-        >
-          <MaterialCommunityIcons
-            name={controller.satellite ? 'map-outline' : 'satellite-variant'}
-            size={24}
-            color={controller.satellite ? brand.onPrimary : brand.textDark}
+        <View style={styles.controls}>
+          <ControlButton
+            icon={controller.satellite ? 'map-outline' : 'satellite-variant'}
+            label={controller.satellite ? t('Ver mapa comum') : t('Ver imagem de satélite')}
+            active={controller.satellite}
+            onPress={controller.toggleSatellite}
+            brand={brand}
+            styles={styles}
           />
-        </Pressable>
+          {controller.safetyNotesEnabled ? (
+            <>
+              <View style={styles.controlsDivider} />
+              <ControlButton
+                icon="shield-alert-outline"
+                label={
+                  controller.showSafetyNotes
+                    ? t('Esconder avisos de segurança')
+                    : t('Mostrar avisos de segurança')
+                }
+                active={controller.showSafetyNotes}
+                activeColor={brand.safetyNote}
+                activeIconColor={brand.onSafetyNote}
+                badge={controller.showSafetyNotes ? controller.safetyNotesCount : 0}
+                onPress={controller.toggleSafetyNotes}
+                brand={brand}
+                styles={styles}
+              />
+            </>
+          ) : null}
+        </View>
 
         {showEmpty ? (
           <View style={styles.emptyPill} pointerEvents="none">
@@ -104,13 +127,81 @@ function MapCard({
           </View>
         ) : null}
 
-        <MapMyLocationFab
-          onPress={() => mapRef.current?.recenterOnUser()}
-          disabled={!controller.userLocation}
-          style={styles.locationFab}
-        />
+        {showAddNote ? (
+          <View style={styles.addNoteAnchor} pointerEvents="box-none">
+            <Pressable
+              onPress={controller.goToNewSafetyNote}
+              style={({ pressed }) => [styles.addNote, pressed && styles.pressed]}
+              accessibilityRole="button"
+              accessibilityLabel={t('Adicionar aviso de segurança')}
+              accessibilityHint={t('Avise sobre uma rua ou lugar perigoso')}
+            >
+              <MaterialCommunityIcons name="map-marker-plus-outline" size={20} color={brand.safetyNote} />
+              <Text style={styles.addNoteText}>{t('Adicionar aviso')}</Text>
+            </Pressable>
+          </View>
+        ) : null}
+
+        {controller.hasSelection ? null : (
+          <MapMyLocationFab
+            onPress={() => mapRef.current?.recenterOnUser()}
+            disabled={!controller.userLocation}
+            style={styles.locationFab}
+          />
+        )}
+
+        <InicioMapPreviewSection controller={controller} />
       </View>
     </View>
+  );
+}
+
+function ControlButton({
+  icon,
+  label,
+  active,
+  activeColor,
+  activeIconColor,
+  badge = 0,
+  onPress,
+  brand,
+  styles,
+}: {
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+  label: string;
+  active: boolean;
+  activeColor?: string;
+  activeIconColor?: string;
+  badge?: number;
+  onPress: () => void;
+  brand: BrandColors;
+  styles: CardStyles;
+}) {
+  const fill = activeColor ?? brand.blue;
+  return (
+    <Pressable
+      onPress={onPress}
+      hitSlop={4}
+      style={({ pressed }) => [
+        styles.control,
+        active && { backgroundColor: fill },
+        pressed && styles.pressed,
+      ]}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ selected: active }}
+    >
+      <MaterialCommunityIcons
+        name={icon}
+        size={24}
+        color={active ? (activeIconColor ?? brand.onPrimary) : brand.textDark}
+      />
+      {badge > 0 ? (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
+        </View>
+      ) : null}
+    </Pressable>
   );
 }
 
@@ -243,28 +334,80 @@ function makeCardStyles(brand: BrandColors) {
     pressed: {
       opacity: 0.8,
     },
-    layerButton: {
+    controls: {
       position: 'absolute',
-      top: 66,
-      right: 12,
+      top: 64,
+      right: 10,
       zIndex: 3,
-      width: 48,
-      height: 48,
-      borderRadius: Radius.pill,
-      alignItems: 'center',
-      justifyContent: 'center',
+      padding: 4,
+      gap: 4,
+      borderRadius: 30,
       backgroundColor: brand.surface,
       borderWidth: 1,
       borderColor: brand.divider,
       shadowColor: brand.navyDeep,
       shadowOpacity: 0.2,
-      shadowRadius: 8,
-      shadowOffset: { width: 0, height: 3 },
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 4 },
       elevation: 6,
     },
-    layerButtonActive: {
-      backgroundColor: brand.blue,
-      borderColor: brand.blue,
+    controlsDivider: {
+      height: 1,
+      marginHorizontal: 8,
+      backgroundColor: brand.divider,
+    },
+    control: {
+      width: 46,
+      height: 46,
+      borderRadius: 23,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    badge: {
+      position: 'absolute',
+      top: -2,
+      right: -2,
+      minWidth: 20,
+      height: 20,
+      paddingHorizontal: 5,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: brand.navy,
+      borderWidth: 2,
+      borderColor: brand.surface,
+    },
+    badgeText: {
+      fontSize: 11,
+      fontWeight: '800',
+      color: brand.onPrimary,
+    },
+    addNoteAnchor: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 16,
+      alignItems: 'center',
+      zIndex: 3,
+    },
+    addNote: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      height: 48,
+      paddingHorizontal: 18,
+      borderRadius: Radius.pill,
+      backgroundColor: brand.navy,
+      shadowColor: brand.navyDeep,
+      shadowOpacity: 0.3,
+      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 5 },
+      elevation: 8,
+    },
+    addNoteText: {
+      fontSize: 15,
+      fontWeight: '800',
+      color: brand.onPrimary,
     },
     emptyPill: {
       position: 'absolute',

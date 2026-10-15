@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
+import { PhotoRing } from '@/components/photo-ring';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
@@ -23,7 +24,7 @@ import {
   personCategory,
   personCategoryLabel,
 } from '@/lib/person-category';
-import { resolvePersonStatusColor } from '@/lib/person-status';
+import { isPersonAlertStatus, resolvePersonStatusColor } from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
 const CARD_WIDTH = 244;
@@ -143,13 +144,18 @@ function AlertCard({
       accessibilityRole="button"
       accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
     >
-      <View style={[styles.photo, { borderColor: accent }]}>
+      <PhotoRing
+        size={PHOTO}
+        radius={Radius.md + 2}
+        color={accent}
+        urgent={isPersonAlertStatus(person.statusId, person.statusDescription)}
+      >
         {person.photoUri ? (
           <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
         ) : (
-          <MaterialCommunityIcons name={categoryIcon(category)} size={30} color={brand.avatarIcon} />
+          <MaterialCommunityIcons name={categoryIcon(category)} size={28} color={brand.avatarIcon} />
         )}
-      </View>
+      </PhotoRing>
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>
           {person.fullName}
@@ -257,16 +263,6 @@ function makeStyles(brand: BrandColors) {
     },
     skeleton: {
       backgroundColor: hexToRgba(brand.onPrimary, 0.16),
-    },
-    photo: {
-      width: PHOTO,
-      height: PHOTO,
-      borderRadius: Radius.md,
-      borderWidth: 2.5,
-      overflow: 'hidden',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: brand.avatarBackground,
     },
     photoImage: {
       width: '100%',

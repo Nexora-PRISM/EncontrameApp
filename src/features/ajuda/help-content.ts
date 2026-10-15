@@ -116,6 +116,14 @@ export const HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('mapa lista perto localização filtro satélite crianças idosos'),
   },
   {
+    id: 'avisos-seguranca',
+    category: 'relatos',
+    question: msg('Posso avisar sobre uma rua perigosa?'),
+    answer:
+      msg('Os avisos de segurança estão em teste e podem ainda não aparecer na sua versão do app. Quando estão ativos, o mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".'),
+    keywords: msg('aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa'),
+  },
+  {
     id: 'rever-tutorial',
     category: 'inicio',
     question: msg('Como vejo o passo a passo do app de novo?'),

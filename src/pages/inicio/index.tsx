@@ -13,6 +13,7 @@ import { InicioSidebarWidth, PageGutter } from '@/constants/theme';
 import { useInicioController, type InicioController } from '@/features/inicio/inicio.controller';
 import { InicioAlertsSection } from '@/features/inicio/sections/inicio-alerts-section';
 import { InicioHeaderSection } from '@/features/inicio/sections/inicio-header-section';
+import { InicioMapPreviewSection } from '@/features/inicio/sections/inicio-map-preview-section';
 import { InicioMapSection, MAP_CARD_OVERLAP } from '@/features/inicio/sections/inicio-map-section';
 import { InicioMenuDrawerSection } from '@/features/inicio/sections/inicio-menu-drawer-section';
 import { InicioOnboardingSection } from '@/features/inicio/sections/inicio-onboarding-section';
@@ -63,6 +64,10 @@ function WideInicio({ controller }: { controller: InicioController }) {
           <View style={styles.overlayFill} pointerEvents="none" />
         </SafeAreaView>
       </View>
+      {/* Cartão do pin tocado, ao lado da lista (no celular ele fica dentro do mapa). */}
+      <View style={styles.previewDock} pointerEvents="box-none">
+        <InicioMapPreviewSection controller={controller} />
+      </View>
       <BottomBar active="home" />
       <SofiaFab onPress={controller.goToChat} />
       <MapMyLocationFab
@@ -107,7 +112,8 @@ function PhoneInicio({ controller }: { controller: InicioController }) {
       </View>
       <InicioMapSection variant="card" controller={controller} />
       <BottomBar active="home" onMenuPress={controller.openMenu} />
-      <SofiaFab onPress={controller.goToChat} />
+      {/* O cartão do pin tocado ocupa o rodapé do mapa: a Sofia volta quando ele fecha. */}
+      {controller.hasSelection ? null : <SofiaFab onPress={controller.goToChat} />}
       <InicioMenuDrawerSection controller={controller} />
       <InicioOnboardingSection controller={controller} />
     </View>
@@ -146,6 +152,14 @@ function makeWideStyles(brand: BrandColors) {
     },
     overlayFill: {
       flex: 1,
+    },
+    previewDock: {
+      position: 'absolute',
+      left: InicioSidebarWidth + 28,
+      bottom: 96,
+      width: 440,
+      height: 0,
+      zIndex: 35,
     },
   });
 }
