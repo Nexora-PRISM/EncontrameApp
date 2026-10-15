@@ -22,13 +22,21 @@ export const env = {
   /** Chave fixa enviada no header X-App-Key (consulta pública pelo app). */
   appKey: process.env.EXPO_PUBLIC_APP_KEY ?? '',
   /**
+   * Plano Premium (tela /premium, item do Menu, grupo em Configurações e artigos da Ajuda).
+   * Retirado do app por decisão dos sócios (15/10/2026): fica escondido em todos os ambientes até
+   * EXPO_PUBLIC_ENABLE_PREMIUM=true. O código continua no projeto para voltar quando for a hora.
+   */
+  premiumEnabled: process.env.EXPO_PUBLIC_ENABLE_PREMIUM === 'true',
+  /**
    * Pets desaparecidos (recurso do Premium). Em desenvolvimento fica ligado (com mocks);
    * em produção só aparece com EXPO_PUBLIC_ENABLE_PETS=true — ligue quando a API
    * (/MissingPet e /Subscription/me) e a assinatura estiverem prontas.
+   * Como faz parte do Premium, também some enquanto o Premium estiver desligado.
    */
   petsEnabled:
-    process.env.EXPO_PUBLIC_ENABLE_PETS === 'true' ||
-    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_PETS !== 'false'),
+    process.env.EXPO_PUBLIC_ENABLE_PREMIUM === 'true' &&
+    (process.env.EXPO_PUBLIC_ENABLE_PETS === 'true' ||
+      (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_PETS !== 'false')),
   /**
    * Envio do alerta de emergência para o servidor (POST /EmergencyAlert), ao fim da contagem.
    * Em desenvolvimento fica ligado (com mocks); em produção só com

@@ -223,13 +223,17 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
               },
             ]
           : []),
-        {
-          key: 'premium',
-          label: t('Premium'),
-          icon: 'star-four-points-outline',
-          color: brand.categoryElder,
-          onPress: controller.goToPremiumFromMenu,
-        },
+        ...(env.premiumEnabled
+          ? [
+              {
+                key: 'premium',
+                label: t('Premium'),
+                icon: 'star-four-points-outline' as const,
+                color: brand.categoryElder,
+                onPress: controller.goToPremiumFromMenu,
+              },
+            ]
+          : []),
         {
           key: 'settings',
           label: t('Configurações'),

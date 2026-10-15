@@ -68,7 +68,8 @@ export function useConfiguracoesController() {
   const [trustedContactsCount, setTrustedContactsCount] = useState<number | null>(null);
   const [signingOut, setSigningOut] = useState(false);
   const emergencyShortcut = useEmergencyShortcutSettings(sessionUser != null);
-  const premiumQuery = usePremiumStatusQuery();
+  // Premium retirado por agora (env.premiumEnabled): nem consulta a assinatura.
+  const premiumQuery = usePremiumStatusQuery(env.premiumEnabled);
 
   useEffect(() => {
     let cancelled = false;
@@ -284,6 +285,8 @@ export function useConfiguracoesController() {
     },
     goToSofiaTheme: () => router.push('/sofia-theme' as Href),
     petsEnabled: env.petsEnabled,
+    /** Premium retirado por agora: o grupo some de Configurações. */
+    premiumEnabled: env.premiumEnabled,
     goToPets: () => router.push('/pets' as Href),
     goToPremium: () => router.push('/premium' as Href),
     subscriptionLoading: sessionUser != null && premiumQuery.isLoading,

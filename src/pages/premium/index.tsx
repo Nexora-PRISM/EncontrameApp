@@ -1,3 +1,4 @@
+import { Redirect } from 'expo-router';
 import { useMemo } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,6 +20,10 @@ export default function PremiumPage() {
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = usePremiumController();
+
+  if (!controller.enabled) {
+    return <Redirect href="/inicio" />;
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

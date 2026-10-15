@@ -1,5 +1,6 @@
 import type { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
 import { formatBRL, PREMIUM_PLAN } from '@/lib/premium-plan';
 
@@ -36,7 +37,7 @@ export type HelpArticle = {
   keywords?: string;
 };
 
-export const HELP_CATEGORIES: HelpCategory[] = [
+const ALL_CATEGORIES: HelpCategory[] = [
   { id: 'protecao', title: msg('Crianças e mulheres'), icon: 'heart-outline' },
   { id: 'inicio', title: msg('Primeiros passos'), icon: 'compass-outline' },
   { id: 'alertas', title: msg('Pessoas desaparecidas'), icon: 'account-search-outline' },
@@ -50,7 +51,7 @@ export const HELP_CATEGORIES: HelpCategory[] = [
   { id: 'premium', title: msg('Premium e pagamentos'), icon: 'star-outline' },
 ];
 
-export const HELP_ARTICLES: HelpArticle[] = [
+const ALL_ARTICLES: HelpArticle[] = [
   {
     id: 'prioridade',
     category: 'protecao',
@@ -280,7 +281,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'rotas',
     question: msg('Posso acompanhar meu trajeto até chegar em casa?'),
     answer:
-      msg('O monitoramento ampliado de trajetos fará parte do plano Premium e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.'),
+      msg('O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.'),
     keywords: msg('rota trajeto acompanhar caminho'),
   },
   {
@@ -288,7 +289,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'rotas',
     question: msg('O que é o círculo familiar?'),
     answer:
-      msg('É um recurso futuro do plano Premium para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.'),
+      msg('É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.'),
     keywords: msg('família círculo compartilhar'),
   },
   {
@@ -420,6 +421,15 @@ export const HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('pet cachorro gato animal bicho perdido premium'),
   },
 ];
+
+/** Premium retirado por agora (env.premiumEnabled): a categoria e as perguntas dele somem da Ajuda. */
+export const HELP_CATEGORIES: HelpCategory[] = ALL_CATEGORIES.filter(
+  (category) => category.id !== 'premium' || env.premiumEnabled,
+);
+
+export const HELP_ARTICLES: HelpArticle[] = ALL_ARTICLES.filter(
+  (article) => article.category !== 'premium' || env.premiumEnabled,
+);
 
 /** Normaliza para busca sem acento e sem maiúsculas. */
 export function normalizeSearch(value: string): string {

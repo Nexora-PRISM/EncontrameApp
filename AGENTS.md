@@ -181,6 +181,9 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   "recebido" com `alertId` + `receivedAt` na resposta. Sem isso: "não confirmado — ligue 190".
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
+- **Premium retirado por agora** (decisão dos sócios, 15/10/2026): `env.premiumEnabled` (`EXPO_PUBLIC_ENABLE_PREMIUM`)
+  fica desligado em todos os ambientes. Some o item do Menu, o grupo em Configurações, a rota `/premium` (volta ao
+  Início), a categoria da Ajuda e, por fazerem parte dele, os pets. O código continua no projeto.
 - **Premium** (`lib/premium-plan.ts`): preço, desconto anual, teste grátis, `onSale` e a lista grátis × Premium ficam
   só nesse arquivo. Busca de pessoas e emergência **nunca** vão para o Premium. Não há compra no app: só ligue `onSale`
   junto com a cobrança pela loja (Google Play Billing) e a API de assinaturas. Recurso Premium planejado aparece como
@@ -216,7 +219,8 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` — OAuth Google (client ID web).
 - `EXPO_PUBLIC_APP_KEY` — header `X-App-Key` (igual a `AppKey__Value` da API).
 - `GOOGLE_MAPS_API_KEY` — só build nativo Android; não vai no Netlify.
-- `EXPO_PUBLIC_ENABLE_PETS` — pets desaparecidos (Premium). Vazio: ligado em dev, desligado em produção.
+- `EXPO_PUBLIC_ENABLE_PREMIUM` — plano Premium. Retirado por agora: só aparece com `true` (em qualquer ambiente).
+- `EXPO_PUBLIC_ENABLE_PETS` — pets desaparecidos (Premium). Vazio: ligado em dev, desligado em produção. Exige o Premium ligado.
 - `EXPO_PUBLIC_MOCK_PREMIUM` — só no mock: vazio = Premium ativo; `false` = sem assinatura; `trial`, `grace` (pagamento recusado), `cancelled` ou `expired` simulam cada situação.
 - `EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT` — envio do alerta de emergência à API. Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_MOCK_EMERGENCY_FAIL` — só no mock: `true` simula falha no envio do alerta (para testar a tela "não confirmado").
