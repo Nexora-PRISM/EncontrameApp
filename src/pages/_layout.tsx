@@ -3,10 +3,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { type Href, Stack, usePathname, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
-import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { BrandSplash } from '@/components/brand-splash';
 import type { BrandColors } from '@/constants/brand';
 import { ApiErrorModalProvider } from '@/lib/api-error-modal';
 import { setSessionExpiredHandler } from '@/lib/auth-events';
@@ -29,7 +30,9 @@ function RootLayoutInner() {
   const colorScheme = useBrandColorScheme();
   const { ready: languageReady } = useI18n();
   const [sessionReady, setSessionReady] = useState(false);
+  const [splashDone, setSplashDone] = useState(false);
   const styles = useMemo(() => makeStyles(brand), [brand]);
+  const finishSplash = useCallback(() => setSplashDone(true), []);
 
   const blocked = sessionReady && isProtectedPath(pathname) && getSessionUser() == null;
 
@@ -102,10 +105,10 @@ function RootLayoutInner() {
           <Stack.Screen name="premium" />
         </Stack>
       ) : (
-        <View style={styles.boot}>
-          <ActivityIndicator size="large" color={brand.orange} />
-        </View>
+        <View style={styles.boot} />
       )}
+      {/* Abertura com "Um produto da Nexora Prism" no rodapé; some sozinha quando o app está pronto. */}
+      {splashDone ? null : <BrandSplash ready={showStack} onDone={finishSplash} />}
     </>
   );
 }
@@ -134,8 +137,6 @@ function makeStyles(brand: BrandColors) {
   return StyleSheet.create({
     boot: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: brand.navy,
     },
   });

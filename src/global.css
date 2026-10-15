@@ -41,6 +41,12 @@
   --on-chat-bubble-user: #ffffff;
   --on-primary: #ffffff;
   --scrim: #000000;
+  --category-all: #c2560f;
+  --category-child: #1b4db8;
+  --category-adult: #0f766e;
+  --category-elder: #6d4ac9;
+  --on-category: #ffffff;
+  --nexora-pink: #d63375;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,6 +84,12 @@
     --on-chat-bubble-user: #ffffff;
     --on-primary: #ffffff;
     --scrim: #000000;
+    --category-all: #f5822e;
+    --category-child: #6b9aff;
+    --category-adult: #4fc7b8;
+    --category-elder: #b49cff;
+    --on-category: #0b2442;
+    --nexora-pink: #f0629a;
   }
 }
 

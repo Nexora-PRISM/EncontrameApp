@@ -8,6 +8,8 @@ export const AppInfo = {
   slogan: 'para que nenhuma história termine em silêncio',
   company: 'Nexora Prism',
   companyLine: 'Um produto da Nexora Prism.',
+  /** Linha pequena acima da logo da empresa (assinatura no rodapé, como o "from Meta"). Não traduzir. */
+  companyFrom: 'Um produto da',
   mission:
     msg('Mobilização social para encontrar pessoas desaparecidas, com prioridade para a proteção de crianças e mulheres — e aberta a toda a sociedade.'),
   companySite: 'https://nexoraprism.com.br',

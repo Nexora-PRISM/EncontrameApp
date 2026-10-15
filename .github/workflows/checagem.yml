@@ -45,7 +45,8 @@ jobs:
         run: npx expo export --platform web
 
       - name: Build web de demonstração (dados fictícios, para os prints)
-        run: npx expo export --platform web --output-dir dist-demo
+        # --clear: sem ele, o cache do Metro reaproveita o EXPO_PUBLIC_USE_MOCKS do build anterior.
+        run: npx expo export --platform web --output-dir dist-demo --clear
         env:
           EXPO_PUBLIC_USE_MOCKS: 'true'
           EXPO_PUBLIC_ENABLE_PETS: 'true'
