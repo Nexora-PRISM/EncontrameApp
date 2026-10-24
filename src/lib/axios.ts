@@ -106,14 +106,12 @@ api.interceptors.response.use(
 /**
  * Falhas que a própria tela trata, sem o modal global de erro. O alerta de emergência mostra o
  * resultado na tela dele ("não foi possível confirmar — ligue 190"): um modal por cima atrapalharia.
- * A situação do Premium aparece em Configurações e na tela Premium ("não foi possível verificar").
  */
 function isQuietErrorPath(url: string) {
   return (
     url.includes('/Auth/refresh') ||
     url.includes('/Auth/logout') ||
-    url.includes('/EmergencyAlert') ||
-    url.includes('/Subscription/me')
+    url.includes('/EmergencyAlert')
   );
 }
 

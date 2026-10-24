@@ -96,7 +96,6 @@ export const en: Readonly<Record<string, string>> = {
   'Privacidade e localização': 'Privacy and location',
   'Segurança e golpes': 'Safety and scams',
   'Sofia e grupo de apoio': 'Sofia and support group',
-  'Premium e pagamentos': 'Premium and payments',
   'O Encontra-me é só para crianças e mulheres?': 'Is Encontra-me only for children and women?',
   'Não. Qualquer pessoa pode usar o app e cadastrar quem desapareceu. A proteção de crianças e de mulheres é uma prioridade do projeto, por isso há atalhos e orientações específicas para elas.':
     'No. Anyone can use the app and register someone who has disappeared. Protecting children and women is a priority of the project, which is why there are specific shortcuts and guidance for them.',
@@ -273,11 +272,6 @@ export const en: Readonly<Record<string, string>> = {
   'É uma conversa entre pessoas que usam o app, para troca de apoio. Não compartilhe dados pessoais, endereço ou documentos no grupo.':
     'It is a conversation among people who use the app, to exchange support. Do not share personal data, addresses or documents in the group.',
   'grupo conversa comunidade': 'group conversation community',
-  'O Encontra-me é pago?': 'Does Encontra-me cost anything?',
-  'Posso cadastrar meu animal de estimação desaparecido?': 'Can I register my missing pet?',
-  'O cadastro de pets desaparecidos fará parte do plano Premium, que ainda não foi lançado. Quando estiver disponível, ele aparece no menu em "Pets desaparecidos": você publica o pet com foto, cidade e telefone, e qualquer pessoa pode divulgar o caso. Para sua segurança, não publique seu endereço completo.':
-    'Registering missing pets will be part of the Premium plan, which has not been launched yet. When it is available, it appears in the menu under "Missing pets": you publish the pet with a photo, city and phone number, and anyone can share the case. For your safety, do not publish your full address.',
-  'pet cachorro gato animal bicho perdido premium': 'pet dog cat animal lost premium',
   // features/ajuda/sections/ajuda-contact-section.tsx
   'Ainda precisa de ajuda?': 'Still need help?',
   'Relatar um problema': 'Report a problem',
@@ -487,33 +481,6 @@ export const en: Readonly<Record<string, string>> = {
   'Declaro que as informações são verdadeiras, que tenho vínculo com a pessoa ou autorização da família e que o cadastro não tem como objetivo perseguir ou expor ninguém. Sei que informações falsas podem levar ao bloqueio da conta e à responsabilização civil e criminal.':
     "I declare that the information is true, that I have a relationship with the person or the family's authorization, and that this registration is not meant to stalk or expose anyone. I know that false information can lead to the account being blocked and to civil and criminal liability.",
   'Ver regras de uso': 'See the terms of use',
-  // features/cadastrar-pet/cadastrar-pet.controller.ts
-  'Pet publicado': 'Pet published',
-  'Agora a comunidade pode ajudar. Use "Divulgar" para compartilhar o caso com seus contatos.':
-    'Now the community can help. Use "Share" to send the case to your contacts.',
-  // features/cadastrar-pet/sections/cadastrar-pet-form-section.tsx
-  'Não publique seu endereço completo. Informe só a cidade e o bairro onde o pet sumiu.':
-    'Do not publish your full address. Give only the city and neighborhood where the pet went missing.',
-  'Trocar foto': 'Change photo',
-  'Adicionar foto do pet': 'Add a photo of the pet',
-  'PNG ou JPG, até 2 MB': 'PNG or JPG, up to 2 MB',
-  'Nome do pet': "Pet's name",
-  'Ex.: Thor': 'E.g., Thor',
-  'Espécie *': 'Species *',
-  'Raça': 'Breed',
-  'Ex.: Sem raça definida': 'E.g., Mixed breed',
-  'Cor ou pelagem': 'Color or coat',
-  'Ex.: Caramelo': 'E.g., Caramel',
-  'Porte': 'Size',
-  'Sinais particulares': 'Distinctive marks',
-  'Coleira, manchas, cicatriz…': 'Collar, spots, scar…',
-  'Cidade onde sumiu': 'City where it went missing',
-  'Ex.: Belo Horizonte - MG': 'E.g., Belo Horizonte - MG',
-  'Visto pela última vez em': 'Last seen on',
-  'Telefone do tutor': "Owner's phone",
-  'O telefone aparece no anúncio para quem encontrar o pet poder avisar você.':
-    'The phone number appears in the post so whoever finds the pet can let you know.',
-  'Publicar': 'Publish',
   // features/chat/sections/chat-disclaimer-section.tsx
   'Antes de conversar com a Sofia': 'Before talking to Sofia',
   'Sofia é uma inteligência artificial criada para conversar e oferecer apoio e informações. Ela não substitui um terapeuta, psicólogo, psiquiatra, médico ou outro profissional de saúde qualificado.\n\nSofia não realiza diagnósticos, tratamentos ou atendimento de emergência.\n\nSe você estiver em perigo ou passando por uma situação de emergência, procure ajuda profissional ou um serviço de emergência da sua região.':
@@ -680,10 +647,6 @@ export const en: Readonly<Record<string, string>> = {
     "Theme: Automatic follows your phone's light or dark mode. The text size follows the device's font setting.",
   'Tema': 'Theme',
   'Cores do chat da Sofia': 'Sofia chat colors',
-  'Premium': 'Premium',
-  'Pets desaparecidos': 'Missing pets',
-  'Cadastre e divulgue animais de estimação perdidos.': 'Register and share lost pets.',
-  'Cadastrar e divulgar animais de estimação perdidos.': 'Register and share lost pets.',
   'Ajuda e informações': 'Help and information',
   'Ajuda e suporte': 'Help and support',
   'Sobre o Encontra-me': 'About Encontra-me',
@@ -919,35 +882,6 @@ export const en: Readonly<Record<string, string>> = {
   // features/pessoas-desaparecidas/sections/pessoas-desaparecidas-list-section.tsx
   'Nenhuma pessoa encontrada com esses filtros.': 'No people found with these filters.',
   'Idade: {value}': 'Age: {value}',
-  // features/pets/pet-share.ts
-  'porte {size}': '{size} size',
-  'PET DESAPARECIDO: {name}': 'MISSING PET: {name}',
-  'Visto pela última vez em {place}, em {date}.': 'Last seen in {place}, on {date}.',
-  'Visto pela última vez em {place}.': 'Last seen in {place}.',
-  'Sinais: {marks}': 'Distinctive marks: {marks}',
-  'Se você vir, avise o tutor: {phone}': 'If you see it, let the owner know: {phone}',
-  'Se você vir, avise pelo app {app}.': 'If you see it, let us know through the {app} app.',
-  // features/pets/pets.controller.ts
-  'Não foi possível ligar': 'Could not call',
-  'Disque {contactPhone} manualmente.': 'Dial {contactPhone} manually.',
-  'Pet desaparecido: {name}': 'Missing pet: {name}',
-  // features/pets/sections/pets-list-section.tsx
-  'Não foi possível carregar os pets agora.': 'Could not load the pets right now.',
-  'Tentar de novo': 'Try again',
-  'Nenhum pet desaparecido publicado.': 'No missing pets published.',
-  ' · visto em {date}': ' · seen on {date}',
-  'Perdido': 'Lost',
-  'Divulgar {name}': 'Share {name}',
-  'Divulgar': 'Share',
-  'Ligar para o tutor de {name}': "Call {name}'s owner",
-  'Ligar para o tutor': 'Call the owner',
-  // features/pets/sections/pets-premium-section.tsx
-  'Cadastrar pet desaparecido': 'Register a missing pet',
-  'Tem um pet desaparecido?': 'Do you have a missing pet?',
-  'Cadastrar e divulgar o seu pet faz parte do plano Premium, que ainda não está disponível para assinatura.':
-    'Registering and sharing your pet is part of the Premium plan, which is not available for subscription yet.',
-  'Cadastrar e divulgar o seu pet faz parte do plano Premium. Entre na sua conta para continuar.':
-    'Registering and sharing your pet is part of the Premium plan. Sign in to your account to continue.',
   // features/regras/regras-content.ts
   'O Encontra-me existe para ajudar a encontrar pessoas desaparecidas, com prioridade para crianças e mulheres. Para funcionar com segurança, todas as pessoas que usam o app seguem estas regras.':
     'Encontra-me exists to help find missing people, with priority for children and women. To work safely, everyone who uses the app follows these rules.',
@@ -1126,7 +1060,6 @@ export const en: Readonly<Record<string, string>> = {
   'Informe a idade (pode ser aproximada).': 'Enter the age (it can be approximate).',
   'Use o formato dd/mm/aaaa, com uma data que já passou.':
     'Use the dd/mm/yyyy format, with a date in the past.',
-  'Informe o nome do pet.': "Enter the pet's name.",
   'Para criar a conta, aceite as regras de uso.': 'To create the account, accept the terms of use.',
   'Informe seu vínculo com a pessoa.': 'State your relationship to the person.',
   'Para crianças e adolescentes, informe o número do boletim de ocorrência.':
@@ -1175,11 +1108,6 @@ export const en: Readonly<Record<string, string>> = {
   'Alerta cancelado': 'Alert cancelled',
   'Nada foi enviado e o telefone não foi aberto.': 'Nothing was sent and the phone was not opened.',
   'Acionar de novo': 'Trigger again',
-  // pages/cadastrar-pet/index.tsx
-  'Cadastrar pet': 'Register pet',
-  'Recurso Premium': 'Premium feature',
-  'Cadastrar e divulgar pets desaparecidos faz parte do plano Premium, que ainda não está disponível para assinatura.':
-    'Registering and sharing missing pets is part of the Premium plan, which is not available for subscription yet.',
   // pages/chat/index.tsx
   'Apagar toda a conversa?': 'Delete the whole conversation?',
   // pages/compartilhar-localizacao/index.tsx
@@ -1190,9 +1118,6 @@ export const en: Readonly<Record<string, string>> = {
   'Este cadastro não está mais neste aparelho: ele pode ter sido enviado ou apagado.':
     'This registration is no longer on this device: it may have been sent or deleted.',
   'Não encontramos essa pessoa.': 'We could not find this person.',
-  // pages/pets/index.tsx
-  'Viu algum destes animais? Divulgue o caso e avise o tutor. Toda ajuda conta.':
-    'Have you seen any of these animals? Share the case and let the owner know. Every bit of help counts.',
   // pages/sobre/index.tsx
   'Sobre o app': 'About the app',
   // pages/sofia-theme/index.tsx
@@ -1201,111 +1126,11 @@ export const en: Readonly<Record<string, string>> = {
   // services/emergency/emergency.types.ts
   'O servidor não confirmou o recebimento do alerta.':
     'The server did not confirm receipt of the alert.',
-  // services/pets/pets.types.ts
-  'Cachorro': 'Dog',
-  'Gato': 'Cat',
-  'Pequeno': 'Small',
-  'Grande': 'Large',
-  // Premium: plano, assinatura e textos relacionados
+  // features/ajuda/help-content.ts — rotas e círculo familiar
   'O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
     'Extended route monitoring is a future feature and is not available yet. When it is launched, it will only work with your permission and will end as soon as you reach your destination. Sending your current location to a contact already works and is free.',
   'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
     "It is a future feature for sharing your safety with people you trust, always with each person's invitation and consent. It is not available yet and will never allow tracking someone without that person knowing and agreeing.",
-  'Não. A busca de pessoas desaparecidas e as funções de emergência são gratuitas e vão continuar assim. O plano Premium está em preparação, com preço de referência de {price} por mês; a venda ainda não começou e nada é cobrado no app. O primeiro recurso Premium já pronto é o cadastro e a divulgação de pets desaparecidos. Veja o que é grátis e o que é Premium em Configurações › Premium.':
-    'No. The missing people search and the emergency features are free and will stay that way. The Premium plan is being prepared, with a reference price of {price} per month; sales have not started and nothing is charged in the app. The first Premium feature already available is registering and sharing missing pets. See what is free and what is Premium in Settings › Premium.',
-  'premium assinatura pagamento preço grátis mensalidade':
-    'premium subscription payment price free monthly fee',
-  'O que o Premium vai oferecer?': 'What will Premium offer?',
-  'Recursos extras de segurança e para pets: monitoramento ampliado de trajetos, com histórico das rotas; localização em tempo real com contatos autorizados; círculo de proteção familiar, sempre com aceite de cada pessoa; alertas personalizados; e, para pets, passeios com trajeto, histórico e avisos de atraso e afastamento, além da organização dos perfis dos animais. Hoje o recurso pronto é o cadastro de pets desaparecidos; os outros aparecem no app quando estiverem prontos. Sobre os passeios: o celular do tutor registra o trajeto enquanto está com ele — sem um rastreador no animal, o app não consegue localizá-lo sozinho.':
-    "Extra safety features and features for pets: extended route monitoring, with route history; real-time location with authorized contacts; a family protection circle, always with each person's consent; personalized alerts; and, for pets, walks with route, history and delay and distance alerts, plus organized pet profiles. Today the available feature is registering missing pets; the others will appear in the app when they are ready. About walks: the owner's phone records the route while it is with them — without a tracker on the animal, the app cannot locate it by itself.",
-  'premium recursos benefícios trajeto rota tempo real círculo família alertas pet passeio perfil':
-    'premium features benefits route trip real time circle family alerts pet walk profile',
-  'Busca de pessoas desaparecidas e funções de emergência são sempre grátis.':
-    'Missing people search and emergency features are always free.',
-  'Conhecer o Premium': 'Learn about Premium',
-  'Grátis × Premium, preço e o que já está pronto.':
-    'Free × Premium, price and what is already available.',
-  'Minha assinatura': 'My subscription',
-  'Entre na sua conta para cadastrar e divulgar o seu pet.':
-    'Sign in to your account to register and share your pet.',
-  'Sempre grátis': 'Always free',
-  'No Premium': 'In Premium',
-  'Disponível': 'Available',
-  'Mais recursos de segurança e para pets': 'More safety features and features for pets',
-  'A busca de pessoas desaparecidas e as funções de emergência continuam grátis para todos.':
-    'The missing people search and the emergency features remain free for everyone.',
-  'por mês': 'per month',
-  'ou {price} por ano ({discount}% de desconto)': 'or {price} per year ({discount}% off)',
-  'ou {price} por ano': 'or {price} per year',
-  '{days} dias grátis para testar': '{days} days free to try it',
-  'Preço de referência. A venda ainda não começou e nada é cobrado no app.':
-    'Reference price. Sales have not started and nothing is charged in the app.',
-  'Sua assinatura': 'Your subscription',
-  'Emergência nunca será paga': 'Emergency will never be paid',
-  'Pedir ajuda, ligar para os números de emergência, mandar sua localização e buscar pessoas desaparecidas não dependem de assinatura.':
-    'Getting help, calling the emergency numbers, sending your location and searching for missing people do not depend on a subscription.',
-  'Como vai funcionar': 'How it will work',
-  'Cada recurso aparece no app só quando estiver pronto. Quando a venda começar, a assinatura será feita pela loja de aplicativos, onde também é possível cancelar.':
-    'Each feature appears in the app only when it is ready. When sales start, the subscription will be made through the app store, where it can also be cancelled.',
-  'Ver pets desaparecidos': 'See missing pets',
-  'Dúvidas sobre o Premium': 'Questions about Premium',
-  'Ver os casos de pessoas desaparecidas e o mapa': 'See missing people cases and the map',
-  'Cadastrar uma pessoa desaparecida e enviar avistamentos':
-    'Register a missing person and send sightings',
-  'Pedir ajuda: alerta de emergência e ligação para 190, 180, 100, 192 e 193':
-    'Get help: emergency alert and calls to 190, 180, 100, 192 and 193',
-  'Mandar sua localização atual aos contatos de confiança':
-    'Send your current location to your trusted contacts',
-  'Ver e divulgar pets desaparecidos': 'See and share missing pets',
-  'Central de Ajuda, Sofia e grupo de apoio': 'Help Center, Sofia and support group',
-  'Alertas de desaparecimento na sua região': 'Disappearance alerts in your region',
-  'Cadastrar e divulgar pets desaparecidos': 'Register and share missing pets',
-  'Monitoramento ampliado de trajetos, com histórico e organização das rotas':
-    'Extended route monitoring, with route history and organization',
-  'Acompanhamento com o app aberto e em segundo plano, dentro das regras do Android.':
-    "Tracking with the app open and in the background, within Android's rules.",
-  'Localização em tempo real com contatos autorizados':
-    'Real-time location with authorized contacts',
-  'Mandar a localização atual uma vez continua grátis.':
-    'Sending your current location once stays free.',
-  'Círculo de proteção familiar': 'Family protection circle',
-  'Só com convite e aceite de cada pessoa — nunca rastreamento escondido.':
-    "Only with each person's invitation and consent — never hidden tracking.",
-  'Alertas personalizados': 'Personalized alerts',
-  'Passeios de pets: trajeto, histórico e avisos de atraso e afastamento':
-    'Pet walks: route, history and delay and distance alerts',
-  'O celular do tutor registra o passeio enquanto está com ele. Sem rastreador no animal, o app não consegue localizá-lo sozinho.':
-    "The owner's phone records the walk while it is with them. Without a tracker on the animal, the app cannot locate it by itself.",
-  'Organização avançada dos perfis dos seus animais':
-    "Advanced organization of your pets' profiles",
-  'Ferramentas extras de segurança e conveniência': 'Extra safety and convenience tools',
-  'Premium disponível por {price} por mês.': 'Premium available for {price} per month.',
-  'A venda ainda não começou e nada é cobrado no app. Preço de referência: {price} por mês.':
-    'Sales have not started and nothing is charged in the app. Reference price: {price} per month.',
-  'Gratuito': 'Free',
-  'Entre na sua conta para ver a situação da sua assinatura.':
-    'Sign in to your account to see the status of your subscription.',
-  'Não foi possível verificar a assinatura agora.': 'Could not check the subscription right now.',
-  'Teste do modo de desenvolvimento: nada foi cobrado.':
-    'Development mode test: nothing was charged.',
-  'Em teste': 'Trial',
-  'Teste grátis até {date}.': 'Free trial until {date}.',
-  'Período de teste ativo.': 'Trial period active.',
-  'Plano mensal · renova em {date}.': 'Monthly plan · renews on {date}.',
-  'Plano mensal.': 'Monthly plan.',
-  'Plano anual · renova em {date}.': 'Annual plan · renews on {date}.',
-  'Plano anual.': 'Annual plan.',
-  'Renova em {date}.': 'Renews on {date}.',
-  'Assinatura em dia.': 'Subscription up to date.',
-  'Ativo': 'Active',
-  'Pagamento pendente': 'Payment pending',
-  'O pagamento foi recusado. Atualize a forma de pagamento na loja de aplicativos para continuar com o Premium.':
-    'The payment was declined. Update your payment method in the app store to keep Premium.',
-  'O Premium continua até {date}.': 'Premium continues until {date}.',
-  'A assinatura não será renovada.': 'The subscription will not be renewed.',
-  'Expirado': 'Expired',
-  'O Premium terminou em {date}.': 'Premium ended on {date}.',
-  'O Premium terminou.': 'Premium has ended.',
   // Rodada 3 — Início novo, passo a passo e filtros por idade
   'Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
     'On the Home screen, allow location access. The "Recent alerts" cards and the map show nearby cases. The colored buttons at the top of the map show only children and teenagers, adults or older people, and the satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status.',

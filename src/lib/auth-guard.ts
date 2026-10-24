@@ -7,7 +7,6 @@ const PROTECTED_PREFIXES = [
   '/sofia-theme',
   '/sofia-perfil',
   '/perfil',
-  '/cadastrar-pet',
   '/aviso-seguranca',
 ] as const;
 
@@ -18,9 +17,7 @@ const ALLOWED_RETURN_TO = [
   '/pessoa',
   '/configuracoes',
   '/ajuda',
-  '/pets',
   '/regras',
-  '/premium',
 ] as const;
 
 function stripQueryAndHash(pathname: string) {

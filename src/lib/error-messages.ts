@@ -35,7 +35,6 @@ const byField: Record<string, string> = {
   'age.out_of_range': msg('Idade inválida.'),
   'age.required': msg('Informe a idade (pode ser aproximada).'),
   'lastSeen.invalid_format': msg('Use o formato dd/mm/aaaa, com uma data que já passou.'),
-  'petName.too_short': msg('Informe o nome do pet.'),
   'rules.required': msg('Para criar a conta, aceite as regras de uso.'),
   'reporterRelationship.required': msg('Informe seu vínculo com a pessoa.'),
   'policeReport.required': msg('Para crianças e adolescentes, informe o número do boletim de ocorrência.'),

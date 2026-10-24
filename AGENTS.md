@@ -41,9 +41,6 @@ src/
     ajuda/index.tsx            # "/ajuda"            — central de ajuda (?categoria=, ?assunto=)
     sobre/index.tsx            # "/sobre"            — sobre o app / Nexora Prism
     pedir-ajuda/index.tsx      # "/pedir-ajuda"      — ajuda em tela cheia (destino do atalho da tela inicial)
-    pets/index.tsx             # "/pets"             — pets desaparecidos (flag EXPO_PUBLIC_ENABLE_PETS)
-    cadastrar-pet/index.tsx    # "/cadastrar-pet"    — cadastro de pet (login + Premium, chave em lib/premium-plan.ts)
-    premium/index.tsx          # "/premium"          — grátis × Premium, preço de referência e situação da assinatura (sem login)
     regras/index.tsx           # "/regras"           — regras de uso e resumo de privacidade (sem login)
     aviso-seguranca/index.tsx          # "/aviso-seguranca"          — publicar aviso de segurança (login; flag EXPO_PUBLIC_ENABLE_SAFETY_NOTES)
     alerta-emergencia/index.tsx        # "/alerta-emergencia"        — contagem de 10 s; depois abre o 190
@@ -80,7 +77,6 @@ src/
     brand-theme.tsx            # BrandThemeProvider + useBrand (preferência do sistema)
     i18n.tsx                   # idiomas (pt-BR, en, es): I18nProvider, useT(), tr()
     i18n-msg.ts                # msg(): marca textos de listas/constantes para tradução
-    premium-plan.ts            # preço (R$ 9,90/mês), plano anual/teste, grátis × Premium e texto da situação da assinatura
     person-category.ts         # faixas de idade (crianças e adolescentes, adultos, idosos): filtros, rótulos, cores
     splash-state.ts            # se a abertura já saiu (o passo a passo só abre depois)
     safety-notes.ts            # avisos de segurança: tipos, horários, validade, bloqueio de dados pessoais, denúncia
@@ -181,13 +177,10 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   "recebido" com `alertId` + `receivedAt` na resposta. Sem isso: "não confirmado — ligue 190".
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
-- **Premium retirado por agora** (decisão dos sócios, 15/10/2026): `env.premiumEnabled` (`EXPO_PUBLIC_ENABLE_PREMIUM`)
-  fica desligado em todos os ambientes. Some o item do Menu, o grupo em Configurações, a rota `/premium` (volta ao
-  Início), a categoria da Ajuda e, por fazerem parte dele, os pets. O código continua no projeto.
-- **Premium** (`lib/premium-plan.ts`): preço, desconto anual, teste grátis, `onSale` e a lista grátis × Premium ficam
-  só nesse arquivo. Busca de pessoas e emergência **nunca** vão para o Premium. Não há compra no app: só ligue `onSale`
-  junto com a cobrança pela loja (Google Play Billing) e a API de assinaturas. Recurso Premium planejado aparece como
-  "Em breve". A situação da assinatura vem de `GET /Subscription/me` (sem o endpoint, 404 = plano gratuito).
+- **Premium e pets são demanda futura** (removidos em 17/10/2026). Não recriar telas, menu, ajuda, flags nem
+  serviços até os sócios pedirem. O que já vale para quando voltar: busca de pessoas e emergência continuam
+  gratuitas; pets desaparecidos entram junto com o Premium; não há cobrança no app sem a loja e a API de
+  assinaturas. O registro completo está no `CLAUDE.md`.
 
 ## Comandos
 
@@ -219,9 +212,6 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` — OAuth Google (client ID web).
 - `EXPO_PUBLIC_APP_KEY` — header `X-App-Key` (igual a `AppKey__Value` da API).
 - `GOOGLE_MAPS_API_KEY` — só build nativo Android; não vai no Netlify.
-- `EXPO_PUBLIC_ENABLE_PREMIUM` — plano Premium. Retirado por agora: só aparece com `true` (em qualquer ambiente).
-- `EXPO_PUBLIC_ENABLE_PETS` — pets desaparecidos (Premium). Vazio: ligado em dev, desligado em produção. Exige o Premium ligado.
-- `EXPO_PUBLIC_MOCK_PREMIUM` — só no mock: vazio = Premium ativo; `false` = sem assinatura; `trial`, `grace` (pagamento recusado), `cancelled` ou `expired` simulam cada situação.
 - `EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT` — envio do alerta de emergência à API. Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_MOCK_EMERGENCY_FAIL` — só no mock: `true` simula falha no envio do alerta (para testar a tela "não confirmado").
 - `EXPO_PUBLIC_ENABLE_SAFETY_NOTES` — avisos de segurança no mapa. Vazio: ligado em dev (mock), desligado em produção (falta a API /SafetyNote).

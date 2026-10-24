@@ -10,7 +10,6 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import { brandTiming } from '@/constants/motion';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { APPEARANCE_OPTIONS, useBrand } from '@/lib/brand-theme';
-import { env } from '@/lib/env';
 import { LANGUAGE_SHORT_OPTIONS, useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
 import { useTimedColor } from '@/lib/use-brand-transition';
@@ -161,17 +160,6 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
               },
             ]
           : []),
-        ...(env.petsEnabled
-          ? [
-              {
-                key: 'pets',
-                label: t('Pets desaparecidos'),
-                icon: 'paw' as const,
-                color: brand.categoryElder,
-                onPress: controller.goToPetsFromMenu,
-              },
-            ]
-          : []),
       ],
     },
     {
@@ -220,17 +208,6 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
                 icon: 'account-circle-outline' as const,
                 color: brand.categoryChild,
                 onPress: controller.goToProfile,
-              },
-            ]
-          : []),
-        ...(env.premiumEnabled
-          ? [
-              {
-                key: 'premium',
-                label: t('Premium'),
-                icon: 'star-four-points-outline' as const,
-                color: brand.categoryElder,
-                onPress: controller.goToPremiumFromMenu,
               },
             ]
           : []),

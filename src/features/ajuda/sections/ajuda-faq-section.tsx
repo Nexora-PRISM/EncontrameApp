@@ -4,7 +4,6 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { AjudaController } from '@/features/ajuda/ajuda.controller';
-import { HELP_TEXT_VARS } from '@/features/ajuda/help-content';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 
@@ -110,7 +109,7 @@ export function AjudaFaqSection({ controller }: Props) {
                       />
                     </Pressable>
                     {open ? (
-                      <Text style={styles.answer}>{t(article.answer, HELP_TEXT_VARS)}</Text>
+                      <Text style={styles.answer}>{t(article.answer)}</Text>
                     ) : null}
                   </View>
                 );

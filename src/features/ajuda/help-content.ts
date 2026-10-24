@@ -1,8 +1,6 @@
 import type { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
-import { formatBRL, PREMIUM_PLAN } from '@/lib/premium-plan';
 
 /**
  * Perguntas frequentes da Central de Ajuda.
@@ -19,8 +17,7 @@ export type HelpCategoryId =
   | 'conta'
   | 'privacidade'
   | 'golpes'
-  | 'sofia'
-  | 'premium';
+  | 'sofia';
 
 export type HelpCategory = {
   id: HelpCategoryId;
@@ -37,7 +34,7 @@ export type HelpArticle = {
   keywords?: string;
 };
 
-const ALL_CATEGORIES: HelpCategory[] = [
+export const HELP_CATEGORIES: HelpCategory[] = [
   { id: 'protecao', title: msg('Crianças e mulheres'), icon: 'heart-outline' },
   { id: 'inicio', title: msg('Primeiros passos'), icon: 'compass-outline' },
   { id: 'alertas', title: msg('Pessoas desaparecidas'), icon: 'account-search-outline' },
@@ -48,10 +45,9 @@ const ALL_CATEGORIES: HelpCategory[] = [
   { id: 'privacidade', title: msg('Privacidade e localização'), icon: 'shield-lock-outline' },
   { id: 'golpes', title: msg('Segurança e golpes'), icon: 'alert-octagon-outline' },
   { id: 'sofia', title: msg('Sofia e grupo de apoio'), icon: 'robot-happy-outline' },
-  { id: 'premium', title: msg('Premium e pagamentos'), icon: 'star-outline' },
 ];
 
-const ALL_ARTICLES: HelpArticle[] = [
+export const HELP_ARTICLES: HelpArticle[] = [
   {
     id: 'prioridade',
     category: 'protecao',
@@ -396,40 +392,7 @@ const ALL_ARTICLES: HelpArticle[] = [
       msg('É uma conversa entre pessoas que usam o app, para troca de apoio. Não compartilhe dados pessoais, endereço ou documentos no grupo.'),
     keywords: msg('grupo conversa comunidade'),
   },
-  {
-    id: 'premium',
-    category: 'premium',
-    question: msg('O Encontra-me é pago?'),
-    answer:
-      msg('Não. A busca de pessoas desaparecidas e as funções de emergência são gratuitas e vão continuar assim. O plano Premium está em preparação, com preço de referência de {price} por mês; a venda ainda não começou e nada é cobrado no app. O primeiro recurso Premium já pronto é o cadastro e a divulgação de pets desaparecidos. Veja o que é grátis e o que é Premium em Configurações › Premium.'),
-    keywords: msg('premium assinatura pagamento preço grátis mensalidade'),
-  },
-  {
-    id: 'premium-recursos',
-    category: 'premium',
-    question: msg('O que o Premium vai oferecer?'),
-    answer:
-      msg('Recursos extras de segurança e para pets: monitoramento ampliado de trajetos, com histórico das rotas; localização em tempo real com contatos autorizados; círculo de proteção familiar, sempre com aceite de cada pessoa; alertas personalizados; e, para pets, passeios com trajeto, histórico e avisos de atraso e afastamento, além da organização dos perfis dos animais. Hoje o recurso pronto é o cadastro de pets desaparecidos; os outros aparecem no app quando estiverem prontos. Sobre os passeios: o celular do tutor registra o trajeto enquanto está com ele — sem um rastreador no animal, o app não consegue localizá-lo sozinho.'),
-    keywords: msg('premium recursos benefícios trajeto rota tempo real círculo família alertas pet passeio perfil'),
-  },
-  {
-    id: 'pets',
-    category: 'premium',
-    question: msg('Posso cadastrar meu animal de estimação desaparecido?'),
-    answer:
-      msg('O cadastro de pets desaparecidos fará parte do plano Premium, que ainda não foi lançado. Quando estiver disponível, ele aparece no menu em "Pets desaparecidos": você publica o pet com foto, cidade e telefone, e qualquer pessoa pode divulgar o caso. Para sua segurança, não publique seu endereço completo.'),
-    keywords: msg('pet cachorro gato animal bicho perdido premium'),
-  },
 ];
-
-/** Premium retirado por agora (env.premiumEnabled): a categoria e as perguntas dele somem da Ajuda. */
-export const HELP_CATEGORIES: HelpCategory[] = ALL_CATEGORIES.filter(
-  (category) => category.id !== 'premium' || env.premiumEnabled,
-);
-
-export const HELP_ARTICLES: HelpArticle[] = ALL_ARTICLES.filter(
-  (article) => article.category !== 'premium' || env.premiumEnabled,
-);
 
 /** Normaliza para busca sem acento e sem maiúsculas. */
 export function normalizeSearch(value: string): string {
@@ -444,9 +407,6 @@ export function normalizeSearch(value: string): string {
  * Busca nas perguntas. Com `t`, procura também no texto traduzido (no idioma da tela) —
  * as palavras-chave em português continuam valendo.
  */
-/** Valores que os textos da ajuda usam (ex.: {price}) — vêm da configuração, não ficam fixos no texto. */
-export const HELP_TEXT_VARS = { price: formatBRL(PREMIUM_PLAN.monthlyPriceCents) };
-
 export function searchHelp(
   query: string,
   t?: (text: string, vars?: Record<string, string | number>) => string,
@@ -457,7 +417,7 @@ export function searchHelp(
   return HELP_ARTICLES.filter((article) => {
     const original = `${article.question} ${article.answer} ${article.keywords ?? ''}`;
     const translated = t
-      ? ` ${t(article.question)} ${t(article.answer, HELP_TEXT_VARS)} ${article.keywords ? t(article.keywords) : ''}`
+      ? ` ${t(article.question)} ${t(article.answer)} ${article.keywords ? t(article.keywords) : ''}`
       : '';
     const haystack = normalizeSearch(original + translated);
     return terms.every((term) => haystack.includes(term));

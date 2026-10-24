@@ -96,13 +96,10 @@ function RootLayoutInner() {
           <Stack.Screen name="ajuda" />
           <Stack.Screen name="sobre" />
           <Stack.Screen name="pedir-ajuda" />
-          <Stack.Screen name="pets" />
-          <Stack.Screen name="cadastrar-pet" />
           <Stack.Screen name="regras" />
           <Stack.Screen name="alerta-emergencia" />
           <Stack.Screen name="compartilhar-localizacao" />
           <Stack.Screen name="contatos-confianca" />
-          <Stack.Screen name="premium" />
           <Stack.Screen name="aviso-seguranca" />
         </Stack>
       ) : (

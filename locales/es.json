@@ -2,7 +2,7 @@
   "ios": {
     "NSFaceIDUsageDescription": "Encontra-me usa Face ID para entrar en tu cuenta en este celular.",
     "NSLocationWhenInUseUsageDescription": "Encontra-me usa tu ubicación, con la app abierta, para mostrar casos cercanos, marcar avistamientos y, cuando lo pides, enviar tu ubicación a un contacto.",
-    "NSCameraUsageDescription": "Encontra-me usa la cámara para tomar la foto del registro de una persona o de una mascota.",
-    "NSPhotoLibraryUsageDescription": "Encontra-me accede a tus fotos para que elijas la foto del registro de una persona o de una mascota."
+    "NSCameraUsageDescription": "Encontra-me usa la cámara para tomar la foto del registro de una persona.",
+    "NSPhotoLibraryUsageDescription": "Encontra-me accede a tus fotos para que elijas la foto del registro de una persona."
   }
 }

@@ -58,8 +58,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "O Encontra-me acessa suas fotos para você escolher a foto do cadastro de uma pessoa ou de um pet.",
-          "cameraPermission": "O Encontra-me usa a câmera para tirar a foto do cadastro de uma pessoa ou de um pet."
+          "photosPermission": "O Encontra-me acessa suas fotos para você escolher a foto do cadastro de uma pessoa.",
+          "cameraPermission": "O Encontra-me usa a câmera para tirar a foto do cadastro de uma pessoa."
         }
       ],
       [

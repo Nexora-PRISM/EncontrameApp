@@ -18,7 +18,6 @@ import {
 } from '@/lib/biometric';
 import { type AppearancePreference, useBrandTheme } from '@/lib/brand-theme';
 import { confirmAction, showAlert } from '@/lib/dialog';
-import { env } from '@/lib/env';
 import {
   LANGUAGE_NAMES,
   LANGUAGE_OPTIONS,
@@ -27,14 +26,12 @@ import {
   useT,
 } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
-import { describeSubscription } from '@/lib/premium-plan';
 import { useSafeBack } from '@/lib/safe-back';
 import { signOut } from '@/lib/sign-out';
 import { openSupportEmail } from '@/lib/support';
 import { loadTrustedContacts } from '@/lib/trusted-contacts';
 import { useSessionUser } from '@/lib/use-session-user';
 import { deleteLocalPending, listLocalPending } from '@/services/people/people.local.store';
-import { usePremiumStatusQuery } from '@/services/premium/premium.service';
 
 type LocationStatus = 'granted' | 'denied' | 'undetermined' | 'unknown';
 
@@ -68,8 +65,6 @@ export function useConfiguracoesController() {
   const [trustedContactsCount, setTrustedContactsCount] = useState<number | null>(null);
   const [signingOut, setSigningOut] = useState(false);
   const emergencyShortcut = useEmergencyShortcutSettings(sessionUser != null);
-  // Premium retirado por agora (env.premiumEnabled): nem consulta a assinatura.
-  const premiumQuery = usePremiumStatusQuery(env.premiumEnabled);
 
   useEffect(() => {
     let cancelled = false;
@@ -284,14 +279,6 @@ export function useConfiguracoesController() {
       );
     },
     goToSofiaTheme: () => router.push('/sofia-theme' as Href),
-    petsEnabled: env.petsEnabled,
-    /** Premium retirado por agora: o grupo some de Configurações. */
-    premiumEnabled: env.premiumEnabled,
-    goToPets: () => router.push('/pets' as Href),
-    goToPremium: () => router.push('/premium' as Href),
-    subscriptionLoading: sessionUser != null && premiumQuery.isLoading,
-    /** Situação da assinatura (só o que o servidor informou). */
-    subscription: describeSubscription(premiumQuery.data, sessionUser != null, t),
   };
 }
 

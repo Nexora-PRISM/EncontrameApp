@@ -367,8 +367,6 @@ export function useInicioController() {
     goToSettings: () => goTo(() => router.push('/configuracoes' as Href)),
     goToProfile: () => goTo(() => router.push('/perfil' as Href)),
     goToHelp: () => goTo(() => router.push('/ajuda' as Href)),
-    goToPetsFromMenu: () => goTo(() => router.push('/pets' as Href)),
-    goToPremiumFromMenu: () => goTo(() => router.push('/premium' as Href)),
     goToGroupChat: () => goTo(() => router.push('/grupo-chat')),
     // Já estamos no Início: só fecha o menu (antes empilhava outra cópia da tela).
     goToHomeFromMenu: closeMenu,

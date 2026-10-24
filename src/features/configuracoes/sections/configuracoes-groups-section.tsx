@@ -265,41 +265,6 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
         />
       </SettingsGroup>
 
-      {c.premiumEnabled ? (
-        <SettingsGroup
-          title={t('Premium')}
-          footer={t('Busca de pessoas desaparecidas e funções de emergência são sempre grátis.')}
-        >
-          <SettingsRow
-            icon="star-four-points-outline"
-            label={t('Conhecer o Premium')}
-            description={t('Grátis × Premium, preço e o que já está pronto.')}
-            onPress={c.goToPremium}
-          />
-          <SettingsRow
-            icon="star-circle-outline"
-            label={t('Minha assinatura')}
-            value={c.subscriptionLoading ? '…' : c.subscription.label}
-            description={c.subscriptionLoading ? undefined : c.subscription.description}
-          />
-          {c.petsEnabled ? (
-            <SettingsRow
-              icon="paw"
-              label={t('Pets desaparecidos')}
-              description={t('Cadastre e divulgue animais de estimação perdidos.')}
-              onPress={c.goToPets}
-            />
-          ) : (
-            <SettingsRow
-              icon="paw"
-              label={t('Pets desaparecidos')}
-              description={t('Cadastrar e divulgar animais de estimação perdidos.')}
-              unavailable
-            />
-          )}
-        </SettingsGroup>
-      ) : null}
-
       <SettingsGroup title={t('Ajuda e informações')}>
         <SettingsRow icon="help-circle-outline" label={t('Ajuda e suporte')} onPress={c.goToHelp} />
         <SettingsRow

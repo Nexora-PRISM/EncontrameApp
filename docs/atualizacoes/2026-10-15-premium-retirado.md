@@ -1,5 +1,9 @@
 # 2026-10-15 — Premium retirado do app (por agora)
 
+> Superado em 17/10/2026: o código do Premium e dos pets foi removido do app (não fica mais atrás de flag). A demanda futura está no `CLAUDE.md`.
+
+
+
 - **Pedido**: "Retire a versão Premium por agora."
 - **Como foi feito**: nova flag `EXPO_PUBLIC_ENABLE_PREMIUM` (`env.premiumEnabled`), **desligada em todos os
   ambientes**. Nada foi apagado: para trazer o Premium de volta basta definir a variável como `true`.
