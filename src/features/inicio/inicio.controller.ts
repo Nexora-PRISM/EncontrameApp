@@ -12,6 +12,7 @@ import { showAlert } from '@/lib/dialog';
 import { env } from '@/lib/env';
 import { useI18n, useT } from '@/lib/i18n';
 import {
+  categoryAgeRange,
   categoryColor,
   matchesCategory,
   personCategory,
@@ -24,7 +25,7 @@ import { useSplashDone } from '@/lib/splash-state';
 import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
-import { useNearbyPeopleQuery, useRecentPeopleQuery } from '@/services/people/people.service';
+import { useNearbyPeopleQuery, usePeopleSearchQuery, useRecentPeopleQuery } from '@/services/people/people.service';
 import type { Person } from '@/services/people/people.types';
 import {
   useNearbySafetyNotesQuery,
@@ -34,11 +35,6 @@ import type { SafetyNote, SafetyNoteVote } from '@/services/safety-notes/safety-
 
 /** Item tocado no mapa: abre o cartão flutuante em vez de trocar de tela. */
 type MapSelection = { kind: 'person'; id: string } | { kind: 'note'; id: string } | null;
-
-/** Primeiro nome para a saudação ("Olá, Maria"). */
-function firstNameOf(name: string | undefined): string {
-  return name?.trim().split(/\s+/)[0] ?? '';
-}
 
 /** Iniciais para o avatar (ex.: "Maria Souza" → "MS"). */
 function initialsOf(name: string | undefined): string {
@@ -105,11 +101,37 @@ export function useInicioController() {
     () => (query.trim() ? people : buildCarouselPeople(people, recentQuery.data ?? [])),
     [people, query, recentQuery.data],
   );
-  /** Cartões de "Alertas recentes", já com o filtro de idade aplicado. */
+  /** Fileira de "Alertas recentes", já com o filtro de idade aplicado. */
   const alertPeople = useMemo(
     () => carouselPeople.filter((person) => matchesCategory(person, categoryFilter)),
     [carouselPeople, categoryFilter],
   );
+  const ageRange = categoryAgeRange(categoryFilter);
+  const alertsPages = usePeopleSearchQuery({ pageSize: 12, ...ageRange });
+  const pagedPeople = useMemo(
+    () => alertsPages.data?.pages.flatMap((page) => page.items) ?? [],
+    [alertsPages.data],
+  );
+  /** Lista aberta: quem está na fileira, depois as páginas da busca (sem repetir caso encerrado). */
+  const scrollPeople = useMemo(() => {
+    const seen = new Set<string>();
+    const merged: Person[] = [];
+    const push = (person: Person, allowClosed: boolean) => {
+      if (seen.has(person.id)) return;
+      if (!allowClosed && (person.statusId === 3 || person.statusId === 99)) return;
+      if (!matchesCategory(person, categoryFilter)) return;
+      seen.add(person.id);
+      merged.push(person);
+    };
+    for (const person of alertPeople) push(person, true);
+    for (const person of pagedPeople) push(person, false);
+    return merged;
+  }, [alertPeople, categoryFilter, pagedPeople]);
+  const loadMoreAlerts = () => {
+    if (alertsPages.hasNextPage && !alertsPages.isFetchingNextPage) {
+      void alertsPages.fetchNextPage();
+    }
+  };
   const waitingLocation = !locationDenied && userLocation == null;
   const showPeopleSkeleton =
     waitingLocation ||
@@ -260,7 +282,7 @@ export function useInicioController() {
     finishOnboarding();
   };
 
-  /** Botão "?" do Início: abre o passo a passo do começo. */
+  /** Menu "Como usar o app": abre o passo a passo do começo. */
   const openTutorial = () => {
     closeMenu();
     setOnboardingStep(0);
@@ -308,6 +330,9 @@ export function useInicioController() {
     people,
     carouselPeople,
     alertPeople,
+    scrollPeople,
+    loadMoreAlerts,
+    alertsLoadingMore: alertsPages.isFetchingNextPage,
     pins,
     /** Pessoas no mapa com o filtro atual (sem contar os avisos). */
     personPinsCount: personPins.length,
@@ -344,8 +369,7 @@ export function useInicioController() {
     loading: peopleQuery.isLoading || peopleQuery.isFetching,
     showPeopleSkeleton,
     loggedIn,
-    /** Saudação do Início ("Olá, Maria") e iniciais do avatar. */
-    userFirstName: firstNameOf(sessionUser?.name),
+    /** Iniciais do avatar no canto do Início. */
     userInitials: initialsOf(sessionUser?.name),
     /** Tema do app (Automático / Claro / Escuro) — atalho no menu; também em Configurações. */
     appearance,

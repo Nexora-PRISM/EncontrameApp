@@ -51,6 +51,14 @@ export function matchesCategory(person: Pick<Person, 'age'>, filter: CategoryFil
   return personCategory(person) === filter;
 }
 
+/** Faixa etária enviada à busca paginada (o mesmo corte de `personCategory`). */
+export function categoryAgeRange(filter: CategoryFilter): { ageMin?: number; ageMax?: number } {
+  if (filter === 'child') return { ageMax: ADULT_FROM - 1 };
+  if (filter === 'adult') return { ageMin: ADULT_FROM, ageMax: ELDER_FROM - 1 };
+  if (filter === 'elder') return { ageMin: ELDER_FROM };
+  return {};
+}
+
 /** Rótulo curto do cartão (singular), para quem lê rápido. */
 export function personCategoryLabel(person: Pick<Person, 'age'>): string | null {
   const category = personCategory(person);

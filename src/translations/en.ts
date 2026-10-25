@@ -1132,13 +1132,13 @@ export const en: Readonly<Record<string, string>> = {
   'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
     "It is a future feature for sharing your safety with people you trust, always with each person's invitation and consent. It is not available yet and will never allow tracking someone without that person knowing and agreeing.",
   // Rodada 3 — Início novo, passo a passo e filtros por idade
-  'Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
-    'On the Home screen, allow location access. The "Recent alerts" cards and the map show nearby cases. The colored buttons at the top of the map show only children and teenagers, adults or older people, and the satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status.',
+  'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
+    'On the Home screen, allow location access. The photos in "Recent alerts" and the map show nearby cases. Drag the map down to open the list and scroll to see more. The buttons next to "Recent alerts" switch between a photo with the name underneath and a card. The buttons at the top of the map filter by age: the border uses the theme color and the chosen button fills in. The satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status.',
   'mapa lista perto localização filtro satélite crianças idosos':
     'map list near location filter satellite children older people',
   'Como vejo o passo a passo do app de novo?': 'How do I see the app walkthrough again?',
-  'Toque no "?" no alto da tela Início, ou abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.':
-    'Tap the "?" at the top of the Home screen, or open the Menu and tap "How to use the app". You can also go to Settings > Appearance and accessibility > "See the walkthrough again". On any step, "Skip" closes the walkthrough.',
+  'Abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.':
+    'Open the Menu and tap "How to use the app". You can also go to Settings > Appearance and accessibility > "See the walkthrough again". On any step, "Skip" closes the walkthrough.',
   'tutorial apresentação onboarding passo a passo como usar ajuda':
     'tutorial walkthrough onboarding step by step how to use help',
   'Passo a passo reativado': 'Walkthrough turned back on',
@@ -1148,11 +1148,12 @@ export const en: Readonly<Record<string, string>> = {
   'Ver todas as pessoas desaparecidas': 'See all missing people',
   'Ver todos': 'See all',
   'Nenhum alerta nesta faixa de idade por aqui.': 'No alerts for this age group around here.',
-  'Olá, {name}!': 'Hi, {name}!',
-  'Olá!': 'Hi!',
-  'Entre ou crie sua conta': 'Sign in or create your account',
-  'Ver meu perfil': 'See my profile',
-  'Para cadastrar e acompanhar casos': 'To register and follow cases',
+  'Ver só as fotos': 'See only the photos',
+  'Ver cartões com detalhes': 'See cards with details',
+  'Ver mais pessoas': 'See more people',
+  'Voltar à fileira': 'Back to the row',
+  'Arraste o mapa para baixo para ver mais pessoas. Arraste para cima para voltar à fileira.':
+    'Drag the map down to see more people. Drag up to go back to the row.',
   'Como usar o app': 'How to use the app',
   'Ver mapa comum': 'See regular map',
   'Ver imagem de satélite': 'See satellite image',
@@ -1163,8 +1164,8 @@ export const en: Readonly<Record<string, string>> = {
   'Apoio': 'Support',
   'Sua conta': 'Your account',
   'Pular': 'Skip',
-  'Fecha o passo a passo. Você pode ver de novo pelo botão "?" do Início.':
-    'Closes the walkthrough. You can see it again with the "?" button on Home.',
+  'Fecha o passo a passo. Você pode ver de novo pelo Menu, em "Como usar o app".':
+    'Closes the walkthrough. You can see it again from the Menu, in "How to use the app".',
   'Começar a usar': 'Start using',
   'Começar o passo a passo': 'Start the walkthrough',
   'Crianças': 'Children',
@@ -1173,8 +1174,8 @@ export const en: Readonly<Record<string, string>> = {
   'Vou te mostrar, em poucos passos, como usar o Encontra-me. Se já conhece, toque em "Pular".':
     'In a few steps, I will show you how to use Encontra-me. If you already know it, tap "Skip".',
   'Veja quem está desaparecido perto de você': 'See who is missing near you',
-  'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.':
-    'The alerts are at the top of the screen. Tap a card to see the photo and details of the person.',
+  'No alto da tela ficam as pessoas procuradas perto de você. Os dois botões ao lado do título trocam entre foto, com o nome embaixo, e cartão. Arraste o mapa para baixo para ver a lista e role para carregar mais. Toque para abrir o caso.':
+    'The people being searched for near you are at the top of the screen. The two buttons next to the title switch between a photo with the name underneath and a card. Drag the map down to see the list and scroll to load more. Tap to open the case.',
   'Use o mapa': 'Use the map',
   'Viu alguém? Avise.': 'Saw someone? Let us know.',
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
@@ -1186,8 +1187,8 @@ export const en: Readonly<Record<string, string>> = {
   'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
     'To report a disappearance, tap "Register". The "Menu" has Sofia, your profile, settings and help.',
   'Pronto! Como você quer começar?': 'All set! How do you want to start?',
-  'Para ver este passo a passo de novo, toque no "?" no alto da tela.':
-    'To see this walkthrough again, tap the "?" at the top of the screen.',
+  'Para ver este passo a passo de novo, abra o Menu e toque em "Como usar o app".':
+    'To see this walkthrough again, open the Menu and tap "How to use the app".',
   'Adultos': 'Adults',
   'Adolescente': 'Teenager',
   'Criança': 'Child',
@@ -1263,8 +1264,8 @@ export const en: Readonly<Record<string, string>> = {
   'Avise sobre uma rua ou lugar perigoso': 'Warn about a dangerous street or place',
   'Adicionar aviso': 'Add note',
   'Avisar sobre um lugar perigoso': 'Warn about a dangerous place',
-  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.':
-    'Each photo on the map is a person being searched for: tap it to see a summary. The colored buttons show only children, adults or older people.',
+  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões no alto filtram por idade. A borda usa a cor do tema e o botão escolhido fica preenchido.':
+    'Each photo on the map is a person being searched for: tap it to see a summary. The buttons at the top filter by age. The border uses the theme color and the chosen button fills in.',
   'Avisos de segurança': 'Safety notes',
   'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".':
     'The yellow diamonds are community notes, such as "deserted street at night". Tap to see and confirm them. To warn about a place, use "Add note".',

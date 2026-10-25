@@ -67,22 +67,31 @@ function WelcomeArt({ styles }: { styles: Styles }) {
 }
 
 function AlertsArt({ brand, styles }: ArtProps) {
-  const t = useT();
+  const faces = [
+    { icon: 'human-child' as const, color: brand.statusAlerta, name: 'Ana' },
+    { icon: 'account' as const, color: brand.statusProcurando, name: 'Lucas' },
+    { icon: 'human-cane' as const, color: brand.statusEncontrado, name: 'Helena' },
+  ];
   return (
     <View style={styles.center}>
-      <View style={styles.miniCard}>
-        <View style={[styles.miniPhoto, { backgroundColor: hexToRgba(brand.categoryChild, 0.18) }]}>
-          <MaterialCommunityIcons name="human-child" size={30} color={brand.categoryChild} />
+      <View style={styles.viewToggle}>
+        <View style={[styles.viewToggleBtn, styles.viewToggleBtnOn]}>
+          <MaterialCommunityIcons name="account-circle-outline" size={16} color={brand.orangeDark} />
         </View>
-        <View style={styles.miniCardText}>
-          <View style={[styles.miniPill, { backgroundColor: brand.statusAlerta }]}>
-            <Text style={styles.miniPillText}>{t('Alerta').toUpperCase()}</Text>
-          </View>
-          <Text style={styles.miniName}>Ana Clara</Text>
-          <Text style={styles.miniMeta}>{t('{age} anos', { age: 8 })}</Text>
+        <View style={styles.viewToggleBtn}>
+          <MaterialCommunityIcons name="card-text-outline" size={16} color={brand.onPrimary} />
         </View>
       </View>
-      <TapHint brand={brand} styles={styles} />
+      <View style={styles.avatarRow}>
+        {faces.map((face) => (
+          <View key={face.icon} style={styles.avatarWithName}>
+            <View style={[styles.roundAvatar, { borderColor: face.color }]}>
+              <MaterialCommunityIcons name={face.icon} size={28} color={face.color} />
+            </View>
+            <Text style={styles.avatarCaption}>{face.name}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
@@ -90,9 +99,9 @@ function AlertsArt({ brand, styles }: ArtProps) {
 function MapArt({ brand, styles }: ArtProps) {
   const t = useT();
   const chips = [
-    { label: t('Todos'), color: brand.categoryAll, filled: true },
-    { label: t('Crianças'), color: brand.categoryChild, filled: false },
-    { label: t('Idosos'), color: brand.categoryElder, filled: false },
+    { label: t('Todos'), filled: true },
+    { label: t('Crianças'), filled: false },
+    { label: t('Idosos'), filled: false },
   ];
   const pins = [
     { color: brand.categoryChild, icon: 'human-child' as const, top: 62, left: 34 },
@@ -111,11 +120,11 @@ function MapArt({ brand, styles }: ArtProps) {
             style={[
               styles.miniChip,
               chip.filled
-                ? { backgroundColor: chip.color, borderColor: chip.color }
-                : { borderColor: chip.color },
+                ? { backgroundColor: brand.orange, borderColor: brand.orange }
+                : { backgroundColor: brand.surface, borderColor: brand.orange },
             ]}
           >
-            <Text style={[styles.miniChipText, { color: chip.filled ? brand.onCategory : chip.color }]}>
+            <Text style={[styles.miniChipText, { color: chip.filled ? brand.onPrimary : brand.orange }]}>
               {chip.label}
             </Text>
           </View>
@@ -283,46 +292,49 @@ function makeStyles(brand: BrandColors) {
       width: 52,
       height: 52,
     },
-    miniCard: {
+    viewToggle: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 12,
-      padding: 12,
-      borderRadius: Radius.lg,
-      backgroundColor: brand.surface,
-      minWidth: 230,
+      gap: 4,
+      padding: 3,
+      borderRadius: Radius.pill,
+      backgroundColor: hexToRgba(brand.onPrimary, 0.16),
     },
-    miniPhoto: {
-      width: 64,
-      height: 64,
-      borderRadius: Radius.md,
+    viewToggleBtn: {
+      width: 32,
+      height: 26,
+      borderRadius: Radius.pill,
       alignItems: 'center',
       justifyContent: 'center',
     },
-    miniCardText: {
-      gap: 3,
+    viewToggleBtnOn: {
+      backgroundColor: brand.surface,
+    },
+    avatarRow: {
+      flexDirection: 'row',
       alignItems: 'flex-start',
+      gap: 16,
     },
-    miniPill: {
-      paddingHorizontal: 8,
-      paddingVertical: 2,
-      borderRadius: Radius.pill,
+    avatarWithName: {
+      width: 72,
+      alignItems: 'center',
     },
-    miniPillText: {
+    avatarCaption: {
+      marginTop: 4,
       fontSize: 11,
-      fontWeight: '800',
-      letterSpacing: 0.6,
-      color: brand.onStatusBadge,
+      lineHeight: 14,
+      fontWeight: '700',
+      color: brand.onPrimary,
+      textAlign: 'center',
     },
-    miniName: {
-      fontSize: 17,
-      fontWeight: '800',
-      color: brand.textDark,
-    },
-    miniMeta: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: brand.textMuted,
+    roundAvatar: {
+      width: 72,
+      height: 72,
+      borderRadius: 36,
+      borderWidth: 4,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: brand.avatarBackground,
     },
     tapHint: {
       position: 'absolute',

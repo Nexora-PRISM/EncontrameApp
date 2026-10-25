@@ -2,7 +2,7 @@ import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
 
 /**
- * Passo a passo de como usar o app (aparece na primeira vez e pelo botão "?" do Início).
+ * Passo a passo de como usar o app (aparece na primeira vez e pelo Menu, em "Como usar o app").
  * Frases curtas e diretas, pensadas para quem nunca usou o app, pessoas idosas e leigas.
  * Cada passo mostra, no desenho, o mesmo botão que a pessoa vai encontrar na tela.
  * Ao mudar uma funcionalidade citada aqui, atualize o texto (regra de honestidade da interface).
@@ -35,14 +35,14 @@ const ALL_STEPS: readonly TutorialStep[] = [
     illustration: 'alerts',
     title: msg('Veja quem está desaparecido perto de você'),
     message: msg(
-      'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.',
+      'No alto da tela ficam as pessoas procuradas perto de você. Os dois botões ao lado do título trocam entre foto, com o nome embaixo, e cartão. Arraste o mapa para baixo para ver a lista e role para carregar mais. Toque para abrir o caso.',
     ),
   },
   {
     illustration: 'map',
     title: msg('Use o mapa'),
     message: msg(
-      'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.',
+      'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões no alto filtram por idade. A borda usa a cor do tema e o botão escolhido fica preenchido.',
     ),
   },
   {
@@ -76,7 +76,7 @@ const ALL_STEPS: readonly TutorialStep[] = [
   {
     illustration: 'start',
     title: msg('Pronto! Como você quer começar?'),
-    message: msg('Para ver este passo a passo de novo, toque no "?" no alto da tela.'),
+    message: msg('Para ver este passo a passo de novo, abra o Menu e toque em "Como usar o app".'),
   },
 ];
 

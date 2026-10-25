@@ -1144,13 +1144,13 @@ export const es: Readonly<Record<string, string>> = {
   'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
     'Es una función futura para compartir tu seguridad con personas de confianza, siempre con invitación y aceptación de cada una. Todavía no está disponible y nunca permitirá seguir a alguien sin que esa persona lo sepa y esté de acuerdo.',
   // Rodada 3 — Início novo, passo a passo e filtros por idade
-  'Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
-    'En la pantalla Inicio, permite el acceso a la ubicación. Las tarjetas de "Alertas recientes" y el mapa muestran casos cercanos. Los botones de colores en la parte superior del mapa muestran solo niños y adolescentes, adultos o personas mayores, y el botón de satélite cambia la imagen del mapa. Para buscar por nombre o ver la lista completa, toca la lupa en la parte superior de la pantalla o "Ver todos": allí puedes filtrar por ciudad, estado, barrio, edad y situación.',
+  'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
+    'En la pantalla Inicio, permite el acceso a la ubicación. Las fotos de "Alertas recientes" y el mapa muestran casos cercanos. Arrastra el mapa hacia abajo para abrir la lista y desplázate para ver más. Los botones junto a "Alertas recientes" cambian entre foto, con el nombre debajo, y tarjeta. Los botones en la parte superior del mapa filtran por edad: el borde usa el color del tema y el botón elegido se rellena. El botón de satélite cambia la imagen del mapa. Para buscar por nombre o ver la lista completa, toca la lupa en la parte superior de la pantalla o "Ver todos": allí puedes filtrar por ciudad, estado, barrio, edad y situación.',
   'mapa lista perto localização filtro satélite crianças idosos':
     'mapa lista cerca ubicación filtro satélite niños mayores',
   'Como vejo o passo a passo do app de novo?': '¿Cómo veo de nuevo el paso a paso de la app?',
-  'Toque no "?" no alto da tela Início, ou abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.':
-    'Toca el "?" en la parte superior de la pantalla Inicio, o abre el Menú y toca "Cómo usar la app". También puedes ir a Configuración > Apariencia y accesibilidad > "Ver el paso a paso de nuevo". En cualquier paso, "Saltar" cierra el paso a paso.',
+  'Abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.':
+    'Abre el Menú y toca "Cómo usar la app". También puedes ir a Configuración > Apariencia y accesibilidad > "Ver el paso a paso de nuevo". En cualquier paso, "Saltar" cierra el paso a paso.',
   'tutorial apresentação onboarding passo a passo como usar ajuda':
     'tutorial presentación onboarding paso a paso cómo usar ayuda',
   'Passo a passo reativado': 'Paso a paso reactivado',
@@ -1160,11 +1160,12 @@ export const es: Readonly<Record<string, string>> = {
   'Ver todas as pessoas desaparecidas': 'Ver todas las personas desaparecidas',
   'Ver todos': 'Ver todos',
   'Nenhum alerta nesta faixa de idade por aqui.': 'No hay alertas de este grupo de edad por aquí.',
-  'Olá, {name}!': '¡Hola, {name}!',
-  'Olá!': '¡Hola!',
-  'Entre ou crie sua conta': 'Inicia sesión o crea tu cuenta',
-  'Ver meu perfil': 'Ver mi perfil',
-  'Para cadastrar e acompanhar casos': 'Para registrar y seguir casos',
+  'Ver só as fotos': 'Ver solo las fotos',
+  'Ver cartões com detalhes': 'Ver tarjetas con detalles',
+  'Ver mais pessoas': 'Ver más personas',
+  'Voltar à fileira': 'Volver a la fila',
+  'Arraste o mapa para baixo para ver mais pessoas. Arraste para cima para voltar à fileira.':
+    'Arrastra el mapa hacia abajo para ver más personas. Arrastra hacia arriba para volver a la fila.',
   'Como usar o app': 'Cómo usar la app',
   'Ver mapa comum': 'Ver mapa común',
   'Ver imagem de satélite': 'Ver imagen de satélite',
@@ -1176,8 +1177,8 @@ export const es: Readonly<Record<string, string>> = {
   'Apoio': 'Apoyo',
   'Sua conta': 'Tu cuenta',
   'Pular': 'Saltar',
-  'Fecha o passo a passo. Você pode ver de novo pelo botão "?" do Início.':
-    'Cierra el paso a paso. Puedes verlo de nuevo con el botón "?" del Inicio.',
+  'Fecha o passo a passo. Você pode ver de novo pelo Menu, em "Como usar o app".':
+    'Cierra el paso a paso. Puedes verlo de nuevo en el Menú, en "Cómo usar la app".',
   'Começar a usar': 'Empezar a usar',
   'Começar o passo a passo': 'Empezar el paso a paso',
   'Crianças': 'Niños',
@@ -1186,8 +1187,8 @@ export const es: Readonly<Record<string, string>> = {
   'Vou te mostrar, em poucos passos, como usar o Encontra-me. Se já conhece, toque em "Pular".':
     'En pocos pasos te muestro cómo usar Encontra-me. Si ya la conoces, toca "Saltar".',
   'Veja quem está desaparecido perto de você': 'Mira quién está desaparecido cerca de ti',
-  'No alto da tela ficam os alertas. Toque em um cartão para ver a foto e os detalhes da pessoa.':
-    'Las alertas están en la parte superior de la pantalla. Toca una tarjeta para ver la foto y los datos de la persona.',
+  'No alto da tela ficam as pessoas procuradas perto de você. Os dois botões ao lado do título trocam entre foto, com o nome embaixo, e cartão. Arraste o mapa para baixo para ver a lista e role para carregar mais. Toque para abrir o caso.':
+    'En la parte superior de la pantalla están las personas buscadas cerca de ti. Los dos botones junto al título cambian entre foto, con el nombre debajo, y tarjeta. Arrastra el mapa hacia abajo para ver la lista y desplázate para cargar más. Toca para abrir el caso.',
   'Use o mapa': 'Usa el mapa',
   'Viu alguém? Avise.': '¿Viste a alguien? Avisa.',
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
@@ -1199,8 +1200,8 @@ export const es: Readonly<Record<string, string>> = {
   'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
     'Para comunicar una desaparición, toca "Registrar". En el "Menú" están Sofia, tu perfil, la configuración y la ayuda.',
   'Pronto! Como você quer começar?': '¡Listo! ¿Cómo quieres empezar?',
-  'Para ver este passo a passo de novo, toque no "?" no alto da tela.':
-    'Para ver este paso a paso de nuevo, toca el "?" en la parte superior de la pantalla.',
+  'Para ver este passo a passo de novo, abra o Menu e toque em "Como usar o app".':
+    'Para ver este paso a paso de nuevo, abre el Menú y toca "Cómo usar la app".',
   'Adultos': 'Adultos',
   'Adolescente': 'Adolescente',
   'Criança': 'Niño/a',
@@ -1277,8 +1278,8 @@ export const es: Readonly<Record<string, string>> = {
   'Avise sobre uma rua ou lugar perigoso': 'Avisa sobre una calle o lugar peligroso',
   'Adicionar aviso': 'Agregar aviso',
   'Avisar sobre um lugar perigoso': 'Avisar sobre un lugar peligroso',
-  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões coloridos mostram só crianças, adultos ou idosos.':
-    'Cada foto en el mapa es una persona buscada: tócala para ver un resumen. Los botones de colores muestran solo niños, adultos o personas mayores.',
+  'Cada foto no mapa é uma pessoa procurada: toque nela para ver um resumo. Os botões no alto filtram por idade. A borda usa a cor do tema e o botão escolhido fica preenchido.':
+    'Cada foto en el mapa es una persona buscada: tócala para ver un resumen. Los botones de arriba filtran por edad. El borde usa el color del tema y el botón elegido se rellena.',
   'Avisos de segurança': 'Avisos de seguridad',
   'Os losangos amarelos são avisos da comunidade, como "rua deserta à noite". Toque para ver e confirmar. Para avisar sobre um lugar, use "Adicionar aviso".':
     'Los rombos amarillos son avisos de la comunidad, como "calle desierta de noche". Tócalos para ver y confirmar. Para avisar sobre un lugar, usa "Agregar aviso".',

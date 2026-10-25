@@ -116,7 +116,7 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Cores e raios**: hex só em `@/constants/brand.ts` (paletas light/dark) e espelho CSS em `src/global.css`.
   Na UI use **`useBrand()`** de `@/lib/brand-theme` (e `Radius` de `@/constants/brand.ts`). Nunca escreva hex solto nas telas.
   - Preferência do sistema via `useColorScheme` (`BrandThemeProvider` no `_layout`).
-  - `brand.navy` = fundo da marca (home); `brand.white` = fundo de tela; `brand.surface` = superfícies elevadas
+  - `brand.navy` = marinho da marca; `brand.white` = fundo de tela; `brand.surface` = superfícies elevadas. A faixa acima do mapa no Início usa o tom fechado da cor da Sofia (`brand.orangeDark`) quando há paleta.
   - `brand.orange`, `brand.cream`, `brand.blue` = destaques/CTA; `brand.onPrimary` = texto/ícone sobre azul/laranja
 - **Imports**: use o alias `@/` (mapeado para `src/`) e `@/assets/` para assets.
 - **Nomes de arquivo**: `kebab-case` para componentes e sections (`brand-button.tsx`, `login-form-section.tsx`); cada pasta em `src/pages/<pagina>/index.tsx` define a URL.
@@ -137,13 +137,16 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 
 ## Início (celular) e passo a passo
 
-- Ordem da tela: faixa marinho (botão "?", logo, busca e saudação) → "Alertas recentes" (cartões) → mapa grande com
-  filtros por faixa de idade, satélite e "minha localização" → barra inferior. Seções em `features/inicio/sections/`.
+- Ordem da tela: faixa na cor do tema (avatar da conta, logo e busca) → "Alertas recentes" (botões foto/cartão;
+  arrastar o mapa para baixo abre a lista rolável) → mapa grande com filtros por faixa de idade, satélite e
+  "minha localização" → barra inferior. Seções em `features/inicio/sections/`.
 - Filtros só por idade (`lib/person-category.ts`), porque a API não informa o sexo. Não crie filtro "Mulheres" antes
   de a API devolver esse dado.
 - Passo a passo: conteúdo em `features/inicio/tutorial-steps.ts`, desenhos em `sections/tutorial-art.tsx`. "Pular"
   sempre visível, texto grande, um assunto por passo. Mudou um botão citado lá? Atualize o passo e o desenho.
-- Cores das faixas de idade: tokens `category*` em `constants/brand.ts` (nunca vermelho).
+- Cores das faixas de idade: tokens `category*` em `constants/brand.ts` (nunca vermelho). Os filtros do mapa
+  usam a cor primária (`brand.orange`, que acompanha a paleta da Sofia): borda nessa cor e fundo neutro;
+  o selecionado preenche o botão.
 - Tocar num pin abre o cartão flutuante (`sections/inicio-map-preview-section.tsx`); os cartões de alerta continuam
   abrindo o detalhe direto.
 - **Avisos de segurança** (`lib/safety-notes.ts`, `services/safety-notes/`): falam do lugar, nunca de pessoas

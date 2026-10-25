@@ -10,6 +10,8 @@ import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { SofiaFab } from '@/components/sofia-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { InicioSidebarWidth, PageGutter } from '@/constants/theme';
+import { useAlertsSheetGesture } from '@/features/inicio/alerts-sheet';
+import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { useInicioController, type InicioController } from '@/features/inicio/inicio.controller';
 import { InicioAlertsSection } from '@/features/inicio/sections/inicio-alerts-section';
 import { InicioHeaderSection } from '@/features/inicio/sections/inicio-header-section';
@@ -82,16 +84,18 @@ function WideInicio({ controller }: { controller: InicioController }) {
 }
 
 /**
- * Início no celular, de cima para baixo: faixa marinho com logo, saudação e alertas recentes;
- * mapa grande com filtros por idade; barra inferior (Menu · Pedir ajuda · Cadastrar).
+ * Início no celular, de cima para baixo: faixa na cor do tema (avatar, logo e busca),
+ * fotos dos alertas e mapa. Arrastar a borda do mapa para baixo abre a lista.
+ * Barra inferior: Menu · Pedir ajuda · Cadastrar.
  */
 function PhoneInicio({ controller }: { controller: InicioController }) {
   const brand = useBrand();
   const colorScheme = useBrandColorScheme();
+  const chrome = useHomeChrome();
+  const sheet = useAlertsSheetGesture();
   const styles = useMemo(() => makePhoneStyles(brand), [brand]);
   const [focused, setFocused] = useState(true);
 
-  // A faixa do topo é marinho: ícones claros na barra de status enquanto o Início está na frente.
   useFocusEffect(
     useCallback(() => {
       setFocused(true);
@@ -99,18 +103,30 @@ function PhoneInicio({ controller }: { controller: InicioController }) {
     }, []),
   );
   const overLightSheet = controller.onboardingVisible || controller.menuOpen;
-  const statusStyle = overLightSheet && colorScheme !== 'dark' ? 'dark' : 'light';
+  const statusStyle = overLightSheet && colorScheme !== 'dark' ? 'dark' : chrome.status;
 
   return (
     <View style={styles.container}>
       {focused ? <StatusBar style={statusStyle} /> : null}
-      <View style={styles.hero}>
+      <View style={[styles.hero, { backgroundColor: chrome.background }]}>
         <SafeAreaView edges={['top']}>
           <InicioHeaderSection controller={controller} />
-          <InicioAlertsSection controller={controller} />
+          <InicioAlertsSection
+            controller={controller}
+            expanded={sheet.expanded}
+            collapsedHeight={sheet.collapsedHeight}
+            openedHeight={sheet.openedHeight}
+            view={sheet.view}
+            onViewChange={sheet.setView}
+          />
         </SafeAreaView>
       </View>
-      <InicioMapSection variant="card" controller={controller} />
+      <InicioMapSection
+        variant="card"
+        controller={controller}
+        sheetGesture={sheet.gesture}
+        sheetExpanded={sheet.expandedOn}
+      />
       <BottomBar active="home" onMenuPress={controller.openMenu} />
       {/* O cartão do pin tocado ocupa o rodapé do mapa: a Sofia volta quando ele fecha. */}
       {controller.hasSelection ? null : <SofiaFab onPress={controller.goToChat} />}
@@ -171,8 +187,7 @@ function makePhoneStyles(brand: BrandColors) {
       backgroundColor: brand.mapBackground,
     },
     hero: {
-      backgroundColor: brand.navy,
-      paddingBottom: MAP_CARD_OVERLAP + 14,
+      paddingBottom: MAP_CARD_OVERLAP + 8,
       zIndex: 1,
     },
   });

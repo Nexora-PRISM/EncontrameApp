@@ -20,7 +20,7 @@ type Props = {
 };
 
 /**
- * Passo a passo de como usar o app. Aparece na primeira abertura e pelo botão "?" do Início.
+ * Passo a passo de como usar o app. Aparece na primeira abertura e pelo Menu, em "Como usar o app".
  * "Pular" fica sempre visível no alto; texto grande, um assunto por passo e botões largos.
  */
 export function InicioOnboardingSection({ controller }: Props) {
@@ -54,7 +54,7 @@ export function InicioOnboardingSection({ controller }: Props) {
                 style={({ pressed }) => [styles.skip, pressed && styles.skipPressed]}
                 accessibilityRole="button"
                 accessibilityLabel={t('Pular')}
-                accessibilityHint={t('Fecha o passo a passo. Você pode ver de novo pelo botão "?" do Início.')}
+                accessibilityHint={t('Fecha o passo a passo. Você pode ver de novo pelo Menu, em "Como usar o app".')}
               >
                 <Text style={styles.skipText}>{t('Pular')}</Text>
                 <MaterialCommunityIcons name="chevron-double-right" size={20} color={brand.blue} />

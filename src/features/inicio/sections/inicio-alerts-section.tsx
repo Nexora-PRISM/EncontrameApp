@@ -1,20 +1,25 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useEffect, useMemo } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Easing,
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
   withRepeat,
   withTiming,
+  type SharedValue,
 } from 'react-native-reanimated';
 
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
 import { PhotoRing } from '@/components/photo-ring';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
+import { type AlertViewMode } from '@/features/inicio/alerts-sheet';
 import type { InicioController } from '@/features/inicio/inicio.controller';
+import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
@@ -30,30 +35,96 @@ import type { Person } from '@/services/people/people.types';
 const CARD_WIDTH = 244;
 const CARD_GAP = 12;
 const PHOTO = 64;
-const SKELETON_COUNT = 3;
+const AVATAR = 64;
+const AVATAR_GAP = 12;
+const SKELETON_COUNT = 4;
 
 interface InicioAlertsSectionProps {
   controller: InicioController;
+  /** 0 = fileira; 1 = lista rolável. */
+  expanded: SharedValue<number>;
+  collapsedHeight: SharedValue<number>;
+  openedHeight: SharedValue<number>;
+  view: AlertViewMode;
+  onViewChange: (view: AlertViewMode) => void;
 }
 
 /**
- * "Alertas recentes": cartões grandes e fáceis de tocar com foto, idade, cidade, faixa de idade
- * (com cor) e situação do caso. Primeiro quem está perto; depois os casos mais recentes.
+ * "Alertas recentes": fileira de fotos ou de cartões, escolhida pelos botões do título.
+ * Arrastar o mapa para baixo abre a lista, que carrega mais pessoas ao rolar.
  */
-export function InicioAlertsSection({ controller }: InicioAlertsSectionProps) {
+export function InicioAlertsSection({
+  controller,
+  expanded,
+  collapsedHeight,
+  openedHeight,
+  view,
+  onViewChange,
+}: InicioAlertsSectionProps) {
   const t = useT();
   const brand = useBrand();
-  const styles = useMemo(() => makeStyles(brand), [brand]);
-  const { alertPeople, showPeopleSkeleton, categoryFilter } = controller;
+  const chrome = useHomeChrome();
+  const styles = useMemo(
+    () => makeStyles(brand, chrome.ink, chrome.muted, chrome.glass),
+    [brand, chrome.glass, chrome.ink, chrome.muted],
+  );
+  const { alertPeople, scrollPeople, showPeopleSkeleton, categoryFilter } = controller;
   const claimEnter = useEnterOnce();
+  const [listOpen, setListOpen] = useState(false);
+
+  useAnimatedReaction(
+    () => expanded.value > 0.55,
+    (next, prev) => {
+      if (next !== prev) runOnJS(setListOpen)(next);
+    },
+  );
+
+  const trackStyle = useAnimatedStyle(() => ({
+    height: collapsedHeight.value + (openedHeight.value - collapsedHeight.value) * expanded.value,
+  }));
+
+  const emptyText =
+    categoryFilter === 'all'
+      ? t('Nenhuma pessoa próxima.')
+      : t('Nenhum alerta nesta faixa de idade por aqui.');
 
   return (
     <View style={styles.wrap}>
       <View style={styles.head}>
         <View style={styles.accentBar} />
-        <Text style={styles.title} accessibilityRole="header">
+        <Text style={styles.title} accessibilityRole="header" numberOfLines={1}>
           {t('Alertas recentes')}
         </Text>
+        <View style={styles.toggle}>
+          <Pressable
+            onPress={() => onViewChange('avatar')}
+            hitSlop={4}
+            style={[styles.toggleBtn, view === 'avatar' && styles.toggleBtnOn]}
+            accessibilityRole="button"
+            accessibilityLabel={t('Ver só as fotos')}
+            accessibilityState={{ selected: view === 'avatar' }}
+          >
+            <MaterialCommunityIcons
+              name="account-circle-outline"
+              size={20}
+              color={view === 'avatar' ? brand.orangeDark : chrome.ink}
+            />
+          </Pressable>
+          <Pressable
+            onPress={() => onViewChange('card')}
+            hitSlop={4}
+            style={[styles.toggleBtn, view === 'card' && styles.toggleBtnOn]}
+            accessibilityRole="button"
+            accessibilityLabel={t('Ver cartões com detalhes')}
+            accessibilityState={{ selected: view === 'card' }}
+          >
+            <MaterialCommunityIcons
+              name="card-text-outline"
+              size={20}
+              color={view === 'card' ? brand.orangeDark : chrome.ink}
+            />
+          </Pressable>
+        </View>
         <Pressable
           onPress={controller.goToAllPeople}
           hitSlop={10}
@@ -62,52 +133,79 @@ export function InicioAlertsSection({ controller }: InicioAlertsSectionProps) {
           accessibilityLabel={t('Ver todas as pessoas desaparecidas')}
         >
           <Text style={styles.seeAllText}>{t('Ver todos')}</Text>
-          <MaterialCommunityIcons name="chevron-right" size={20} color={brand.cream} />
+          <MaterialCommunityIcons name="chevron-right" size={20} color={chrome.ink} />
         </Pressable>
       </View>
 
-      {showPeopleSkeleton ? (
-        <ScrollView
-          horizontal
-          scrollEnabled={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.track}
-        >
-          {Array.from({ length: SKELETON_COUNT }, (_, index) => (
-            <CardSkeleton key={index} index={index} styles={styles} />
-          ))}
-        </ScrollView>
-      ) : alertPeople.length === 0 ? (
-        <BrandEnter from="fade" style={styles.empty}>
-          <MaterialCommunityIcons name="map-search-outline" size={24} color={brand.cream} />
-          <Text style={styles.emptyText}>
-            {categoryFilter === 'all'
-              ? t('Nenhuma pessoa próxima.')
-              : t('Nenhum alerta nesta faixa de idade por aqui.')}
-          </Text>
-        </BrandEnter>
-      ) : (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={CARD_WIDTH + CARD_GAP}
-          snapToAlignment="start"
-          decelerationRate="fast"
-          contentContainerStyle={styles.track}
-          accessibilityLabel={t('Pessoas desaparecidas. Deslize para o lado para ver mais.')}
-        >
-          {alertPeople.map((person, index) => (
-            <BrandEnter
-              key={person.id}
-              from="right"
-              index={Math.min(index, 4)}
-              skip={!claimEnter(person.id)}
-            >
-              <AlertCard person={person} controller={controller} brand={brand} styles={styles} />
-            </BrandEnter>
-          ))}
-        </ScrollView>
-      )}
+      <Animated.View style={[styles.stage, trackStyle]}>
+        {showPeopleSkeleton ? (
+          view === 'avatar' ? (
+            <AvatarSkeletonRow styles={styles} />
+          ) : (
+            <CardSkeletonRow styles={styles} />
+          )
+        ) : (listOpen ? scrollPeople : alertPeople).length === 0 ? (
+          <BrandEnter from="fade" style={styles.empty}>
+            <MaterialCommunityIcons name="map-search-outline" size={22} color={chrome.ink} />
+            <Text style={styles.emptyText}>{emptyText}</Text>
+          </BrandEnter>
+        ) : listOpen ? (
+          <FlatList
+            key={view}
+            data={scrollPeople}
+            keyExtractor={(person) => person.id}
+            numColumns={view === 'avatar' ? 4 : 1}
+            style={styles.list}
+            contentContainerStyle={view === 'avatar' ? styles.gridContent : styles.listContent}
+            showsVerticalScrollIndicator={false}
+            onEndReached={controller.loadMoreAlerts}
+            onEndReachedThreshold={0.4}
+            ListFooterComponent={
+              controller.alertsLoadingMore ? (
+                <ActivityIndicator color={chrome.ink} style={styles.footer} />
+              ) : null
+            }
+            renderItem={({ item }) =>
+              view === 'avatar' ? (
+                <View style={styles.gridCell}>
+                  <AlertAvatar person={item} controller={controller} brand={brand} styles={styles} />
+                </View>
+              ) : (
+                <AlertCard person={item} controller={controller} brand={brand} styles={styles} wide />
+              )
+            }
+          />
+        ) : view === 'avatar' ? (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.scroller}
+            contentContainerStyle={styles.avatarTrack}
+            accessibilityLabel={t('Pessoas desaparecidas. Deslize para o lado para ver mais.')}
+          >
+            {alertPeople.map((person) => (
+              <AlertAvatar key={person.id} person={person} controller={controller} brand={brand} styles={styles} />
+            ))}
+          </ScrollView>
+        ) : (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={CARD_WIDTH + CARD_GAP}
+            snapToAlignment="start"
+            decelerationRate="fast"
+            style={styles.scroller}
+            contentContainerStyle={styles.cardTrack}
+            accessibilityLabel={t('Pessoas desaparecidas. Deslize para o lado para ver mais.')}
+          >
+            {alertPeople.map((person, index) => (
+              <BrandEnter key={person.id} from="right" index={Math.min(index, 4)} skip={!claimEnter(person.id)}>
+                <AlertCard person={person} controller={controller} brand={brand} styles={styles} />
+              </BrandEnter>
+            ))}
+          </ScrollView>
+        )}
+      </Animated.View>
 
       {controller.locationDenied ? (
         <Text style={styles.hint}>{t('Ative a localização para ver pessoas próximas.')}</Text>
@@ -116,7 +214,12 @@ export function InicioAlertsSection({ controller }: InicioAlertsSectionProps) {
   );
 }
 
-function AlertCard({
+function firstNameOf(fullName: string): string {
+  const first = fullName.trim().split(/\s+/)[0];
+  return first || fullName;
+}
+
+function AlertAvatar({
   person,
   controller,
   brand,
@@ -126,6 +229,44 @@ function AlertCard({
   controller: InicioController;
   brand: BrandColors;
   styles: Styles;
+}) {
+  const t = useT();
+  const category = personCategory(person);
+  const statusColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
+
+  return (
+    <Pressable
+      onPress={() => controller.goToPerson(person.id)}
+      style={({ pressed }) => [styles.avatarItem, pressed && styles.pressed]}
+      accessibilityRole="button"
+      accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
+    >
+      <View style={[styles.avatar, { borderColor: statusColor }]}>
+        {person.photoUri ? (
+          <Image source={{ uri: person.photoUri }} style={styles.avatarImage} resizeMode="cover" />
+        ) : (
+          <MaterialCommunityIcons name={categoryIcon(category)} size={28} color={brand.avatarIcon} />
+        )}
+      </View>
+      <Text style={styles.avatarName} numberOfLines={1}>
+        {firstNameOf(person.fullName)}
+      </Text>
+    </Pressable>
+  );
+}
+
+function AlertCard({
+  person,
+  controller,
+  brand,
+  styles,
+  wide = false,
+}: {
+  person: Person;
+  controller: InicioController;
+  brand: BrandColors;
+  styles: Styles;
+  wide?: boolean;
 }) {
   const t = useT();
   const category = personCategory(person);
@@ -140,7 +281,7 @@ function AlertCard({
   return (
     <Pressable
       onPress={() => controller.goToPerson(person.id)}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.card, wide && styles.cardWide, pressed && styles.pressed]}
       accessibilityRole="button"
       accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
     >
@@ -185,6 +326,47 @@ function AlertCard({
   );
 }
 
+function AvatarSkeletonRow({ styles }: { styles: Styles }) {
+  return (
+    <View style={styles.avatarTrack}>
+      {Array.from({ length: SKELETON_COUNT }, (_, index) => (
+        <CircleSkeleton key={index} index={index} styles={styles} />
+      ))}
+    </View>
+  );
+}
+
+function CardSkeletonRow({ styles }: { styles: Styles }) {
+  return (
+    <View style={styles.cardTrack}>
+      {Array.from({ length: 3 }, (_, index) => (
+        <CardSkeleton key={index} index={index} styles={styles} />
+      ))}
+    </View>
+  );
+}
+
+function CircleSkeleton({ index, styles }: { index: number; styles: Styles }) {
+  const opacity = useSharedValue(0.35);
+
+  useEffect(() => {
+    opacity.value = withDelay(
+      index * 90,
+      withRepeat(withTiming(0.8, { duration: 700, easing: Easing.inOut(Easing.quad) }), -1, true),
+    );
+  }, [index, opacity]);
+
+  const pulseStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
+
+  return (
+    <Animated.View
+      style={[styles.avatar, styles.skeletonCircle, pulseStyle]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+    />
+  );
+}
+
 function CardSkeleton({ index, styles }: { index: number; styles: Styles }) {
   const opacity = useSharedValue(0.35);
 
@@ -208,11 +390,11 @@ function CardSkeleton({ index, styles }: { index: number; styles: Styles }) {
 
 type Styles = ReturnType<typeof makeStyles>;
 
-function makeStyles(brand: BrandColors) {
+function makeStyles(brand: BrandColors, ink: string, muted: string, glass: string) {
   return StyleSheet.create({
     wrap: {
-      gap: 10,
-      paddingTop: 14,
+      gap: 8,
+      paddingTop: 8,
     },
     head: {
       flexDirection: 'row',
@@ -232,7 +414,24 @@ function makeStyles(brand: BrandColors) {
       fontWeight: '800',
       letterSpacing: 0.8,
       textTransform: 'uppercase',
-      color: brand.onPrimary,
+      color: ink,
+    },
+    toggle: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 2,
+      borderRadius: Radius.pill,
+      backgroundColor: glass,
+    },
+    toggleBtn: {
+      width: 34,
+      height: 30,
+      borderRadius: Radius.pill,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    toggleBtnOn: {
+      backgroundColor: brand.surface,
     },
     seeAll: {
       flexDirection: 'row',
@@ -242,14 +441,80 @@ function makeStyles(brand: BrandColors) {
     seeAllText: {
       fontSize: 15,
       fontWeight: '700',
-      color: brand.cream,
+      color: ink,
     },
     pressed: {
       opacity: 0.8,
     },
-    track: {
+    stage: {
+      overflow: 'hidden',
+    },
+    list: {
+      flex: 1,
+    },
+    listContent: {
+      paddingHorizontal: PageGutter - 8,
+      paddingBottom: 8,
+    },
+    gridContent: {
+      paddingHorizontal: PageGutter - 8,
+      paddingBottom: 8,
+    },
+    gridCell: {
+      flex: 1,
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    footer: {
+      marginVertical: 12,
+    },
+    scroller: {
+      flex: 1,
+    },
+    avatarTrack: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: AVATAR_GAP,
+      paddingHorizontal: PageGutter - 8,
+      flexGrow: 1,
+    },
+    avatarItem: {
+      width: 76,
+      alignItems: 'center',
+    },
+    avatarName: {
+      marginTop: 4,
+      width: '100%',
+      fontSize: 12,
+      lineHeight: 16,
+      fontWeight: '700',
+      textAlign: 'center',
+      color: ink,
+    },
+    cardTrack: {
+      flexDirection: 'row',
+      alignItems: 'center',
       gap: CARD_GAP,
       paddingHorizontal: PageGutter - 8,
+      flexGrow: 1,
+    },
+    avatar: {
+      width: AVATAR,
+      height: AVATAR,
+      borderRadius: AVATAR / 2,
+      borderWidth: 3,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: brand.avatarBackground,
+    },
+    avatarImage: {
+      width: '100%',
+      height: '100%',
+    },
+    skeletonCircle: {
+      borderColor: 'transparent',
+      backgroundColor: hexToRgba(ink, 0.16),
     },
     card: {
       width: CARD_WIDTH,
@@ -261,8 +526,12 @@ function makeStyles(brand: BrandColors) {
       borderRadius: Radius.lg,
       backgroundColor: brand.surface,
     },
+    cardWide: {
+      width: '100%',
+      marginBottom: 10,
+    },
     skeleton: {
-      backgroundColor: hexToRgba(brand.onPrimary, 0.16),
+      backgroundColor: hexToRgba(ink, 0.16),
     },
     photoImage: {
       width: '100%',
@@ -303,7 +572,7 @@ function makeStyles(brand: BrandColors) {
     },
     empty: {
       marginHorizontal: PageGutter - 8,
-      minHeight: PHOTO + 24,
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       gap: 10,
@@ -311,19 +580,19 @@ function makeStyles(brand: BrandColors) {
       borderRadius: Radius.lg,
       borderWidth: 1,
       borderStyle: 'dashed',
-      borderColor: hexToRgba(brand.cream, 0.4),
+      borderColor: hexToRgba(muted, 0.55),
     },
     emptyText: {
       flex: 1,
       fontSize: 15,
       fontWeight: '600',
-      color: brand.cream,
+      color: ink,
     },
     hint: {
       paddingHorizontal: PageGutter - 8,
       fontSize: 14,
       fontWeight: '600',
-      color: hexToRgba(brand.cream, 0.85),
+      color: muted,
     },
   });
 }

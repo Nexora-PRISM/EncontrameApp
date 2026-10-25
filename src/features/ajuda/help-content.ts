@@ -109,7 +109,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'inicio',
     question: msg('Como vejo pessoas desaparecidas perto de mim?'),
     answer:
-      msg('Na tela Início, permita o acesso à localização. Os cartões de "Alertas recentes" e o mapa mostram casos próximos. Os botões coloridos no alto do mapa mostram só crianças e adolescentes, adultos ou idosos, e o botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.'),
+      msg('Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.'),
     keywords: msg('mapa lista perto localização filtro satélite crianças idosos'),
   },
   {
@@ -125,7 +125,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'inicio',
     question: msg('Como vejo o passo a passo do app de novo?'),
     answer:
-      msg('Toque no "?" no alto da tela Início, ou abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.'),
+      msg('Abra o Menu e toque em "Como usar o app". Também dá em Configurações > Aparência e acessibilidade > "Ver o passo a passo de novo". Em qualquer passo, "Pular" fecha o passo a passo.'),
     keywords: msg('tutorial apresentação onboarding passo a passo como usar ajuda'),
   },
   {

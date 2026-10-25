@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { forwardRef, useImperativeHandle, useMemo, useRef, type RefObject } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useRef, type ComponentProps, type RefObject } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { GestureDetector } from 'react-native-gesture-handler';
 
 import { BrandMap, type BrandMapHandle, type MapPadding } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
@@ -9,11 +10,12 @@ import type { InicioController } from '@/features/inicio/inicio.controller';
 import { InicioMapPreviewSection } from '@/features/inicio/sections/inicio-map-preview-section';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
-import { hexToRgba } from '@/lib/map-style';
-import { CATEGORY_FILTERS, categoryColor } from '@/lib/person-category';
+import { CATEGORY_FILTERS } from '@/lib/person-category';
+
+type SheetGesture = ComponentProps<typeof GestureDetector>['gesture'];
 
 const CARD_RADIUS = 28;
-/** Quanto o mapa sobe por cima da faixa marinho do topo (efeito de cartão). */
+/** Quanto o mapa sobe por cima da faixa do topo (efeito de cartão). */
 export const MAP_CARD_OVERLAP = 18;
 
 interface InicioMapSectionProps {
@@ -21,17 +23,28 @@ interface InicioMapSectionProps {
   mapPadding?: MapPadding;
   /** `overlay` cobre a tela (layout largo). `card` é o mapa grande do celular, com filtros. */
   variant?: 'overlay' | 'card';
+  /** Arrastar a borda de cima do mapa abre ou fecha os cartões dos alertas. */
+  sheetGesture?: SheetGesture;
+  /** Cartões visíveis (o puxador anuncia a ação contrária). */
+  sheetExpanded?: boolean;
 }
 
 export const InicioMapSection = forwardRef<BrandMapHandle, InicioMapSectionProps>(
-  function InicioMapSection({ controller, mapPadding, variant = 'overlay' }, ref) {
+  function InicioMapSection({ controller, mapPadding, variant = 'overlay', sheetGesture, sheetExpanded = false }, ref) {
     const mapRef = useRef<BrandMapHandle>(null);
     useImperativeHandle(ref, () => ({
       recenterOnUser: () => mapRef.current?.recenterOnUser(),
     }));
 
     if (variant === 'card') {
-      return <MapCard mapRef={mapRef} controller={controller} />;
+      return (
+        <MapCard
+          mapRef={mapRef}
+          controller={controller}
+          sheetGesture={sheetGesture}
+          sheetExpanded={sheetExpanded}
+        />
+      );
     }
 
     return (
@@ -59,9 +72,13 @@ export const InicioMapSection = forwardRef<BrandMapHandle, InicioMapSectionProps
 function MapCard({
   mapRef,
   controller,
+  sheetGesture,
+  sheetExpanded,
 }: {
   mapRef: RefObject<BrandMapHandle | null>;
   controller: InicioController;
+  sheetGesture?: SheetGesture;
+  sheetExpanded: boolean;
 }) {
   const t = useT();
   const brand = useBrand();
@@ -85,6 +102,21 @@ function MapCard({
         />
 
         <CategoryChips controller={controller} brand={brand} styles={styles} />
+
+        {sheetGesture ? (
+          <GestureDetector gesture={sheetGesture}>
+            <View
+              style={styles.handleHit}
+              accessibilityRole="button"
+              accessibilityLabel={sheetExpanded ? t('Voltar à fileira') : t('Ver mais pessoas')}
+              accessibilityHint={t(
+                'Arraste o mapa para baixo para ver mais pessoas. Arraste para cima para voltar à fileira.',
+              )}
+            >
+              <View style={styles.handle} />
+            </View>
+          </GestureDetector>
+        ) : null}
 
         <View style={styles.controls}>
           <ControlButton
@@ -226,7 +258,6 @@ function CategoryChips({
     >
       {CATEGORY_FILTERS.map((filter) => {
         const selected = controller.categoryFilter === filter.value;
-        const color = categoryColor(brand, filter.value);
         return (
           <Pressable
             key={filter.value}
@@ -234,9 +265,7 @@ function CategoryChips({
             hitSlop={4}
             style={({ pressed }) => [
               styles.chip,
-              selected
-                ? { backgroundColor: color, borderColor: color }
-                : { borderColor: hexToRgba(color, 0.55) },
+              selected && styles.chipSelected,
               pressed && styles.pressed,
             ]}
             accessibilityRole="button"
@@ -246,9 +275,9 @@ function CategoryChips({
             <MaterialCommunityIcons
               name={filter.icon}
               size={16}
-              color={selected ? brand.onCategory : color}
+              color={selected ? brand.onPrimary : brand.orange}
             />
-            <Text style={[styles.chipText, selected && { color: brand.onCategory }]}>
+            <Text style={[styles.chipText, selected && styles.chipTextSelected]}>
               {t(filter.label)}
             </Text>
           </Pressable>
@@ -277,14 +306,6 @@ function makeCardStyles(brand: BrandColors) {
       minHeight: 0,
       marginTop: -MAP_CARD_OVERLAP,
       zIndex: 2,
-      backgroundColor: brand.mapBackground,
-      borderTopLeftRadius: CARD_RADIUS,
-      borderTopRightRadius: CARD_RADIUS,
-      shadowColor: brand.navyDeep,
-      shadowOpacity: 0.25,
-      shadowRadius: 14,
-      shadowOffset: { width: 0, height: -4 },
-      elevation: 10,
     },
     cardClip: {
       flex: 1,
@@ -299,9 +320,27 @@ function makeCardStyles(brand: BrandColors) {
       borderTopLeftRadius: CARD_RADIUS,
       borderTopRightRadius: CARD_RADIUS,
     },
+    handleHit: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 22,
+      zIndex: 4,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    handle: {
+      width: 42,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: brand.surface,
+      borderWidth: 1,
+      borderColor: brand.divider,
+    },
     chipsScroller: {
       position: 'absolute',
-      top: 12,
+      top: 26,
       left: 0,
       right: 0,
       flexGrow: 0,
@@ -310,6 +349,7 @@ function makeCardStyles(brand: BrandColors) {
     chipsTrack: {
       gap: 6,
       paddingHorizontal: 10,
+      paddingVertical: 4,
     },
     chip: {
       flexDirection: 'row',
@@ -319,24 +359,27 @@ function makeCardStyles(brand: BrandColors) {
       paddingHorizontal: 10,
       borderRadius: Radius.pill,
       borderWidth: 1.5,
+      borderColor: brand.orange,
       backgroundColor: brand.surface,
-      shadowColor: brand.navyDeep,
-      shadowOpacity: 0.18,
-      shadowRadius: 6,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: 4,
+    },
+    chipSelected: {
+      backgroundColor: brand.orange,
+      borderColor: brand.orange,
     },
     chipText: {
       fontSize: 14,
       fontWeight: '800',
-      color: brand.textDark,
+      color: brand.orange,
+    },
+    chipTextSelected: {
+      color: brand.onPrimary,
     },
     pressed: {
       opacity: 0.8,
     },
     controls: {
       position: 'absolute',
-      top: 64,
+      top: 86,
       right: 10,
       zIndex: 3,
       padding: 4,
@@ -345,11 +388,6 @@ function makeCardStyles(brand: BrandColors) {
       backgroundColor: brand.surface,
       borderWidth: 1,
       borderColor: brand.divider,
-      shadowColor: brand.navyDeep,
-      shadowOpacity: 0.2,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: 4 },
-      elevation: 6,
     },
     controlsDivider: {
       height: 1,
@@ -398,11 +436,6 @@ function makeCardStyles(brand: BrandColors) {
       paddingHorizontal: 18,
       borderRadius: Radius.pill,
       backgroundColor: brand.navy,
-      shadowColor: brand.navyDeep,
-      shadowOpacity: 0.3,
-      shadowRadius: 12,
-      shadowOffset: { width: 0, height: 5 },
-      elevation: 8,
     },
     addNoteText: {
       fontSize: 15,
@@ -411,7 +444,7 @@ function makeCardStyles(brand: BrandColors) {
     },
     emptyPill: {
       position: 'absolute',
-      top: 70,
+      top: 90,
       left: 12,
       right: 72,
       alignItems: 'flex-start',
@@ -431,7 +464,6 @@ function makeCardStyles(brand: BrandColors) {
       bottom: 14,
       right: 12,
       zIndex: 3,
-      elevation: 6,
     },
   });
 }
