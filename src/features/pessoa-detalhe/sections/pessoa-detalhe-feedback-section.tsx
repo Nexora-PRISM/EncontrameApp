@@ -40,8 +40,15 @@ export function PessoaDetalheFeedbackSection({ controller }: Props) {
         onPress={controller.requestCorrection}
       />
       <BrandButton label={t('Denunciar este cadastro')} variant="outline" onPress={controller.reportCase} />
+      {controller.canBlockAuthor ? (
+        <BrandButton
+          label={t('Bloquear quem publicou')}
+          variant="outline"
+          onPress={controller.blockAuthor}
+        />
+      ) : null}
       <Text style={styles.note}>
-        {t('Abre o seu app de e-mail com a mensagem pronta e a identificação do caso. O pedido só chega à equipe quando você enviar o e-mail.')}
+        {t('A correção abre o seu app de e-mail. A denúncia fica registrada no app para a equipe analisar.')}
       </Text>
     </View>
   );

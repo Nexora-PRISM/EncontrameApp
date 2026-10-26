@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMemo } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BrandEnter, useSkipInitialEnter } from '@/components/brand-enter';
 import { Radius, type BrandColors } from '@/constants/brand';
@@ -49,6 +49,24 @@ export function GrupoChatMessagesSection({ controller }: GrupoChatMessagesSectio
           <Text style={[styles.text, styles.textOther]}>{item.text}</Text>
         </View>
         <Text style={styles.time}>{item.time}</Text>
+        <View style={styles.actions}>
+          <Pressable
+            onPress={() => controller.reportMessage(item)}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={t('Denunciar esta mensagem')}
+          >
+            <Text style={styles.action}>{t('Denunciar')}</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => controller.blockSender(item)}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={t('Bloquear esta pessoa')}
+          >
+            <Text style={styles.action}>{t('Bloquear')}</Text>
+          </Pressable>
+        </View>
       </BrandEnter>
     );
   };
@@ -152,6 +170,16 @@ function makeStyles(brand: BrandColors) {
     time: {
       fontSize: 12,
       color: brand.placeholder,
+    },
+    actions: {
+      flexDirection: 'row',
+      gap: 12,
+      marginTop: 2,
+    },
+    action: {
+      fontSize: 12,
+      fontWeight: '700',
+      color: brand.textMuted,
     },
   });
 }

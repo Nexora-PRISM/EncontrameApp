@@ -17,6 +17,7 @@ export interface AuthRepository {
   googleRegister(payload: GoogleRegisterPayload): Promise<AuthResult>;
   refresh(refreshToken: string): Promise<AuthResult>;
   logout(refreshToken: string | null): Promise<void>;
+  deleteAccount(): Promise<void>;
 }
 
 /**

@@ -57,8 +57,8 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
             />
             <SettingsRow
               icon="account-remove-outline"
-              label={t('Solicitar exclusão da conta')}
-              description={t('Abre seu e-mail com o pedido pronto para a equipe.')}
+              label={t('Excluir minha conta')}
+              description={t('Apaga a conta e os dados pessoais ligados a ela.')}
               onPress={c.requestAccountDeletion}
               danger
             />

@@ -28,9 +28,10 @@ import {
 import { msg } from '@/lib/i18n-msg';
 import { useSafeBack } from '@/lib/safe-back';
 import { signOut } from '@/lib/sign-out';
-import { openSupportEmail } from '@/lib/support';
+import { clearSession } from '@/lib/session';
 import { loadTrustedContacts } from '@/lib/trusted-contacts';
 import { useSessionUser } from '@/lib/use-session-user';
+import { getAuthRepository } from '@/services/auth/auth.repository';
 import { deleteLocalPending, listLocalPending } from '@/services/people/people.local.store';
 
 type LocationStatus = 'granted' | 'denied' | 'undetermined' | 'unknown';
@@ -197,25 +198,30 @@ export function useConfiguracoesController() {
   const requestAccountDeletion = () => {
     void (async () => {
       const confirmed = await confirmAction({
-        title: t('Solicitar exclusão da conta'),
-        message:
-          t('Vamos abrir seu app de e-mail com o pedido pronto. A exclusão é feita pela equipe depois que o e-mail for enviado.'),
-        confirmLabel: t('Continuar'),
+        title: t('Excluir a conta?'),
+        message: t(
+          'A conta e os dados pessoais são apagados agora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar.',
+        ),
+        confirmLabel: t('Excluir conta'),
       });
       if (!confirmed) return;
 
-      const opened = await openSupportEmail({
-        topic: 'exclusao',
-        message:
-          t('Solicito a exclusão da minha conta no Encontra-me e dos meus dados pessoais, nos termos da LGPD.'),
-        accountEmail: sessionUser?.email,
-      });
-      if (!opened) {
+      try {
+        await getAuthRepository().deleteAccount();
+      } catch {
         showAlert(
-          t('App de e-mail não encontrado'),
-          t('Envie o pedido de exclusão para {supportEmail} a partir do e-mail da sua conta.', { supportEmail: AppInfo.supportEmail }),
+          t('Não foi possível excluir a conta'),
+          t('Tente de novo. Se o app não abrir, escreva para {supportEmail}.', {
+            supportEmail: AppInfo.supportEmail,
+          }),
         );
+        return;
       }
+
+      await clearSession();
+      queryClient.clear();
+      showAlert(t('Conta excluída'), t('Seus dados pessoais foram apagados.'));
+      router.replace('/inicio');
     })();
   };
 

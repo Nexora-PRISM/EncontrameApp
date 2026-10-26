@@ -1,4 +1,5 @@
 import { DEFAULT_NEARBY_RADIUS_KM, haversineKm } from '@/lib/geo';
+import { isUserBlocked } from '@/services/moderation/moderation.mock.repository';
 import { dateToIso } from '@/lib/masks';
 import type { PeopleRepository } from '@/services/people/people.repository';
 import type {
@@ -11,6 +12,10 @@ import type {
 } from '@/services/people/people.types';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function visiblePeople(): Person[] {
+  return mockPeople.filter((person) => !person.authorId || !isUserBlocked(person.authorId));
+}
 
 let mockPeople: Person[] = [
   {
@@ -39,6 +44,7 @@ let mockPeople: Person[] = [
     id: 'p2',
     fullName: 'Fulana de Souza',
     nickname: 'Fulana',
+    authorId: 'u-mock-publisher',
     age: 25,
     location: 'Pampulha, Belo Horizonte',
     lastSeen: 'Pampulha, Belo Horizonte',
@@ -334,7 +340,7 @@ export const peopleMockRepository: PeopleRepository = {
     await delay(400);
     const page = params.page && params.page > 0 ? params.page : 1;
     const pageSize = params.pageSize && params.pageSize > 0 ? Math.min(params.pageSize, 50) : 12;
-    const filtered = filterPeople(mockPeople, params);
+    const filtered = filterPeople(visiblePeople(), params);
     const totalCount = filtered.length;
     const start = (page - 1) * pageSize;
     return {
@@ -349,7 +355,7 @@ export const peopleMockRepository: PeopleRepository = {
   async listNearby({ query, latitude, longitude, radiusKm }: NearbyPeopleParams) {
     await delay(500);
     const radius = radiusKm ?? DEFAULT_NEARBY_RADIUS_KM;
-    const nearby = mockPeople.filter((person) => {
+    const nearby = visiblePeople().filter((person) => {
       if (!person.coords) {
         return true;
       }
@@ -372,7 +378,7 @@ export const peopleMockRepository: PeopleRepository = {
 
   async getById(id: string) {
     await delay(300);
-    const person = mockPeople.find((item) => item.id === id);
+    const person = visiblePeople().find((item) => item.id === id);
     if (!person) {
       throw new Error('Pessoa não encontrada.');
     }

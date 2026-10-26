@@ -232,8 +232,8 @@ export const en: Readonly<Record<string, string>> = {
     'Yes, on your phone. Turn it on in Settings > Security > "Sign in with biometrics". With it on, signing out only locks the account; to sign out completely, turn off biometrics first.',
   'digital face id biometria': 'fingerprint face id biometrics',
   'Como excluo minha conta?': 'How do I delete my account?',
-  'Em Configurações > Minha conta, toque em "Solicitar exclusão da conta". Seu app de e-mail abre com o pedido pronto; a solicitação só chega até nós quando você enviar o e-mail.':
-    'In Settings > My account, tap "Request account deletion". Your email app opens with the request ready; the request only reaches us when you send the email.',
+  'Em Configurações > Minha conta, toque em "Excluir minha conta" e confirme. A conta e os dados pessoais são apagados na hora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar. Sem o app instalado, o pedido também pode ser feito pela página da política de privacidade.':
+    'In Settings > My account, tap "Delete my account" and confirm. The account and personal data are deleted right away. Missing-person listings you published may stay up. Without the app installed, you can also ask on the privacy policy page.',
   'excluir apagar conta deletar': 'delete erase remove account',
   'Quando o app usa minha localização?': 'When does the app use my location?',
   'Só enquanto o app está aberto: para mostrar casos perto de você e, quando você pede, para marcar o local de um avistamento ou mandar sua localização a um contato. O Encontra-me não acompanha sua localização em segundo plano.':
@@ -256,8 +256,8 @@ export const en: Readonly<Record<string, string>> = {
   'golpe pix dinheiro extorsão resgate': 'scam pix money extortion ransom fraud',
   'Como denuncio um cadastro falso ou que coloca alguém em risco?':
     'How do I report a fake registration or one that puts someone at risk?',
-  'Abra o caso e, no fim da página, toque em "Denunciar este cadastro". Seu app de e-mail abre com a identificação do caso: conte o motivo e envie. Use também se você é a pessoa cadastrada, está em segurança e não quer ser localizada. Em perigo, ligue 190.':
-    'Open the case and, at the bottom of the page, tap "Report this registration". Your email app opens with the case identification: tell us the reason and send it. Also use it if you are the registered person, you are safe and you do not want to be found. If you are in danger, call 190.',
+  'Abra o caso e, no fim da página, toque em "Denunciar este cadastro". A denúncia fica registrada para a equipe. Dá para bloquear quem publicou, e o conteúdo dessa conta sai da sua lista. No grupo, cada mensagem de outra pessoa tem Denunciar e Bloquear. Em perigo, ligue 190.':
+    'Open the case and, at the bottom of the page, tap "Report this registration". The report is recorded for the team. You can block the person who published it, and that account\'s content leaves your list. In the group, each other person\'s message has Report and Block. If you are in danger, call 190.',
   'denúncia denunciar falso remover retirar sou eu perseguição':
     'report fake remove take down it is me stalking',
   'Como me proteger ao divulgar um caso?': 'How do I protect myself when sharing a case?',
@@ -562,15 +562,42 @@ export const en: Readonly<Record<string, string>> = {
   'Você precisará entrar de novo para enviar cadastros e avistamentos.':
     'You will need to sign in again to send registrations and sightings.',
   'Sair': 'Sign out',
-  'Solicitar exclusão da conta': 'Request account deletion',
-  'Vamos abrir seu app de e-mail com o pedido pronto. A exclusão é feita pela equipe depois que o e-mail for enviado.':
-    'We will open your email app with the request ready. The team deletes the account after the email is sent.',
+  'Excluir a conta?': 'Delete the account?',
+  'A conta e os dados pessoais são apagados agora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar.':
+    'The account and personal data are deleted now. Missing-person listings you published may stay up.',
+  'Excluir conta': 'Delete account',
+  'Não foi possível excluir a conta': 'Could not delete the account',
+  'Tente de novo. Se o app não abrir, escreva para {supportEmail}.':
+    'Try again. If the app will not open, write to {supportEmail}.',
+  'Conta excluída': 'Account deleted',
+  'Seus dados pessoais foram apagados.': 'Your personal data has been deleted.',
+  'Apaga a conta e os dados pessoais ligados a ela.': 'Deletes the account and the personal data tied to it.',
+  'Para denunciar ou bloquear, entre na sua conta.': 'To report or block, sign in to your account.',
+  'Denunciar esta mensagem?': 'Report this message?',
+  'A denúncia fica registrada para a equipe analisar.': 'The report is recorded for the team to review.',
+  'Denúncia registrada': 'Report recorded',
+  'A equipe pode analisar esta denúncia.': 'The team can review this report.',
+  'Não foi possível registrar': 'Could not record it',
+  'Tente de novo em alguns instantes.': 'Try again in a few moments.',
+  'Bloquear esta pessoa?': 'Block this person?',
+  'Você deixa de ver as mensagens e os cadastros publicados por esta conta.':
+    'You will no longer see messages and listings published by this account.',
+  'Bloquear': 'Block',
+  'Pessoa bloqueada': 'Person blocked',
+  'O conteúdo desta conta saiu da sua lista.': 'This account\'s content left your list.',
+  'Não foi possível bloquear': 'Could not block',
+  'Denunciar esta mensagem': 'Report this message',
+  'Bloquear esta pessoa': 'Block this person',
+  'Para denunciar um aviso, entre na sua conta.': 'To report a notice, sign in to your account.',
+  'Para denunciar um cadastro, entre na sua conta.': 'To report a listing, sign in to your account.',
+  'Para bloquear quem publicou, entre na sua conta.': 'To block the person who published it, sign in to your account.',
+  'Bloquear quem publicou?': 'Block the person who published it?',
+  'Você deixa de ver os cadastros e as mensagens desta conta.':
+    'You will no longer see listings and messages from this account.',
+  'Bloquear quem publicou': 'Block the person who published it',
+  'A correção abre o seu app de e-mail. A denúncia fica registrada no app para a equipe analisar.':
+    'A correction opens your email app. The report is recorded in the app for the team to review.',
   'Continuar': 'Continue',
-  'Solicito a exclusão da minha conta no Encontra-me e dos meus dados pessoais, nos termos da LGPD.':
-    "I request the deletion of my Encontra-me account and my personal data, under the LGPD (Brazil's General Data Protection Law).",
-  'App de e-mail não encontrado': 'Email app not found',
-  'Envie o pedido de exclusão para {supportEmail} a partir do e-mail da sua conta.':
-    "Send the deletion request to {supportEmail} from your account's email.",
   'Usa o idioma do navegador. Agora: {language}.': "Uses the browser's language. Now: {language}.",
   'Usa o idioma do celular. Agora: {language}.': "Uses the phone's language. Now: {language}.",
   // features/configuracoes/sections/configuracoes-groups-section.tsx
@@ -585,8 +612,6 @@ export const en: Readonly<Record<string, string>> = {
     'Until it is in the app, ask through the Help Center.',
   'Saindo…': 'Signing out…',
   'Sair da conta': 'Sign out',
-  'Abre seu e-mail com o pedido pronto para a equipe.':
-    'Opens your email with the request ready for the team.',
   'Entrar ou criar conta': 'Sign in or create an account',
   'Necessário para enviar cadastros e avistamentos.':
     'Required to send registrations and sightings.',
@@ -827,8 +852,6 @@ export const en: Readonly<Record<string, string>> = {
     'Request a correction if there is wrong information or if the person has already been found. Report it if the registration is fake, a scam or could put someone at risk — including if you are the registered person, you are safe and you do not want to be found.',
   'Pedir correção ou atualização': 'Request a correction or update',
   'Denunciar este cadastro': 'Report this registration',
-  'Abre o seu app de e-mail com a mensagem pronta e a identificação do caso. O pedido só chega à equipe quando você enviar o e-mail.':
-    'Opens your email app with the message ready and the case ID. The request only reaches the team when you send the email.',
   // features/pessoa-detalhe/sections/pessoa-detalhe-hero-section.tsx
   '{age} anos': '{age} years old',
   // features/pessoa-detalhe/sections/pessoa-detalhe-history-section.tsx
@@ -900,8 +923,8 @@ export const en: Readonly<Record<string, string>> = {
     'Do not ask for or offer money for information. Report scams.',
   'Respeite as famílias: nada de ofensas, acusações sem prova, assédio ou discriminação.':
     'Respect the families: no insults, accusations without proof, harassment or discrimination.',
-  'Viu algo errado ou abusivo em um caso? Use "Algo errado neste cadastro?", no fim da página do caso.':
-    'Did you see something wrong or abusive in a case? Use "Something wrong with this registration?" at the bottom of the case page.',
+  'Viu algo errado ou abusivo? Denuncie o cadastro, a mensagem do grupo ou o aviso de segurança. Dá para bloquear a conta de quem publicou: o conteúdo dela some da sua lista.':
+    'Did you see something wrong or abusive? Report the listing, the group message or the safety notice. You can block the account that published it: their content leaves your list.',
   'Responsabilidade': 'Responsibility',
   'Cada cadastro, avistamento e mensagem fica ligado à conta de quem publicou.':
     'Every registration, sighting and message is linked to the account of whoever published it.',
@@ -1244,8 +1267,6 @@ export const en: Readonly<Record<string, string>> = {
   'Publicar aviso': 'Publish note',
   'Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.':
     'To confirm or update a note, sign in. That way each person votes once.',
-  'Escreva para {supportEmail} e informe a identificação do aviso: {id}.':
-    'Write to {supportEmail} and include the note ID: {id}.',
   'Ver detalhes': 'See details',
   'Na página da pessoa você pode avisar que a viu por perto.':
     'On the person\'s page you can report that you saw them nearby.',

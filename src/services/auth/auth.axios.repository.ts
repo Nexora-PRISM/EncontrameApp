@@ -2,6 +2,7 @@ import { create as createAxios } from 'axios';
 
 import { env } from '@/lib/env';
 import { onlyDigits } from '@/lib/masks';
+import { getAccessToken } from '@/lib/session';
 import type { AuthRepository } from '@/services/auth/auth.repository';
 import type {
   AuthResult,
@@ -80,6 +81,13 @@ export const authAxiosRepository: AuthRepository = {
     } catch {
       // Best-effort: limpar sessão local mesmo se a API falhar.
     }
+  },
+
+  async deleteAccount() {
+    const token = getAccessToken();
+    await authApi.delete('/Auth/me', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
   },
 
   async googleStart(idToken: string) {

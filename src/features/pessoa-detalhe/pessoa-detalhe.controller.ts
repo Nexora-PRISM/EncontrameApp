@@ -3,13 +3,10 @@ import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { MapPin, MapPolyline } from '@/components/brand-map';
-import {
-  type CaseFeedbackKind,
-  buildCaseFeedbackMessage,
-} from '@/features/pessoa-detalhe/case-feedback';
+import { buildCaseFeedbackMessage } from '@/features/pessoa-detalhe/case-feedback';
 import { buildPersonShareMessage } from '@/features/pessoa-detalhe/person-share';
 import { AppInfo } from '@/lib/app-info';
-import { showAlert } from '@/lib/dialog';
+import { confirmAction, showAlert } from '@/lib/dialog';
 import { env } from '@/lib/env';
 import { fieldErrorMessage } from '@/lib/error-messages';
 import {
@@ -27,6 +24,7 @@ import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
 import { usePersonQuery, useLastSeenHistoryQuery, useReportLastSeenMutation } from '@/services/people/people.service';
+import { useBlockUserMutation, useReportContentMutation } from '@/services/moderation/moderation.service';
 import type { PersonLastSeen } from '@/services/people/people.types';
 
 const SUGGEST_MIN_CHARS = 3;
@@ -42,6 +40,8 @@ export function usePessoaDetalheController() {
 
   const personQuery = usePersonQuery(id);
   const reportMutation = useReportLastSeenMutation(id);
+  const contentReportMutation = useReportContentMutation();
+  const blockMutation = useBlockUserMutation();
   const { location: userLocation } = useUserLocation();
 
   const [formOpen, setFormOpen] = useState(false);
@@ -66,13 +66,13 @@ export function usePessoaDetalheController() {
       : t('Este cadastro foi feito neste aparelho e ainda não foi enviado. Revise os dados e confirme para enviá-lo pela sua conta.')
     : undefined;
 
-  /** Correção/atualização ou denúncia do caso, pelo e-mail do suporte (sem API de moderação ainda). */
-  const sendCaseFeedback = (kind: CaseFeedbackKind) => {
+  /** Correção do caso continua por e-mail: não há API de edição. */
+  const requestCorrection = () => {
     if (!person || isLocalPerson) return;
     void (async () => {
       const opened = await openSupportEmail({
-        topic: kind,
-        message: buildCaseFeedbackMessage(kind, { id: person.id, fullName: person.fullName }, t),
+        topic: 'correcao',
+        message: buildCaseFeedbackMessage('correcao', { id: person.id, fullName: person.fullName }, t),
         accountEmail: sessionUser?.email,
       });
       if (!opened) {
@@ -80,6 +80,52 @@ export function usePessoaDetalheController() {
           t('Não foi possível abrir o e-mail'),
           t('Escreva para {supportEmail} e informe a identificação do caso: {id}.', { supportEmail: AppInfo.supportEmail, id: person.id }),
         );
+      }
+    })();
+  };
+
+  const reportCase = () => {
+    if (!person || isLocalPerson) return;
+    if (sessionUser == null) {
+      showAlert(t('Entre na sua conta'), t('Para denunciar um cadastro, entre na sua conta.'));
+      router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href);
+      return;
+    }
+    void (async () => {
+      try {
+        await contentReportMutation.mutateAsync({
+          targetType: 'MissingPerson',
+          targetId: person.id,
+          reason: 'false_info',
+        });
+        showAlert(t('Denúncia registrada'), t('A equipe pode analisar esta denúncia.'));
+      } catch {
+        showAlert(t('Não foi possível registrar'), t('Tente de novo em alguns instantes.'));
+      }
+    })();
+  };
+
+  const blockAuthor = () => {
+    if (!person?.authorId || isLocalPerson) return;
+    if (sessionUser == null) {
+      showAlert(t('Entre na sua conta'), t('Para bloquear quem publicou, entre na sua conta.'));
+      router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href);
+      return;
+    }
+    if (sessionUser.id === person.authorId) return;
+    void (async () => {
+      const confirmed = await confirmAction({
+        title: t('Bloquear quem publicou?'),
+        message: t('Você deixa de ver os cadastros e as mensagens desta conta.'),
+        confirmLabel: t('Bloquear'),
+      });
+      if (!confirmed || !person.authorId) return;
+      try {
+        await blockMutation.mutateAsync(person.authorId);
+        showAlert(t('Pessoa bloqueada'), t('O conteúdo desta conta saiu da sua lista.'));
+        router.back();
+      } catch {
+        showAlert(t('Não foi possível bloquear'), t('Tente de novo em alguns instantes.'));
       }
     })();
   };
@@ -370,13 +416,18 @@ export function usePessoaDetalheController() {
     reviewLocalDraft: () =>
       router.push({ pathname: '/cadastrar-pessoa', params: { rascunho: id } } as Href),
     goToLogin: () => router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href),
-    requestCorrection: () => sendCaseFeedback('correcao'),
+    requestCorrection,
     /** Divulga o caso publicado pelo compartilhamento do celular (rascunho local não é divulgado). */
     shareCase: () => {
       if (!person || isLocalPerson) return;
       void shareText(buildPersonShareMessage(person, env.webUrl, t), t('Pessoa desaparecida'));
     },
-    reportCase: () => sendCaseFeedback('denuncia'),
+    reportCase,
+    blockAuthor,
+    canBlockAuthor:
+      sessionUser != null &&
+      person?.authorId != null &&
+      sessionUser.id !== person.authorId,
     sightingPins,
     historyPins,
     historyPolylines,

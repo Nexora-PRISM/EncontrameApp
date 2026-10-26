@@ -39,6 +39,8 @@ export interface Person {
   restricted?: boolean;
   statusId?: number;
   statusDescription?: string;
+  /** Conta que publicou a ficha. Ausente em rascunho local. */
+  authorId?: string;
 }
 
 /** Dados enviados ao cadastrar uma nova pessoa. */

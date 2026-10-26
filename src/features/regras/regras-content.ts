@@ -26,7 +26,7 @@ export const RULES_SECTIONS: RulesSection[] = [
       msg('Em avistamentos, informe só o que você viu. Em perigo, ligue 190.'),
       msg('Não peça nem ofereça dinheiro por informações. Denuncie golpes.'),
       msg('Respeite as famílias: nada de ofensas, acusações sem prova, assédio ou discriminação.'),
-      msg('Viu algo errado ou abusivo em um caso? Use "Algo errado neste cadastro?", no fim da página do caso.'),
+      msg('Viu algo errado ou abusivo? Denuncie o cadastro, a mensagem do grupo ou o aviso de segurança. Dá para bloquear a conta de quem publicou: o conteúdo dela some da sua lista.'),
     ],
   },
   {

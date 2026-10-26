@@ -1,3 +1,4 @@
+import { getSessionUser } from '@/lib/session';
 import type { AuthRepository } from '@/services/auth/auth.repository';
 import type {
   AuthResult,
@@ -10,6 +11,33 @@ import type {
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const EXISTING_GOOGLE_EMAIL = 'google@encontra.me';
+
+const DELETED_EMAILS_KEY = 'encontrame.mock.deletedEmails';
+
+/** E-mails de contas apagadas neste mock: o login não volta, nem depois de recarregar. */
+function readDeletedEmails(): Set<string> {
+  const emails = new Set<string>();
+  if (typeof localStorage === 'undefined') return emails;
+  try {
+    const raw = localStorage.getItem(DELETED_EMAILS_KEY);
+    const list = raw ? (JSON.parse(raw) as unknown) : [];
+    if (Array.isArray(list)) {
+      for (const item of list) {
+        if (typeof item === 'string' && item.trim()) emails.add(item);
+      }
+    }
+  } catch {
+    // Lista corrompida: o próximo apagamento regrava.
+  }
+  return emails;
+}
+
+function rememberDeletedEmail(email: string) {
+  const emails = readDeletedEmails();
+  emails.add(email);
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(DELETED_EMAILS_KEY, JSON.stringify([...emails]));
+}
 
 function decodeGoogleProfile(idToken: string): { email: string; name: string } {
   try {
@@ -32,6 +60,9 @@ function decodeGoogleProfile(idToken: string): { email: string; name: string } {
 export const authMockRepository: AuthRepository = {
   async login(payload: LoginPayload) {
     await delay(600);
+    if (readDeletedEmails().has(payload.identifier.trim().toLowerCase())) {
+      throw new Error('account-deleted');
+    }
     return {
       accessToken: 'mock-access-token-login',
       refreshToken: 'mock-refresh-token-login',
@@ -105,5 +136,11 @@ export const authMockRepository: AuthRepository = {
 
   async logout(_refreshToken: string | null) {
     await delay(100);
+  },
+
+  async deleteAccount() {
+    await delay(200);
+    const email = getSessionUser()?.email?.trim().toLowerCase();
+    if (email) rememberDeletedEmail(email);
   },
 };

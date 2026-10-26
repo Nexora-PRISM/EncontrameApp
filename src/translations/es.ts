@@ -237,8 +237,8 @@ export const es: Readonly<Record<string, string>> = {
     'Sí, en el celular. Actívalo en Configuración > Seguridad > "Entrar con biometría". Con ella activada, al salir la app solo bloquea la cuenta; para salir del todo, desactiva antes la biometría.',
   'digital face id biometria': 'huella face id biometría',
   'Como excluo minha conta?': '¿Cómo elimino mi cuenta?',
-  'Em Configurações > Minha conta, toque em "Solicitar exclusão da conta". Seu app de e-mail abre com o pedido pronto; a solicitação só chega até nós quando você enviar o e-mail.':
-    'En Configuración > Mi cuenta, toca "Solicitar eliminación de la cuenta". Tu app de correo se abre con el pedido listo; la solicitud solo nos llega cuando envías el correo.',
+  'Em Configurações > Minha conta, toque em "Excluir minha conta" e confirme. A conta e os dados pessoais são apagados na hora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar. Sem o app instalado, o pedido também pode ser feito pela página da política de privacidade.':
+    'En Configuración > Mi cuenta, toca "Excluir minha conta" y confirma. La cuenta y los datos personales se borran en el momento. Los registros de personas desaparecidas que publicaste pueden seguir visibles. Sin la app instalada, el pedido también se hace en la página de la política de privacidad.',
   'excluir apagar conta deletar': 'eliminar borrar cuenta',
   'Quando o app usa minha localização?': '¿Cuándo usa la app mi ubicación?',
   'Só enquanto o app está aberto: para mostrar casos perto de você e, quando você pede, para marcar o local de um avistamento ou mandar sua localização a um contato. O Encontra-me não acompanha sua localização em segundo plano.':
@@ -260,8 +260,8 @@ export const es: Readonly<Record<string, string>> = {
   'golpe pix dinheiro extorsão resgate': 'estafa pix dinero extorsión rescate',
   'Como denuncio um cadastro falso ou que coloca alguém em risco?':
     '¿Cómo denuncio un registro falso o que pone a alguien en riesgo?',
-  'Abra o caso e, no fim da página, toque em "Denunciar este cadastro". Seu app de e-mail abre com a identificação do caso: conte o motivo e envie. Use também se você é a pessoa cadastrada, está em segurança e não quer ser localizada. Em perigo, ligue 190.':
-    'Abre el caso y, al final de la página, toca "Denunciar este registro". Tu app de correo se abre con la identificación del caso: cuenta el motivo y envía. Úsalo también si eres la persona registrada, estás a salvo y no quieres ser localizada. Si estás en peligro, llama al 190.',
+  'Abra o caso e, no fim da página, toque em "Denunciar este cadastro". A denúncia fica registrada para a equipe. Dá para bloquear quem publicou, e o conteúdo dessa conta sai da sua lista. No grupo, cada mensagem de outra pessoa tem Denunciar e Bloquear. Em perigo, ligue 190.':
+    'Abre el caso y, al final de la página, toca "Denunciar este registro". La denuncia queda registrada para el equipo. Se puede bloquear a quien publicó, y el contenido de esa cuenta sale de tu lista. En el grupo, cada mensaje de otra persona tiene Denunciar y Bloquear. Si estás en peligro, llama al 190.',
   'denúncia denunciar falso remover retirar sou eu perseguição':
     'denuncia denunciar falso eliminar retirar soy yo persecución',
   'Como me proteger ao divulgar um caso?': '¿Cómo protegerme al difundir un caso?',
@@ -568,15 +568,42 @@ export const es: Readonly<Record<string, string>> = {
   'Você precisará entrar de novo para enviar cadastros e avistamentos.':
     'Tendrás que entrar de nuevo para enviar registros y avistamientos.',
   'Sair': 'Salir',
-  'Solicitar exclusão da conta': 'Solicitar eliminación de la cuenta',
-  'Vamos abrir seu app de e-mail com o pedido pronto. A exclusão é feita pela equipe depois que o e-mail for enviado.':
-    'Abriremos tu app de correo con el pedido listo. El equipo hace la eliminación después de que se envíe el correo.',
+  'Excluir a conta?': '¿Eliminar la cuenta?',
+  'A conta e os dados pessoais são apagados agora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar.':
+    'La cuenta y los datos personales se borran ahora. Los registros de personas desaparecidas que publicaste pueden seguir visibles.',
+  'Excluir conta': 'Eliminar cuenta',
+  'Não foi possível excluir a conta': 'No fue posible eliminar la cuenta',
+  'Tente de novo. Se o app não abrir, escreva para {supportEmail}.':
+    'Inténtalo de nuevo. Si la app no abre, escribe a {supportEmail}.',
+  'Conta excluída': 'Cuenta eliminada',
+  'Seus dados pessoais foram apagados.': 'Tus datos personales fueron borrados.',
+  'Apaga a conta e os dados pessoais ligados a ela.': 'Borra la cuenta y los datos personales ligados a ella.',
+  'Para denunciar ou bloquear, entre na sua conta.': 'Para denunciar o bloquear, entra en tu cuenta.',
+  'Denunciar esta mensagem?': '¿Denunciar este mensaje?',
+  'A denúncia fica registrada para a equipe analisar.': 'La denuncia queda registrada para que el equipo la analice.',
+  'Denúncia registrada': 'Denuncia registrada',
+  'A equipe pode analisar esta denúncia.': 'El equipo puede analizar esta denuncia.',
+  'Não foi possível registrar': 'No fue posible registrar',
+  'Tente de novo em alguns instantes.': 'Inténtalo de nuevo en unos instantes.',
+  'Bloquear esta pessoa?': '¿Bloquear a esta persona?',
+  'Você deixa de ver as mensagens e os cadastros publicados por esta conta.':
+    'Dejas de ver los mensajes y los registros publicados por esta cuenta.',
+  'Bloquear': 'Bloquear',
+  'Pessoa bloqueada': 'Persona bloqueada',
+  'O conteúdo desta conta saiu da sua lista.': 'El contenido de esta cuenta salió de tu lista.',
+  'Não foi possível bloquear': 'No fue posible bloquear',
+  'Denunciar esta mensagem': 'Denunciar este mensaje',
+  'Bloquear esta pessoa': 'Bloquear a esta persona',
+  'Para denunciar um aviso, entre na sua conta.': 'Para denunciar un aviso, entra en tu cuenta.',
+  'Para denunciar um cadastro, entre na sua conta.': 'Para denunciar un registro, entra en tu cuenta.',
+  'Para bloquear quem publicou, entre na sua conta.': 'Para bloquear a quien publicó, entra en tu cuenta.',
+  'Bloquear quem publicou?': '¿Bloquear a quien publicó?',
+  'Você deixa de ver os cadastros e as mensagens desta conta.':
+    'Dejas de ver los registros y los mensajes de esta cuenta.',
+  'Bloquear quem publicou': 'Bloquear a quien publicó',
+  'A correção abre o seu app de e-mail. A denúncia fica registrada no app para a equipe analisar.':
+    'La corrección abre tu app de correo. La denuncia queda registrada en la app para que el equipo la analice.',
   'Continuar': 'Continuar',
-  'Solicito a exclusão da minha conta no Encontra-me e dos meus dados pessoais, nos termos da LGPD.':
-    'Solicito la eliminación de mi cuenta en Encontra-me y de mis datos personales, en los términos de la LGPD (Ley General de Protección de Datos de Brasil).',
-  'App de e-mail não encontrado': 'App de correo no encontrada',
-  'Envie o pedido de exclusão para {supportEmail} a partir do e-mail da sua conta.':
-    'Envía el pedido de eliminación a {supportEmail} desde el correo de tu cuenta.',
   'Usa o idioma do navegador. Agora: {language}.':
     'Usa el idioma del navegador. Ahora: {language}.',
   'Usa o idioma do celular. Agora: {language}.': 'Usa el idioma del celular. Ahora: {language}.',
@@ -592,8 +619,6 @@ export const es: Readonly<Record<string, string>> = {
     'Mientras no esté en la app, pídelo en el Centro de Ayuda.',
   'Saindo…': 'Saliendo…',
   'Sair da conta': 'Cerrar sesión',
-  'Abre seu e-mail com o pedido pronto para a equipe.':
-    'Abre tu correo con el pedido listo para el equipo.',
   'Entrar ou criar conta': 'Entrar o crear cuenta',
   'Necessário para enviar cadastros e avistamentos.':
     'Necesario para enviar registros y avistamientos.',
@@ -836,8 +861,6 @@ export const es: Readonly<Record<string, string>> = {
     'Pide la corrección si hay datos incorrectos o si la persona ya fue encontrada. Denuncia si el registro es falso, una estafa o puede poner a alguien en riesgo — incluso si eres la persona registrada, estás a salvo y no quieres ser localizada.',
   'Pedir correção ou atualização': 'Pedir corrección o actualización',
   'Denunciar este cadastro': 'Denunciar este registro',
-  'Abre o seu app de e-mail com a mensagem pronta e a identificação do caso. O pedido só chega à equipe quando você enviar o e-mail.':
-    'Abre tu app de correo con el mensaje listo y la identificación del caso. El pedido solo llega al equipo cuando envías el correo.',
   // features/pessoa-detalhe/sections/pessoa-detalhe-hero-section.tsx
   '{age} anos': '{age} años',
   // features/pessoa-detalhe/sections/pessoa-detalhe-history-section.tsx
@@ -910,8 +933,8 @@ export const es: Readonly<Record<string, string>> = {
     'No pidas ni ofrezcas dinero por información. Denuncia las estafas.',
   'Respeite as famílias: nada de ofensas, acusações sem prova, assédio ou discriminação.':
     'Respeta a las familias: nada de insultos, acusaciones sin prueba, acoso ni discriminación.',
-  'Viu algo errado ou abusivo em um caso? Use "Algo errado neste cadastro?", no fim da página do caso.':
-    '¿Viste algo incorrecto o abusivo en un caso? Usa "¿Algo mal en este registro?", al final de la página del caso.',
+  'Viu algo errado ou abusivo? Denuncie o cadastro, a mensagem do grupo ou o aviso de segurança. Dá para bloquear a conta de quem publicou: o conteúdo dela some da sua lista.':
+    '¿Viste algo incorrecto o abusivo? Denuncia el registro, el mensaje del grupo o el aviso de seguridad. Se puede bloquear la cuenta de quien publicó: su contenido sale de tu lista.',
   'Responsabilidade': 'Responsabilidad',
   'Cada cadastro, avistamento e mensagem fica ligado à conta de quem publicou.':
     'Cada registro, avistamiento y mensaje queda vinculado a la cuenta de quien lo publicó.',
@@ -1258,8 +1281,6 @@ export const es: Readonly<Record<string, string>> = {
   'Publicar aviso': 'Publicar aviso',
   'Para confirmar ou atualizar um aviso, entre na sua conta. Assim cada pessoa vota uma vez.':
     'Para confirmar o actualizar un aviso, inicia sesión. Así cada persona vota una vez.',
-  'Escreva para {supportEmail} e informe a identificação do aviso: {id}.':
-    'Escribe a {supportEmail} e indica la identificación del aviso: {id}.',
   'Ver detalhes': 'Ver detalles',
   'Na página da pessoa você pode avisar que a viu por perto.':
     'En la página de la persona puedes avisar que la viste cerca.',

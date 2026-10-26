@@ -325,7 +325,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'conta',
     question: msg('Como excluo minha conta?'),
     answer:
-      msg('Em Configurações > Minha conta, toque em "Solicitar exclusão da conta". Seu app de e-mail abre com o pedido pronto; a solicitação só chega até nós quando você enviar o e-mail.'),
+      msg('Em Configurações > Minha conta, toque em "Excluir minha conta" e confirme. A conta e os dados pessoais são apagados na hora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar. Sem o app instalado, o pedido também pode ser feito pela página da política de privacidade.'),
     keywords: msg('excluir apagar conta deletar'),
   },
   {
@@ -365,7 +365,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'golpes',
     question: msg('Como denuncio um cadastro falso ou que coloca alguém em risco?'),
     answer:
-      msg('Abra o caso e, no fim da página, toque em "Denunciar este cadastro". Seu app de e-mail abre com a identificação do caso: conte o motivo e envie. Use também se você é a pessoa cadastrada, está em segurança e não quer ser localizada. Em perigo, ligue 190.'),
+      msg('Abra o caso e, no fim da página, toque em "Denunciar este cadastro". A denúncia fica registrada para a equipe. Dá para bloquear quem publicou, e o conteúdo dessa conta sai da sua lista. No grupo, cada mensagem de outra pessoa tem Denunciar e Bloquear. Em perigo, ligue 190.'),
     keywords: msg('denúncia denunciar falso remover retirar sou eu perseguição'),
   },
   {

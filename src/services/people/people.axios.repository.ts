@@ -209,6 +209,7 @@ function mapPerson(apiPerson: ApiMissingPerson): Person {
         : undefined,
     statusId: apiPerson.statusId ?? undefined,
     statusDescription: apiPerson.statusDescription || undefined,
+    authorId: apiPerson.userId != null ? String(apiPerson.userId) : undefined,
     photoUri: toPhotoUri(apiPerson.photo),
   };
 }

@@ -5,7 +5,6 @@ import { Platform } from 'react-native';
 import type { MapPin } from '@/components/brand-map';
 import { buildCarouselPeople } from '@/features/inicio/carousel-people';
 import { TUTORIAL_LAST_STEP } from '@/features/inicio/tutorial-steps';
-import { AppInfo } from '@/lib/app-info';
 import { completeAppOnboarding, isAppOnboardingComplete } from '@/lib/app-onboarding';
 import { useBrand, useBrandTheme } from '@/lib/brand-theme';
 import { showAlert } from '@/lib/dialog';
@@ -18,11 +17,10 @@ import {
   personCategory,
   type CategoryFilter,
 } from '@/lib/person-category';
-import { buildSafetyNoteReportMessage, safetyNoteCategoryInfo } from '@/lib/safety-notes';
+import { safetyNoteCategoryInfo } from '@/lib/safety-notes';
 import { signOut } from '@/lib/sign-out';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSplashDone } from '@/lib/splash-state';
-import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
 import { useNearbyPeopleQuery, usePeopleSearchQuery, useRecentPeopleQuery } from '@/services/people/people.service';
@@ -32,6 +30,7 @@ import {
   useVoteSafetyNoteMutation,
 } from '@/services/safety-notes/safety-notes.service';
 import type { SafetyNote, SafetyNoteVote } from '@/services/safety-notes/safety-notes.types';
+import { useReportContentMutation } from '@/services/moderation/moderation.service';
 
 /** Item tocado no mapa: abre o cartão flutuante em vez de trocar de tela. */
 type MapSelection = { kind: 'person'; id: string } | { kind: 'note'; id: string } | null;
@@ -148,6 +147,7 @@ export function useInicioController() {
     [notesQuery.data, safetyNotesEnabled, showSafetyNotes],
   );
   const voteMutation = useVoteSafetyNoteMutation();
+  const reportMutation = useReportContentMutation();
 
   const personPins: MapPin[] = useMemo(
     () =>
@@ -223,24 +223,28 @@ export function useInicioController() {
     voteMutation.mutate({ id: selectedNote.id, vote });
   };
 
-  /** Denúncia pelo e-mail do suporte (ainda não há API de moderação). */
+  /** Denúncia gravada na API. Sem conta, o aviso pede login. */
   const reportSafetyNote = () => {
     if (!selectedNote) return;
+    if (!loggedIn) {
+      showAlert(
+        t('Entre na sua conta'),
+        t('Para denunciar um aviso, entre na sua conta.'),
+      );
+      router.push({ pathname: '/login', params: { returnTo: '/inicio' } } as Href);
+      return;
+    }
     const note = selectedNote;
     void (async () => {
-      const opened = await openSupportEmail({
-        topic: 'denuncia',
-        message: buildSafetyNoteReportMessage(note, t),
-        accountEmail: sessionUser?.email,
-      });
-      if (!opened) {
-        showAlert(
-          t('Não foi possível abrir o e-mail'),
-          t('Escreva para {supportEmail} e informe a identificação do aviso: {id}.', {
-            supportEmail: AppInfo.supportEmail,
-            id: note.id,
-          }),
-        );
+      try {
+        await reportMutation.mutateAsync({
+          targetType: 'SafetyNote',
+          targetId: note.id,
+          reason: 'other',
+        });
+        showAlert(t('Denúncia registrada'), t('A equipe pode analisar esta denúncia.'));
+      } catch {
+        showAlert(t('Não foi possível registrar'), t('Tente de novo em alguns instantes.'));
       }
     })();
   };

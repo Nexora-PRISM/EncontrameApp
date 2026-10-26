@@ -1,3 +1,4 @@
+import { isUserBlocked } from '@/services/moderation/moderation.mock.repository';
 import type { GroupChatRepository } from '@/services/grupo-chat/grupo-chat.repository';
 import { CURRENT_USER } from '@/services/grupo-chat/grupo-chat.types';
 import type { GroupChatMessage, SendGroupMessagePayload } from '@/services/grupo-chat/grupo-chat.types';
@@ -40,7 +41,9 @@ const mockHistory: GroupChatMessage[] = [
 export const grupoChatMockRepository: GroupChatRepository = {
   async history() {
     await delay(300);
-    return mockHistory;
+    return mockHistory.filter(
+      (message) => message.isMine || !isUserBlocked(message.sender.id),
+    );
   },
 
   async send(payload: SendGroupMessagePayload) {
