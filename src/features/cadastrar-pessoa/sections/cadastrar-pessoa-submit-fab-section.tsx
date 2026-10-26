@@ -1,5 +1,5 @@
 import { BrandFab } from '@/components/brand-fab';
-import { MaxContentWidth, PageGutter } from '@/constants/theme';
+import { contentGutter } from '@/constants/theme';
 import type { CadastrarPessoaController } from '@/features/cadastrar-pessoa/cadastrar-pessoa.controller';
 import { useFloatingPlacement } from '@/lib/bottom-bar-metrics';
 import { useT } from '@/lib/i18n';
@@ -22,9 +22,8 @@ export function CadastrarPessoaSubmitFabSection({
   const { width } = useWideLayout();
   const placement = useFloatingPlacement();
 
-  // Alinha à borda direita do ContentShell (form), não à janela.
-  const shellWidth = Math.min(width, MaxContentWidth);
-  const right = (width - shellWidth) / 2 + PageGutter;
+  // Alinha à margem direita do formulário, que acompanha a largura da janela.
+  const right = contentGutter(width);
 
   return (
     <BrandFab

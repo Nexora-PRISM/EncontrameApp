@@ -139,8 +139,8 @@ export const en: Readonly<Record<string, string>> = {
   'idioma língua linguagem inglês espanhol português tradução english español language':
     'language languages english spanish portuguese translation idioma',
   'Como cadastro uma pessoa desaparecida?': 'How do I register a missing person?',
-  'Toque em "Cadastrar" na barra inferior ou abra o menu e escolha "Cadastrar uma pessoa". Preencha o nome completo, a localidade onde a pessoa foi vista pela última vez, a idade e um telefone de contato. No fim do formulário, informe seu vínculo com a pessoa e confirme a declaração de veracidade. Foto, cidade, estado, país e características físicas são opcionais, mas ajudam muito.':
-    'Tap "Register" on the bottom bar or open the menu and choose "Register a person". Fill in the full name, the place where the person was last seen, the age and a contact phone number. At the end of the form, state your relationship to the person and confirm the truthfulness statement. Photo, city, state, country and physical features are optional, but they help a lot.',
+  'Toque em "Cadastrar" na barra inferior, no botão laranja "Cadastrar pessoa" embaixo do mapa no computador, ou abra o menu e escolha "Cadastrar uma pessoa". Preencha o nome completo, a localidade onde a pessoa foi vista pela última vez, a idade e um telefone de contato. No fim do formulário, informe seu vínculo com a pessoa e confirme a declaração de veracidade. Foto, cidade, estado, país e características físicas são opcionais, mas ajudam muito.':
+    'Tap "Register" on the bottom bar, the orange "Register a person" button under the map on a computer, or open the menu and choose "Register a person". Fill in the full name, the place where the person was last seen, the age and a contact phone number. At the end of the form, state your relationship to the person and confirm the truthfulness statement. Photo, city, state, country and physical features are optional, but they help a lot.',
   'novo alerta cadastro registrar': 'new alert registration register report',
   'Como divulgo um caso?': 'How do I share a case?',
   'Abra o caso e toque em "Divulgar este caso". O texto pronto — nome, idade, onde e quando a pessoa foi vista e características — abre no compartilhamento do celular para você mandar por WhatsApp ou redes sociais. Ele não inclui telefone nem endereço.':
@@ -905,6 +905,8 @@ export const en: Readonly<Record<string, string>> = {
   // features/pessoas-desaparecidas/sections/pessoas-desaparecidas-list-section.tsx
   'Nenhuma pessoa encontrada com esses filtros.': 'No people found with these filters.',
   'Idade: {value}': 'Age: {value}',
+  '{count} pessoa': '{count} person',
+  '{count} pessoas': '{count} people',
   // features/regras/regras-content.ts
   'O Encontra-me existe para ajudar a encontrar pessoas desaparecidas, com prioridade para crianças e mulheres. Para funcionar com segurança, todas as pessoas que usam o app seguem estas regras.':
     'Encontra-me exists to help find missing people, with priority for children and women. To work safely, everyone who uses the app follows these rules.',
@@ -1155,8 +1157,8 @@ export const en: Readonly<Record<string, string>> = {
   'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
     "It is a future feature for sharing your safety with people you trust, always with each person's invitation and consent. It is not available yet and will never allow tracking someone without that person knowing and agreeing.",
   // Rodada 3 — Início novo, passo a passo e filtros por idade
-  'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
-    'On the Home screen, allow location access. The photos in "Recent alerts" and the map show nearby cases. Drag the map down to open the list and scroll to see more. The buttons next to "Recent alerts" switch between a photo with the name underneath and a card. The buttons at the top of the map filter by age: the border uses the theme color and the chosen button fills in. The satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status.',
+  'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação. No celular, o botão Filtros fica acima dos atalhos de idade. Na lista, os botões ao lado do total trocam entre os cartões horizontais e fotos quadradas só com o nome embaixo. O número abaixo dos filtros é o total dessa busca.':
+    'On the Home screen, allow location access. The photos in "Recent alerts" and the map show nearby cases. Drag the map down to open the list and scroll to see more. The buttons next to "Recent alerts" switch between a photo with the name underneath and a card. The buttons at the top of the map filter by age: the border uses the theme color and the chosen button fills in. The satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status. On a phone, the Filters button sits above the age shortcuts. On the list, the buttons next to the total switch between the horizontal cards and square photos with only the name underneath. The number below the filters is the total for that search.',
   'mapa lista perto localização filtro satélite crianças idosos':
     'map list near location filter satellite children older people',
   'Como vejo o passo a passo do app de novo?': 'How do I see the app walkthrough again?',
@@ -1204,11 +1206,11 @@ export const en: Readonly<Record<string, string>> = {
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
     'On the person\'s page, tap "I saw this person nearby" and mark where you saw them. This helps the family.',
   'Em perigo? Botão vermelho.': 'In danger? Red button.',
-  'O botão "Pedir ajuda" fica sempre embaixo, no meio. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
-    'The "Get help" button is always at the bottom, in the middle. It shows the emergency numbers, like 190. The app does not call the police on its own.',
+  'O botão vermelho "Pedir ajuda" fica sempre embaixo. No celular, no meio da barra. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
+    'The red "Get help" button is always at the bottom. On a phone, it sits in the middle of the bar. It shows the emergency numbers, like 190. The app does not call the police on its own.',
   'Cadastrar e Menu': 'Register and Menu',
-  'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
-    'To report a disappearance, tap "Register". The "Menu" has Sofia, your profile, settings and help.',
+  'Para comunicar um desaparecimento, toque em "Cadastrar". No computador, use o botão laranja "Cadastrar pessoa" embaixo do mapa. No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
+    'To report a disappearance, tap "Register". On a computer, use the orange "Register a person" button under the map. The "Menu" has Sofia, your profile, settings and help.',
   'Pronto! Como você quer começar?': 'All set! How do you want to start?',
   'Para ver este passo a passo de novo, abra o Menu e toque em "Como usar o app".':
     'To see this walkthrough again, open the Menu and tap "How to use the app".',

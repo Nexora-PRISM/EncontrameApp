@@ -13,9 +13,11 @@ type Props = {
   title: string;
   onBack?: () => void;
   accessory?: ReactNode;
+  /** Título e voltar sobre a foto do caso, em texto claro. */
+  onPhoto?: boolean;
 };
 
-export function ScreenHeader({ title, onBack, accessory }: Props) {
+export function ScreenHeader({ title, onBack, accessory, onPhoto = false }: Props) {
   const t = useT();
   const brand = useBrand();
   const { control } = useWideLayout();
@@ -23,6 +25,7 @@ export function ScreenHeader({ title, onBack, accessory }: Props) {
   const handleBack = onBack ?? defaultBack;
   const [highlighted, setHighlighted] = useState(false);
   const opacityStyle = useTimedOpacity(highlighted ? 0.85 : 1);
+  const ink = onPhoto ? brand.onPrimary : brand.textDark;
 
   return (
     <View style={styles.header}>
@@ -37,11 +40,11 @@ export function ScreenHeader({ title, onBack, accessory }: Props) {
         onHoverOut={() => setHighlighted(false)}
       >
         <Animated.View style={[styles.backButton, opacityStyle]}>
-          <MaterialCommunityIcons name="chevron-left" size={control.headerTitle + 8} color={brand.textDark} />
+          <MaterialCommunityIcons name="chevron-left" size={control.headerTitle + 8} color={ink} />
         </Animated.View>
       </Pressable>
       <Text
-        style={[styles.title, { color: brand.textDark, fontSize: control.headerTitle }]}
+        style={[styles.title, { color: ink, fontSize: control.headerTitle }]}
         numberOfLines={1}
       >
         {title}

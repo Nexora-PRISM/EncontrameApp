@@ -23,6 +23,8 @@ type Props = {
   active?: Tab;
   /** Na home do celular, a aba da esquerda abre o menu em vez de "Início". */
   onMenuPress?: () => void;
+  /** No desktop da home a fileira de botões fica na coluna do mapa. */
+  hideWide?: boolean;
 };
 
 function BottomTab({
@@ -89,7 +91,7 @@ function BottomTab({
  * alcançar com o polegar. Em telas largas vira um botão flutuante no rodapé.
  * Some enquanto o teclado está aberto (no Android ela subia junto e cobria o campo).
  */
-export function BottomBar({ active, onMenuPress }: Props) {
+export function BottomBar({ active, onMenuPress, hideWide = false }: Props) {
   const t = useT();
   const brand = useBrand();
   const stylesBar = useMemo(() => makeBarStyles(brand), [brand]);
@@ -108,6 +110,8 @@ export function BottomBar({ active, onMenuPress }: Props) {
     if (active === 'register') return;
     router.push('/cadastrar-pessoa');
   };
+
+  if (isWide && hideWide) return null;
 
   const helpButton = (
     <Pressable

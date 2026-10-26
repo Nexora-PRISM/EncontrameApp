@@ -140,8 +140,8 @@ export const es: Readonly<Record<string, string>> = {
   'idioma língua linguagem inglês espanhol português tradução english español language':
     'idioma lengua inglés español portugués traducción language',
   'Como cadastro uma pessoa desaparecida?': '¿Cómo registro a una persona desaparecida?',
-  'Toque em "Cadastrar" na barra inferior ou abra o menu e escolha "Cadastrar uma pessoa". Preencha o nome completo, a localidade onde a pessoa foi vista pela última vez, a idade e um telefone de contato. No fim do formulário, informe seu vínculo com a pessoa e confirme a declaração de veracidade. Foto, cidade, estado, país e características físicas são opcionais, mas ajudam muito.':
-    'Toca "Registrar" en la barra inferior o abre el menú y elige "Registrar a una persona". Completa el nombre completo, el lugar donde la persona fue vista por última vez, la edad y un teléfono de contacto. Al final del formulario, indica tu vínculo con la persona y confirma la declaración de veracidad. Foto, ciudad, estado, país y características físicas son opcionales, pero ayudan mucho.',
+  'Toque em "Cadastrar" na barra inferior, no botão laranja "Cadastrar pessoa" embaixo do mapa no computador, ou abra o menu e escolha "Cadastrar uma pessoa". Preencha o nome completo, a localidade onde a pessoa foi vista pela última vez, a idade e um telefone de contato. No fim do formulário, informe seu vínculo com a pessoa e confirme a declaração de veracidade. Foto, cidade, estado, país e características físicas são opcionais, mas ajudam muito.':
+    'Toca "Registrar" en la barra inferior, el botón naranja "Registrar persona" debajo del mapa en la computadora, o abre el menú y elige "Registrar a una persona". Completa el nombre completo, el lugar donde la persona fue vista por última vez, la edad y un teléfono de contacto. Al final del formulario, indica tu vínculo con la persona y confirma la declaración de veracidad. Foto, ciudad, estado, país y características físicas son opcionales, pero ayudan mucho.',
   'novo alerta cadastro registrar': 'nueva alerta registro registrar',
   'Como divulgo um caso?': '¿Cómo difundo un caso?',
   'Abra o caso e toque em "Divulgar este caso". O texto pronto — nome, idade, onde e quando a pessoa foi vista e características — abre no compartilhamento do celular para você mandar por WhatsApp ou redes sociais. Ele não inclui telefone nem endereço.':
@@ -915,6 +915,8 @@ export const es: Readonly<Record<string, string>> = {
   'Nenhuma pessoa encontrada com esses filtros.':
     'No se encontró ninguna persona con esos filtros.',
   'Idade: {value}': 'Edad: {value}',
+  '{count} pessoa': '{count} persona',
+  '{count} pessoas': '{count} personas',
   // features/regras/regras-content.ts
   'O Encontra-me existe para ajudar a encontrar pessoas desaparecidas, com prioridade para crianças e mulheres. Para funcionar com segurança, todas as pessoas que usam o app seguem estas regras.':
     'Encontra-me existe para ayudar a encontrar personas desaparecidas, con prioridad para niños y mujeres. Para funcionar con seguridad, todas las personas que usan la app siguen estas reglas.',
@@ -1167,8 +1169,8 @@ export const es: Readonly<Record<string, string>> = {
   'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
     'Es una función futura para compartir tu seguridad con personas de confianza, siempre con invitación y aceptación de cada una. Todavía no está disponible y nunca permitirá seguir a alguien sin que esa persona lo sepa y esté de acuerdo.',
   // Rodada 3 — Início novo, passo a passo e filtros por idade
-  'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação.':
-    'En la pantalla Inicio, permite el acceso a la ubicación. Las fotos de "Alertas recientes" y el mapa muestran casos cercanos. Arrastra el mapa hacia abajo para abrir la lista y desplázate para ver más. Los botones junto a "Alertas recientes" cambian entre foto, con el nombre debajo, y tarjeta. Los botones en la parte superior del mapa filtran por edad: el borde usa el color del tema y el botón elegido se rellena. El botón de satélite cambia la imagen del mapa. Para buscar por nombre o ver la lista completa, toca la lupa en la parte superior de la pantalla o "Ver todos": allí puedes filtrar por ciudad, estado, barrio, edad y situación.',
+  'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação. No celular, o botão Filtros fica acima dos atalhos de idade. Na lista, os botões ao lado do total trocam entre os cartões horizontais e fotos quadradas só com o nome embaixo. O número abaixo dos filtros é o total dessa busca.':
+    'En la pantalla Inicio, permite el acceso a la ubicación. Las fotos de "Alertas recientes" y el mapa muestran casos cercanos. Arrastra el mapa hacia abajo para abrir la lista y desplázate para ver más. Los botones junto a "Alertas recientes" cambian entre foto, con el nombre debajo, y tarjeta. Los botones en la parte superior del mapa filtran por edad: el borde usa el color del tema y el botón elegido se rellena. El botón de satélite cambia la imagen del mapa. Para buscar por nombre o ver la lista completa, toca la lupa en la parte superior de la pantalla o "Ver todos": allí puedes filtrar por ciudad, estado, barrio, edad y situación. En el celular, el botón Filtros queda arriba de los atajos de edad. En la lista, los botones junto al total cambian entre las tarjetas horizontales y fotos cuadradas solo con el nombre debajo. El número bajo los filtros es el total de esa búsqueda.',
   'mapa lista perto localização filtro satélite crianças idosos':
     'mapa lista cerca ubicación filtro satélite niños mayores',
   'Como vejo o passo a passo do app de novo?': '¿Cómo veo de nuevo el paso a paso de la app?',
@@ -1217,11 +1219,11 @@ export const es: Readonly<Record<string, string>> = {
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
     'En la página de la persona, toca "Vi a esta persona cerca" y marca dónde la viste. Eso ayuda a la familia.',
   'Em perigo? Botão vermelho.': '¿En peligro? Botón rojo.',
-  'O botão "Pedir ajuda" fica sempre embaixo, no meio. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
-    'El botón "Pedir ayuda" está siempre abajo, en el centro. Muestra los números de emergencia, como el 190. La app no llama a la policía por sí sola.',
+  'O botão vermelho "Pedir ajuda" fica sempre embaixo. No celular, no meio da barra. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
+    'El botón rojo "Pedir ayuda" está siempre abajo. En el celular, en el centro de la barra. Muestra los números de emergencia, como el 190. La app no llama a la policía por sí sola.',
   'Cadastrar e Menu': 'Registrar y Menú',
-  'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
-    'Para comunicar una desaparición, toca "Registrar". En el "Menú" están Sofia, tu perfil, la configuración y la ayuda.',
+  'Para comunicar um desaparecimento, toque em "Cadastrar". No computador, use o botão laranja "Cadastrar pessoa" embaixo do mapa. No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
+    'Para comunicar una desaparición, toca "Registrar". En la computadora, usa el botón naranja "Registrar persona" debajo del mapa. En el "Menú" están Sofia, tu perfil, la configuración y la ayuda.',
   'Pronto! Como você quer começar?': '¡Listo! ¿Cómo quieres empezar?',
   'Para ver este passo a passo de novo, abra o Menu e toque em "Como usar o app".':
     'Para ver este paso a paso de nuevo, abre el Menú y toca "Cómo usar la app".',

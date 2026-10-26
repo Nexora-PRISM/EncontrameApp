@@ -11,6 +11,12 @@ const BrandLight = {
   /** Texto laranja sobre fundo claro (contraste ≥ 4.5:1) — ex.: "Sair" */
   orangeText: '#B4570F',
   cream: '#F4E4C1',
+  /** Cartão "Algo errado neste cadastro?": laranja suave e translúcido. */
+  attentionSoft: 'rgba(245, 130, 46, 0.2)',
+  attentionBorder: 'rgba(180, 87, 15, 0.5)',
+  /** Véu no topo da foto do caso, para o título continuar legível. */
+  photoScrim: 'rgba(8, 27, 51, 0.72)',
+  photoScrimClear: 'rgba(8, 27, 51, 0)',
   blue: '#1B4DB8',
   blueDark: '#163F97',
   /** Fundo de tela (canvas) */
@@ -24,8 +30,12 @@ const BrandLight = {
   textDark: '#1F2430',
   textMuted: '#60646C',
   divider: '#DDE2E8',
-  mapBackground: '#D2D9E2',
+  /** Papel do mapa no claro: quase branco, no tom do Google Maps. */
+  mapBackground: '#F7F8F9',
   mapStroke: '#B4BDC8',
+  /** Água e parque do mapa claro. O escuro continua calculado em `map-style`. */
+  mapWater: '#D5E6F2',
+  mapPark: '#E5F0E4',
   pin: '#E23B3B',
   /** Campo inválido: borda e mensagem de erro */
   error: '#D93025',
@@ -60,6 +70,8 @@ const BrandLight = {
   onEmergency: '#FFFFFF',
   /** Véu sobre o mapa (preto neutro, igual nos dois esquemas) */
   scrim: '#000000',
+  /** Borda clara do header no desktop (busca e filtros sobre a faixa). */
+  softBorder: '#DEDEDE',
   /** Faixas de idade (filtros do mapa, cartões e anel do pin). Nunca vermelho. */
   categoryAll: '#C2560F',
   categoryChild: '#1B4DB8',
@@ -84,6 +96,10 @@ const BrandDark = {
   orangeDark: '#E06F1E',
   orangeText: '#F08A3E',
   cream: '#F4E4C1',
+  attentionSoft: 'rgba(245, 130, 46, 0.28)',
+  attentionBorder: 'rgba(240, 138, 62, 0.65)',
+  photoScrim: 'rgba(0, 0, 0, 0.72)',
+  photoScrimClear: 'rgba(0, 0, 0, 0)',
   blue: '#3264D1',
   blueDark: '#4073E2',
   white: '#07090B',
@@ -97,6 +113,8 @@ const BrandDark = {
   divider: '#3E4752',
   mapBackground: '#07090B',
   mapStroke: '#3E4752',
+  mapWater: '#163044',
+  mapPark: '#122018',
   pin: '#E23B3B',
   error: '#F2645A',
   avatarBackground: '#252B33',
@@ -120,6 +138,7 @@ const BrandDark = {
   emergencySoft: '#2A1416',
   onEmergency: '#FFFFFF',
   scrim: '#000000',
+  softBorder: '#DEDEDE',
   categoryAll: '#F5822E',
   categoryChild: '#6B9AFF',
   categoryAdult: '#4FC7B8',

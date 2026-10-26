@@ -17,31 +17,40 @@ import { PessoaDetalheSightingSection } from '@/features/pessoa-detalhe/sections
 import { PessoaDetalheThanksSection } from '@/features/pessoa-detalhe/sections/pessoa-detalhe-thanks-section';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
+import { useWideLayout } from '@/lib/use-wide-layout';
 
 export default function PessoaDetalhePage() {
   const t = useT();
   const brand = useBrand();
+  const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = usePessoaDetalheController();
+  const showHero = Boolean(controller.person);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={showHero ? [] : ['top']}>
       <ScrollView
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[
+          styles.content,
+          { paddingTop: showHero ? 0 : 8, paddingBottom: isWide ? 120 : 32 },
+        ]}
         keyboardShouldPersistTaps="handled"
         removeClippedSubviews={false}
       >
+        {showHero ? <PessoaDetalheHeroSection controller={controller} /> : null}
         <ContentShell>
-          <ScreenHeader
-            title={controller.person?.fullName ?? t('Pessoa desaparecida')}
-            accessory={
-              <PersonAlertIcon
-                statusId={controller.person?.statusId}
-                statusDescription={controller.person?.statusDescription}
-                size={18}
-              />
-            }
-          />
+          {showHero ? null : (
+            <ScreenHeader
+              title={t('Pessoa desaparecida')}
+              accessory={
+                <PersonAlertIcon
+                  statusId={controller.person?.statusId}
+                  statusDescription={controller.person?.statusDescription}
+                  size={18}
+                />
+              }
+            />
+          )}
           {controller.loading ? (
             <View style={styles.center}>
               <ActivityIndicator size="large" color={brand.orange} />
@@ -56,7 +65,6 @@ export default function PessoaDetalhePage() {
             </BrandEnter>
           ) : (
             <BrandEnter from="up" style={styles.body}>
-              <PessoaDetalheHeroSection controller={controller} />
               <PessoaDetalheInfoSection controller={controller} />
               <PessoaDetalheSightingSection controller={controller} />
               <PessoaDetalheFeedbackSection controller={controller} />
@@ -79,11 +87,9 @@ function makeStyles(brand: BrandColors) {
     },
     content: {
       flexGrow: 1,
-      paddingTop: 8,
-      paddingBottom: 32,
     },
     body: {
-      marginTop: 16,
+      marginTop: 24,
       gap: 24,
     },
     center: {

@@ -1,29 +1,35 @@
-import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { MaxContentWidth, PageGutter } from '@/constants/theme';
+import { contentGutter } from '@/constants/theme';
+import { useWideLayout } from '@/lib/use-wide-layout';
 
 type Props = {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
-  /** Quando true, não aplica PageGutter (útil se o padding vier das sections). */
+  /** Quando true, não aplica a margem horizontal (útil se o padding vier das sections). */
   noGutter?: boolean;
-  /** Sobrescreve a largura máxima (ex.: listagem em 2 colunas). */
+  /**
+   * Largura máxima opcional. Sem isso o bloco ocupa a tela inteira e a margem fica só no
+   * padding — o scroll do pai, quando existe, permanece na borda da janela.
+   */
   maxWidth?: number;
 };
 
-/** Limita a largura do conteúdo em monitores grandes; no mobile ocupa 100%. */
-export function ContentShell({ children, style, noGutter = false, maxWidth = MaxContentWidth }: Props) {
+/** Margem horizontal pequena, que acompanha a largura da janela. */
+export function ContentShell({ children, style, noGutter = false, maxWidth }: Props) {
+  const { width } = useWideLayout();
+  const gutter = contentGutter(width);
+
   return (
-    <View style={[styles.shell, { maxWidth }, !noGutter && styles.gutter, style]}>{children}</View>
+    <View
+      style={[
+        { width: '100%', alignSelf: 'center' },
+        maxWidth != null ? { maxWidth } : null,
+        !noGutter && { paddingHorizontal: gutter },
+        style,
+      ]}
+    >
+      {children}
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  shell: {
-    width: '100%',
-    alignSelf: 'center',
-  },
-  gutter: {
-    paddingHorizontal: PageGutter,
-  },
-});

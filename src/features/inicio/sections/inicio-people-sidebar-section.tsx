@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -13,10 +13,11 @@ import {
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
 import { PersonAlertIcon } from '@/components/person-alert-icon';
 import { Radius, type BrandColors } from '@/constants/brand';
-import { PageGutter } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
+import { matchesCategory } from '@/lib/person-category';
 import { resolvePersonStatusColor, resolvePersonStatusOnColor } from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
@@ -24,12 +25,16 @@ interface InicioPeopleSidebarSectionProps {
   controller: InicioController;
 }
 
-/** Lista lateral da home no desktop, no formato do painel do Maps. */
+/** Lista lateral da home no desktop: linhas com um traço embaixo, no formato do Maps. */
 export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSectionProps) {
   const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
-  const { people, showPeopleSkeleton } = controller;
+  const people = useMemo(
+    () => controller.people.filter((person) => matchesCategory(person, controller.categoryFilter)),
+    [controller.categoryFilter, controller.people],
+  );
+  const { showPeopleSkeleton, categoryFilter } = controller;
   const claimEnter = useEnterOnce();
 
   return (
@@ -54,7 +59,7 @@ export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSe
           data={people}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
-            <SidebarPersonCard
+            <SidebarPersonRow
               person={item}
               index={index}
               skip={!claimEnter(item.id)}
@@ -68,7 +73,11 @@ export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSe
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <BrandEnter from="fade">
-              <Text style={styles.emptyText}>{t('Nenhuma pessoa próxima.')}</Text>
+              <Text style={styles.emptyText}>
+                {categoryFilter === 'all'
+                  ? t('Nenhuma pessoa próxima.')
+                  : t('Nenhum alerta nesta faixa de idade por aqui.')}
+              </Text>
             </BrandEnter>
           }
         />
@@ -77,7 +86,7 @@ export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSe
   );
 }
 
-function SidebarPersonCard({
+function SidebarPersonRow({
   person,
   index,
   skip,
@@ -93,6 +102,7 @@ function SidebarPersonCard({
   styles: ReturnType<typeof makeStyles>;
 }) {
   const t = useT();
+  const [hovered, setHovered] = useState(false);
   const statusLabel = person.statusDescription ? t(person.statusDescription) : '—';
   const badgeColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
   const badgeTextColor = resolvePersonStatusOnColor(brand);
@@ -100,42 +110,44 @@ function SidebarPersonCard({
 
   return (
     <BrandEnter from="up" index={index} skip={skip}>
-    <Pressable
-      style={styles.card}
-      onPress={() => controller.goToPerson(person.id)}
-      accessibilityRole="button"
-      accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
-    >
-      <View style={styles.photo}>
-        {person.photoUri ? (
-          <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
-        ) : (
-          <MaterialCommunityIcons name="account" size={28} color={brand.avatarIcon} />
-        )}
-      </View>
-      <View style={styles.info}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name} numberOfLines={1}>
-            {person.fullName}
-          </Text>
-          <PersonAlertIcon
-            statusId={person.statusId}
-            statusDescription={person.statusDescription}
-          />
+      <Pressable
+        onPress={() => controller.goToPerson(person.id)}
+        onHoverIn={() => setHovered(true)}
+        onHoverOut={() => setHovered(false)}
+        style={({ pressed }) => [styles.row, (pressed || hovered) && styles.rowActive]}
+        accessibilityRole="button"
+        accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
+      >
+        <View style={styles.photo}>
+          {person.photoUri ? (
+            <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
+          ) : (
+            <MaterialCommunityIcons name="account" size={26} color={brand.avatarIcon} />
+          )}
         </View>
-        <Text style={styles.meta} numberOfLines={1}>
-          {t('Idade: {age}', { age: person.age ?? '—' })}
-          {location ? ` · ${location}` : ''}
-        </Text>
-        <View style={styles.statusRow}>
-          <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
-            <Text style={[styles.statusBadgeText, { color: badgeTextColor }]} numberOfLines={1}>
-              {statusLabel}
+        <View style={styles.info}>
+          <View style={styles.nameRow}>
+            <Text style={styles.name} numberOfLines={1}>
+              {person.fullName}
             </Text>
+            <PersonAlertIcon
+              statusId={person.statusId}
+              statusDescription={person.statusDescription}
+            />
+          </View>
+          <Text style={styles.meta} numberOfLines={1}>
+            {t('Idade: {age}', { age: person.age ?? '—' })}
+            {location ? ` · ${location}` : ''}
+          </Text>
+          <View style={styles.statusRow}>
+            <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
+              <Text style={[styles.statusBadgeText, { color: badgeTextColor }]} numberOfLines={1}>
+                {statusLabel}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
     </BrandEnter>
   );
 }
@@ -150,25 +162,20 @@ function makeStyles(brand: BrandColors) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: PageGutter,
-      paddingTop: 4,
-      paddingBottom: 8,
+      paddingHorizontal: Spacing.three,
+      paddingTop: 14,
+      paddingBottom: 10,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontWeight: '800',
       color: brand.textDark,
     },
     allLink: {
       paddingVertical: 4,
-      paddingHorizontal: 10,
-      borderRadius: Radius.pill,
-      backgroundColor: brand.surface,
-      borderWidth: 1,
-      borderColor: brand.fieldBorder,
     },
     allLinkText: {
-      fontSize: 13,
+      fontSize: 14,
       fontWeight: '700',
       color: brand.blue,
     },
@@ -176,41 +183,37 @@ function makeStyles(brand: BrandColors) {
       flex: 1,
     },
     listContent: {
-      paddingHorizontal: 12,
-      paddingBottom: 16,
-      gap: 8,
+      paddingBottom: 96,
     },
-    card: {
+    row: {
       flexDirection: 'row',
-      minHeight: 72,
-      borderRadius: Radius.md,
-      overflow: 'hidden',
-      backgroundColor: brand.cardInfo,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: brand.divider,
+      alignItems: 'center',
+      gap: 12,
+      paddingHorizontal: Spacing.three,
+      paddingVertical: 12,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: brand.divider,
+    },
+    rowActive: {
+      backgroundColor: brand.white,
     },
     photo: {
-      width: 72,
-      alignSelf: 'stretch',
+      width: 56,
+      height: 56,
+      borderRadius: Radius.sm,
       overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: brand.avatarBackground,
     },
     photoImage: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
+      width: '100%',
+      height: '100%',
     },
     info: {
       flex: 1,
       minWidth: 0,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
       gap: 2,
-      justifyContent: 'center',
     },
     nameRow: {
       flexDirection: 'row',

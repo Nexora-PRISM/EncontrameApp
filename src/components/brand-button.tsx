@@ -1,6 +1,14 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useMemo } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Radius, type BrandColors } from '@/constants/brand';
@@ -18,7 +26,10 @@ type Props = {
   loading?: boolean;
   disabled?: boolean;
   trailingIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
-  style?: ViewStyle;
+  /** Estilo do miolo (altura, fundo, borda). */
+  style?: StyleProp<ViewStyle>;
+  /** Estilo do toque — útil para o botão acompanhar o conteúdo no desktop. */
+  containerStyle?: StyleProp<ViewStyle>;
 };
 
 export function BrandButton({
@@ -29,6 +40,7 @@ export function BrandButton({
   disabled = false,
   trailingIcon,
   style,
+  containerStyle,
 }: Props) {
   const brand = useBrand();
   const { control } = useWideLayout();
@@ -58,6 +70,7 @@ export function BrandButton({
       onPressOut={() => setHighlight(false)}
       onHoverIn={() => setHighlight(true)}
       onHoverOut={() => setHighlight(false)}
+      style={containerStyle}
     >
       <Animated.View
         style={[

@@ -70,9 +70,11 @@ export function usePeopleSearchQuery(params: PeopleSearchParams) {
           pageSize,
         });
         if (pageParam === 1) {
+          const items = mergeLocalPeople(local, remote.items);
           return {
             ...remote,
-            items: mergeLocalPeople(local, remote.items),
+            items,
+            totalCount: remote.totalCount + (items.length - remote.items.length),
           };
         }
         return remote;

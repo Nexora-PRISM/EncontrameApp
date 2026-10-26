@@ -6,6 +6,7 @@ import { type BrandColors } from '@/constants/brand';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
+import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface PessoaDetalheInfoSectionProps {
   controller: PessoaDetalheController;
@@ -14,7 +15,8 @@ interface PessoaDetalheInfoSectionProps {
 export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectionProps) {
   const t = useT();
   const brand = useBrand();
-  const styles = useMemo(() => makeStyles(brand), [brand]);
+  const { isWide } = useWideLayout();
+  const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
   const { person } = controller;
   if (!person) {
     return null;
@@ -44,14 +46,33 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
           <Text style={styles.value}>{row.value}</Text>
         </View>
       ))}
-      <BrandButton
-        label={t('Histórico de avistamentos')}
-        variant="outline"
-        onPress={controller.openHistory}
-      />
-      {controller.isLocalPerson ? null : (
-        <BrandButton label={t('Divulgar este caso')} variant="outline" onPress={controller.shareCase} />
-      )}
+      <View style={styles.actions}>
+        <BrandButton
+          label={t('Histórico de avistamentos')}
+          variant="outline"
+          onPress={controller.openHistory}
+          containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+          style={isWide ? undefined : styles.actionFull}
+        />
+        {controller.isLocalPerson ? null : (
+          <BrandButton
+            label={t('Divulgar este caso')}
+            variant="outline"
+            onPress={controller.shareCase}
+            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+            style={isWide ? undefined : styles.actionFull}
+          />
+        )}
+        {controller.sightingBlockedMessage ? null : (
+          <BrandButton
+            label={t('Vi essa pessoa por perto')}
+            variant="orange"
+            onPress={controller.openSightingForm}
+            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+            style={isWide ? undefined : styles.actionFull}
+          />
+        )}
+      </View>
     </View>
   );
 }
@@ -72,10 +93,27 @@ function formatLastSeenDate(value?: string) {
   }).format(date);
 }
 
-function makeStyles(brand: BrandColors) {
+function makeStyles(brand: BrandColors, isWide: boolean) {
   return StyleSheet.create({
     list: {
       gap: 14,
+    },
+    actions: {
+      flexDirection: isWide ? 'row' : 'column',
+      flexWrap: isWide ? 'wrap' : 'nowrap',
+      alignItems: isWide ? 'center' : 'stretch',
+      alignSelf: 'stretch',
+      gap: isWide ? 10 : 14,
+    },
+    actionFull: {
+      width: '100%',
+      alignSelf: 'stretch',
+    },
+    actionSlot: {
+      alignSelf: 'flex-start',
+      flexGrow: 0,
+      flexShrink: 1,
+      maxWidth: '100%',
     },
     row: {
       gap: 2,

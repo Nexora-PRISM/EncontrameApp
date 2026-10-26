@@ -63,14 +63,14 @@ const ALL_STEPS: readonly TutorialStep[] = [
     illustration: 'emergency',
     title: msg('Em perigo? Botão vermelho.'),
     message: msg(
-      'O botão "Pedir ajuda" fica sempre embaixo, no meio. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.',
+      'O botão vermelho "Pedir ajuda" fica sempre embaixo. No celular, no meio da barra. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.',
     ),
   },
   {
     illustration: 'bottom-bar',
     title: msg('Cadastrar e Menu'),
     message: msg(
-      'Para comunicar um desaparecimento, toque em "Cadastrar". No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.',
+      'Para comunicar um desaparecimento, toque em "Cadastrar". No computador, use o botão laranja "Cadastrar pessoa" embaixo do mapa. No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.',
     ),
   },
   {

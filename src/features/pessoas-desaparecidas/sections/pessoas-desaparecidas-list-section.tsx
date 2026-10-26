@@ -15,6 +15,7 @@ import {
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
 import { PersonAlertIcon } from '@/components/person-alert-icon';
 import { Radius, type BrandColors } from '@/constants/brand';
+import { WideLayoutBreakpoint } from '@/constants/theme';
 import type { PessoasDesaparecidasController } from '@/features/pessoas-desaparecidas/pessoas-desaparecidas.controller';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
@@ -37,31 +38,42 @@ export function PessoasDesaparecidasListSection({
 }: PessoasDesaparecidasListSectionProps) {
   const t = useT();
   const brand = useBrand();
-  const { isWide } = useWideLayout();
-  const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
+  const { width, isWide } = useWideLayout();
+  const columns = listingColumns(controller.view, width);
+  const styles = useMemo(() => makeStyles(brand, columns, isWide), [brand, columns, isWide]);
   const claimEnter = useEnterOnce();
 
-  const renderItem = ({ item, index }: { item: Person; index: number }) => (
-    <PersonCard
-      person={item}
-      index={index}
-      skip={!claimEnter(item.id)}
-      controller={controller}
-      brand={brand}
-      styles={styles}
-      isWide={isWide}
-    />
-  );
+  const renderItem = ({ item, index }: { item: Person; index: number }) =>
+    controller.view === 'photo' ? (
+      <PhotoTile
+        person={item}
+        index={index}
+        skip={!claimEnter(item.id)}
+        controller={controller}
+        brand={brand}
+        styles={styles}
+      />
+    ) : (
+      <DetailCard
+        person={item}
+        index={index}
+        skip={!claimEnter(item.id)}
+        controller={controller}
+        brand={brand}
+        styles={styles}
+        isWide={isWide}
+      />
+    );
 
   return (
     <FlatList
       style={style}
       data={controller.people}
-      key={isWide ? 'wide' : 'narrow'}
+      key={`${controller.view}-${columns}`}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
-      numColumns={isWide ? 2 : 1}
-      columnWrapperStyle={isWide ? styles.row : undefined}
+      numColumns={columns}
+      columnWrapperStyle={columns > 1 ? styles.row : undefined}
       contentContainerStyle={[styles.list, contentContainerStyle]}
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
@@ -84,7 +96,7 @@ export function PessoasDesaparecidasListSection({
   );
 }
 
-function PersonCard({
+function DetailCard({
   person,
   index,
   skip,
@@ -108,65 +120,120 @@ function PersonCard({
   const location = controller.locationLine(person);
 
   return (
-    <BrandEnter from="up" index={index} skip={skip} style={isWide ? styles.cardWrap : undefined}>
-    <Pressable
-      style={styles.card}
-      onPress={() => controller.goToPerson(person.id)}
-      accessibilityRole="button"
-      accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
-    >
-      <View style={styles.photo}>
-        {person.photoUri ? (
-          <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
-        ) : (
-          <MaterialCommunityIcons name="account" size={isWide ? 56 : 48} color={brand.avatarIcon} />
-        )}
-      </View>
-      <View style={styles.info}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name} numberOfLines={2}>
-            {person.fullName}
-          </Text>
-          <PersonAlertIcon
-            statusId={person.statusId}
-            statusDescription={person.statusDescription}
-            size={16}
-          />
+    <BrandEnter from="up" index={index} skip={skip} style={styles.cell}>
+      <Pressable
+        style={styles.card}
+        onPress={() => controller.goToPerson(person.id)}
+        accessibilityRole="button"
+        accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
+      >
+        <View style={styles.cardPhoto}>
+          {person.photoUri ? (
+            <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
+          ) : (
+            <MaterialCommunityIcons name="account" size={isWide ? 56 : 48} color={brand.avatarIcon} />
+          )}
         </View>
-        <Text style={styles.meta}>{t('Idade: {value}', { value: person.age ?? '—' })}</Text>
-        {location ? (
-          <Text style={styles.meta} numberOfLines={2}>
-            {location}
-          </Text>
-        ) : null}
-        <View style={styles.statusRow}>
-          <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
-            <Text style={[styles.statusBadgeText, { color: badgeTextColor }]} numberOfLines={1}>
-              {statusLabel}
+        <View style={styles.info}>
+          <View style={styles.nameRow}>
+            <Text style={styles.name} numberOfLines={2}>
+              {person.fullName}
             </Text>
+            <PersonAlertIcon
+              statusId={person.statusId}
+              statusDescription={person.statusDescription}
+              size={16}
+            />
+          </View>
+          <Text style={styles.meta}>{t('Idade: {value}', { value: person.age ?? '—' })}</Text>
+          {location ? (
+            <Text style={styles.meta} numberOfLines={2}>
+              {location}
+            </Text>
+          ) : null}
+          <View style={styles.statusRow}>
+            <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
+              <Text style={[styles.statusBadgeText, { color: badgeTextColor }]} numberOfLines={1}>
+                {statusLabel}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
     </BrandEnter>
   );
 }
 
-function makeStyles(brand: BrandColors, isWide: boolean) {
+function PhotoTile({
+  person,
+  index,
+  skip,
+  controller,
+  brand,
+  styles,
+}: {
+  person: Person;
+  index: number;
+  skip: boolean;
+  controller: PessoasDesaparecidasController;
+  brand: BrandColors;
+  styles: ReturnType<typeof makeStyles>;
+}) {
+  const t = useT();
+
+  return (
+    <BrandEnter from="up" index={index} skip={skip} style={styles.cell}>
+      <Pressable
+        style={styles.tile}
+        onPress={() => controller.goToPerson(person.id)}
+        accessibilityRole="button"
+        accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
+      >
+        <View style={styles.tilePhoto}>
+          {person.photoUri ? (
+            <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
+          ) : (
+            <MaterialCommunityIcons name="account" size={32} color={brand.avatarIcon} />
+          )}
+        </View>
+        <Text style={styles.tileName} numberOfLines={2}>
+          {person.fullName}
+        </Text>
+      </Pressable>
+    </BrandEnter>
+  );
+}
+
+/** Mais colunas conforme a janela cresce, para o espaço extra virar conteúdo. */
+function listingColumns(view: 'card' | 'photo', width: number): number {
+  if (view === 'card') {
+    if (width >= 1500) return 3;
+    if (width >= WideLayoutBreakpoint) return 2;
+    return 1;
+  }
+  if (width >= 1700) return 8;
+  if (width >= 1400) return 6;
+  if (width >= WideLayoutBreakpoint) return 5;
+  return 3;
+}
+
+function makeStyles(brand: BrandColors, columns: number, isWide: boolean) {
+  const cellWidth = `${100 / columns}%` as const;
   return StyleSheet.create({
     list: {
-      gap: 12,
       paddingBottom: 96,
       flexGrow: 1,
     },
     row: {
-      gap: 12,
+      alignItems: 'stretch',
     },
-    cardWrap: {
-      flex: 1,
+    cell: {
+      width: cellWidth,
+      paddingHorizontal: 6,
+      paddingBottom: 12,
     },
     card: {
-      flex: isWide ? 1 : undefined,
+      flex: 1,
       flexDirection: 'row',
       minHeight: 112,
       borderRadius: Radius.md,
@@ -175,13 +242,34 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: brand.divider,
     },
-    photo: {
+    cardPhoto: {
       width: isWide ? 120 : 96,
       alignSelf: 'stretch',
       overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: brand.avatarBackground,
+    },
+    tile: {
+      alignItems: 'center',
+      gap: 6,
+    },
+    tilePhoto: {
+      width: '100%',
+      aspectRatio: 1,
+      borderRadius: Radius.sm,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: brand.avatarBackground,
+    },
+    tileName: {
+      width: '100%',
+      textAlign: 'center',
+      color: brand.textDark,
+      fontSize: 13,
+      lineHeight: 17,
+      fontWeight: '700',
     },
     photoImage: {
       position: 'absolute',
@@ -192,10 +280,10 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
     },
     info: {
       flex: 1,
+      justifyContent: 'center',
       paddingHorizontal: 14,
       paddingVertical: 12,
       gap: 4,
-      justifyContent: 'center',
     },
     nameRow: {
       flexDirection: 'row',

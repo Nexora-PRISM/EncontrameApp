@@ -1,16 +1,16 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { forwardRef, useImperativeHandle, useMemo, useRef, type ComponentProps, type RefObject } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 
 import { BrandMap, type BrandMapHandle, type MapPadding } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { InicioController } from '@/features/inicio/inicio.controller';
+import { InicioCategoryFilters } from '@/features/inicio/sections/inicio-category-filters';
 import { InicioMapPreviewSection } from '@/features/inicio/sections/inicio-map-preview-section';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
-import { CATEGORY_FILTERS } from '@/lib/person-category';
 
 type SheetGesture = ComponentProps<typeof GestureDetector>['gesture'];
 
@@ -21,7 +21,7 @@ export const MAP_CARD_OVERLAP = 18;
 interface InicioMapSectionProps {
   controller: InicioController;
   mapPadding?: MapPadding;
-  /** `overlay` cobre a tela (layout largo). `card` é o mapa grande do celular, com filtros. */
+  /** `overlay` preenche a coluna do mapa no desktop. `card` é o mapa grande do celular. */
   variant?: 'overlay' | 'card';
   /** Arrastar a borda de cima do mapa abre ou fecha os cartões dos alertas. */
   sheetGesture?: SheetGesture;
@@ -48,21 +48,50 @@ export const InicioMapSection = forwardRef<BrandMapHandle, InicioMapSectionProps
     }
 
     return (
-      <View style={[StyleSheet.absoluteFill, overlayStyles.wrapper]}>
-        <BrandMap
-          ref={mapRef}
-          pins={controller.pins}
-          userLocation={controller.userLocation}
-          mapPadding={mapPadding}
-          showLocationFab={false}
-          satellite={controller.satellite}
-          onMapPress={controller.clearSelection}
-          style={overlayStyles.map}
-        />
-      </View>
+      <MapOverlay mapRef={mapRef} controller={controller} mapPadding={mapPadding} />
     );
   },
 );
+
+/**
+ * Mapa do desktop: a coluna já fica ao lado da lista. Os filtros de idade ficam no header;
+ * aqui entram satélite e avisos de segurança. "Adicionar aviso" fica na fileira do rodapé.
+ */
+function MapOverlay({
+  mapRef,
+  controller,
+  mapPadding,
+}: {
+  mapRef: RefObject<BrandMapHandle | null>;
+  controller: InicioController;
+  mapPadding?: MapPadding;
+}) {
+  const brand = useBrand();
+  const styles = useMemo(() => makeCardStyles(brand), [brand]);
+
+  return (
+    <View style={[StyleSheet.absoluteFill, overlayStyles.wrapper]}>
+      <BrandMap
+        ref={mapRef}
+        pins={controller.pins}
+        userLocation={controller.userLocation}
+        mapPadding={mapPadding}
+        showLocationFab={false}
+        satellite={controller.satellite}
+        onMapPress={controller.clearSelection}
+        style={overlayStyles.map}
+      />
+      <MapTools
+        controller={controller}
+        brand={brand}
+        styles={styles}
+        top={16}
+        bottom={0}
+        showAddNote={false}
+      />
+    </View>
+  );
+}
 
 /**
  * Mapa grande do celular: filtros por idade no alto; à direita, um grupo de controles (satélite e
@@ -83,10 +112,6 @@ function MapCard({
   const t = useT();
   const brand = useBrand();
   const styles = useMemo(() => makeCardStyles(brand), [brand]);
-  const showEmpty =
-    !controller.showPeopleSkeleton && !controller.hasSelection && controller.personPinsCount === 0;
-  const showAddNote =
-    controller.safetyNotesEnabled && controller.showSafetyNotes && !controller.hasSelection;
 
   return (
     <View style={styles.cardShadow}>
@@ -101,7 +126,7 @@ function MapCard({
           style={styles.map}
         />
 
-        <CategoryChips controller={controller} brand={brand} styles={styles} />
+        <InicioCategoryFilters controller={controller} style={styles.chipsScroller} />
 
         {sheetGesture ? (
           <GestureDetector gesture={sheetGesture}>
@@ -118,61 +143,7 @@ function MapCard({
           </GestureDetector>
         ) : null}
 
-        <View style={styles.controls}>
-          <ControlButton
-            icon={controller.satellite ? 'map-outline' : 'satellite-variant'}
-            label={controller.satellite ? t('Ver mapa comum') : t('Ver imagem de satélite')}
-            active={controller.satellite}
-            onPress={controller.toggleSatellite}
-            brand={brand}
-            styles={styles}
-          />
-          {controller.safetyNotesEnabled ? (
-            <>
-              <View style={styles.controlsDivider} />
-              <ControlButton
-                icon="shield-alert-outline"
-                label={
-                  controller.showSafetyNotes
-                    ? t('Esconder avisos de segurança')
-                    : t('Mostrar avisos de segurança')
-                }
-                active={controller.showSafetyNotes}
-                activeColor={brand.safetyNote}
-                activeIconColor={brand.onSafetyNote}
-                badge={controller.showSafetyNotes ? controller.safetyNotesCount : 0}
-                onPress={controller.toggleSafetyNotes}
-                brand={brand}
-                styles={styles}
-              />
-            </>
-          ) : null}
-        </View>
-
-        {showEmpty ? (
-          <View style={styles.emptyPill} pointerEvents="none">
-            <Text style={styles.emptyText}>
-              {controller.categoryFilter === 'all'
-                ? t('Nenhuma pessoa no mapa por aqui.')
-                : t('Nenhuma pessoa desta faixa de idade no mapa.')}
-            </Text>
-          </View>
-        ) : null}
-
-        {showAddNote ? (
-          <View style={styles.addNoteAnchor} pointerEvents="box-none">
-            <Pressable
-              onPress={controller.goToNewSafetyNote}
-              style={({ pressed }) => [styles.addNote, pressed && styles.pressed]}
-              accessibilityRole="button"
-              accessibilityLabel={t('Adicionar aviso de segurança')}
-              accessibilityHint={t('Avise sobre uma rua ou lugar perigoso')}
-            >
-              <MaterialCommunityIcons name="map-marker-plus-outline" size={20} color={brand.safetyNote} />
-              <Text style={styles.addNoteText}>{t('Adicionar aviso')}</Text>
-            </Pressable>
-          </View>
-        ) : null}
+        <MapTools controller={controller} brand={brand} styles={styles} top={86} bottom={16} />
 
         {controller.hasSelection ? null : (
           <MapMyLocationFab
@@ -237,53 +208,89 @@ function ControlButton({
   );
 }
 
-function CategoryChips({
+function MapTools({
   controller,
   brand,
   styles,
+  top,
+  bottom,
+  showAddNote = true,
 }: {
   controller: InicioController;
   brand: BrandColors;
   styles: CardStyles;
+  top: number;
+  bottom: number;
+  /** No desktop o botão entra na fileira do rodapé, não solto no mapa. */
+  showAddNote?: boolean;
 }) {
   const t = useT();
+  const showEmpty =
+    !controller.showPeopleSkeleton && !controller.hasSelection && controller.personPinsCount === 0;
+  const showAddNoteButton =
+    showAddNote &&
+    controller.safetyNotesEnabled &&
+    controller.showSafetyNotes &&
+    !controller.hasSelection;
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      style={styles.chipsScroller}
-      contentContainerStyle={styles.chipsTrack}
-      accessibilityLabel={t('Filtrar por faixa de idade')}
-    >
-      {CATEGORY_FILTERS.map((filter) => {
-        const selected = controller.categoryFilter === filter.value;
-        return (
-          <Pressable
-            key={filter.value}
-            onPress={() => controller.setCategoryFilter(filter.value)}
-            hitSlop={4}
-            style={({ pressed }) => [
-              styles.chip,
-              selected && styles.chipSelected,
-              pressed && styles.pressed,
-            ]}
-            accessibilityRole="button"
-            accessibilityLabel={t(filter.accessibilityLabel)}
-            accessibilityState={{ selected }}
-          >
-            <MaterialCommunityIcons
-              name={filter.icon}
-              size={16}
-              color={selected ? brand.onPrimary : brand.orange}
+    <>
+      <View style={[styles.controls, { top }]}>
+        <ControlButton
+          icon={controller.satellite ? 'map-outline' : 'satellite-variant'}
+          label={controller.satellite ? t('Ver mapa comum') : t('Ver imagem de satélite')}
+          active={controller.satellite}
+          onPress={controller.toggleSatellite}
+          brand={brand}
+          styles={styles}
+        />
+        {controller.safetyNotesEnabled ? (
+          <>
+            <View style={styles.controlsDivider} />
+            <ControlButton
+              icon="shield-alert-outline"
+              label={
+                controller.showSafetyNotes
+                  ? t('Esconder avisos de segurança')
+                  : t('Mostrar avisos de segurança')
+              }
+              active={controller.showSafetyNotes}
+              activeColor={brand.safetyNote}
+              activeIconColor={brand.onSafetyNote}
+              badge={controller.showSafetyNotes ? controller.safetyNotesCount : 0}
+              onPress={controller.toggleSafetyNotes}
+              brand={brand}
+              styles={styles}
             />
-            <Text style={[styles.chipText, selected && styles.chipTextSelected]}>
-              {t(filter.label)}
-            </Text>
+          </>
+        ) : null}
+      </View>
+
+      {showEmpty ? (
+        <View style={[styles.emptyPill, { top: top + 4 }]} pointerEvents="none">
+          <Text style={styles.emptyText}>
+            {controller.categoryFilter === 'all'
+              ? t('Nenhuma pessoa no mapa por aqui.')
+              : t('Nenhuma pessoa desta faixa de idade no mapa.')}
+          </Text>
+        </View>
+      ) : null}
+
+      {showAddNoteButton ? (
+        <View style={[styles.addNoteAnchor, { bottom }]} pointerEvents="box-none">
+          <Pressable
+            onPress={controller.goToNewSafetyNote}
+            style={({ pressed }) => [styles.addNote, pressed && styles.pressed]}
+            accessibilityRole="button"
+            accessibilityLabel={t('Adicionar aviso de segurança')}
+            accessibilityHint={t('Avise sobre uma rua ou lugar perigoso')}
+          >
+            <MaterialCommunityIcons name="map-marker-plus-outline" size={20} color={brand.safetyNote} />
+            <Text style={styles.addNoteText}>{t('Adicionar aviso')}</Text>
           </Pressable>
-        );
-      })}
-    </ScrollView>
+        </View>
+      ) : null}
+    </>
   );
 }
 
@@ -334,45 +341,16 @@ function makeCardStyles(brand: BrandColors) {
       width: 42,
       height: 4,
       borderRadius: 2,
-      backgroundColor: brand.surface,
+      backgroundColor: brand.onPrimary,
       borderWidth: 1,
-      borderColor: brand.divider,
+      borderColor: brand.scrim,
     },
     chipsScroller: {
       position: 'absolute',
       top: 26,
       left: 0,
       right: 0,
-      flexGrow: 0,
       zIndex: 3,
-    },
-    chipsTrack: {
-      gap: 6,
-      paddingHorizontal: 10,
-      paddingVertical: 4,
-    },
-    chip: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      height: 42,
-      paddingHorizontal: 10,
-      borderRadius: Radius.pill,
-      borderWidth: 1.5,
-      borderColor: brand.orange,
-      backgroundColor: brand.surface,
-    },
-    chipSelected: {
-      backgroundColor: brand.orange,
-      borderColor: brand.orange,
-    },
-    chipText: {
-      fontSize: 14,
-      fontWeight: '800',
-      color: brand.orange,
-    },
-    chipTextSelected: {
-      color: brand.onPrimary,
     },
     pressed: {
       opacity: 0.8,

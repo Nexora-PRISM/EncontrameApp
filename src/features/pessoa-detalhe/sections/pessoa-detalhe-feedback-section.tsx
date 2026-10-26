@@ -7,6 +7,7 @@ import { Radius, type BrandColors } from '@/constants/brand';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
+import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface Props {
   controller: PessoaDetalheController;
@@ -19,14 +20,15 @@ interface Props {
 export function PessoaDetalheFeedbackSection({ controller }: Props) {
   const t = useT();
   const brand = useBrand();
-  const styles = useMemo(() => makeStyles(brand), [brand]);
+  const { isWide } = useWideLayout();
+  const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
 
   if (!controller.person || controller.isLocalPerson) return null;
 
   return (
     <View style={styles.block}>
       <View style={styles.titleRow}>
-        <MaterialCommunityIcons name="flag-outline" size={22} color={brand.blue} />
+        <MaterialCommunityIcons name="flag-outline" size={22} color={brand.orangeText} />
         <Text style={styles.title} accessibilityRole="header">
           {t('Algo errado neste cadastro?')}
         </Text>
@@ -34,19 +36,31 @@ export function PessoaDetalheFeedbackSection({ controller }: Props) {
       <Text style={styles.body}>
         {t('Peça a correção se houver dados errados ou se a pessoa já foi encontrada. Denuncie se o cadastro for falso, um golpe ou puder colocar alguém em risco — inclusive se você é a pessoa cadastrada, está em segurança e não quer ser localizada.')}
       </Text>
-      <BrandButton
-        label={t('Pedir correção ou atualização')}
-        variant="outline"
-        onPress={controller.requestCorrection}
-      />
-      <BrandButton label={t('Denunciar este cadastro')} variant="outline" onPress={controller.reportCase} />
-      {controller.canBlockAuthor ? (
+      <View style={styles.actions}>
         <BrandButton
-          label={t('Bloquear quem publicou')}
+          label={t('Pedir correção ou atualização')}
           variant="outline"
-          onPress={controller.blockAuthor}
+          onPress={controller.requestCorrection}
+          containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+          style={isWide ? styles.ghost : [styles.ghost, styles.actionFull]}
         />
-      ) : null}
+        <BrandButton
+          label={t('Denunciar este cadastro')}
+          variant="outline"
+          onPress={controller.reportCase}
+          containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+          style={isWide ? styles.ghost : [styles.ghost, styles.actionFull]}
+        />
+        {controller.canBlockAuthor ? (
+          <BrandButton
+            label={t('Bloquear quem publicou')}
+            variant="outline"
+            onPress={controller.blockAuthor}
+            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+            style={isWide ? styles.ghost : [styles.ghost, styles.actionFull]}
+          />
+        ) : null}
+      </View>
       <Text style={styles.note}>
         {t('A correção abre o seu app de e-mail. A denúncia fica registrada no app para a equipe analisar.')}
       </Text>
@@ -54,15 +68,36 @@ export function PessoaDetalheFeedbackSection({ controller }: Props) {
   );
 }
 
-function makeStyles(brand: BrandColors) {
+function makeStyles(brand: BrandColors, isWide: boolean) {
   return StyleSheet.create({
     block: {
       gap: 12,
       padding: 14,
       borderRadius: Radius.lg,
-      backgroundColor: brand.surface,
+      backgroundColor: brand.attentionSoft,
       borderWidth: 1,
-      borderColor: brand.divider,
+      borderColor: brand.attentionBorder,
+    },
+    actions: {
+      flexDirection: isWide ? 'row' : 'column',
+      flexWrap: isWide ? 'wrap' : 'nowrap',
+      alignItems: isWide ? 'center' : 'stretch',
+      alignSelf: 'stretch',
+      gap: isWide ? 10 : 12,
+    },
+    actionFull: {
+      width: '100%',
+      alignSelf: 'stretch',
+    },
+    actionSlot: {
+      alignSelf: 'flex-start',
+      flexGrow: 0,
+      flexShrink: 1,
+      maxWidth: '100%',
+    },
+    ghost: {
+      backgroundColor: 'transparent',
+      borderColor: brand.attentionBorder,
     },
     titleRow: {
       flexDirection: 'row',

@@ -5,6 +5,9 @@ import { msg } from '@/lib/i18n-msg';
 import { usePeopleSearchQuery } from '@/services/people/people.service';
 import type { AddressScope, Person } from '@/services/people/people.types';
 
+/** Cartões com detalhes (dois por linha) ou foto quadrada com o nome embaixo. */
+export type PeopleViewMode = 'card' | 'photo';
+
 const SEARCH_DEBOUNCE_MS = 350;
 /** Atalho "Crianças e adolescentes": até 17 anos (ECA). */
 const CHILD_MAX_AGE = '17';
@@ -36,6 +39,7 @@ export function usePessoasDesaparecidasController() {
   const [country, setCountry] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
   const [addressScope, setAddressScope] = useState<AddressScope>('lastSeen');
+  const [view, setView] = useState<PeopleViewMode>('card');
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), SEARCH_DEBOUNCE_MS);
@@ -112,7 +116,11 @@ export function usePessoasDesaparecidasController() {
     addressScope,
     setAddressScope,
     people,
+    view,
+    setView,
+    /** Total da busca já filtrada (não só a página carregada). Some até a primeira resposta. */
     totalCount,
+    countReady: searchQuery.data != null,
     hasActiveFilters,
     loading: searchQuery.isLoading,
     fetchingMore: searchQuery.isFetchingNextPage,

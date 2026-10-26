@@ -14,6 +14,7 @@ import {
 } from '@/features/pessoas-desaparecidas/pessoas-desaparecidas.controller';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
+import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface PessoasDesaparecidasFiltersSectionProps {
   controller: PessoasDesaparecidasController;
@@ -27,12 +28,28 @@ export function PessoasDesaparecidasFiltersSection({
 }: PessoasDesaparecidasFiltersSectionProps) {
   const t = useT();
   const brand = useBrand();
+  const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const statusLabel =
     STATUS_FILTER_OPTIONS.find((option) => option.id === controller.statusId)?.label ?? 'Todos';
   const scopeLabel =
     ADDRESS_SCOPE_OPTIONS.find((option) => option.id === controller.addressScope)?.label ??
     'Última vez vista';
+  const filtersButton = (
+    <BrandButton
+      label={
+        controller.filtersOpen
+          ? t('Ocultar filtros')
+          : controller.hasActiveFilters
+            ? t('Filtros (ativos)')
+            : t('Filtros')
+      }
+      variant="outline"
+      trailingIcon="filter-outline"
+      onPress={controller.toggleFilters}
+      style={isWide ? styles.filtersButtonWide : undefined}
+    />
+  );
 
   return (
     <View style={styles.wrapper}>
@@ -46,40 +63,33 @@ export function PessoasDesaparecidasFiltersSection({
         />
       )}
 
-      <View style={styles.quickRow} accessibilityRole="radiogroup" accessibilityLabel={t('Faixa de idade')}>
-        {[
-          { on: false, label: t('Todas as idades') },
-          { on: true, label: t('Crianças e adolescentes') },
-        ].map((option) => {
-          const selected = controller.childrenOnly === option.on;
-          return (
-            <Pressable
-              key={option.label}
-              onPress={() => controller.setChildrenOnly(option.on)}
-              style={[styles.quickChip, selected && styles.quickChipSelected]}
-              accessibilityRole="radio"
-              accessibilityState={{ selected }}
-            >
-              <Text style={[styles.quickChipText, selected && styles.quickChipTextSelected]}>
-                {option.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
+      <View style={isWide ? styles.toolbar : styles.stack}>
+        {isWide ? null : filtersButton}
 
-      <BrandButton
-        label={
-          controller.filtersOpen
-            ? t('Ocultar filtros')
-            : controller.hasActiveFilters
-              ? t('Filtros (ativos)')
-              : t('Filtros')
-        }
-        variant="outline"
-        trailingIcon="filter-outline"
-        onPress={controller.toggleFilters}
-      />
+        <View style={styles.quickRow} accessibilityRole="radiogroup" accessibilityLabel={t('Faixa de idade')}>
+          {[
+            { on: false, label: t('Todas as idades') },
+            { on: true, label: t('Crianças e adolescentes') },
+          ].map((option) => {
+            const selected = controller.childrenOnly === option.on;
+            return (
+              <Pressable
+                key={option.label}
+                onPress={() => controller.setChildrenOnly(option.on)}
+                style={[styles.quickChip, selected && styles.quickChipSelected]}
+                accessibilityRole="radio"
+                accessibilityState={{ selected }}
+              >
+                <Text style={[styles.quickChipText, selected && styles.quickChipTextSelected]}>
+                  {option.label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        {isWide ? filtersButton : null}
+      </View>
 
       {controller.filtersOpen ? (
         <BrandEnter from="down" withExit>
@@ -161,6 +171,19 @@ function makeStyles(brand: BrandColors) {
   return StyleSheet.create({
     wrapper: {
       gap: 10,
+    },
+    toolbar: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: 28,
+    },
+    stack: {
+      gap: 16,
+    },
+    filtersButtonWide: {
+      alignSelf: 'flex-start',
+      paddingHorizontal: 16,
     },
     quickRow: {
       flexDirection: 'row',

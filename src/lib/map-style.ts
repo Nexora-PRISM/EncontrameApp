@@ -68,29 +68,24 @@ function coolHex(color: string, amount: number): string {
 }
 
 /**
- * Mapa em cinza neutro (claro ou escuro).
- * A água fica um pouco mais fria para continuar legível, sem a cor de destaque.
+ * Mapa neutro. No claro, o papel fica quase branco e as ruas um cinza mais fechado,
+ * para não sumirem no fundo. No escuro continua fechado. Água e parque não usam a cor de destaque.
  */
 export function brandMapStyle(brand: BrandColors, scheme: ColorSchemeName): MapStyleRule[] {
   const isDark = scheme === 'dark';
-  const land = isDark
-    ? mixHex(brand.mapBackground, brand.textDark, 0.08)
-    : mixHex(brand.mapBackground, brand.textDark, 0.22);
+  const land = isDark ? mixHex(brand.mapBackground, brand.textDark, 0.08) : brand.mapBackground;
   const road = isDark
     ? mixHex(land, brand.textDark, 0.28)
-    : mixHex(brand.white, brand.mapBackground, 0.05);
+    : mixHex(brand.mapStroke, brand.textMuted, 0.28);
   const roadStroke = isDark
     ? mixHex(land, brand.textDark, 0.14)
-    : mixHex(land, brand.textDark, 0.16);
-  const localRoad = isDark ? mixHex(road, land, 0.35) : mixHex(road, land, 0.08);
+    : mixHex(brand.mapStroke, brand.textMuted, 0.55);
+  const localRoad = isDark ? mixHex(road, land, 0.35) : brand.mapStroke;
   const highway = isDark
     ? mixHex(road, brand.textDark, 0.16)
-    : mixHex(road, brand.textDark, 0.12);
-  const water = coolHex(
-    isDark ? mixHex(land, brand.textDark, 0.1) : mixHex(land, brand.white, 0.2),
-    isDark ? 0.45 : 0.32,
-  );
-  const park = isDark ? mixHex(land, brand.textDark, 0.12) : mixHex(land, brand.white, 0.28);
+    : mixHex(brand.mapStroke, brand.textMuted, 0.48);
+  const water = isDark ? coolHex(mixHex(land, brand.textDark, 0.1), 0.45) : brand.mapWater;
+  const park = isDark ? mixHex(land, brand.textDark, 0.12) : brand.mapPark;
   const labels = mixHex(brand.textMuted, brand.textDark, 0.55);
   const labelStroke = land;
 

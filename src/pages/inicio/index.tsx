@@ -2,14 +2,14 @@ import { useFocusEffect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BottomBar } from '@/components/bottom-bar';
 import { type BrandMapHandle } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { SofiaFab } from '@/components/sofia-fab';
-import { Radius, type BrandColors } from '@/constants/brand';
-import { InicioSidebarWidth, PageGutter } from '@/constants/theme';
+import { type BrandColors } from '@/constants/brand';
+import { InicioSidebarWidth, WideDockHeight, wideDockBottom, wideFabBottom } from '@/constants/theme';
 import { useAlertsSheetGesture } from '@/features/inicio/alerts-sheet';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { useInicioController, type InicioController } from '@/features/inicio/inicio.controller';
@@ -20,7 +20,8 @@ import { InicioMapSection, MAP_CARD_OVERLAP } from '@/features/inicio/sections/i
 import { InicioMenuDrawerSection } from '@/features/inicio/sections/inicio-menu-drawer-section';
 import { InicioOnboardingSection } from '@/features/inicio/sections/inicio-onboarding-section';
 import { InicioPeopleSidebarSection } from '@/features/inicio/sections/inicio-people-sidebar-section';
-import { InicioTopBarSection } from '@/features/inicio/sections/inicio-top-bar-section';
+import { InicioWideDockSection } from '@/features/inicio/sections/inicio-wide-dock-section';
+import { InicioWideHeaderSection } from '@/features/inicio/sections/inicio-wide-header-section';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
 import { useWideLayout } from '@/lib/use-wide-layout';
@@ -38,45 +39,59 @@ export default function InicioPage() {
 
 function WideInicio({ controller }: { controller: InicioController }) {
   const brand = useBrand();
+  const colorScheme = useBrandColorScheme();
+  const chrome = useHomeChrome();
   const styles = useMemo(() => makeWideStyles(brand), [brand]);
   const mapRef = useRef<BrandMapHandle>(null);
-  const insets = useSafeAreaInsets();
   const bottomInset = useBottomSafeInset();
-  const fabBottom = bottomInset + 8;
-  const sidebarGap = 12;
+  const fabBottom = wideFabBottom(bottomInset);
+  const previewBottom = wideDockBottom(bottomInset) + WideDockHeight + 12;
+  const [focused, setFocused] = useState(true);
   const mapPadding = useMemo(
     () => ({
-      top: insets.top + 12,
-      right: PageGutter,
-      bottom: 16,
-      left: sidebarGap + InicioSidebarWidth + 12,
+      top: 16,
+      right: 16,
+      bottom: bottomInset + 96,
+      left: 16,
     }),
-    [insets.top],
+    [bottomInset],
   );
+
+  useFocusEffect(
+    useCallback(() => {
+      setFocused(true);
+      return () => setFocused(false);
+    }, []),
+  );
+  const overLightSheet = controller.onboardingVisible || controller.menuOpen;
+  const statusStyle = overLightSheet && colorScheme !== 'dark' ? 'dark' : chrome.status;
 
   return (
     <View style={styles.container}>
-      <InicioMapSection ref={mapRef} controller={controller} mapPadding={mapPadding} />
-      <View style={styles.overlay} pointerEvents="box-none">
-        <SafeAreaView style={styles.overlayInner} edges={['top']} pointerEvents="box-none">
-          <View style={styles.sidebar} pointerEvents="auto">
-            <InicioTopBarSection controller={controller} />
-            <InicioPeopleSidebarSection controller={controller} />
+      {focused ? <StatusBar style={statusStyle} /> : null}
+      <InicioWideHeaderSection controller={controller} />
+      <View style={styles.body}>
+        <View style={styles.sidebar}>
+          <InicioPeopleSidebarSection controller={controller} />
+        </View>
+        <View style={styles.mapColumn}>
+          <InicioMapSection ref={mapRef} controller={controller} mapPadding={mapPadding} />
+          {/* Cartão do pin tocado, sobre o mapa (no celular ele fica dentro do mapa). */}
+          <View style={[styles.previewDock, { bottom: previewBottom }]} pointerEvents="box-none">
+            <InicioMapPreviewSection controller={controller} />
           </View>
-          <View style={styles.overlayFill} pointerEvents="none" />
-        </SafeAreaView>
+          <InicioWideDockSection controller={controller} />
+        </View>
       </View>
-      {/* Cartão do pin tocado, ao lado da lista (no celular ele fica dentro do mapa). */}
-      <View style={styles.previewDock} pointerEvents="box-none">
-        <InicioMapPreviewSection controller={controller} />
-      </View>
-      <BottomBar active="home" />
-      <SofiaFab onPress={controller.goToChat} />
-      <MapMyLocationFab
-        onPress={() => mapRef.current?.recenterOnUser()}
-        disabled={!controller.userLocation}
-        style={{ bottom: fabBottom, right: 24, zIndex: 30, elevation: 12 }}
-      />
+      <BottomBar active="home" hideWide />
+      {controller.hasSelection ? null : <SofiaFab onPress={controller.goToChat} />}
+      {controller.hasSelection ? null : (
+        <MapMyLocationFab
+          onPress={() => mapRef.current?.recenterOnUser()}
+          disabled={!controller.userLocation}
+          style={{ bottom: fabBottom, right: 24, zIndex: 30, elevation: 12 }}
+        />
+      )}
       <InicioMenuDrawerSection controller={controller} />
       <InicioOnboardingSection controller={controller} />
     </View>
@@ -142,40 +157,34 @@ function makeWideStyles(brand: BrandColors) {
       flex: 1,
       backgroundColor: brand.mapBackground,
     },
-    overlay: {
-      flex: 1,
-      zIndex: 2,
-    },
-    overlayInner: {
+    body: {
       flex: 1,
       flexDirection: 'row',
+      minHeight: 0,
     },
     sidebar: {
       width: InicioSidebarWidth,
-      marginTop: 8,
-      marginLeft: 12,
-      marginBottom: 12,
-      borderRadius: Radius.lg,
       backgroundColor: brand.surface,
-      borderWidth: 1,
-      borderColor: brand.fieldBorder,
-      overflow: 'hidden',
-      shadowColor: brand.navyDeep,
-      shadowOpacity: 0.18,
-      shadowRadius: 18,
-      shadowOffset: { width: 0, height: 8 },
+      borderRightWidth: StyleSheet.hairlineWidth,
+      borderRightColor: brand.divider,
+      zIndex: 2,
+      shadowColor: brand.scrim,
+      shadowOpacity: 0.12,
+      shadowRadius: 16,
+      shadowOffset: { width: 8, height: 0 },
       elevation: 8,
     },
-    overlayFill: {
+    mapColumn: {
       flex: 1,
+      minWidth: 0,
     },
     previewDock: {
       position: 'absolute',
-      left: InicioSidebarWidth + 28,
-      bottom: 96,
-      width: 440,
+      left: 16,
+      width: 420,
+      maxWidth: '94%',
       height: 0,
-      zIndex: 35,
+      zIndex: 6,
     },
   });
 }

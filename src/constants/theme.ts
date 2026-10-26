@@ -42,13 +42,38 @@ export const Spacing = {
 } as const;
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
-/** Listagem em 2 colunas no desktop precisa de um pouco mais de largura. */
-export const MaxListingWidth = 1100;
 /** Margem horizontal padrão das telas (alinha shell, top bar, forms, etc.). */
 export const PageGutter = Spacing.four;
 /** Telas a partir deste width usam layout em 2 colunas (web/tablet). */
 export const WideLayoutBreakpoint = 768;
+/** Teto da margem no desktop. No celular a margem continua em PageGutter. */
+const DesktopGutterMax = 64;
+
+/**
+ * Margem horizontal das telas.
+ * No celular (e em janelas estreitas) fica em PageGutter. No desktop abre um pouco mais,
+ * para o conteúdo não encostar nas laterais, e para em DesktopGutterMax.
+ */
+export function contentGutter(width: number): number {
+  if (width < WideLayoutBreakpoint) return PageGutter;
+  const scaled = Math.round(width * 0.04);
+  return Math.min(DesktopGutterMax, Math.max(PageGutter, scaled));
+}
+
+/** Altura dos botões em pílula do rodapé do mapa no desktop. */
+export const WideDockHeight = 52;
+/** Diâmetro dos botões circulares (Sofia, minha localização) alinhados a essa fileira. */
+export const WideFabSize = 56;
+
+/** Distância da fileira de botões até a borda inferior da tela. */
+export function wideDockBottom(bottomInset: number): number {
+  return bottomInset + 16;
+}
+
+/** `bottom` do FAB circular para o centro coincidir com o da fileira. */
+export function wideFabBottom(bottomInset: number): number {
+  return wideDockBottom(bottomInset) + (WideDockHeight - WideFabSize) / 2;
+}
 /** Largura do painel esquerdo da home no desktop (lista estilo Maps). */
 export const InicioSidebarWidth = 400;
 

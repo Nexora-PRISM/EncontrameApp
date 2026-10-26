@@ -1,5 +1,5 @@
 import { BrandFab } from '@/components/brand-fab';
-import { InicioSidebarWidth } from '@/constants/theme';
+import { InicioSidebarWidth, wideFabBottom } from '@/constants/theme';
 import { useT } from '@/lib/i18n';
 import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
 import { useWideLayout } from '@/lib/use-wide-layout';
@@ -13,7 +13,7 @@ export function SofiaFab({ onPress }: Props) {
   const t = useT();
   const bottomInset = useBottomSafeInset();
   const { isWide } = useWideLayout();
-  const bottom = isWide ? bottomInset + 8 : bottomInset + 72;
+  const bottom = isWide ? wideFabBottom(bottomInset) : bottomInset + 72;
   const left = isWide ? InicioSidebarWidth + 24 : 24;
 
   return (
