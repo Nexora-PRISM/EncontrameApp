@@ -32,10 +32,9 @@
 
 ### Situação técnica
 
-- **Não existe API ainda.** O recurso nasce com repositório mock (dados fictícios em Belo Horizonte) e repositório
-  axios com o contrato proposto abaixo. A flag `EXPO_PUBLIC_ENABLE_SAFETY_NOTES` liga o recurso: vazia = ligado em
-  desenvolvimento e **desligado em produção**. Com a flag desligada, o mapa, o Menu, o passo a passo e a rota
-  `/aviso-seguranca` escondem o recurso.
+- **Não existe API ainda** (situação desta data). O recurso nasce com repositório mock (dados fictícios em Belo Horizonte) e repositório
+  axios com o contrato proposto abaixo. A flag que escondia o recurso em produção foi removida depois: o mapa, o Menu, o passo a passo e a rota
+  `/aviso-seguranca` mostram os avisos sempre.
 - `/aviso-seguranca` é rota protegida (exige login).
 
 ### Contrato proposto para o backend (.NET)

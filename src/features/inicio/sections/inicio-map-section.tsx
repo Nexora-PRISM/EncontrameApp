@@ -228,10 +228,7 @@ function MapTools({
   const showEmpty =
     !controller.showPeopleSkeleton && !controller.hasSelection && controller.personPinsCount === 0;
   const showAddNoteButton =
-    showAddNote &&
-    controller.safetyNotesEnabled &&
-    controller.showSafetyNotes &&
-    !controller.hasSelection;
+    showAddNote && controller.showSafetyNotes && !controller.hasSelection;
 
   return (
     <>
@@ -244,26 +241,22 @@ function MapTools({
           brand={brand}
           styles={styles}
         />
-        {controller.safetyNotesEnabled ? (
-          <>
-            <View style={styles.controlsDivider} />
-            <ControlButton
-              icon="shield-alert-outline"
-              label={
-                controller.showSafetyNotes
-                  ? t('Esconder avisos de segurança')
-                  : t('Mostrar avisos de segurança')
-              }
-              active={controller.showSafetyNotes}
-              activeColor={brand.safetyNote}
-              activeIconColor={brand.onSafetyNote}
-              badge={controller.showSafetyNotes ? controller.safetyNotesCount : 0}
-              onPress={controller.toggleSafetyNotes}
-              brand={brand}
-              styles={styles}
-            />
-          </>
-        ) : null}
+        <View style={styles.controlsDivider} />
+        <ControlButton
+          icon="shield-alert-outline"
+          label={
+            controller.showSafetyNotes
+              ? t('Esconder avisos de segurança')
+              : t('Mostrar avisos de segurança')
+          }
+          active={controller.showSafetyNotes}
+          activeColor={brand.safetyNote}
+          activeIconColor={brand.onSafetyNote}
+          badge={controller.showSafetyNotes ? controller.safetyNotesCount : 0}
+          onPress={controller.toggleSafetyNotes}
+          brand={brand}
+          styles={styles}
+        />
       </View>
 
       {showEmpty ? (

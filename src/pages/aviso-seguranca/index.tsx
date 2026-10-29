@@ -1,4 +1,3 @@
-import { Redirect } from 'expo-router';
 import { useMemo } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,10 +16,6 @@ export default function AvisoSegurancaPage() {
   const brand = useBrand();
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const controller = useAvisoSegurancaController();
-
-  if (!controller.enabled) {
-    return <Redirect href="/inicio" />;
-  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>

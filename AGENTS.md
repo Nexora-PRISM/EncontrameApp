@@ -42,7 +42,7 @@ src/
     sobre/index.tsx            # "/sobre"            — sobre o app / Nexora Prism
     pedir-ajuda/index.tsx      # "/pedir-ajuda"      — ajuda em tela cheia (destino do atalho da tela inicial)
     regras/index.tsx           # "/regras"           — regras de uso e resumo de privacidade (sem login)
-    aviso-seguranca/index.tsx          # "/aviso-seguranca"          — publicar aviso de segurança (login; flag EXPO_PUBLIC_ENABLE_SAFETY_NOTES)
+    aviso-seguranca/index.tsx          # "/aviso-seguranca"          — publicar aviso de segurança (login)
     alerta-emergencia/index.tsx        # "/alerta-emergencia"        — contagem de 10 s; depois abre o 190
     compartilhar-localizacao/index.tsx # "/compartilhar-localizacao" — localização por WhatsApp, SMS ou outro app
     contatos-confianca/index.tsx       # "/contatos-confianca"       — até 5 contatos, salvos só no aparelho
@@ -151,8 +151,8 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   abrindo o detalhe direto.
 - **Avisos de segurança** (`lib/safety-notes.ts`, `services/safety-notes/`): falam do lugar, nunca de pessoas
   (telefone/CPF/e-mail/@perfil bloqueados); publicar e votar exigem conta; validade de 30 dias renovada por
-  confirmação; denúncia por e-mail. Cor âmbar `safetyNote`. Sem API ainda: não ligue a flag em produção antes do
-  backend (contrato em `safety-notes.axios.repository.ts`).
+  confirmação; denúncia por e-mail. Cor âmbar `safetyNote`. Sempre visíveis no mapa
+  (contrato em `safety-notes.axios.repository.ts`).
 
 ## Regras de produto (honestidade da interface)
 
@@ -217,7 +217,6 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `GOOGLE_MAPS_API_KEY` — só build nativo Android; não vai no Netlify.
 - `EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT` — envio do alerta de emergência à API. Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_MOCK_EMERGENCY_FAIL` — só no mock: `true` simula falha no envio do alerta (para testar a tela "não confirmado").
-- `EXPO_PUBLIC_ENABLE_SAFETY_NOTES` — avisos de segurança no mapa. Vazio: ligado em dev (mock), desligado em produção (falta a API /SafetyNote).
 - `EXPO_PUBLIC_WEB_URL` — endereço público do app web (sem barra no fim); entra no texto de "Divulgar este caso".
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.

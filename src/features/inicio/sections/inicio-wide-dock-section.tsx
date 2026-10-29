@@ -23,8 +23,7 @@ export function InicioWideDockSection({ controller }: { controller: InicioContro
   const bottomInset = useBottomSafeInset();
   const keyboardVisible = useKeyboardVisible();
   const [helpOpen, setHelpOpen] = useState(false);
-  const showAddNote =
-    controller.safetyNotesEnabled && controller.showSafetyNotes && !controller.hasSelection;
+  const showAddNote = controller.showSafetyNotes && !controller.hasSelection;
 
   if (keyboardVisible) return null;
 

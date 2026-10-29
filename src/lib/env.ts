@@ -31,14 +31,6 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT !== 'false'),
   /**
-   * Avisos de segurança no mapa (relatos da comunidade sobre ruas perigosas). Em desenvolvimento
-   * fica ligado (com mocks); em produção só com EXPO_PUBLIC_ENABLE_SAFETY_NOTES=true — ligue quando
-   * a API tiver /SafetyNote (contrato em services/safety-notes/safety-notes.axios.repository.ts).
-   */
-  safetyNotesEnabled:
-    process.env.EXPO_PUBLIC_ENABLE_SAFETY_NOTES === 'true' ||
-    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_SAFETY_NOTES !== 'false'),
-  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

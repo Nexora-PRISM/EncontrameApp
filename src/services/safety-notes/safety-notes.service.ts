@@ -13,7 +13,7 @@ const safetyNotesKeys = {
     ['safety-notes', 'nearby', latitude, longitude] as const,
 };
 
-/** Avisos de segurança perto de um ponto. Desligado sem localização ou com o recurso desligado. */
+/** Avisos de segurança perto de um ponto. Desligado sem localização ou com a camada escondida. */
 export function useNearbySafetyNotesQuery(
   point: { latitude: number; longitude: number } | null,
   enabled: boolean,

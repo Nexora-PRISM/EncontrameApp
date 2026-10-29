@@ -1,4 +1,3 @@
-import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
 
 /**
@@ -23,7 +22,7 @@ export type TutorialStep = {
   message: string;
 };
 
-const ALL_STEPS: readonly TutorialStep[] = [
+export const TUTORIAL_STEPS: readonly TutorialStep[] = [
   {
     illustration: 'welcome',
     title: msg('Oi! Eu sou a Sofia.'),
@@ -79,10 +78,5 @@ const ALL_STEPS: readonly TutorialStep[] = [
     message: msg('Para ver este passo a passo de novo, abra o Menu e toque em "Como usar o app".'),
   },
 ];
-
-/** O passo dos avisos só aparece quando o recurso está ligado nesta versão do app. */
-export const TUTORIAL_STEPS: readonly TutorialStep[] = ALL_STEPS.filter(
-  (step) => step.illustration !== 'safety' || env.safetyNotesEnabled,
-);
 
 export const TUTORIAL_LAST_STEP = TUTORIAL_STEPS.length - 1;

@@ -51,9 +51,8 @@ para a branch do PR, e o robô do Netlify comenta o link no próprio PR.
 
 - O preview usa as variáveis de ambiente do Netlify (API real e chave do Google Maps), então é o melhor lugar para
   conferir o mapa, os pins e o cartão flutuante antes do merge.
-- Recursos com flag desligada em produção (avisos de segurança) também ficam desligados no preview. Para
-  testar os avisos no preview sem a API, dá para criar, só no contexto **Deploy Previews**, as variáveis
-  `EXPO_PUBLIC_USE_MOCKS=true` e `EXPO_PUBLIC_ENABLE_SAFETY_NOTES=true` (o preview passa a usar dados fictícios).
+- Para testar o preview com dados fictícios, dá para criar, só no contexto **Deploy Previews**, a variável
+  `EXPO_PUBLIC_USE_MOCKS=true` (o preview passa a usar dados fictícios, inclusive os avisos de segurança).
 
 Para conferir a configuração: app.netlify.com → projeto `encontrame` → **Site configuration → Build & deploy**
 (branch de produção: `main`) e **Environment variables** (as da tabela acima; depois de mudar, faça um novo deploy).

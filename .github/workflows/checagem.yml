@@ -48,7 +48,6 @@ jobs:
         run: npx expo export --platform web --output-dir dist-demo --clear
         env:
           EXPO_PUBLIC_USE_MOCKS: 'true'
-          EXPO_PUBLIC_ENABLE_SAFETY_NOTES: 'true'
 
       - name: Prints das telas (celular, claro e escuro)
         run: |

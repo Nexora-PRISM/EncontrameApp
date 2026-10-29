@@ -3,7 +3,6 @@ import { type Href, useRouter } from 'expo-router';
 import { useState } from 'react';
 
 import { showAlert } from '@/lib/dialog';
-import { env } from '@/lib/env';
 import { useT } from '@/lib/i18n';
 import { useSafeBack } from '@/lib/safe-back';
 import {
@@ -106,7 +105,6 @@ export function useAvisoSegurancaController() {
   };
 
   return {
-    enabled: env.safetyNotesEnabled,
     goBack,
     point,
     pointChosen: chosenPoint != null,

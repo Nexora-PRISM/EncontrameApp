@@ -8,7 +8,6 @@ import { TUTORIAL_LAST_STEP } from '@/features/inicio/tutorial-steps';
 import { completeAppOnboarding, isAppOnboardingComplete } from '@/lib/app-onboarding';
 import { useBrand, useBrandTheme } from '@/lib/brand-theme';
 import { showAlert } from '@/lib/dialog';
-import { env } from '@/lib/env';
 import { useI18n, useT } from '@/lib/i18n';
 import {
   categoryAgeRange,
@@ -65,8 +64,7 @@ export function useInicioController() {
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
   /** Mapa com imagem de satélite (com nomes de ruas por cima). */
   const [satellite, setSatellite] = useState(false);
-  /** Avisos de segurança da comunidade no mapa (camada liga/desliga). */
-  const safetyNotesEnabled = env.safetyNotesEnabled;
+  /** Camada dos avisos de segurança no mapa (liga/desliga). */
   const [showSafetyNotes, setShowSafetyNotes] = useState(true);
   const [selection, setSelection] = useState<MapSelection>(null);
   const [onboardingVisible, setOnboardingVisible] = useState(false);
@@ -139,11 +137,11 @@ export function useInicioController() {
 
   const notesQuery = useNearbySafetyNotesQuery(
     userLocation ? { latitude: userLocation.latitude, longitude: userLocation.longitude } : null,
-    safetyNotesEnabled && showSafetyNotes,
+    showSafetyNotes,
   );
   const safetyNotes = useMemo<SafetyNote[]>(
-    () => (safetyNotesEnabled && showSafetyNotes ? (notesQuery.data ?? []) : []),
-    [notesQuery.data, safetyNotesEnabled, showSafetyNotes],
+    () => (showSafetyNotes ? (notesQuery.data ?? []) : []),
+    [notesQuery.data, showSafetyNotes],
   );
   const voteMutation = useVoteSafetyNoteMutation();
   const reportMutation = useReportContentMutation();
@@ -345,8 +343,6 @@ export function useInicioController() {
     },
     satellite,
     toggleSatellite: () => setSatellite((current) => !current),
-    /** Avisos de segurança (só quando o recurso está ligado). */
-    safetyNotesEnabled,
     showSafetyNotes,
     toggleSafetyNotes: () => {
       setShowSafetyNotes((current) => !current);

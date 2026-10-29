@@ -149,17 +149,13 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
           color: brand.categoryChild,
           onPress: controller.goToAllPeopleFromMenu,
         },
-        ...(controller.safetyNotesEnabled
-          ? [
-              {
-                key: 'safety-note',
-                label: t('Avisar sobre um lugar perigoso'),
-                icon: 'shield-alert-outline' as const,
-                color: brand.safetyNoteText,
-                onPress: controller.goToNewSafetyNote,
-              },
-            ]
-          : []),
+        {
+          key: 'safety-note',
+          label: t('Avisar sobre um lugar perigoso'),
+          icon: 'shield-alert-outline',
+          color: brand.safetyNoteText,
+          onPress: controller.goToNewSafetyNote,
+        },
       ],
     },
     {
