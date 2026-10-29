@@ -30,8 +30,8 @@ const BrandLight = {
   textDark: '#1F2430',
   textMuted: '#60646C',
   divider: '#DDE2E8',
-  /** Papel do mapa no claro: quase branco, no tom do Google Maps. */
-  mapBackground: '#F7F8F9',
+  /** Papel do mapa no claro: um cinza claro, para a lista branca se separar. */
+  mapBackground: '#E4E9EF',
   mapStroke: '#B4BDC8',
   /** Água e parque do mapa claro. O escuro continua calculado em `map-style`. */
   mapWater: '#D5E6F2',
@@ -111,7 +111,8 @@ const BrandDark = {
   textDark: '#E8EAED',
   textMuted: '#A8AFB8',
   divider: '#3E4752',
-  mapBackground: '#07090B',
+  /** Papel do mapa no escuro: acima do canvas, para a lista ficar mais escura. */
+  mapBackground: '#1A2129',
   mapStroke: '#3E4752',
   mapWater: '#163044',
   mapPark: '#122018',

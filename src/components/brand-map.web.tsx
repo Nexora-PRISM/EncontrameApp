@@ -37,8 +37,10 @@ export type MapPin = {
   emphasized?: boolean;
   zIndex?: number;
   tooltip?: MapPinTooltip;
-  /** Cor do anel em volta da foto/ícone (ex.: faixa de idade). Sem ela, o anel é branco. */
+  /** Cor da borda do avatar (cor do status). Sem ela, a borda fica clara. */
   accentColor?: string;
+  /** Pulso suave na borda — pessoa com status de busca ativa. */
+  pulse?: boolean;
   /** `note`: aviso de segurança da comunidade (marcador âmbar com ícone, sem foto). */
   variant?: 'person' | 'note';
   /** Ícone do marcador `note` (no web o marcador usa sempre o "!"). */
@@ -93,12 +95,13 @@ function userDotSvg(fill: string, ring: string) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="${ring}"/><circle cx="11" cy="11" r="7" fill="${fill}"/></svg>`;
 }
 
-function pinIconSvg(color: string, iconColor: string, locked: boolean) {
+function pinIconSvg(fill: string, ring: string, iconColor: string, locked: boolean, emphasized: boolean) {
   const icon = locked
     ? '<path fill="ICON" d="M17.2 11.4V10a3.2 3.2 0 0 0-6.4 0v1.4H9.2V20h11.6v-8.6h-3.6zm-4.8-1.4a1.6 1.6 0 0 1 3.2 0v1.4h-3.2V10z"/>'
     : '<circle fill="ICON" cx="14" cy="11" r="3.2"/><path fill="ICON" d="M8.2 20v-1.4c0-2.1 2.6-3.4 5.8-3.4s5.8 1.3 5.8 3.4V20H8.2z"/>';
+  const stroke = emphasized ? 4 : 3;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36"><circle cx="14" cy="14" r="12" fill="${color}" stroke="${iconColor}" stroke-width="3"/>${icon.replaceAll('ICON', iconColor)}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36"><circle cx="14" cy="14" r="12" fill="${fill}" stroke="${ring}" stroke-width="${stroke}"/>${icon.replaceAll('ICON', iconColor)}</svg>`;
 }
 
 function photoPinSvg(id: string, photoUri: string, ring: string) {
@@ -120,12 +123,12 @@ function pinIcon(pin: MapPin, brand: BrandColors, emphasized = false) {
       brand.onSafetyNote,
     );
   }
-  const ring = emphasized ? brand.orange : (pin.accentColor ?? brand.onPrimary);
+  const ring = pin.accentColor ?? brand.onPrimary;
   if (pin.photoUri) {
     return photoPinSvg(pin.id, pin.photoUri, ring);
   }
 
-  return pinIconSvg(brand.pin, ring, Boolean(pin.locked));
+  return pinIconSvg(brand.avatarBackground, ring, brand.textMuted, Boolean(pin.locked), emphasized);
 }
 
 function pinIconSize(pin: MapPin, emphasized: boolean) {
@@ -211,6 +214,71 @@ function attachTooltipOverlay(
   return overlay;
 }
 
+const PIN_RIPPLE_STYLE_ID = 'encontrame-pin-ripple';
+
+function ensurePinRippleStyle() {
+  if (typeof document === 'undefined' || document.getElementById(PIN_RIPPLE_STYLE_ID)) {
+    return;
+  }
+
+  const style = document.createElement('style');
+  style.id = PIN_RIPPLE_STYLE_ID;
+  style.textContent = `
+    @keyframes encontrame-pin-ripple {
+      0% { transform: translate(-50%, -50%) scale(0.86); opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) scale(1.9); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+/** Anel que cresce atrás do pin. Fica no pane do mapa, sem bloquear o clique. */
+function attachPinRipple(
+  gmaps: GoogleMapsApi,
+  map: GoogleMap,
+  position: LatLngLiteral,
+  color: string,
+): GoogleOverlayView {
+  ensurePinRippleStyle();
+  const root = document.createElement('div');
+  root.style.position = 'absolute';
+  root.style.width = '0';
+  root.style.height = '0';
+  root.style.pointerEvents = 'none';
+
+  for (const delay of ['0s', '1.15s']) {
+    const ring = document.createElement('span');
+    ring.style.position = 'absolute';
+    ring.style.left = '0';
+    ring.style.top = '0';
+    ring.style.width = '34px';
+    ring.style.height = '34px';
+    ring.style.borderRadius = '50%';
+    ring.style.boxSizing = 'border-box';
+    ring.style.border = `2px solid ${color}`;
+    ring.style.animation = `encontrame-pin-ripple 2.3s ease-out ${delay} infinite`;
+    root.appendChild(ring);
+  }
+
+  const overlay = new gmaps.OverlayView();
+  overlay.onAdd = () => {
+    overlay.getPanes?.()?.overlayLayer?.appendChild(root);
+  };
+  overlay.draw = () => {
+    const point = overlay.getProjection?.()?.fromLatLngToDivPixel(position);
+    if (!point) {
+      return;
+    }
+    root.style.left = `${point.x}px`;
+    root.style.top = `${point.y}px`;
+  };
+  overlay.onRemove = () => {
+    root.remove();
+  };
+  overlay.setMap(map);
+  return overlay;
+}
+
 function dashedPolylineOptions(path: LatLngLiteral[], color: string) {
   return {
     path,
@@ -267,6 +335,7 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   const mapRef = useRef<GoogleMap | null>(null);
   const mapsApiRef = useRef<GoogleMapsApi | null>(null);
   const markersRef = useRef<GoogleMarker[]>([]);
+  const rippleOverlaysRef = useRef<GoogleOverlayView[]>([]);
   const polylinesRef = useRef<GooglePolyline[]>([]);
   const tooltipRef = useRef<GoogleOverlayView | null>(null);
   const clearHighlightRef = useRef<() => void>(() => undefined);
@@ -391,6 +460,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       tooltipRef.current = null;
       markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];
+      rippleOverlaysRef.current.forEach((overlay) => overlay.setMap(null));
+      rippleOverlaysRef.current = [];
       polylinesRef.current.forEach((line) => line.setMap(null));
       polylinesRef.current = [];
       userMarkerRef.current?.setMap(null);
@@ -416,6 +487,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     tooltipRef.current = null;
     markersRef.current.forEach((marker) => marker.setMap(null));
     polylinesRef.current.forEach((line) => line.setMap(null));
+    rippleOverlaysRef.current.forEach((overlay) => overlay.setMap(null));
+    rippleOverlaysRef.current = [];
 
     let stickyId: string | null = null;
     let hoveredId: string | null = null;
@@ -520,6 +593,20 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
       return marker;
     });
 
+    rippleOverlaysRef.current = pins.flatMap((pin) => {
+      if (!pin.pulse || pin.variant === 'note' || !pin.accentColor) {
+        return [];
+      }
+      return [
+        attachPinRipple(
+          gmaps,
+          map,
+          { lat: pin.latitude, lng: pin.longitude },
+          pin.accentColor,
+        ),
+      ];
+    });
+
     polylinesRef.current = polylines.map((line) => {
       const path = line.coordinates.map((point) => ({
         lat: point.latitude,
@@ -544,6 +631,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     return () => {
       hideTooltip();
       clearHighlightRef.current = () => undefined;
+      rippleOverlaysRef.current.forEach((overlay) => overlay.setMap(null));
+      rippleOverlaysRef.current = [];
     };
   }, [brand, pins, polylines, status]);
 

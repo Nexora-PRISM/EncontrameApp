@@ -68,8 +68,8 @@ function coolHex(color: string, amount: number): string {
 }
 
 /**
- * Mapa neutro. No claro, o papel fica quase branco e as ruas um cinza mais fechado,
- * para não sumirem no fundo. No escuro continua fechado. Água e parque não usam a cor de destaque.
+ * Mapa neutro. No claro, o papel fica um cinza claro e as ruas um cinza mais fechado,
+ * para não sumirem no fundo. No escuro o papel fica acima do canvas. Água e parque não usam a cor de destaque.
  */
 export function brandMapStyle(brand: BrandColors, scheme: ColorSchemeName): MapStyleRule[] {
   const isDark = scheme === 'dark';

@@ -20,7 +20,7 @@ import { PageGutter } from '@/constants/theme';
 import { type AlertViewMode } from '@/features/inicio/alerts-sheet';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
-import { useBrand } from '@/lib/brand-theme';
+import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
 import {
@@ -29,7 +29,7 @@ import {
   personCategory,
   personCategoryLabel,
 } from '@/lib/person-category';
-import { isPersonAlertStatus, resolvePersonStatusColor } from '@/lib/person-status';
+import { isPersonAlertStatus, resolvePersonStatusBadge, resolvePersonStatusColor } from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
 const CARD_WIDTH = 244;
@@ -269,10 +269,16 @@ function AlertCard({
   wide?: boolean;
 }) {
   const t = useT();
+  const colorScheme = useBrandColorScheme();
   const category = personCategory(person);
   const categoryLabel = personCategoryLabel(person);
   const accent = category ? categoryColor(brand, category) : brand.divider;
-  const statusColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
+  const statusBadge = resolvePersonStatusBadge(
+    brand,
+    colorScheme,
+    person.statusId,
+    person.statusDescription,
+  );
   const place = person.city || person.neighborhood || person.lastSeen || person.location || '';
   const meta = [person.age != null ? t('{age} anos', { age: person.age }) : null, place]
     .filter(Boolean)
@@ -314,8 +320,8 @@ function AlertCard({
             </View>
           ) : null}
           {person.statusDescription ? (
-            <View style={[styles.tag, { backgroundColor: statusColor }]}>
-              <Text style={[styles.tagText, { color: brand.onStatusBadge }]}>
+            <View style={[styles.tag, { backgroundColor: statusBadge.backgroundColor }]}>
+              <Text style={[styles.tagText, { color: statusBadge.color }]}>
                 {t(person.statusDescription)}
               </Text>
             </View>

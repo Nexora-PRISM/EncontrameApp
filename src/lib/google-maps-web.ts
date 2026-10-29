@@ -40,7 +40,7 @@ export type GoogleOverlayView = {
   onAdd?: () => void;
   draw?: () => void;
   onRemove?: () => void;
-  getPanes?: () => { floatPane?: HTMLElement } | null;
+  getPanes?: () => { floatPane?: HTMLElement; overlayLayer?: HTMLElement } | null;
   getProjection?: () => {
     fromLatLngToDivPixel: (latLng: LatLngLiteral) => { x: number; y: number } | null;
   };

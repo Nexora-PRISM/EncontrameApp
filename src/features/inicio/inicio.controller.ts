@@ -12,11 +12,10 @@ import { env } from '@/lib/env';
 import { useI18n, useT } from '@/lib/i18n';
 import {
   categoryAgeRange,
-  categoryColor,
   matchesCategory,
-  personCategory,
   type CategoryFilter,
 } from '@/lib/person-category';
+import { isPersonSearchingStatus, resolvePersonStatusColor } from '@/lib/person-status';
 import { safetyNoteCategoryInfo } from '@/lib/safety-notes';
 import { signOut } from '@/lib/sign-out';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
@@ -156,7 +155,6 @@ export function useInicioController() {
           return [];
         }
 
-        const category = personCategory(person);
         return [
           {
             id: person.id,
@@ -165,8 +163,8 @@ export function useInicioController() {
             locked: person.restricted,
             photoUri: person.photoUri,
             label: person.nickname ?? person.fullName,
-            // Anel do pin na cor da faixa de idade (sem idade informada, fica branco).
-            accentColor: category ? categoryColor(brand, category) : undefined,
+            accentColor: resolvePersonStatusColor(brand, person.statusId, person.statusDescription),
+            pulse: isPersonSearchingStatus(person.statusId, person.statusDescription),
             emphasized: selection?.kind === 'person' && selection.id === person.id,
             zIndex: selection?.kind === 'person' && selection.id === person.id ? 20 : 2,
             onPress: () => setSelection({ kind: 'person', id: person.id }),

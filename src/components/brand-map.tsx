@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Image, Platform, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { Animated, Image, Platform, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import MapView, { Callout, Circle, Marker, Polyline, type Region } from 'react-native-maps';
 
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
@@ -27,8 +27,10 @@ export type MapPin = {
   emphasized?: boolean;
   zIndex?: number;
   tooltip?: MapPinTooltip;
-  /** Cor do anel em volta da foto/ícone (ex.: faixa de idade). Sem ela, o anel é branco. */
+  /** Cor da borda do avatar (cor do status). Sem ela, a borda fica clara. */
   accentColor?: string;
+  /** Pulso suave na borda — pessoa com status de busca ativa. */
+  pulse?: boolean;
   /** `note`: aviso de segurança da comunidade (marcador âmbar com ícone, sem foto). */
   variant?: 'person' | 'note';
   /** Ícone do marcador `note` (no web o marcador usa sempre o "!"). */
@@ -259,6 +261,44 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   );
 });
 
+function PinRipple({ color, size, delay }: { color: string; size: number; delay: number }) {
+  const progress = useMemo(() => new Animated.Value(0), []);
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.timing(progress, {
+        toValue: 1,
+        duration: 2200,
+        useNativeDriver: true,
+      }),
+    );
+    const start = setTimeout(() => loop.start(), delay);
+    return () => {
+      clearTimeout(start);
+      loop.stop();
+    };
+  }, [delay, progress]);
+
+  const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [0.9, 1.85] });
+  const opacity = progress.interpolate({ inputRange: [0, 0.15, 1], outputRange: [0, 0.45, 0] });
+
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={{
+        position: 'absolute',
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        borderWidth: 2,
+        borderColor: color,
+        opacity,
+        transform: [{ scale }],
+      }}
+    />
+  );
+}
+
 function PersonPinMarker({
   pin,
   brand,
@@ -279,9 +319,12 @@ function PersonPinMarker({
   onSelect: () => void;
 }) {
   const [photoReady, setPhotoReady] = useState(!pin.photoUri);
-  // Selecionado continua laranja; senão, o anel usa a cor do pin (ex.: faixa de idade).
-  const ring =
-    !emphasized && pin.accentColor && pin.variant !== 'note' ? { borderColor: pin.accentColor } : null;
+  const statusRing =
+    pin.variant !== 'note' && pin.accentColor
+      ? { borderColor: pin.accentColor, borderWidth: emphasized ? 4 : 3 }
+      : null;
+  const faceSize = emphasized ? 48 : 36;
+  const showRipple = Boolean(pin.pulse) && pin.variant !== 'note' && pin.accentColor;
 
   return (
     <Marker
@@ -289,7 +332,7 @@ function PersonPinMarker({
       title={pin.tooltip ? undefined : pin.label}
       opacity={pin.opacity ?? 1}
       zIndex={pin.zIndex ?? 1}
-      tracksViewChanges={!photoReady || emphasized}
+      tracksViewChanges={!photoReady || emphasized || Boolean(showRipple)}
       draggable={!isPreview && Boolean(pin.draggable)}
       onDragEnd={(event) => {
         const coordinate = event.nativeEvent.coordinate;
@@ -321,19 +364,29 @@ function PersonPinMarker({
               />
             </View>
           </View>
-        ) : pin.photoUri ? (
-          <Image
-            source={{ uri: pin.photoUri }}
-            style={[emphasized ? styles.pinPhotoLg : styles.pinPhoto, ring]}
-            onLoad={() => setPhotoReady(true)}
-          />
         ) : (
-          <View style={[emphasized ? styles.pinBadgeLg : styles.pinBadge, ring]}>
-            <MaterialCommunityIcons
-              name={pin.locked ? 'lock' : 'account'}
-              size={emphasized ? 20 : 16}
-              color={brand.onPrimary}
-            />
+          <View style={[styles.faceSlot, { width: faceSize, height: faceSize }]}>
+            {showRipple ? (
+              <>
+                <PinRipple color={pin.accentColor!} size={faceSize} delay={0} />
+                <PinRipple color={pin.accentColor!} size={faceSize} delay={1100} />
+              </>
+            ) : null}
+            {pin.photoUri ? (
+              <Image
+                source={{ uri: pin.photoUri }}
+                style={[emphasized ? styles.pinPhotoLg : styles.pinPhoto, statusRing]}
+                onLoad={() => setPhotoReady(true)}
+              />
+            ) : (
+              <View style={[emphasized ? styles.pinBadgeLg : styles.pinBadge, statusRing]}>
+                <MaterialCommunityIcons
+                  name={pin.locked ? 'lock' : 'account'}
+                  size={emphasized ? 20 : 16}
+                  color={brand.textMuted}
+                />
+              </View>
+            )}
           </View>
         )}
         {pin.label && !pin.tooltip ? (
@@ -384,25 +437,29 @@ function makeStyles(brand: BrandColors) {
     pin: {
       alignItems: 'center',
     },
+    faceSlot: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     pinBadge: {
-      width: 28,
-      height: 28,
-      borderRadius: 14,
-      backgroundColor: brand.pin,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: brand.avatarBackground,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 3,
       borderColor: brand.onPrimary,
     },
     pinBadgeLg: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: brand.pin,
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: brand.avatarBackground,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 3,
-      borderColor: brand.orange,
+      borderColor: brand.onPrimary,
     },
     noteBadge: {
       width: 30,

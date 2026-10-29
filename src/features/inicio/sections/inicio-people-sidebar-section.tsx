@@ -12,13 +12,13 @@ import {
 
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
 import { PersonAlertIcon } from '@/components/person-alert-icon';
-import { Radius, type BrandColors } from '@/constants/brand';
+import { Radius, type BrandColors, type ColorSchemeName } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
 import type { InicioController } from '@/features/inicio/inicio.controller';
-import { useBrand } from '@/lib/brand-theme';
+import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { matchesCategory } from '@/lib/person-category';
-import { resolvePersonStatusColor, resolvePersonStatusOnColor } from '@/lib/person-status';
+import { resolvePersonStatusBadge } from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
 interface InicioPeopleSidebarSectionProps {
@@ -29,7 +29,8 @@ interface InicioPeopleSidebarSectionProps {
 export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSectionProps) {
   const t = useT();
   const brand = useBrand();
-  const styles = useMemo(() => makeStyles(brand), [brand]);
+  const colorScheme = useBrandColorScheme();
+  const styles = useMemo(() => makeStyles(brand, colorScheme), [brand, colorScheme]);
   const people = useMemo(
     () => controller.people.filter((person) => matchesCategory(person, controller.categoryFilter)),
     [controller.categoryFilter, controller.people],
@@ -103,9 +104,14 @@ function SidebarPersonRow({
 }) {
   const t = useT();
   const [hovered, setHovered] = useState(false);
+  const colorScheme = useBrandColorScheme();
   const statusLabel = person.statusDescription ? t(person.statusDescription) : '—';
-  const badgeColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
-  const badgeTextColor = resolvePersonStatusOnColor(brand);
+  const statusBadge = resolvePersonStatusBadge(
+    brand,
+    colorScheme,
+    person.statusId,
+    person.statusDescription,
+  );
   const location = controller.locationLine(person);
 
   return (
@@ -140,8 +146,8 @@ function SidebarPersonRow({
             {location ? ` · ${location}` : ''}
           </Text>
           <View style={styles.statusRow}>
-            <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
-              <Text style={[styles.statusBadgeText, { color: badgeTextColor }]} numberOfLines={1}>
+            <View style={[styles.statusBadge, { backgroundColor: statusBadge.backgroundColor }]}>
+              <Text style={[styles.statusBadgeText, { color: statusBadge.color }]} numberOfLines={1}>
                 {statusLabel}
               </Text>
             </View>
@@ -152,7 +158,7 @@ function SidebarPersonRow({
   );
 }
 
-function makeStyles(brand: BrandColors) {
+function makeStyles(brand: BrandColors, colorScheme: ColorSchemeName) {
   return StyleSheet.create({
     panel: {
       flex: 1,
@@ -195,7 +201,7 @@ function makeStyles(brand: BrandColors) {
       borderBottomColor: brand.divider,
     },
     rowActive: {
-      backgroundColor: brand.white,
+      backgroundColor: colorScheme === 'dark' ? brand.surface : brand.white,
     },
     photo: {
       width: 56,

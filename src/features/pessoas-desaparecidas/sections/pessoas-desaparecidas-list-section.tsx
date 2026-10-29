@@ -17,9 +17,9 @@ import { PersonAlertIcon } from '@/components/person-alert-icon';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { WideLayoutBreakpoint } from '@/constants/theme';
 import type { PessoasDesaparecidasController } from '@/features/pessoas-desaparecidas/pessoas-desaparecidas.controller';
-import { useBrand } from '@/lib/brand-theme';
+import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
-import { resolvePersonStatusColor, resolvePersonStatusOnColor } from '@/lib/person-status';
+import { resolvePersonStatusBadge } from '@/lib/person-status';
 import { useWideLayout } from '@/lib/use-wide-layout';
 import type { Person } from '@/services/people/people.types';
 
@@ -114,9 +114,14 @@ function DetailCard({
   isWide: boolean;
 }) {
   const t = useT();
+  const colorScheme = useBrandColorScheme();
   const statusLabel = person.statusDescription ? t(person.statusDescription) : '—';
-  const badgeColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
-  const badgeTextColor = resolvePersonStatusOnColor(brand);
+  const statusBadge = resolvePersonStatusBadge(
+    brand,
+    colorScheme,
+    person.statusId,
+    person.statusDescription,
+  );
   const location = controller.locationLine(person);
 
   return (
@@ -152,8 +157,8 @@ function DetailCard({
             </Text>
           ) : null}
           <View style={styles.statusRow}>
-            <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
-              <Text style={[styles.statusBadgeText, { color: badgeTextColor }]} numberOfLines={1}>
+            <View style={[styles.statusBadge, { backgroundColor: statusBadge.backgroundColor }]}>
+              <Text style={[styles.statusBadgeText, { color: statusBadge.color }]} numberOfLines={1}>
                 {statusLabel}
               </Text>
             </View>

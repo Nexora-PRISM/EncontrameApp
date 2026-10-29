@@ -104,9 +104,9 @@ function MapArt({ brand, styles }: ArtProps) {
     { label: t('Idosos'), filled: false },
   ];
   const pins = [
-    { color: brand.categoryChild, icon: 'human-child' as const, top: 62, left: 34 },
-    { color: brand.categoryAdult, icon: 'account' as const, top: 96, left: 150 },
-    { color: brand.categoryElder, icon: 'human-cane' as const, top: 54, left: 214 },
+    { color: brand.statusProcurando, top: 62, left: 34 },
+    { color: brand.statusEncontrado, top: 96, left: 150 },
+    { color: brand.statusAlerta, top: 54, left: 214 },
   ];
 
   return (
@@ -131,8 +131,14 @@ function MapArt({ brand, styles }: ArtProps) {
         ))}
       </View>
       {pins.map((pin) => (
-        <View key={pin.left} style={[styles.mapPin, { top: pin.top, left: pin.left, borderColor: pin.color }]}>
-          <MaterialCommunityIcons name={pin.icon} size={18} color={pin.color} />
+        <View
+          key={pin.left}
+          style={[
+            styles.mapPin,
+            { top: pin.top, left: pin.left, borderColor: pin.color, backgroundColor: brand.avatarBackground },
+          ]}
+        >
+          <MaterialCommunityIcons name="account" size={18} color={brand.textMuted} />
         </View>
       ))}
       <View style={styles.userDot} />

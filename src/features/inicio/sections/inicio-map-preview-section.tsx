@@ -7,7 +7,7 @@ import { BrandEnter } from '@/components/brand-enter';
 import { PhotoRing } from '@/components/photo-ring';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { InicioController } from '@/features/inicio/inicio.controller';
-import { useBrand } from '@/lib/brand-theme';
+import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
 import {
@@ -16,7 +16,7 @@ import {
   personCategory,
   personCategoryLabel,
 } from '@/lib/person-category';
-import { isPersonAlertStatus, resolvePersonStatusColor } from '@/lib/person-status';
+import { isPersonAlertStatus, resolvePersonStatusBadge } from '@/lib/person-status';
 import {
   publishedAgo,
   safetyNoteCategoryInfo,
@@ -76,11 +76,17 @@ type PreviewProps = { controller: InicioController; brand: BrandColors; styles: 
 
 function PersonPreview({ person, ...props }: PreviewProps & { person: Person }) {
   const t = useT();
+  const colorScheme = useBrandColorScheme();
   const { controller, brand, styles } = props;
   const category = personCategory(person);
   const categoryLabel = personCategoryLabel(person);
   const accent = category ? categoryColor(brand, category) : brand.divider;
-  const statusColor = resolvePersonStatusColor(brand, person.statusId, person.statusDescription);
+  const statusBadge = resolvePersonStatusBadge(
+    brand,
+    colorScheme,
+    person.statusId,
+    person.statusDescription,
+  );
   const place = [person.neighborhood, person.city].filter(Boolean).join(', ') || person.lastSeen || '';
   const meta = [person.age != null ? t('{age} anos', { age: person.age }) : null, place]
     .filter(Boolean)
@@ -117,8 +123,8 @@ function PersonPreview({ person, ...props }: PreviewProps & { person: Person }) 
               </View>
             ) : null}
             {person.statusDescription ? (
-              <View style={[styles.tag, { backgroundColor: statusColor }]}>
-                <Text style={[styles.tagText, { color: brand.onStatusBadge }]}>
+              <View style={[styles.tag, { backgroundColor: statusBadge.backgroundColor }]}>
+                <Text style={[styles.tagText, { color: statusBadge.color }]}>
                   {t(person.statusDescription)}
                 </Text>
               </View>

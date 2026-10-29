@@ -1,5 +1,6 @@
-import type { BrandColors } from '@/constants/brand';
+import type { BrandColors, ColorSchemeName } from '@/constants/brand';
 import { msg } from '@/lib/i18n-msg';
+import { hexToRgba } from '@/lib/map-style';
 
 /** Prefixo dos IDs gravados só no aparelho, antes do sync com a API. */
 export const LOCAL_PERSON_ID_PREFIX = 'local-';
@@ -61,7 +62,42 @@ export function isPersonAlertStatus(statusId?: number, description?: string): bo
   return (description?.trim().toLowerCase() ?? '').includes('alerta');
 }
 
-/** Texto sobre o badge: branco no tema claro, marinho no escuro. */
-export function resolvePersonStatusOnColor(brand: BrandColors): string {
-  return brand.onStatusBadge;
+/** Pessoa em busca ativa: o pin do mapa pulsa na cor deste status. */
+export function isPersonSearchingStatus(statusId?: number, description?: string): boolean {
+  if (statusId === STATUS_PROCURADO) return true;
+  return (description?.trim().toLowerCase() ?? '').includes('procur');
+}
+
+/** Fundo do badge suave. O texto usa a mesma cor, mais escura e opaca. */
+const STATUS_BADGE_BG_ALPHA = 0.18;
+
+/**
+ * Badge de status no formato suave: fundo translúcido e texto na mesma cor, mais fechado.
+ * No escuro o escurecimento é menor, para o texto continuar legível sobre o painel.
+ */
+export function resolvePersonStatusBadge(
+  brand: BrandColors,
+  scheme: ColorSchemeName,
+  statusId?: number,
+  description?: string,
+): { backgroundColor: string; color: string } {
+  const base = resolvePersonStatusColor(brand, statusId, description);
+  return {
+    backgroundColor: hexToRgba(base, STATUS_BADGE_BG_ALPHA),
+    color: darkenHex(base, scheme === 'dark' ? 0.14 : 0.34),
+  };
+}
+
+function darkenHex(color: string, amount: number): string {
+  const match = /^#([0-9a-fA-F]{6})$/.exec(color);
+  if (!match) return color;
+
+  const raw = match[1];
+  const factor = 1 - Math.min(1, Math.max(0, amount));
+  const channels = [0, 2, 4].map((start) =>
+    Math.round(Number.parseInt(raw.slice(start, start + 2), 16) * factor)
+      .toString(16)
+      .padStart(2, '0'),
+  );
+  return `#${channels.join('')}`;
 }

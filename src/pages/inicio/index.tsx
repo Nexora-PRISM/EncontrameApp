@@ -8,7 +8,7 @@ import { BottomBar } from '@/components/bottom-bar';
 import { type BrandMapHandle } from '@/components/brand-map';
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { SofiaFab } from '@/components/sofia-fab';
-import { type BrandColors } from '@/constants/brand';
+import { type BrandColors, type ColorSchemeName } from '@/constants/brand';
 import { InicioSidebarWidth, WideDockHeight, wideDockBottom, wideFabBottom } from '@/constants/theme';
 import { useAlertsSheetGesture } from '@/features/inicio/alerts-sheet';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
@@ -41,7 +41,7 @@ function WideInicio({ controller }: { controller: InicioController }) {
   const brand = useBrand();
   const colorScheme = useBrandColorScheme();
   const chrome = useHomeChrome();
-  const styles = useMemo(() => makeWideStyles(brand), [brand]);
+  const styles = useMemo(() => makeWideStyles(brand, colorScheme), [brand, colorScheme]);
   const mapRef = useRef<BrandMapHandle>(null);
   const bottomInset = useBottomSafeInset();
   const fabBottom = wideFabBottom(bottomInset);
@@ -151,7 +151,7 @@ function PhoneInicio({ controller }: { controller: InicioController }) {
   );
 }
 
-function makeWideStyles(brand: BrandColors) {
+function makeWideStyles(brand: BrandColors, colorScheme: ColorSchemeName) {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -164,7 +164,7 @@ function makeWideStyles(brand: BrandColors) {
     },
     sidebar: {
       width: InicioSidebarWidth,
-      backgroundColor: brand.surface,
+      backgroundColor: colorScheme === 'dark' ? brand.white : brand.surface,
       borderRightWidth: StyleSheet.hairlineWidth,
       borderRightColor: brand.divider,
       zIndex: 2,

@@ -36,7 +36,7 @@
         "cwd": "${workspaceFolder:Front}",
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen",
-        "preLaunchTask": "Back: run-api",
+        "preLaunchTask": "run-api",
         "skipFiles": ["<node_internals>/**"],
         "presentation": {
           "order": 1,
@@ -66,6 +66,40 @@
         "presentation": {
           "order": 2,
           "group": "encontrame"
+        }
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "run-api",
+        "type": "shell",
+        "command": "cmd /c start-api.cmd",
+        "options": {
+          "cwd": "${workspaceFolder:Back}",
+          "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+          }
+        },
+        "isBackground": true,
+        "problemMatcher": {
+          "owner": "dotnet-api",
+          "pattern": {
+            "regexp": "^$"
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "Now listening on:"
+          }
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": false,
+          "clear": true
         }
       }
     ]
