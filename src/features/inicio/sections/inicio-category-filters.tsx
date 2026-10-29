@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Radius, type BrandColors } from '@/constants/brand';
-import type { InicioController } from '@/features/inicio/inicio.controller';
+import type { HomeShellController } from '@/features/inicio/home-shell.controller';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
@@ -15,7 +15,7 @@ export function InicioCategoryFilters({
   style,
   tone = 'map',
 }: {
-  controller: InicioController;
+  controller: HomeShellController;
   style?: StyleProp<ViewStyle>;
   /** `chrome`: transparentes sobre a faixa colorida. `map`: o estilo do celular. */
   tone?: 'map' | 'chrome';

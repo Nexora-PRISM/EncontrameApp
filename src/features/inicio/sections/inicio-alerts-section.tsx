@@ -15,9 +15,10 @@ import Animated, {
 
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
 import { PhotoRing } from '@/components/photo-ring';
+import { StatusRipple } from '@/components/status-ripple';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
-import { type AlertViewMode } from '@/features/inicio/alerts-sheet';
+import { ALERTS_RIPPLE_ROOM, type AlertViewMode } from '@/features/inicio/alerts-sheet';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
@@ -29,7 +30,12 @@ import {
   personCategory,
   personCategoryLabel,
 } from '@/lib/person-category';
-import { isPersonAlertStatus, resolvePersonStatusBadge, resolvePersonStatusColor } from '@/lib/person-status';
+import {
+  isPersonAlertStatus,
+  isPersonSearchingStatus,
+  resolvePersonStatusBadge,
+  resolvePersonStatusColor,
+} from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
 const CARD_WIDTH = 244;
@@ -241,13 +247,20 @@ function AlertAvatar({
       accessibilityRole="button"
       accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
     >
-      <View style={[styles.avatar, { borderColor: statusColor }]}>
-        {person.photoUri ? (
-          <Image source={{ uri: person.photoUri }} style={styles.avatarImage} resizeMode="cover" />
-        ) : (
-          <MaterialCommunityIcons name={categoryIcon(category)} size={28} color={brand.avatarIcon} />
-        )}
-      </View>
+      <StatusRipple
+        active={isPersonSearchingStatus(person.statusId, person.statusDescription)}
+        color={statusColor}
+        size={AVATAR}
+        radius={AVATAR / 2}
+      >
+        <View style={[styles.avatar, { borderColor: statusColor }]}>
+          {person.photoUri ? (
+            <Image source={{ uri: person.photoUri }} style={styles.avatarImage} resizeMode="cover" />
+          ) : (
+            <MaterialCommunityIcons name={categoryIcon(category)} size={28} color={brand.avatarIcon} />
+          )}
+        </View>
+      </StatusRipple>
       <Text style={styles.avatarName} numberOfLines={1}>
         {firstNameOf(person.fullName)}
       </Text>
@@ -291,18 +304,25 @@ function AlertCard({
       accessibilityRole="button"
       accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
     >
-      <PhotoRing
+      <StatusRipple
+        active={isPersonSearchingStatus(person.statusId, person.statusDescription)}
+        color={resolvePersonStatusColor(brand, person.statusId, person.statusDescription)}
         size={PHOTO}
         radius={Radius.md + 2}
-        color={accent}
-        urgent={isPersonAlertStatus(person.statusId, person.statusDescription)}
       >
-        {person.photoUri ? (
-          <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
-        ) : (
-          <MaterialCommunityIcons name={categoryIcon(category)} size={28} color={brand.avatarIcon} />
-        )}
-      </PhotoRing>
+        <PhotoRing
+          size={PHOTO}
+          radius={Radius.md + 2}
+          color={accent}
+          urgent={isPersonAlertStatus(person.statusId, person.statusDescription)}
+        >
+          {person.photoUri ? (
+            <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
+          ) : (
+            <MaterialCommunityIcons name={categoryIcon(category)} size={28} color={brand.avatarIcon} />
+          )}
+        </PhotoRing>
+      </StatusRipple>
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>
           {person.fullName}
@@ -464,6 +484,7 @@ function makeStyles(brand: BrandColors, ink: string, muted: string, glass: strin
     },
     gridContent: {
       paddingHorizontal: PageGutter - 8,
+      paddingTop: ALERTS_RIPPLE_ROOM,
       paddingBottom: 8,
     },
     gridCell: {
@@ -482,6 +503,7 @@ function makeStyles(brand: BrandColors, ink: string, muted: string, glass: strin
       alignItems: 'flex-start',
       gap: AVATAR_GAP,
       paddingHorizontal: PageGutter - 8,
+      paddingTop: ALERTS_RIPPLE_ROOM,
       flexGrow: 1,
     },
     avatarItem: {

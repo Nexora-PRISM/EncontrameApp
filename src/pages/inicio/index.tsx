@@ -24,6 +24,7 @@ import { InicioWideDockSection } from '@/features/inicio/sections/inicio-wide-do
 import { InicioWideHeaderSection } from '@/features/inicio/sections/inicio-wide-header-section';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
+import { useWebShell } from '@/lib/use-web-shell';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 export default function InicioPage() {
@@ -41,6 +42,8 @@ function WideInicio({ controller }: { controller: InicioController }) {
   const brand = useBrand();
   const colorScheme = useBrandColorScheme();
   const chrome = useHomeChrome();
+  // Na web o header, a lista lateral e o menu ficam fixos no layout raiz (WebShellFrame).
+  const inWebShell = useWebShell();
   const styles = useMemo(() => makeWideStyles(brand, colorScheme), [brand, colorScheme]);
   const mapRef = useRef<BrandMapHandle>(null);
   const bottomInset = useBottomSafeInset();
@@ -69,11 +72,13 @@ function WideInicio({ controller }: { controller: InicioController }) {
   return (
     <View style={styles.container}>
       {focused ? <StatusBar style={statusStyle} /> : null}
-      <InicioWideHeaderSection controller={controller} />
+      {inWebShell ? null : <InicioWideHeaderSection controller={controller} />}
       <View style={styles.body}>
-        <View style={styles.sidebar}>
-          <InicioPeopleSidebarSection controller={controller} />
-        </View>
+        {inWebShell ? null : (
+          <View style={styles.sidebar}>
+            <InicioPeopleSidebarSection controller={controller} />
+          </View>
+        )}
         <View style={styles.mapColumn}>
           <InicioMapSection ref={mapRef} controller={controller} mapPadding={mapPadding} />
           {/* Cartão do pin tocado, sobre o mapa (no celular ele fica dentro do mapa). */}
@@ -92,7 +97,7 @@ function WideInicio({ controller }: { controller: InicioController }) {
           style={{ bottom: fabBottom, right: 24, zIndex: 30, elevation: 12 }}
         />
       )}
-      <InicioMenuDrawerSection controller={controller} />
+      {inWebShell ? null : <InicioMenuDrawerSection controller={controller} />}
       <InicioOnboardingSection controller={controller} />
     </View>
   );

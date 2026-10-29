@@ -1,11 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { Image, Keyboard, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
-import type { InicioController } from '@/features/inicio/inicio.controller';
+import type { HomeShellController } from '@/features/inicio/home-shell.controller';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { AppInfo } from '@/lib/app-info';
 import { useBrand } from '@/lib/brand-theme';
@@ -15,7 +15,7 @@ import { useTimedOpacity } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface InicioTopBarSectionProps {
-  controller: InicioController;
+  controller: HomeShellController;
   /** No celular o menu fica no rodapé. No layout largo o botão continua nesta barra. */
   showMenu?: boolean;
   /** Avatar, marca e nome sobre a faixa colorida do desktop. */
@@ -27,6 +27,8 @@ interface InicioTopBarSectionProps {
   /** Quando definido, o campo filtra a lista em vez da busca do mapa. */
   browseQuery?: string;
   onBrowseQueryChange?: (value: string) => void;
+  /** Na faixa do desktop: entre a marca e a busca (filtros rápidos), com a busca à direita. */
+  children?: ReactNode;
 }
 
 export function InicioTopBarSection({
@@ -37,6 +39,7 @@ export function InicioTopBarSection({
   embedded = false,
   browseQuery,
   onBrowseQueryChange,
+  children,
 }: InicioTopBarSectionProps) {
   const t = useT();
   const brand = useBrand();
@@ -128,6 +131,8 @@ export function InicioTopBarSection({
             </View>
           ) : null}
 
+          {children}
+
           <View style={styles.searchCluster}>
             <View style={styles.searchField}>
               <TextInput
@@ -191,6 +196,7 @@ function makeStyles(
 ) {
   return StyleSheet.create({
     wrap: {
+      flex: onChrome ? 1 : undefined,
       flexShrink: onChrome ? 1 : 0,
       minWidth: onChrome ? 0 : undefined,
       paddingHorizontal: onChrome ? 0 : isWide ? 4 : embedded ? 0 : PageGutter,
@@ -221,6 +227,8 @@ function makeStyles(
       flexShrink: 1,
       width: onChrome ? 300 : undefined,
       minWidth: onChrome ? 180 : 0,
+      // Na faixa do desktop a busca encosta à direita; o espaço livre fica entre ela e os filtros.
+      marginLeft: onChrome ? 'auto' : undefined,
       flexDirection: 'row',
       alignItems: 'center',
       gap: onChrome ? 10 : 8,
