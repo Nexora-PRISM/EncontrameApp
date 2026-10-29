@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useMemo } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -31,11 +32,22 @@ export function SofiaWelcomeHeroSection({ controller }: Props) {
         style={[
           styles.content,
           {
-            paddingTop: insets.top + 32,
+            paddingTop: insets.top + 8,
             paddingBottom: insets.bottom + 24,
           },
         ]}
       >
+        <View style={styles.topBar}>
+          <Pressable
+            onPress={controller.skipTutorial}
+            hitSlop={12}
+            style={({ pressed }) => [styles.close, pressed && styles.closePressed]}
+            accessibilityRole="button"
+            accessibilityLabel={t('Pular')}
+          >
+            <MaterialCommunityIcons name="close" size={26} color={palette.onSurface} />
+          </Pressable>
+        </View>
         <View style={styles.badge}>
           <View style={styles.dot} />
           <Text style={styles.badgeText}>{t('Espaço seguro • 100% confidencial')}</Text>
@@ -91,6 +103,20 @@ function makeStyles(palette: SofiaPalette) {
       flex: 1,
       paddingHorizontal: PageGutter,
       alignItems: 'center',
+    },
+    topBar: {
+      alignSelf: 'stretch',
+      alignItems: 'flex-end',
+      minHeight: 44,
+    },
+    close: {
+      width: 44,
+      height: 44,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    closePressed: {
+      opacity: 0.7,
     },
     badge: {
       flexDirection: 'row',

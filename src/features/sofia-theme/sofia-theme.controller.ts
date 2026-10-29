@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 
 import {
@@ -30,7 +30,14 @@ export function useSofiaThemeController() {
     }
   }, [hydrated, paletteId, setPalette]);
 
-  const goBack = useSafeBack('/inicio');
+  const safeBack = useSafeBack('/inicio');
+  const goBack = useCallback(() => {
+    if (fromWelcome) {
+      router.dismissTo('/inicio');
+      return;
+    }
+    safeBack();
+  }, [fromWelcome, router, safeBack]);
 
   const continueToChat = () => {
     void (async () => {
