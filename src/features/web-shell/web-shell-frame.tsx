@@ -56,6 +56,7 @@ function WebShellChrome({
       <View style={styles.header}>
         <InicioWideHeaderSection
           controller={controller}
+          showHelp
           onLayout={(event) => onHeaderHeight(Math.round(event.nativeEvent.layout.height))}
         />
       </View>

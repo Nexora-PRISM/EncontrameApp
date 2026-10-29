@@ -62,7 +62,7 @@ export const TUTORIAL_STEPS: readonly TutorialStep[] = [
     illustration: 'emergency',
     title: msg('Em perigo? Botão vermelho.'),
     message: msg(
-      'O botão vermelho "Pedir ajuda" fica sempre embaixo. No celular, no meio da barra. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.',
+      'O botão vermelho "Pedir ajuda" fica sempre à vista. No celular, no meio da barra de baixo; no computador, no alto da tela. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.',
     ),
   },
   {

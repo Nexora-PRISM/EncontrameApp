@@ -147,7 +147,7 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - Cores das faixas de idade: tokens `category*` em `constants/brand.ts` (nunca vermelho). Os filtros do mapa
   usam a cor primária (`brand.orange`, que acompanha a paleta da Sofia): borda nessa cor e fundo neutro;
   o selecionado preenche o botão.
-- **Web em tela larga**: o header (marca e filtros à esquerda, busca à direita) e a lista "Pessoas próximas" ficam
+- **Web em tela larga**: o header (marca e filtros à esquerda; busca e "Pedir ajuda" à direita) e a lista "Pessoas próximas" ficam
  fixos em todas as páginas (`features/web-shell/web-shell-frame.tsx`, no `_layout`). Busca, filtro, menu e passo a
  passo ficam em `features/inicio/home-shared-state.ts`, para o quadro e o mapa enxergarem o mesmo estado. Não
  recrie header nem lista dentro das páginas; no celular e no app nativo nada disso aparece.

@@ -11,6 +11,7 @@ import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
 import { useKeyboardVisible } from '@/lib/use-keyboard-visible';
+import { useWebShell } from '@/lib/use-web-shell';
 
 /**
  * Fileira do rodapé do mapa no desktop: os botões dividem a mesma linha e o mesmo centro
@@ -22,6 +23,7 @@ export function InicioWideDockSection({ controller }: { controller: InicioContro
   const router = useRouter();
   const bottomInset = useBottomSafeInset();
   const keyboardVisible = useKeyboardVisible();
+  const inWebShell = useWebShell();
   const [helpOpen, setHelpOpen] = useState(false);
   const showAddNote = controller.showSafetyNotes && !controller.hasSelection;
 
@@ -47,17 +49,20 @@ export function InicioWideDockSection({ controller }: { controller: InicioContro
               accessibilityHint={t('Avise sobre uma rua ou lugar perigoso')}
             />
           ) : null}
-          <DockButton
-            icon="alarm-light-outline"
-            iconColor={brand.onEmergency}
-            label={t('Pedir ajuda')}
-            background={brand.emergency}
-            color={brand.onEmergency}
-            pressedBackground={brand.emergencyDark}
-            onPress={() => setHelpOpen(true)}
-            accessibilityLabel={t('Pedir ajuda')}
-            accessibilityHint={t('Mostra os números de emergência e como comunicar um desaparecimento')}
-          />
+          {/* Na web o "Pedir ajuda" fica no header fixo, à direita da busca. */}
+          {inWebShell ? null : (
+            <DockButton
+              icon="alarm-light-outline"
+              iconColor={brand.onEmergency}
+              label={t('Pedir ajuda')}
+              background={brand.emergency}
+              color={brand.onEmergency}
+              pressedBackground={brand.emergencyDark}
+              onPress={() => setHelpOpen(true)}
+              accessibilityLabel={t('Pedir ajuda')}
+              accessibilityHint={t('Mostra os números de emergência e como comunicar um desaparecimento')}
+            />
+          )}
           <DockButton
             icon="account-plus"
             iconColor={brand.onPrimary}

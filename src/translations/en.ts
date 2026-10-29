@@ -179,8 +179,8 @@ export const en: Readonly<Record<string, string>> = {
     'These are the places reported for that person, in date order. The most recent point is highlighted.',
   'histórico trajeto rastro': 'history route trail',
   'O que faz o botão vermelho "Pedir ajuda"?': 'What does the red "Get help" button do?',
-  'Ele fica no centro da barra inferior. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.':
-    'It is in the center of the bottom bar. When you tap it, you can trigger the emergency alert (with a 10-second countdown), choose whom to call (190, 180, 100, 192 or 193), send your location to someone you trust or report a disappearance. The call is made from your phone, like a regular call: the app does not alert the police by itself.',
+  'No celular ele fica no centro da barra inferior; no computador, no alto da tela, ao lado da busca. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.':
+    'On a phone it is in the center of the bottom bar; on a computer, at the top of the screen, next to search. When you tap it, you can trigger the emergency alert (with a 10-second countdown), choose whom to call (190, 180, 100, 192 or 193), send your location to someone you trust or report a disappearance. The call is made from your phone, like a regular call: the app does not alert the police by itself.',
   'emergência 190 polícia ligar socorro botão vermelho pânico':
     'emergency 190 police call help red button panic',
   'Quais números de emergência posso usar?': 'Which emergency numbers can I use?',
@@ -1206,8 +1206,8 @@ export const en: Readonly<Record<string, string>> = {
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
     'On the person\'s page, tap "I saw this person nearby" and mark where you saw them. This helps the family.',
   'Em perigo? Botão vermelho.': 'In danger? Red button.',
-  'O botão vermelho "Pedir ajuda" fica sempre embaixo. No celular, no meio da barra. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
-    'The red "Get help" button is always at the bottom. On a phone, it sits in the middle of the bar. It shows the emergency numbers, like 190. The app does not call the police on its own.',
+  'O botão vermelho "Pedir ajuda" fica sempre à vista. No celular, no meio da barra de baixo; no computador, no alto da tela. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
+    'The red "Get help" button is always in view. On a phone, it sits in the middle of the bottom bar; on a computer, at the top of the screen. It shows the emergency numbers, like 190. The app does not call the police on its own.',
   'Cadastrar e Menu': 'Register and Menu',
   'Para comunicar um desaparecimento, toque em "Cadastrar". No computador, use o botão laranja "Cadastrar pessoa" embaixo do mapa. No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
     'To report a disappearance, tap "Register". On a computer, use the orange "Register a person" button under the map. The "Menu" has Sofia, your profile, settings and help.',

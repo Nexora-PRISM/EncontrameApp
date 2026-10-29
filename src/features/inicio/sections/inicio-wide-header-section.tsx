@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { EmergencyHelpButton } from '@/components/emergency-help-button';
 import type { HomeShellController } from '@/features/inicio/home-shell.controller';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
 import { InicioCategoryFilters } from '@/features/inicio/sections/inicio-category-filters';
@@ -14,9 +15,12 @@ import { InicioTopBarSection } from '@/features/inicio/sections/inicio-top-bar-s
 export function InicioWideHeaderSection({
   controller,
   onLayout,
+  showHelp = false,
 }: {
   controller: HomeShellController;
   onLayout?: (event: LayoutChangeEvent) => void;
+  /** Header fixo da web: o "Pedir ajuda" fica aqui, à direita da busca. */
+  showHelp?: boolean;
 }) {
   const chrome = useHomeChrome();
   const styles = useMemo(() => makeStyles(), []);
@@ -25,7 +29,12 @@ export function InicioWideHeaderSection({
     <View style={[styles.band, { backgroundColor: chrome.background }]} onLayout={onLayout}>
       <SafeAreaView edges={['top']}>
         <View style={styles.row}>
-          <InicioTopBarSection controller={controller} onChrome showBrand>
+          <InicioTopBarSection
+            controller={controller}
+            onChrome
+            showBrand
+            trailing={showHelp ? <EmergencyHelpButton /> : null}
+          >
             <InicioCategoryFilters controller={controller} tone="chrome" style={styles.filters} />
           </InicioTopBarSection>
         </View>
@@ -49,7 +58,7 @@ function makeStyles() {
     filters: {
       flexShrink: 1,
       marginLeft: 10,
-      marginRight: 32,
+      marginRight: 24,
     },
   });
 }

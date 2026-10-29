@@ -13,6 +13,7 @@ import { useT } from '@/lib/i18n';
 import { useBottomSafeInset } from '@/lib/use-bottom-safe-inset';
 import { useTimedOpacity } from '@/lib/use-brand-transition';
 import { useKeyboardVisible } from '@/lib/use-keyboard-visible';
+import { useWebShell } from '@/lib/use-web-shell';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 /** `phone` mantido por compatibilidade com telas antigas; hoje a ajuda é o botão central. */
@@ -98,6 +99,7 @@ export function BottomBar({ active, onMenuPress, hideWide = false }: Props) {
   const bottomInset = useBottomSafeInset();
   const router = useRouter();
   const { isWide } = useWideLayout();
+  const inWebShell = useWebShell();
   const keyboardVisible = useKeyboardVisible();
   const [helpOpen, setHelpOpen] = useState(false);
 
@@ -111,7 +113,8 @@ export function BottomBar({ active, onMenuPress, hideWide = false }: Props) {
     router.push('/cadastrar-pessoa');
   };
 
-  if (isWide && hideWide) return null;
+  // Na web em tela larga o "Pedir ajuda" fica no header fixo (WebShellFrame).
+  if (isWide && (hideWide || inWebShell)) return null;
 
   const helpButton = (
     <Pressable

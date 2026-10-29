@@ -182,8 +182,8 @@ export const es: Readonly<Record<string, string>> = {
     'Son los lugares informados para esa persona, en orden de fecha. El punto más reciente aparece destacado.',
   'histórico trajeto rastro': 'historial trayecto rastro',
   'O que faz o botão vermelho "Pedir ajuda"?': '¿Qué hace el botón rojo "Pedir ayuda"?',
-  'Ele fica no centro da barra inferior. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.':
-    'Está en el centro de la barra inferior. Al tocarlo, puedes activar la alerta de emergencia (con cuenta regresiva de 10 segundos), elegir a quién llamar (190, 180, 100, 192 o 193), enviar tu ubicación a alguien de confianza o comunicar una desaparición. La llamada se hace desde tu celular, como una llamada común: la aplicación no avisa a la policía por sí sola.',
+  'No celular ele fica no centro da barra inferior; no computador, no alto da tela, ao lado da busca. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.':
+    'En el celular está en el centro de la barra inferior; en la computadora, arriba de la pantalla, junto a la búsqueda. Al tocarlo, puedes activar la alerta de emergencia (con cuenta regresiva de 10 segundos), elegir a quién llamar (190, 180, 100, 192 o 193), enviar tu ubicación a alguien de confianza o comunicar una desaparición. La llamada se hace desde tu celular, como una llamada común: la aplicación no avisa a la policía por sí sola.',
   'emergência 190 polícia ligar socorro botão vermelho pânico':
     'emergencia 190 policía llamar socorro botón rojo pánico',
   'Quais números de emergência posso usar?': '¿Qué números de emergencia puedo usar?',
@@ -1219,8 +1219,8 @@ export const es: Readonly<Record<string, string>> = {
   'Na página da pessoa, toque em "Vi essa pessoa por perto" e marque onde você viu. Isso ajuda a família.':
     'En la página de la persona, toca "Vi a esta persona cerca" y marca dónde la viste. Eso ayuda a la familia.',
   'Em perigo? Botão vermelho.': '¿En peligro? Botón rojo.',
-  'O botão vermelho "Pedir ajuda" fica sempre embaixo. No celular, no meio da barra. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
-    'El botón rojo "Pedir ayuda" está siempre abajo. En el celular, en el centro de la barra. Muestra los números de emergencia, como el 190. La app no llama a la policía por sí sola.',
+  'O botão vermelho "Pedir ajuda" fica sempre à vista. No celular, no meio da barra de baixo; no computador, no alto da tela. Ele mostra os números de emergência, como o 190. O app não chama a polícia sozinho.':
+    'El botón rojo "Pedir ayuda" está siempre a la vista. En el celular, en el centro de la barra de abajo; en la computadora, arriba de la pantalla. Muestra los números de emergencia, como el 190. La app no llama a la policía por sí sola.',
   'Cadastrar e Menu': 'Registrar y Menú',
   'Para comunicar um desaparecimento, toque em "Cadastrar". No computador, use o botão laranja "Cadastrar pessoa" embaixo do mapa. No "Menu" ficam a Sofia, o seu perfil, as configurações e a ajuda.':
     'Para comunicar una desaparición, toca "Registrar". En la computadora, usa el botón naranja "Registrar persona" debajo del mapa. En el "Menú" están Sofia, tu perfil, la configuración y la ayuda.',
