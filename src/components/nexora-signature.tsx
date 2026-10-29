@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Image, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { BrandPalettes, type BrandColors } from '@/constants/brand';
+import { type BrandColors } from '@/constants/brand';
 import { AppInfo } from '@/lib/app-info';
 import { useBrand } from '@/lib/brand-theme';
 import { hexToRgba } from '@/lib/map-style';
@@ -35,8 +35,7 @@ export function NexoraSignature({ tone = 'auto', size = 'md', style }: Props) {
           style={styles.mark}
           resizeMode="contain"
         />
-        <Text style={styles.nexora}>NEXORA</Text>
-        <Text style={styles.prism}>PRISM</Text>
+        <Text style={styles.name}>Nexora Prism</Text>
       </View>
     </View>
   );
@@ -45,7 +44,6 @@ export function NexoraSignature({ tone = 'auto', size = 'md', style }: Props) {
 function makeStyles(brand: BrandColors, tone: 'auto' | 'onDark', size: 'sm' | 'md') {
   const onDark = tone === 'onDark';
   const scale = size === 'sm' ? 0.85 : 1;
-  const pink = onDark ? BrandPalettes.dark.nexoraPink : brand.nexoraPink;
 
   return StyleSheet.create({
     wrap: {
@@ -64,20 +62,14 @@ function makeStyles(brand: BrandColors, tone: 'auto' | 'onDark', size: 'sm' | 'm
       gap: 6 * scale,
     },
     mark: {
-      width: 20 * scale,
-      height: 18 * scale,
+      width: 24 * scale,
+      height: 24 * scale,
     },
-    nexora: {
-      fontSize: 15 * scale,
+    name: {
+      fontSize: 16 * scale,
       fontWeight: '800',
-      letterSpacing: 2 * scale,
+      letterSpacing: 0.3 * scale,
       color: onDark ? brand.onPrimary : brand.textDark,
-    },
-    prism: {
-      fontSize: 15 * scale,
-      fontWeight: '600',
-      letterSpacing: 4 * scale,
-      color: pink,
     },
   });
 }
