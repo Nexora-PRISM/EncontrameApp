@@ -75,6 +75,11 @@ jobs:
         env:
           EXPO_PUBLIC_USE_MOCKS: 'true'
           EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS: 'true'
+          EXPO_PUBLIC_ENABLE_CASE_TIMELINE: 'true'
+          EXPO_PUBLIC_ENABLE_SEARCH_NETWORK: 'true'
+          EXPO_PUBLIC_ENABLE_AI_ASSIST: 'true'
+          EXPO_PUBLIC_ENABLE_VOLUNTEERS: 'true'
+          EXPO_PUBLIC_ENABLE_VISION: 'true'
 
       - name: Prints das telas (celular, claro e escuro)
         run: |
@@ -83,6 +88,11 @@ jobs:
           npx serve dist-demo -l 4173 > /tmp/serve.log 2>&1 &
           sleep 3
           node .github/scripts/preview-screenshots.js http://localhost:4173 prints
+        continue-on-error: true
+
+      # Abre as telas da evolução no build de demonstração e anota erros de JavaScript ou texto que não apareceu.
+      - name: Teste de fumaça das telas da evolução (dados fictícios)
+        run: node .github/scripts/smoke-routes.js http://localhost:4173
         continue-on-error: true
 
       - name: Guardar os prints

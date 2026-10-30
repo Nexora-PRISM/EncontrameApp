@@ -82,6 +82,15 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_VOLUNTEERS === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_VOLUNTEERS !== 'false'),
   /**
+   * Encontra-me Vision: rede de câmeras participantes (cobertura por região, painel do responsável por câmera e
+   * ambiente institucional com operações, preservação de imagens, correspondências e trajeto). Nenhum endpoint existe
+   * ainda na API (docs/evolucao/VISION.md). Em desenvolvimento fica ligado com dados de demonstração; em produção só
+   * com EXPO_PUBLIC_ENABLE_VISION=true, depois da API, dos convênios e da avaliação jurídica.
+   */
+  visionEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_VISION === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_VISION !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

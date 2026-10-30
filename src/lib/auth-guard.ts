@@ -12,12 +12,18 @@ const PROTECTED_PREFIXES = [
   '/meus-relatos',
   // Evolução: Painel da equipe (a API confirma se a conta é da equipe).
   '/equipe',
+  // Evolução (Encontra-me Vision): painel do responsável por câmera e ambiente institucional.
+  // A cobertura pública ("/vision") continua aberta, sem conta.
+  '/vision/minhas-cameras',
+  '/vision/pedidos',
+  '/vision/institucional',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */
 const ALLOWED_RETURN_TO = [
   ...PROTECTED_PREFIXES,
   '/inicio',
+  '/vision',
   '/pessoa',
   '/configuracoes',
   '/ajuda',
