@@ -1,4 +1,9 @@
-import { create as createAxios, type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import {
+  create as createAxios,
+  type AxiosError,
+  type AxiosRequestConfig,
+  type InternalAxiosRequestConfig,
+} from 'axios';
 
 import { notifyApiError } from '@/lib/api-error-events';
 import { apiErrorDisplayMessage } from '@/lib/api-errors';
@@ -18,13 +23,19 @@ import {
 } from '@/lib/session';
 import { getAuthRepository } from '@/services/auth/auth.repository';
 
-type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean; quietErrors?: boolean };
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    /** Opção do app (não vai ao servidor): a tela trata a falha sozinha, sem o modal global de erro. */
+    quietErrors?: boolean;
+  }
+}
+
+type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
 /**
- * Opção de requisição (não vai ao servidor): a tela trata a falha sozinha, sem o modal global de erro.
  * Ex.: `api.get(url, QUIET)` ao verificar se a conta é da equipe (403 é resposta esperada).
  */
-export const QUIET = { quietErrors: true } as const;
+export const QUIET: AxiosRequestConfig = { quietErrors: true };
 
 /**
  * Instância única do axios usada pelos repositórios *.axios.repository.ts.
