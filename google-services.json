@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "874116283790",
+    "project_id": "encontrameapp-10b4c",
+    "storage_bucket": "encontrameapp-10b4c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874116283790:android:c7d73c492d71eeab9eb8df",
+        "android_client_info": {
+          "package_name": "com.nexoraprism.encontrame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLQ-syH54PYiQTnyG32vn2b3QtWzDm4uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
