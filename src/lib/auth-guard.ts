@@ -8,6 +8,8 @@ const PROTECTED_PREFIXES = [
   '/sofia-perfil',
   '/perfil',
   '/aviso-seguranca',
+  // Evolução: relatos da própria conta (GET /SightingReport/mine é autenticado).
+  '/meus-relatos',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */

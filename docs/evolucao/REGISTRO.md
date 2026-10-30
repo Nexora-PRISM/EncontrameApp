@@ -125,3 +125,17 @@ alinhar os contratos com o que já existe: histórico de situações (`MissingPe
 **Depende de integração (só para a versão completa)**: `GET /MissingPerson/{id}/timeline`. A versão montada com os
 dados de hoje não depende de nada novo.
 
+---
+
+## Revisão das etapas 1 e 2 (30/10/2026)
+
+Revisão do código antes de seguir, conforme o prompt "Evolução do Encontra-me + Encontra-me Vision" (parte 1).
+
+| Problema encontrado | Correção | Arquivo |
+|---|---|---|
+| Depois de entrar na conta pela tela "Meus relatos", o app não voltava para ela: a rota não estava na lista de destinos permitidos do login | `/meus-relatos` passou a ser rota protegida (como `/perfil`): sem conta, o app leva ao login e volta depois | `src/lib/auth-guard.ts` |
+| Toque duplo em "Enviar relato" podia mandar o mesmo relato duas vezes (a busca do endereço acontece antes do envio, com o botão ainda livre) | Trava de envio em andamento no relato completo | `src/features/pessoa-detalhe/pessoa-detalhe.controller.ts` |
+
+Também conferido: variáveis e imports sem uso (nenhum), rotas novas e proteção de login, traduções (completas) e
+os 31 testes das regras (todos passando).
+

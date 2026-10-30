@@ -76,6 +76,8 @@ export function usePessoaDetalheController() {
   const submitReportMutation = useSubmitSightingReportMutation();
   const [locationSource, setLocationSource] = useState<SightingLocationSource>('address');
   const [receipt, setReceipt] = useState<SightingReceipt | null>(null);
+  /** Evita dois envios do mesmo relato por toque duplo (a busca do endereço acontece antes do envio). */
+  const reportInFlight = useRef(false);
   const historyQuery = useLastSeenHistoryQuery(id, historyOpen);
 
   const person = personQuery.data ?? null;
@@ -444,73 +446,83 @@ export function usePessoaDetalheController() {
     }
   };
 
-  const submitSighting = () => {
-    void (async () => {
-      if (isLocalPersonId(id)) {
+  const runSubmitSighting = async () => {
+    if (isLocalPersonId(id)) {
+      return;
+    }
+
+    if (getSessionUser() == null) {
+      router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href);
+      return;
+    }
+
+    setAddressError(undefined);
+    setFormMessage(undefined);
+    // No relato completo, valida os outros campos antes, para mostrar todos os erros de uma vez.
+    const seenAt = reportEnabled ? reportForm.validate() : null;
+
+    let point = coords;
+    const trimmed = address.trim();
+    if (!point) {
+      if (!trimmed) {
+        setAddressError(t(fieldErrorMessage('location', 'required')));
         return;
       }
 
-      if (getSessionUser() == null) {
-        router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href);
+      if (suggestions.length > 0) {
+        setAddressError(t('Escolha um endereço da lista.'));
         return;
       }
 
-      setAddressError(undefined);
-      setFormMessage(undefined);
-      // No relato completo, valida os outros campos antes, para mostrar todos os erros de uma vez.
-      const seenAt = reportEnabled ? reportForm.validate() : null;
-
-      let point = coords;
-      const trimmed = address.trim();
+      point = await geocodeAddress(trimmed);
       if (!point) {
-        if (!trimmed) {
-          setAddressError(t(fieldErrorMessage('location', 'required')));
-          return;
-        }
-
-        if (suggestions.length > 0) {
-          setAddressError(t('Escolha um endereço da lista.'));
-          return;
-        }
-
-        point = await geocodeAddress(trimmed);
-        if (!point) {
-          setAddressError(t('Não encontramos esse endereço. Tente outro ou use sua localização.'));
-          return;
-        }
-      }
-
-      if (reportEnabled) {
-        if (!seenAt) {
-          setFormMessage(t('Confira os campos destacados.'));
-          return;
-        }
-        await submitFullReport(
-          {
-            personId: id,
-            location: trimmed || t('Localização atual'),
-            latitude: point.latitude,
-            longitude: point.longitude,
-            locationSource,
-          },
-          seenAt,
-        );
+        setAddressError(t('Não encontramos esse endereço. Tente outro ou use sua localização.'));
         return;
       }
+    }
 
-      try {
-        await reportMutation.mutateAsync({
+    if (reportEnabled) {
+      if (!seenAt) {
+        setFormMessage(t('Confira os campos destacados.'));
+        return;
+      }
+      await submitFullReport(
+        {
+          personId: id,
           location: trimmed || t('Localização atual'),
           latitude: point.latitude,
           longitude: point.longitude,
-        });
-        setFormOpen(false);
-        setAddress('');
-        setCoords(null);
-        setSuggestions([]);
-        setThanksOpen(true);
-      } catch {
-        setFormMessage(t('Não foi possível registrar o avistamento. Tente novamente.'));
+          locationSource,
+        },
+        seenAt,
+      );
+      return;
+    }
+
+    try {
+      await reportMutation.mutateAsync({
+        location: trimmed || t('Localização atual'),
+        latitude: point.latitude,
+        longitude: point.longitude,
+      });
+      setFormOpen(false);
+      setAddress('');
+      setCoords(null);
+      setSuggestions([]);
+      setThanksOpen(true);
+    } catch {
+      setFormMessage(t('Não foi possível registrar o avistamento. Tente novamente.'));
+    }
+  };
+
+  const submitSighting = () => {
+    if (reportEnabled && reportInFlight.current) return;
+    if (reportEnabled) reportInFlight.current = true;
+    void (async () => {
+      try {
+        await runSubmitSighting();
+      } finally {
+        if (reportEnabled) reportInFlight.current = false;
       }
     })();
   };
