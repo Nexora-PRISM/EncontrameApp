@@ -1,5 +1,5 @@
 import { type Href, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { isReceiptConfirmed, type VolunteerError, type VolunteerWay, validateVolunteer } from '@/lib/collaboration-rules';
 import { confirmAction, showAlert } from '@/lib/dialog';
@@ -27,14 +27,16 @@ export function useQueroAjudarController() {
   const [errors, setErrors] = useState<VolunteerError[]>([]);
   const [message, setMessage] = useState<string | undefined>();
 
-  useEffect(() => {
-    if (!profile) return;
+  // Preenche o formulário quando o cadastro salvo chega (ajuste durante a renderização, sem efeito).
+  const [filledFrom, setFilledFrom] = useState<typeof profile>(null);
+  if (profile && profile !== filledFrom) {
+    setFilledFrom(profile);
     setRegion(profile.region);
     setWays(profile.ways);
     setAvailability(profile.availability ?? '');
     setAlerts(profile.alerts);
     setAccepted(true);
-  }, [profile]);
+  }
 
   const clear = (key: VolunteerError) => setErrors((current) => current.filter((item) => item !== key));
 
