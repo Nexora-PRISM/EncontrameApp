@@ -19,7 +19,8 @@ export function useLinhaDoTempoController() {
   const goBack = useSafeBack(`/pessoa/${id}` as Href);
   const personQuery = usePersonQuery(id);
   const timelineQuery = useCaseTimelineQuery(id);
-  const events = timelineQuery.data?.events ?? [];
+  const data = timelineQuery.data;
+  const events = useMemo(() => data?.events ?? [], [data]);
   const counts = useMemo(() => countByClassification(events), [events]);
 
   const formatWhen = (event: CaseTimelineEvent) => {

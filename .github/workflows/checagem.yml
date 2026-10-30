@@ -34,10 +34,32 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      - name: Checagem (tipos + lint + traduções)
-        run: npm run check
+      # As três partes do "npm run check" em passos separados: cada falha aparece com arquivo e linha
+      # nas anotações do GitHub (inclusive erros de leitura do ESLint, que não trazem nome de regra).
+      - name: Tipos (TypeScript)
+        run: npm run typecheck
+
+      - name: Lint (ESLint)
+        if: ${{ !cancelled() }}
+        run: |
+          status=0
+          npx eslint . --format json --output-file eslint-report.json || status=$?
+          node .github/scripts/lint-annotations.js eslint-report.json
+          exit $status
+
+      - name: Traduções
+        if: ${{ !cancelled() }}
+        run: |
+          status=0
+          npm run --silent i18n:check > i18n-report.txt 2>&1 || status=$?
+          cat i18n-report.txt
+          if [ "$status" -ne 0 ]; then
+            grep -vE '^\s*$' i18n-report.txt | head -40 | sed 's/^/::error title=Traduções::/'
+          fi
+          exit $status
 
       - name: Testes das regras de negócio (node --test)
+        if: ${{ !cancelled() }}
         run: npm test
 
       - name: Formatação (Biome, só informativo)
