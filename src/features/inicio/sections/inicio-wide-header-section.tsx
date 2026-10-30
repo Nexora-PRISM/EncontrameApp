@@ -9,8 +9,8 @@ import { InicioCategoryFilters } from '@/features/inicio/sections/inicio-categor
 import { InicioTopBarSection } from '@/features/inicio/sections/inicio-top-bar-section';
 
 /**
- * Faixa na cor do tema, acima do mapa no desktop: marca e filtros rápidos por idade à
- * esquerda, busca à direita.
+ * Faixa na cor do tema, acima do mapa no desktop: marca e busca à esquerda, filtros rápidos
+ * por idade à direita.
  */
 export function InicioWideHeaderSection({
   controller,
@@ -57,8 +57,9 @@ function makeStyles() {
     },
     filters: {
       flexShrink: 1,
-      marginLeft: 10,
-      marginRight: 24,
+      // Encosta os filtros à direita; o espaço livre fica entre a busca e eles.
+      marginLeft: 'auto',
+      paddingLeft: 24,
     },
   });
 }

@@ -27,9 +27,9 @@ interface InicioTopBarSectionProps {
   /** Quando definido, o campo filtra a lista em vez da busca do mapa. */
   browseQuery?: string;
   onBrowseQueryChange?: (value: string) => void;
-  /** Na faixa do desktop: entre a marca e a busca (filtros rápidos), com a busca à direita. */
+  /** Na faixa do desktop: depois da busca, encostado à direita (filtros rápidos). */
   children?: ReactNode;
-  /** Na faixa do desktop: depois da busca (o "Pedir ajuda" da web). */
+  /** Na faixa do desktop: no fim da linha (o "Pedir ajuda" da web). */
   trailing?: ReactNode;
 }
 
@@ -122,7 +122,13 @@ export function InicioTopBarSection({
           ) : null}
 
           {showBrand ? (
-            <View style={styles.logo} accessibilityRole="header" accessibilityLabel={AppInfo.name}>
+            <Pressable
+              onPress={controller.goToHome}
+              hitSlop={6}
+              style={({ pressed }) => [styles.logo, pressed && styles.pressed]}
+              accessibilityRole="link"
+              accessibilityLabel={t('{name}: voltar ao início', { name: AppInfo.name })}
+            >
               <Image
                 source={require('@/assets/images/encontrame-mark.png')}
                 style={styles.mark}
@@ -131,10 +137,8 @@ export function InicioTopBarSection({
               <Text style={styles.brandName} numberOfLines={1}>
                 {AppInfo.name}
               </Text>
-            </View>
+            </Pressable>
           ) : null}
-
-          {children}
 
           <View style={styles.searchCluster}>
             <View style={styles.searchField}>
@@ -197,6 +201,8 @@ export function InicioTopBarSection({
             )}
           </View>
 
+          {children}
+
           {trailing}
         </View>
 
@@ -252,8 +258,7 @@ function makeStyles(
       flexShrink: onChrome ? 3 : 1,
       width: onChrome ? 380 : undefined,
       minWidth: onChrome ? 200 : 0,
-      // Na faixa do desktop a busca encosta à direita; o espaço livre fica entre ela e os filtros.
-      marginLeft: onChrome ? 'auto' : undefined,
+      marginLeft: onChrome ? 10 : undefined,
       flexDirection: 'row',
       alignItems: 'center',
       gap: onChrome ? 10 : 8,

@@ -1331,4 +1331,5 @@ export const es: Readonly<Record<string, string>> = {
   'Motivo (aviso falso, ofensivo, preconceituoso, cita pessoas, já não é verdade, outro):':
     'Motivo (aviso falso, ofensivo, con prejuicios, menciona a personas, ya no es verdad, otro):',
   'Novo aviso de segurança': 'Nuevo aviso de seguridad',
+  '{name}: voltar ao início': '{name}: volver al inicio',
 };

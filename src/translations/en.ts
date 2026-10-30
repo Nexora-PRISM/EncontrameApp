@@ -1317,4 +1317,5 @@ export const en: Readonly<Record<string, string>> = {
   'Motivo (aviso falso, ofensivo, preconceituoso, cita pessoas, já não é verdade, outro):':
     'Reason (false, offensive, prejudiced, mentions people, no longer true, other):',
   'Novo aviso de segurança': 'New safety note',
+  '{name}: voltar ao início': '{name}: back to home',
 };

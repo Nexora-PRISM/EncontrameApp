@@ -102,6 +102,10 @@ export function useHomeShellController() {
     menuOpen,
     openMenu: () => updateHomeState({ menuOpen: true }),
     closeMenu,
+    /** Logo do header: volta ao Início (já no Início, não faz nada). */
+    goToHome: () => {
+      if (!onHome) goHome();
+    },
     goToPerson: (personId: string) => router.push(`/pessoa/${personId}` as Href),
     goToChat: () =>
       goTo(() => {
