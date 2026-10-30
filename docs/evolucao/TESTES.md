@@ -1,5 +1,28 @@
 # Relatório de testes
 
+## Encontra-me Vision e verificação geral (30/10/2026)
+
+Checagem automática do GitHub no commit `c49b5e5` da branch `evolucao`: **tudo verde**.
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Tipos (TypeScript, dependências reais) | `npm run typecheck` na checagem | Passou |
+| Lint (ESLint + regras do React Compiler) | `npx eslint .` na checagem, com anotações por arquivo | Passou (a regra de `setState` em efeito pegou "Quero ajudar"; corrigido em `b4a443e`) |
+| Traduções | `npm run i18n:check` na checagem; `--strict` no ambiente da IA | Passou: 1723 textos em inglês e espanhol, nenhum faltando |
+| Regras de negócio | `npm test` | **95 de 95** (19 novos do Vision) |
+| Build web (Netlify) e build de demonstração | `npx expo export --platform web` | Passou |
+| Telas no navegador (Chromium, celular 412 px, dados fictícios) | `.github/scripts/smoke-routes.js` no build de demonstração | **21 de 21**: `/vision`, `/central-de-apoio`, `/quero-ajudar`, linha do tempo, cartaz, minhas câmeras, cadastro de câmera, ambiente institucional (pedido de habilitação), "Meus relatos", troca para coordenação, operação e as 6 abas, operação sem evidência ("Evidências insuficientes"), auditoria e nova operação — sem erro de JavaScript |
+| Três ambientes e permissões do Vision | Testes de `can`/`decideAccess` + fumaça com perfis | Passou |
+| Aparelho físico, leitor de tela e app nativo | Manual | **Pendente** |
+
+Observações:
+
+- No primeiro teste de fumaça, as operações apareceram como "só para autoridades" depois de recarregar a página: o
+  perfil de demonstração ficava só na memória. Agora o navegador lembra o perfil escolhido (`c49b5e5`).
+- O cartaz de um caso "Pendente" mostra "disponível depois que a equipe aprovar" (comportamento esperado); a fumaça
+  usa um caso em busca.
+
+
 ## Etapa 3 — Cartaz digital com QR Code (30/10/2026)
 
 | Verificação | Como | Resultado |
