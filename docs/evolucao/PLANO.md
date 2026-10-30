@@ -10,7 +10,7 @@ Legenda: **Feita** (código pronto e validado na checagem) · **Em andamento** �
 
 | Etapa | Funcionalidade | O que entra | Depende do backend | Situação |
 |---|---|---|---|---|
-| 0 | Ambiente independente | Cópia separada, branch `evolucao`, checagem automática, testes com `node --test`, documentação | Não | Em andamento (falta o repositório privado no GitHub) |
+| 0 | Ambiente independente | Branch `evolucao` separada, checagem automática, testes com `node --test`, documentação | Não | Feita (branch no GitHub) |
 | 1 | "Eu vi essa pessoa" (F2) | Relato completo: data, horário, descrição, roupa, características, direção, foto opcional, referência; correção do local; número e status do relato; "Meus relatos"; limite contra envios repetidos | Sim: `POST /SightingReport`, `GET /SightingReport/mine` | Código pronto; falta a checagem completa no GitHub e a API |
 | 2 | Linha do tempo (F4) | Eventos do caso com classificação (confirmado, informado no cadastro, aguardando análise, não confirmado, corrigido); local só com bairro e cidade | Só a versão completa (`GET /MissingPerson/{id}/timeline`); a versão básica usa a API de hoje | Código pronto; falta a checagem completa no GitHub |
 | 3 | Cartaz digital com QR Code (F6) | Cartaz vertical, quadrado e para impressão; link público; QR Code que segue o status do caso | Não (usa a API de hoje e `EXPO_PUBLIC_WEB_URL`) | Código pronto; falta a checagem completa no GitHub. "Salvar como imagem" depende de biblioteca nova |

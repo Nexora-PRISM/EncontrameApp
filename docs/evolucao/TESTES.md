@@ -8,7 +8,7 @@
 | QR Code lido por um leitor de verdade | 71 QR Codes gerados (versões 1 a 10, links de casos, acentos e emoji) renderizados em PNG e lidos com OpenCV (`cv2.QRCodeDetector`) | 71 de 71 lidos com o texto exato. Na primeira tentativa (8 px por módulo), 66 de 71; os outros 5 foram lidos em outro tamanho de imagem — limitação conhecida do detector do OpenCV, não do código (as mesmas versões e máscaras foram lidas em outros casos) |
 | Traduções | `node scripts/check-i18n.js --strict` | OK: 1139 textos |
 | Tipos entre os arquivos da evolução | `tsc` com declarações simplificadas | Nenhum erro |
-| Tipos completos, lint, build web e prints | Checagem automática do GitHub | **Pendente**: depende do repositório privado |
+| Tipos completos, lint, build web e prints | Checagem automática do GitHub | **Pendente**: roda no GitHub depois do envio da branch |
 | Impressão no navegador e leitura do QR impresso com celular | Manual | **Pendente** |
 
 Roteiro manual: abrir um caso em busca › "Cartaz com QR Code"; trocar o formato; desligar idade, data e
@@ -23,7 +23,7 @@ câmera do celular (deve abrir a página do caso). Abrir o cartaz de um caso Enc
 | Regras da linha do tempo e do relato | `npm test` (31 testes no total, 14 novos) | 31 de 31 passaram, no ambiente da IA |
 | Traduções | `node scripts/check-i18n.js --strict` | OK: 1108 textos, nenhum faltando |
 | Tipos entre os arquivos novos e alterados | `tsc` com declarações simplificadas das bibliotecas | Nenhum erro nos arquivos das etapas 1 e 2 |
-| Tipos completos, lint e build web | Checagem automática do GitHub | **Pendente**: depende do repositório privado |
+| Tipos completos, lint e build web | Checagem automática do GitHub | **Pendente**: roda no GitHub depois do envio da branch |
 
 Casos cobertos: classificação e tipo vindos da API (inclusive em português; tipo desconhecido é descartado e
 classificação desconhecida vira "Não confirmado"); local resumido sem rua, número, CEP nem texto genérico; linha do
@@ -41,8 +41,8 @@ cidade; repetir com `EXPO_PUBLIC_ENABLE_CASE_TIMELINE=false` (linha do tempo mon
 | Traduções em inglês e espanhol | `node scripts/check-i18n.js --strict` | OK: 1072 textos, nenhum faltando, nenhum erro |
 | Sintaxe dos arquivos alterados | Compilador TypeScript, arquivo por arquivo | OK |
 | Tipos entre os arquivos novos e alterados | `tsc` com declarações simplificadas das bibliotecas (sem `node_modules`) | Nenhum erro nos arquivos da etapa |
-| Tipos completos, lint (ESLint) e build web | Checagem automática do GitHub | **Pendente**: depende do repositório privado |
-| Teste visual (celular, claro e escuro) | Prints gerados pela checagem automática | **Pendente**: depende do repositório privado |
+| Tipos completos, lint (ESLint) e build web | Checagem automática do GitHub | **Pendente**: roda no GitHub depois do envio da branch |
+| Teste visual (celular, claro e escuro) | Prints gerados pela checagem automática | **Pendente**: roda no GitHub depois do envio da branch |
 | Teste em aparelho | Expo Go ou build de validação | Não feito |
 
 ### Casos cobertos pelos testes automáticos

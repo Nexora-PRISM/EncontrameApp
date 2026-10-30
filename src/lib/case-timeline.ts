@@ -74,7 +74,7 @@ export const TIMELINE_ACTOR_LABEL: Readonly<Record<TimelineActor, string>> = {
   system: msg('Sistema'),
 };
 
-/** Nome da situação do caso pelo id da API (StatusIds no backend). */
+/** Nome da situação do caso pelo id da API (mesmos ids de `lib/person-status.ts`). */
 export const CASE_STATUS_LABEL_BY_ID: Readonly<Record<number, string>> = {
   1: msg('Pendente'),
   2: msg('Procurado'),

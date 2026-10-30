@@ -1,7 +1,6 @@
 # Contratos de API propostos para o backend .NET
 
-O backend fica em outro repositório (`Nexora-PRISM/EncontrameApi`), consultado **só para leitura**: nada foi alterado
-lá. Os contratos abaixo são **propostas**: o app já está pronto para eles (repositório axios), mas cada recurso só deve
+O backend fica em outro repositório (privado), consultado **só para leitura**: nada foi alterado lá. Os contratos abaixo são **propostas**: o app já está pronto para eles (repositório axios), mas cada recurso só deve
 ser ligado em produção depois que a API existir e for testada. Até lá, a variável `EXPO_PUBLIC_ENABLE_*` correspondente fica desligada em produção.
 
 Convenções seguidas, iguais às do app atual: JSON em camelCase, autenticação pelo token da sessão (header
@@ -9,20 +8,18 @@ Convenções seguidas, iguais às do app atual: JSON em camelCase, autenticaçã
 
 ## O que a API de hoje já tem (consulta somente leitura em 30/10/2026)
 
-O repositório `Nexora-PRISM/EncontrameApi` (commit `56ac40d`) foi lido, sem nenhuma alteração. Pontos que afetam os
-contratos abaixo:
+O backend foi consultado só para leitura, sem nenhuma alteração. Como esta branch fica num repositório público,
+aqui entram só comportamentos que o próprio app já deixa ver, sem detalhes internos da API (o repositório da API é
+privado). Pontos que afetam os contratos abaixo:
 
-- Rotas no padrão `api/[controller]` (o `EXPO_PUBLIC_API_URL` do app já termina em `/api`). Camadas:
-  Controller → Service (`EcontrameApi.Application`) → I*Repository → Repository (Infrastructure) → `AppDbContext`.
-  Toda mudança no backend precisa de testes unitários e de integração (regra do repositório da API).
-- **Avistamento hoje:** `POST /MissingPerson/{id}/last-seen` grava direto um `PersonLastSeen` (que passa a ser o
-  último local do caso) e avisa quem acompanha o caso (`NotificationTexts.SightingAdded`). **Não há análise antes.**
-- `PersonLastSeen` já tem `UserId` e `DtLastSeen`, mas `PersonLastSeenDto` (o histórico) não devolve `DtLastSeen`.
-- Situações do caso (`StatusIds`): 1 Pendente, 2 Procurado, 3 Encontrado, 4 Alerta, 99 Cancelado. Só a equipe
-  (`Moderation:StaffUserIds`) muda a situação, por `POST /Moderation/missing-person/{id}/status`, com transições
-  permitidas. Cada mudança vira uma linha em `MissingPersonStatus` (com data): o histórico já existe no banco, mas
-  não há endpoint que o devolva.
-- Denúncias (`ContentReport`) aceitam `GroupMessage`, `MissingPerson` e `SafetyNote`; não há alvo para relato.
+- Rotas no padrão `/<Recurso>` sob `/api` (o `EXPO_PUBLIC_API_URL` do app já termina em `/api`). Toda mudança no
+  backend segue as regras do repositório da API, inclusive testes unitários e de integração.
+- **Avistamento hoje:** `POST /MissingPerson/{id}/last-seen` vira na hora o último local do caso e gera aviso para
+  quem acompanha o caso. **Não há análise antes.**
+- O histórico de avistamentos devolve quando o registro foi feito, mas não quando a pessoa foi vista.
+- Situações do caso: 1 Pendente, 2 Procurado, 3 Encontrado, 4 Alerta, 99 Cancelado. Só a equipe muda a situação,
+  com transições permitidas. O histórico das mudanças já fica guardado no servidor, mas não há endpoint que o devolva.
+- Denúncias aceitam mensagem do grupo, caso e aviso de segurança; ainda não há denúncia de relato.
 
 ---
 
@@ -122,16 +119,15 @@ Mais recentes primeiro. Só os relatos da própria conta.
 
 O app também aceita os nomes em português, com ou sem acento. Valor desconhecido aparece como "Recebido".
 
-### Como encaixar no backend atual (sugestão)
+### Como encaixar no backend (sugestão)
 
-- Entidade nova `SightingReport` (com `UserId`, `MissingPersonId`, campos do relato, `Status`, `DtRegistration`) e
-  `SightingReportStatusChange` (quem mudou, quando, situação anterior e nova, justificativa) para a auditoria.
-- `ISightingReportRepository` + `SightingReportRepository`, `SightingReportService`, `SightingReportController`
-  (`[Authorize]`), registro no `Program.cs`, migration e testes (unitários e de integração com `EncontrameApiFactory`).
-- Quando a equipe considerar um relato relevante e aprová-lo como informação do caso, o serviço cria o
-  `PersonLastSeen` (com `DtLastSeen = seenAt`) e só então chama `OnSightingAddedAsync`. Assim o aviso aos seguidores
-  deixa de sair para relatos não verificados.
-- Incluir `SightingReport` como alvo de `ContentReport` (denúncia de abuso no relato).
+- Um registro novo de relato (quem enviou, caso, campos do relato, situação, data) e o histórico de cada mudança de
+  situação (quem mudou, quando, situação anterior e nova, justificativa) para a auditoria.
+- Endpoints autenticados seguindo a arquitetura e as regras de testes do repositório da API.
+- Quando a equipe aprovar um relato como informação do caso, o servidor cria o registro de "visto por último" (com a
+  data em que a pessoa foi vista) e só então avisa quem acompanha o caso. Assim o aviso deixa de sair para relatos
+  não verificados.
+- Permitir denunciar um relato (abuso), como já acontece com casos e avisos de segurança.
 
 ### Endpoints de moderação (para a etapa 4, ainda não usados pelo app)
 
@@ -192,16 +188,16 @@ Pública para casos visíveis (mesmas regras do `GET /MissingPerson/{id}`). Só 
 | `place` | Bairro, cidade e estado. **Nunca** rua, número ou ponto exato de avistamento |
 | `note` | Texto público (ex.: atualização da família aprovada). O app não traduz |
 
-De onde tirar cada tipo no banco atual:
+De onde vem cada tipo:
 
 | Tipo | Fonte |
 |---|---|
-| `disappearance` | `PersonLastSeen` criado com o caso (`DtLastSeen`) |
-| `case_registered` | `MissingPerson.DtRegistration` |
-| `status_change`, `closed` | `MissingPersonStatus` (linha anterior e atual) |
-| `sighting` | `SightingReport` analisado (etapa 1) ou `PersonLastSeen` posteriores, com a classificação da análise |
-| `family_update`, `search_expanded`, `correction` | Tabela nova de eventos do caso, com autor, data e evento corrigido (auditoria: nada some sem registro) |
+| `disappearance` | Registro de "visto por último" criado com o caso (data informada no cadastro) |
+| `case_registered` | Data de cadastro do caso |
+| `status_change`, `closed` | Histórico de mudanças de situação, que o servidor já guarda |
+| `sighting` | Relato analisado (etapa 1) ou avistamentos posteriores, com a classificação da análise |
+| `family_update`, `search_expanded`, `correction` | Registro novo de eventos do caso, com autor, data e evento corrigido (auditoria: nada some sem registro) |
 
-Melhoria pequena e útil já agora: devolver `dtLastSeen` em `PersonLastSeenDto`, para o histórico mostrar quando a
-pessoa foi vista, e não só quando o registro foi feito.
+Melhoria pequena e útil já agora: o histórico de avistamentos devolver também a data em que a pessoa foi vista
+(`dtLastSeen`), e não só quando o registro foi feito.
 

@@ -9,9 +9,8 @@ Cada etapa tem commits próprios na branch `evolucao`. Para ver os commits de um
 
 **O que foi feito**
 
-- Cópia separada a partir da `main` do original, commit `7cc8304`, sem nenhum vínculo com o repositório original
-  (sem remote apontando para ele).
-- Branch `main` (base intocada) e branch `evolucao` (trabalho).
+- Linha de desenvolvimento separada a partir da `main`, commit `7cc8304`, na branch `evolucao` (enviada ao GitHub
+  em 30/10/2026, a pedido; sem pull request, merge ou deploy). `main` e as outras branches não foram tocadas.
 - Checagem automática do GitHub também na `evolucao`, com `npm test`. Nada nela publica o app.
 - Testes de regras de negócio com o executor nativo do Node (`node --test`), sem dependência nova.
 - Documentação em `docs/evolucao/` e aviso no `AGENTS.md`.
@@ -101,9 +100,9 @@ Com a variável desligada (produção hoje), nada muda: o app continua com o reg
    situação, atualizações da família, buscas ampliadas e correções.
 6. Os locais aparecem só com bairro, cidade e estado. Rua, número e CEP são retirados.
 
-**Consulta ao backend.** O repositório `Nexora-PRISM/EncontrameApi` foi lido (somente leitura, nenhuma alteração) para
-alinhar os contratos com o que já existe: histórico de situações (`MissingPersonStatus`), `PersonLastSeen` com
-`DtLastSeen` e o envio direto de avistamentos, hoje sem análise. Detalhes em `CONTRATOS-API.md`.
+**Consulta ao backend.** O repositório da API foi lido (somente leitura, nenhuma alteração) para alinhar os contratos
+com o que já existe: o histórico de situações já guardado no servidor, a data em que a pessoa foi vista e o envio
+direto de avistamentos, hoje sem análise. Detalhes em `CONTRATOS-API.md`.
 
 **Arquivos**
 

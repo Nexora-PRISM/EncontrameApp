@@ -1,36 +1,41 @@
 # Encontra-me — versão independente de evolução
 
-Este repositório é uma **cópia separada** do Encontra-me, feita para desenvolver as novas funcionalidades sem tocar no
-aplicativo que já está no ar. Ele não publica nada.
+Esta é a **branch `evolucao`** do repositório `Nexora-PRISM/EncontrameApp`: uma linha de desenvolvimento separada,
+para criar as novas funcionalidades sem tocar no aplicativo que já está no ar. Ela não publica nada.
 
-## Regras desta cópia
+> **Integrar e publicar ficam com o dono do app.** Esta branch não tem pull request, merge nem deploy. Quem decide
+> se, quando e o que entra no app oficial é o dono do app.
+
+## Regras desta branch
 
 | Pode | Não pode |
 |---|---|
-| Criar telas, componentes, serviços, testes e documentação | Mexer no repositório original `Nexora-PRISM/EncontrameApp` (nenhum commit, branch, merge ou PR lá) |
-| Alterar arquivos copiados do original, **só aqui** | Publicar na Google Play ou na App Store |
+| Criar telas, componentes, serviços, testes e documentação | Mexer em `main`, `versao-original`, `desenvolvimento` ou qualquer outra branch existente |
+| Alterar arquivos do app, **só nesta branch** | Abrir pull request, fazer merge ou rebase em outra branch |
+| Enviar commits para a branch `evolucao` | Publicar na Google Play ou na App Store |
 | Rodar a checagem automática (tipos, lint, traduções, testes, build web) | Fazer atualização OTA (EAS Update) ou deploy do site |
 | Gerar builds de validação, quando autorizados | Mexer no backend, em bancos ou em notificações reais |
 
-- Autorização para **desenvolver** não é autorização para **integrar** no original.
+- Autorização para **desenvolver** não é autorização para **integrar** na `main`.
 - Autorização para **integrar** não é autorização para **publicar**. Cada uma é pedida separadamente aos sócios.
 - Não há sincronização automática com o original.
 
-## De onde esta cópia partiu
+## De onde esta branch partiu
 
-- Repositório original: `https://github.com/Nexora-PRISM/EncontrameApp` (consultado só para leitura em 30/10/2026).
-- Base: branch `main` do original, commit `7cc8304` ("feat: adicionado google-services.json").
-- Neste repositório, a branch `main` guarda essa base **sem alteração** (serve de comparação na hora de integrar).
+- Repositório: `https://github.com/Nexora-PRISM/EncontrameApp`.
+- Base: branch `main`, commit `7cc8304` ("feat: adicionado google-services.json"), de 30/10/2026.
+- O repositório é **público**: esta branch fica visível para qualquer pessoa. Por isso a documentação não traz
+  detalhes internos da API (que é privada).
 
 ## Branches
 
 | Branch | Para que serve |
 |---|---|
-| `main` | Cópia fiel do original em `7cc8304`. Não recebe commits. |
+| `main` | Versão oficial. **Não é tocada** por este trabalho. |
+| `versao-original` | Cópia congelada de 15/10/2026. **Não é tocada.** |
 | `evolucao` | Onde as etapas são desenvolvidas, uma por vez, cada uma em commits identificáveis. |
-| `feature/...` | Opcional, para uma etapa grande. Volta para `evolucao` por pull request. |
 
-Para ver tudo o que mudou em relação ao original: `git diff main..evolucao --stat`.
+Para ver tudo o que mudou em relação à base: `git diff 7cc8304..evolucao --stat`.
 Para desfazer uma etapa: `git revert` dos commits dela (listados em `REGISTRO.md`).
 
 ## Como retomar o trabalho
@@ -57,13 +62,13 @@ Para desfazer uma etapa: `git revert` dos commits dela (listados em `REGISTRO.md
 | `TESTES.md` | O que foi testado em cada etapa e o resultado |
 | `PROBLEMAS-CONHECIDOS.md` | Bloqueios, riscos e itens experimentais |
 
-## Quando os sócios decidirem atualizar o app original
+## Quando o dono do app decidir atualizar o app oficial
 
-Nada é levado ao original sem autorização expressa. Nesse momento, o roteiro é:
+Nada é levado à `main` sem autorização expressa, e a integração é feita pelo dono do app. Roteiro sugerido:
 
 1. Comparar `main` com `evolucao` e listar as melhorias.
 2. Explicar cada funcionalidade e dizer o que está pronto e o que depende da API.
 3. Listar os arquivos do original que mudariam e os possíveis conflitos.
 4. Os sócios escolhem o que entra.
 5. Preparar backup, plano de integração e plano de reversão.
-6. Só então, com autorização, abrir o pull request no original. Publicar é outra autorização.
+6. O dono do app faz a integração. Publicar é outra decisão, também dele.

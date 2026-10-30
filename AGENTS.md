@@ -3,13 +3,14 @@
 > Fonte única de verdade para IA (Cursor lê `AGENTS.md`; Claude lê `CLAUDE.md`, que importa este arquivo via `@AGENTS.md`).
 > Leia este arquivo inteiro **antes de qualquer implementação**.
 
-## Esta é a versão independente de evolução
+## Esta é a versão independente de evolução (branch `evolucao`)
 
-Este repositório é uma **cópia separada** do Encontra-me (`EncontrameApp-Evolucao`), criada em 30/10/2026 a partir
-do commit `7cc8304` da `main` do original. Antes de qualquer coisa, leia `docs/evolucao/README.md`.
+Esta branch é uma linha de desenvolvimento separada, criada em 30/10/2026 a partir do commit `7cc8304` da `main`.
+Antes de qualquer coisa, leia `docs/evolucao/README.md`.
 
-- **Nunca** faça commit, branch, merge, PR ou push no repositório original `Nexora-PRISM/EncontrameApp`.
-- Trabalhe na branch `evolucao` (a `main` daqui guarda a base sem alteração, para comparação).
+- Commits **só** na branch `evolucao`. Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
+- Sem pull request, merge, rebase ou deploy: integrar e publicar ficam com o dono do app.
+- O repositório é público: não coloque segredos nem detalhes internos da API (privada) nesta branch.
 - **Nada é publicado daqui**: sem Google Play, App Store, EAS Update, deploy do site, backend ou notificações reais.
 - Funcionalidade nova fica atrás de `EXPO_PUBLIC_ENABLE_*` (ligada em dev com mock, desligada em produção) até a API existir.
 - Registre cada etapa em `docs/evolucao/REGISTRO.md` e `TESTES.md`; contratos de API em `CONTRATOS-API.md`.

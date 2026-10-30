@@ -1,5 +1,5 @@
 # Checagem automática do app a cada envio para a branch de desenvolvimento e a cada pull request.
-# Versão independente (EncontrameApp-Evolucao): a branch de trabalho é "evolucao". Nada aqui publica o app.
+# Versão independente: a branch de trabalho é "evolucao" (sem PR, merge ou deploy). Nada aqui publica o app.
 # Roda as mesmas verificações exigidas antes de um PR (npm run check) e o build web do Netlify.
 # Também gera prints das telas principais (modo demonstração, dados fictícios) para revisão visual.
 name: Checagem do app
