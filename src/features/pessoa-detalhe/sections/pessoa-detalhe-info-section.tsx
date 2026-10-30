@@ -63,6 +63,17 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
             style={isWide ? undefined : styles.actionFull}
           />
         )}
+        {controller.canFollow ? (
+          <BrandButton
+            label={controller.following ? t('Acompanhando este caso') : t('Acompanhar este caso')}
+            variant="outline"
+            trailingIcon={controller.following ? 'bell-check-outline' : 'bell-outline'}
+            loading={controller.followBusy}
+            onPress={controller.toggleFollow}
+            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+            style={isWide ? undefined : styles.actionFull}
+          />
+        ) : null}
         {controller.sightingBlockedMessage ? null : (
           <BrandButton
             label={t('Vi essa pessoa por perto')}

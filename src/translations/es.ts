@@ -642,11 +642,58 @@ export const es: Readonly<Record<string, string>> = {
     'Pone el ícono rojo "Pedir ayuda" junto a tus apps.',
   'Como funciona': 'Cómo funciona',
   'Notificações': 'Notificaciones',
-  'O Encontra-me ainda não envia notificações. Quando os alertas regionais forem lançados, você poderá escolher aqui o que receber.':
-    'Encontra-me todavía no envía notificaciones. Cuando se lancen las alertas regionales, podrás elegir aquí qué recibir.',
-  'Alertas de desaparecimento': 'Alertas de desaparición',
-  'Alertas da minha região': 'Alertas de mi región',
-  'Atualizações dos casos que sigo': 'Novedades de los casos que sigo',
+  'Os avisos são um apoio e podem atrasar ou não chegar. O Encontra-me não avisa a polícia: em emergência, ligue 190. Na tela bloqueada, a notificação não mostra nome nem foto.':
+    'Los avisos son un apoyo y pueden demorarse o no llegar. Encontra-me no avisa a la policía: en una emergencia, llama al 190. En la pantalla de bloqueo, la notificación no muestra nombre ni foto.',
+  'Por enquanto, o Encontra-me só envia o lembrete de cadastros salvos neste aparelho. Os avisos de casos ainda não foram lançados.':
+    'Por ahora, Encontra-me solo envía el recordatorio de registros guardados en este dispositivo. Los avisos de casos todavía no se lanzaron.',
+  'Notificações bloqueadas no celular': 'Notificaciones bloqueadas en el celular',
+  'Toque para abrir os ajustes e permitir.': 'Toca para abrir los ajustes y permitirlas.',
+  'Lembrete de cadastros salvos': 'Recordatorio de registros guardados',
+  'Uma vez por dia, às 19h, enquanto houver cadastro feito neste aparelho aguardando envio.':
+    'Una vez al día, a las 19 h, mientras haya un registro hecho en este dispositivo esperando envío.',
+  'Casos perto de mim': 'Casos cerca de mí',
+  'Novos casos perto da sua região aproximada. Usa a localização só se você já permitiu.':
+    'Casos nuevos cerca de tu zona aproximada. Usa la ubicación solo si ya la permitiste.',
+  'Novos cadastros da minha região': 'Registros nuevos en mi región',
+  'Pessoas desaparecidas recém-cadastradas na sua cidade e estado.':
+    'Personas desaparecidas registradas hace poco en tu ciudad y estado.',
+  'Atualizações dos casos que acompanho': 'Novedades de los casos que sigo',
+  'Quando um caso que você acompanha muda de situação ou recebe avistamento.':
+    'Cuando un caso que sigues cambia de situación o recibe un avistamiento.',
+  'Notificações desligadas': 'Notificaciones desactivadas',
+  'Permita as notificações do Encontra-me nos ajustes do celular para receber avisos.':
+    'Permite las notificaciones de Encontra-me en los ajustes del celular para recibir avisos.',
+  'Abrir ajustes': 'Abrir ajustes',
+  'Não disponível neste aparelho': 'No disponible en este dispositivo',
+  'Atualize o Encontra-me para receber notificações.': 'Actualiza Encontra-me para recibir notificaciones.',
+  'Confira sua conexão e tente de novo.': 'Revisa tu conexión e inténtalo de nuevo.',
+  'Avisos indisponíveis neste aparelho': 'Avisos no disponibles en este dispositivo',
+  'Este aparelho não recebe avisos do servidor. Instale o Encontra-me pela loja de aplicativos em um celular.':
+    'Este dispositivo no recibe avisos del servidor. Instala Encontra-me desde la tienda de aplicaciones en un celular.',
+  'Para acompanhar um caso, entre na sua conta.': 'Para seguir un caso, entra en tu cuenta.',
+  'Não foi possível parar de acompanhar': 'No se pudo dejar de seguir',
+  'Para receber as novidades deste caso, permita as notificações do Encontra-me nos ajustes do celular.':
+    'Para recibir las novedades de este caso, permite las notificaciones de Encontra-me en los ajustes del celular.',
+  'Você está acompanhando este caso': 'Estás siguiendo este caso',
+  'Avisamos quando ele mudar de situação ou receber um novo avistamento. A notificação pode atrasar.':
+    'Te avisamos cuando cambie de situación o reciba un nuevo avistamiento. La notificación puede demorarse.',
+  'Não foi possível acompanhar': 'No se pudo seguir el caso',
+  'Acompanhando este caso': 'Siguiendo este caso',
+  'Acompanhar este caso': 'Seguir este caso',
+  'Casos e lembretes': 'Casos y recordatorios',
+  'O app envia notificações?': '¿La app envía notificaciones?',
+  'Só se você ligar, em Configurações › Notificações, no aplicativo de celular. O "Lembrete de cadastros salvos" avisa uma vez por dia, às 19h, enquanto houver cadastro feito neste aparelho aguardando envio; ele só é enviado quando você revisa e confirma. Os avisos de casos perto de você, de novos cadastros da sua região e dos casos que você acompanha aparecem como "Em breve" enquanto não forem lançados. Quando estiverem disponíveis, você precisa estar com a conta conectada. Na tela bloqueada, a notificação não mostra nome nem foto. Os avisos podem atrasar e o app não avisa a polícia: em emergência, ligue 190.':
+    'Solo si las activas, en Configuración › Notificaciones, en la app del celular. El "Recordatorio de registros guardados" avisa una vez al día, a las 19 h, mientras haya un registro hecho en este dispositivo esperando envío; solo se envía cuando lo revisas y confirmas. Los avisos de casos cerca de ti, de registros nuevos en tu región y de los casos que sigues aparecen como "Próximamente" mientras no se lancen. Cuando estén disponibles, necesitas tener la cuenta conectada. En la pantalla de bloqueo, la notificación no muestra nombre ni foto. Los avisos pueden demorarse y la app no avisa a la policía: en una emergencia, llama al 190.',
+  'notificação aviso lembrete alerta push acompanhar seguir': 'notificación aviso recordatorio alerta push seguir',
+  'Como acompanho um caso?': '¿Cómo sigo un caso?',
+  'Quando o recurso estiver disponível no seu aplicativo, a página da pessoa mostra o botão "Acompanhar este caso". Com a conta conectada, toque nele e permita as notificações: você recebe um aviso quando o caso mudar de situação ou receber um novo avistamento. Toque de novo para parar. Para desligar todos esses avisos, use Configurações › Notificações.':
+    'Cuando la función esté disponible en tu app, la página de la persona muestra el botón "Seguir este caso". Con la cuenta conectada, tócalo y permite las notificaciones: recibes un aviso cuando el caso cambie de situación o reciba un nuevo avistamiento. Toca de nuevo para dejar de seguirlo. Para desactivar todos estos avisos, usa Configuración › Notificaciones.',
+  'acompanhar seguir caso atualização notificação': 'seguir caso novedad notificación',
+  'Cadastro aguardando envio': 'Registro esperando envío',
+  'Você tem 1 cadastro salvo neste aparelho. Ele só é enviado quando você revisa e confirma.':
+    'Tienes 1 registro guardado en este dispositivo. Solo se envía cuando lo revisas y confirmas.',
+  'Você tem {count} cadastros salvos neste aparelho. Eles só são enviados quando você revisa e confirma.':
+    'Tienes {count} registros guardados en este dispositivo. Solo se envían cuando los revisas y confirmas.',
   'O app usa sua localização só enquanto está aberto, para mostrar casos próximos, marcar avistamentos e, quando você pede, mandar sua localização a um contato.':
     'La app usa tu ubicación solo mientras está abierta, para mostrar casos cercanos, marcar avistamientos y, cuando lo pides, enviar tu ubicación a un contacto.',
   'Permissão de localização': 'Permiso de ubicación',

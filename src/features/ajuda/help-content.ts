@@ -113,6 +113,22 @@ export const HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('mapa lista perto localização filtro satélite crianças idosos'),
   },
   {
+    id: 'notificacoes',
+    category: 'inicio',
+    question: msg('O app envia notificações?'),
+    answer:
+      msg('Só se você ligar, em Configurações › Notificações, no aplicativo de celular. O "Lembrete de cadastros salvos" avisa uma vez por dia, às 19h, enquanto houver cadastro feito neste aparelho aguardando envio; ele só é enviado quando você revisa e confirma. Os avisos de casos perto de você, de novos cadastros da sua região e dos casos que você acompanha aparecem como "Em breve" enquanto não forem lançados. Quando estiverem disponíveis, você precisa estar com a conta conectada. Na tela bloqueada, a notificação não mostra nome nem foto. Os avisos podem atrasar e o app não avisa a polícia: em emergência, ligue 190.'),
+    keywords: msg('notificação aviso lembrete alerta push acompanhar seguir'),
+  },
+  {
+    id: 'acompanhar-caso',
+    category: 'alertas',
+    question: msg('Como acompanho um caso?'),
+    answer:
+      msg('Quando o recurso estiver disponível no seu aplicativo, a página da pessoa mostra o botão "Acompanhar este caso". Com a conta conectada, toque nele e permita as notificações: você recebe um aviso quando o caso mudar de situação ou receber um novo avistamento. Toque de novo para parar. Para desligar todos esses avisos, use Configurações › Notificações.'),
+    keywords: msg('acompanhar seguir caso atualização notificação'),
+  },
+  {
     id: 'avisos-seguranca',
     category: 'relatos',
     question: msg('Posso avisar sobre uma rua perigosa?'),

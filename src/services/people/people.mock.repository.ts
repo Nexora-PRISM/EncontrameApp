@@ -13,6 +13,9 @@ import type {
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** Casos acompanhados no mock (memória, some ao recarregar). */
+const mockFollowing = new Set<string>();
+
 function visiblePeople(): Person[] {
   return mockPeople.filter((person) => !person.authorId || !isUserBlocked(person.authorId));
 }
@@ -458,6 +461,21 @@ export const peopleMockRepository: PeopleRepository = {
       throw new Error('Pessoa não encontrada.');
     }
     return mockHistory[id] ?? historyFromPerson(person);
+  },
+
+  async getFollowStatus(id: string) {
+    await delay(200);
+    return mockFollowing.has(id);
+  },
+
+  async follow(id: string) {
+    await delay(300);
+    mockFollowing.add(id);
+  },
+
+  async unfollow(id: string) {
+    await delay(300);
+    mockFollowing.delete(id);
   },
 };
 

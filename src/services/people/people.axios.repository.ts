@@ -150,6 +150,21 @@ export const peopleAxiosRepository: PeopleRepository = {
     const { data } = await api.get<ApiPersonLastSeen[]>(`/MissingPerson/${id}/last-seen/history`);
     return (data ?? []).map(mapLastSeen);
   },
+
+  // "Acompanhar" (contrato proposto, autenticado): GET devolve { following }, POST/DELETE → 204.
+  // A API avisa quem acompanha quando o caso muda de status ou recebe avistamento.
+  async getFollowStatus(id: string) {
+    const { data } = await api.get<{ following?: boolean }>(`/MissingPerson/${id}/follow`);
+    return data?.following === true;
+  },
+
+  async follow(id: string) {
+    await api.post(`/MissingPerson/${id}/follow`);
+  },
+
+  async unfollow(id: string) {
+    await api.delete(`/MissingPerson/${id}/follow`);
+  },
 };
 
 function toSearchQuery(params: PeopleSearchParams) {

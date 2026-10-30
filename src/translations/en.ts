@@ -635,11 +635,58 @@ export const en: Readonly<Record<string, string>> = {
     'Puts the red "Get help" icon next to your apps.',
   'Como funciona': 'How it works',
   'Notificações': 'Notifications',
-  'O Encontra-me ainda não envia notificações. Quando os alertas regionais forem lançados, você poderá escolher aqui o que receber.':
-    'Encontra-me does not send notifications yet. When regional alerts are launched, you will be able to choose here what to receive.',
-  'Alertas de desaparecimento': 'Disappearance alerts',
-  'Alertas da minha região': 'Alerts for my region',
-  'Atualizações dos casos que sigo': 'Updates on cases I follow',
+  'Os avisos são um apoio e podem atrasar ou não chegar. O Encontra-me não avisa a polícia: em emergência, ligue 190. Na tela bloqueada, a notificação não mostra nome nem foto.':
+    'Alerts are a support tool and may be delayed or not arrive. Encontra-me does not notify the police: in an emergency, call 190. On the lock screen, the notification shows no name or photo.',
+  'Por enquanto, o Encontra-me só envia o lembrete de cadastros salvos neste aparelho. Os avisos de casos ainda não foram lançados.':
+    'For now, Encontra-me only sends the reminder about reports saved on this device. Case alerts have not been launched yet.',
+  'Notificações bloqueadas no celular': 'Notifications blocked on this phone',
+  'Toque para abrir os ajustes e permitir.': 'Tap to open settings and allow them.',
+  'Lembrete de cadastros salvos': 'Saved reports reminder',
+  'Uma vez por dia, às 19h, enquanto houver cadastro feito neste aparelho aguardando envio.':
+    'Once a day, at 7 p.m., while a report made on this device is waiting to be sent.',
+  'Casos perto de mim': 'Cases near me',
+  'Novos casos perto da sua região aproximada. Usa a localização só se você já permitiu.':
+    'New cases near your approximate area. Uses your location only if you have already allowed it.',
+  'Novos cadastros da minha região': 'New reports in my region',
+  'Pessoas desaparecidas recém-cadastradas na sua cidade e estado.':
+    'Missing people recently reported in your city and state.',
+  'Atualizações dos casos que acompanho': 'Updates on cases I follow',
+  'Quando um caso que você acompanha muda de situação ou recebe avistamento.':
+    'When a case you follow changes status or gets a sighting.',
+  'Notificações desligadas': 'Notifications turned off',
+  'Permita as notificações do Encontra-me nos ajustes do celular para receber avisos.':
+    "Allow Encontra-me notifications in your phone's settings to receive alerts.",
+  'Abrir ajustes': 'Open settings',
+  'Não disponível neste aparelho': 'Not available on this device',
+  'Atualize o Encontra-me para receber notificações.': 'Update Encontra-me to receive notifications.',
+  'Confira sua conexão e tente de novo.': 'Check your connection and try again.',
+  'Avisos indisponíveis neste aparelho': 'Alerts unavailable on this device',
+  'Este aparelho não recebe avisos do servidor. Instale o Encontra-me pela loja de aplicativos em um celular.':
+    'This device does not receive alerts from the server. Install Encontra-me from the app store on a phone.',
+  'Para acompanhar um caso, entre na sua conta.': 'To follow a case, sign in to your account.',
+  'Não foi possível parar de acompanhar': 'Could not stop following',
+  'Para receber as novidades deste caso, permita as notificações do Encontra-me nos ajustes do celular.':
+    "To get updates on this case, allow Encontra-me notifications in your phone's settings.",
+  'Você está acompanhando este caso': 'You are following this case',
+  'Avisamos quando ele mudar de situação ou receber um novo avistamento. A notificação pode atrasar.':
+    'We will let you know when it changes status or gets a new sighting. The notification may be delayed.',
+  'Não foi possível acompanhar': 'Could not follow',
+  'Acompanhando este caso': 'Following this case',
+  'Acompanhar este caso': 'Follow this case',
+  'Casos e lembretes': 'Cases and reminders',
+  'O app envia notificações?': 'Does the app send notifications?',
+  'Só se você ligar, em Configurações › Notificações, no aplicativo de celular. O "Lembrete de cadastros salvos" avisa uma vez por dia, às 19h, enquanto houver cadastro feito neste aparelho aguardando envio; ele só é enviado quando você revisa e confirma. Os avisos de casos perto de você, de novos cadastros da sua região e dos casos que você acompanha aparecem como "Em breve" enquanto não forem lançados. Quando estiverem disponíveis, você precisa estar com a conta conectada. Na tela bloqueada, a notificação não mostra nome nem foto. Os avisos podem atrasar e o app não avisa a polícia: em emergência, ligue 190.':
+    'Only if you turn them on, in Settings › Notifications, in the phone app. The "Saved reports reminder" alerts you once a day, at 7 p.m., while a report made on this device is waiting to be sent; it is only sent when you review and confirm it. Alerts about cases near you, new reports in your region and cases you follow show as "Coming soon" until they are launched. When they are available, you need to be signed in. On the lock screen, the notification shows no name or photo. Alerts may be delayed and the app does not notify the police: in an emergency, call 190.',
+  'notificação aviso lembrete alerta push acompanhar seguir': 'notification alert reminder push follow',
+  'Como acompanho um caso?': 'How do I follow a case?',
+  'Quando o recurso estiver disponível no seu aplicativo, a página da pessoa mostra o botão "Acompanhar este caso". Com a conta conectada, toque nele e permita as notificações: você recebe um aviso quando o caso mudar de situação ou receber um novo avistamento. Toque de novo para parar. Para desligar todos esses avisos, use Configurações › Notificações.':
+    'When the feature is available in your app, the person\'s page shows the "Follow this case" button. Signed in, tap it and allow notifications: you get an alert when the case changes status or gets a new sighting. Tap again to stop. To turn off all these alerts, use Settings › Notifications.',
+  'acompanhar seguir caso atualização notificação': 'follow case update notification',
+  'Cadastro aguardando envio': 'Report waiting to be sent',
+  'Você tem 1 cadastro salvo neste aparelho. Ele só é enviado quando você revisa e confirma.':
+    'You have 1 report saved on this device. It is only sent when you review and confirm it.',
+  'Você tem {count} cadastros salvos neste aparelho. Eles só são enviados quando você revisa e confirma.':
+    'You have {count} reports saved on this device. They are only sent when you review and confirm them.',
   'O app usa sua localização só enquanto está aberto, para mostrar casos próximos, marcar avistamentos e, quando você pede, mandar sua localização a um contato.':
     'The app uses your location only while it is open, to show nearby cases, mark sightings and, when you ask, send your location to a contact.',
   'Permissão de localização': 'Location permission',

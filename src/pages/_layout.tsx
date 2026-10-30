@@ -18,6 +18,7 @@ import { I18nProvider, useI18n } from '@/lib/i18n';
 import { queryClient } from '@/lib/query-client';
 import { getSessionUser, hydrateSession } from '@/lib/session';
 import { markSplashDone, useSplashDone } from '@/lib/splash-state';
+import { useNotificationsBootstrap } from '@/lib/use-notifications-bootstrap';
 
 // Só no popup do OAuth (tem opener). Completa e deixa o app pai fechar a janela
 // antes do Expo Router redirecionar `/` → `/inicio` → `/login`.
@@ -64,6 +65,8 @@ function RootLayoutInner() {
 
   // Espera o idioma salvo para não abrir a tela num idioma e trocar logo depois.
   const showStack = sessionReady && languageReady && !blocked;
+
+  useNotificationsBootstrap(showStack);
 
   return (
     <>

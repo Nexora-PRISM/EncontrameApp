@@ -1,6 +1,7 @@
 import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { DEFAULT_NEARBY_RADIUS_KM, haversineKm, snapNearbyCoord } from '@/lib/geo';
+import { syncPendingReminder } from '@/lib/pending-reminder';
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { useSessionUser } from '@/lib/use-session-user';
@@ -32,6 +33,7 @@ const peopleKeys = {
     ['people', 'nearby', viewerId, query, lat, lng] as const,
   detail: (id: string) => ['people', 'detail', id] as const,
   lastSeenHistory: (id: string) => ['people', 'last-seen-history', id] as const,
+  follow: (viewerId: string, id: string) => ['people', 'follow', viewerId, id] as const,
 };
 
 function viewerKey(userId?: string | null) {
@@ -182,7 +184,9 @@ export function useCreatePersonMutation() {
   return useMutation({
     mutationFn: async (payload: CreatePersonPayload) => {
       if (getSessionUser() == null) {
-        return saveLocalPending(payload);
+        const person = await saveLocalPending(payload);
+        void syncPendingReminder();
+        return person;
       }
       return getPeopleRepository().create(payload);
     },
@@ -218,6 +222,7 @@ export function useSubmitLocalDraftMutation() {
         // Uma nova tentativa evita que o mesmo caso seja enviado duas vezes.
         await deleteLocalPending(draftId).catch(() => undefined);
       }
+      void syncPendingReminder();
       return person;
     },
     onSuccess: (_person, { draftId }) => {
@@ -237,6 +242,37 @@ export function useReportLastSeenMutation(id: string) {
       queryClient.invalidateQueries({ queryKey: peopleKeys.all });
       queryClient.invalidateQueries({ queryKey: peopleKeys.detail(id) });
       queryClient.invalidateQueries({ queryKey: peopleKeys.lastSeenHistory(id) });
+    },
+  });
+}
+
+/** Se a conta logada acompanha o caso. Sem conta, rascunho local ou flag desligada: não consulta. */
+export function useFollowStatusQuery(id: string, enabled: boolean) {
+  const userId = useSessionUser()?.id;
+
+  return useQuery({
+    queryKey: peopleKeys.follow(viewerKey(userId), id),
+    queryFn: () => getPeopleRepository().getFollowStatus(id),
+    enabled: enabled && userId != null && id.length > 0 && !isLocalPersonId(id),
+  });
+}
+
+export function useToggleFollowMutation(id: string) {
+  const queryClient = useQueryClient();
+  const userId = useSessionUser()?.id;
+
+  return useMutation({
+    retry: false,
+    mutationFn: async (follow: boolean) => {
+      if (follow) {
+        await getPeopleRepository().follow(id);
+      } else {
+        await getPeopleRepository().unfollow(id);
+      }
+      return follow;
+    },
+    onSuccess: (following) => {
+      queryClient.setQueryData(peopleKeys.follow(viewerKey(userId), id), following);
     },
   });
 }

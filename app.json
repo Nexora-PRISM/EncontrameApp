@@ -67,6 +67,13 @@
         {
           "locationWhenInUsePermission": "O Encontra-me usa sua localização, com o app aberto, para mostrar casos próximos, marcar avistamentos e, quando você pede, mandar sua localização a um contato."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/android-icon-monochrome.png",
+          "color": "#0B2442"
+        }
       ]
     ],
     "experiments": {

@@ -1,3 +1,4 @@
+import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,14 +18,23 @@ import {
   type AddressSuggestion,
 } from '@/lib/geocode';
 import { useT } from '@/lib/i18n';
+import { loadNotificationPrefs, saveNotificationPrefs } from '@/lib/notification-prefs';
+import { ensureNotificationPermission, localNotificationsSupported } from '@/lib/notifications';
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { shareText } from '@/lib/share';
 import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
-import { usePersonQuery, useLastSeenHistoryQuery, useReportLastSeenMutation } from '@/services/people/people.service';
+import {
+  useFollowStatusQuery,
+  useLastSeenHistoryQuery,
+  usePersonQuery,
+  useReportLastSeenMutation,
+  useToggleFollowMutation,
+} from '@/services/people/people.service';
 import { useBlockUserMutation, useReportContentMutation } from '@/services/moderation/moderation.service';
+import { syncPushRegistration } from '@/services/notifications/notifications.service';
 import type { PersonLastSeen } from '@/services/people/people.types';
 
 const SUGGEST_MIN_CHARS = 3;
@@ -60,6 +70,11 @@ export function usePessoaDetalheController() {
   const person = personQuery.data ?? null;
   const sessionUser = useSessionUser();
   const isLocalPerson = isLocalPersonId(id);
+  // Só no celular, com o recurso ligado e caso já publicado: fora disso o botão não teria efeito.
+  const canFollow = env.pushEnabled && localNotificationsSupported() && !isLocalPerson && id.length > 0;
+  const followQuery = useFollowStatusQuery(id, canFollow);
+  const followMutation = useToggleFollowMutation(id);
+  const following = followQuery.data === true;
   const sightingBlockedMessage = isLocalPerson
     ? sessionUser == null
       ? t('Este cadastro está salvo só neste aparelho. Entre na sua conta para revisar e enviar — depois disso ele pode receber avistamentos.')
@@ -101,6 +116,52 @@ export function usePessoaDetalheController() {
         showAlert(t('Denúncia registrada'), t('A equipe pode analisar esta denúncia.'));
       } catch {
         showAlert(t('Não foi possível registrar'), t('Tente de novo em alguns instantes.'));
+      }
+    })();
+  };
+
+  /** Liga ou desliga o "Acompanhar". Ao ligar, pede a permissão de notificação e ativa o tipo de aviso. */
+  const toggleFollow = () => {
+    if (!canFollow || followMutation.isPending) return;
+    if (sessionUser == null) {
+      showAlert(t('Entre na sua conta'), t('Para acompanhar um caso, entre na sua conta.'));
+      router.push({ pathname: '/login', params: { returnTo: `/pessoa/${id}` } } as Href);
+      return;
+    }
+    void (async () => {
+      if (following) {
+        try {
+          await followMutation.mutateAsync(false);
+        } catch {
+          showAlert(t('Não foi possível parar de acompanhar'), t('Tente de novo em alguns instantes.'));
+        }
+        return;
+      }
+
+      const permission = await ensureNotificationPermission();
+      if (permission !== 'granted') {
+        const open = await confirmAction({
+          title: t('Notificações desligadas'),
+          message: t('Para receber as novidades deste caso, permita as notificações do Encontra-me nos ajustes do celular.'),
+          confirmLabel: t('Abrir ajustes'),
+        });
+        if (open) void Linking.openSettings().catch(() => undefined);
+        return;
+      }
+
+      try {
+        const prefs = await loadNotificationPrefs();
+        if (!prefs.followedUpdates) {
+          await saveNotificationPrefs({ ...prefs, followedUpdates: true });
+        }
+        await followMutation.mutateAsync(true);
+        await syncPushRegistration().catch(() => undefined);
+        showAlert(
+          t('Você está acompanhando este caso'),
+          t('Avisamos quando ele mudar de situação ou receber um novo avistamento. A notificação pode atrasar.'),
+        );
+      } catch {
+        showAlert(t('Não foi possível acompanhar'), t('Tente de novo em alguns instantes.'));
       }
     })();
   };
@@ -423,6 +484,10 @@ export function usePessoaDetalheController() {
       void shareText(buildPersonShareMessage(person, env.webUrl, t), t('Pessoa desaparecida'));
     },
     reportCase,
+    canFollow,
+    following,
+    followBusy: followMutation.isPending || (canFollow && sessionUser != null && followQuery.isLoading),
+    toggleFollow,
     blockAuthor,
     canBlockAuthor:
       sessionUser != null &&

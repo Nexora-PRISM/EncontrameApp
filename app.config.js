@@ -43,9 +43,21 @@ function applyEnvFile(fileName) {
 applyEnvFile('.env');
 applyEnvFile('.env.local');
 
+/**
+ * Firebase (push no Android). No EAS, use a variável de arquivo GOOGLE_SERVICES_JSON;
+ * localmente, o google-services.json na raiz. Sem nenhum dos dois, o build sai sem push remoto.
+ */
+const googleServicesFile =
+  process.env.GOOGLE_SERVICES_JSON ||
+  (fs.existsSync(path.join(__dirname, 'google-services.json')) ? './google-services.json' : undefined);
+
 /** @type {import('expo/config').ExpoConfig} */
 const config = {
   ...appJson.expo,
+  android: {
+    ...appJson.expo.android,
+    ...(googleServicesFile ? { googleServicesFile } : {}),
+  },
   plugins: [
     ...(appJson.expo.plugins ?? []),
     [

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 
 import { useEmergencyShortcutSettings } from '@/features/configuracoes/use-emergency-shortcut-settings';
+import { useNotificationSettings } from '@/features/configuracoes/use-notification-settings';
 import { AppInfo, appVersion } from '@/lib/app-info';
 import { resetAppOnboarding } from '@/lib/app-onboarding';
 import {
@@ -26,12 +27,14 @@ import {
   useT,
 } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
+import { syncPendingReminder } from '@/lib/pending-reminder';
 import { useSafeBack } from '@/lib/safe-back';
 import { signOut } from '@/lib/sign-out';
 import { clearSession } from '@/lib/session';
 import { loadTrustedContacts } from '@/lib/trusted-contacts';
 import { useSessionUser } from '@/lib/use-session-user';
 import { getAuthRepository } from '@/services/auth/auth.repository';
+import { unregisterPushDevice } from '@/services/notifications/notifications.service';
 import { deleteLocalPending, listLocalPending } from '@/services/people/people.local.store';
 
 type LocationStatus = 'granted' | 'denied' | 'undetermined' | 'unknown';
@@ -66,6 +69,7 @@ export function useConfiguracoesController() {
   const [trustedContactsCount, setTrustedContactsCount] = useState<number | null>(null);
   const [signingOut, setSigningOut] = useState(false);
   const emergencyShortcut = useEmergencyShortcutSettings(sessionUser != null);
+  const notifications = useNotificationSettings(sessionUser != null);
 
   useEffect(() => {
     let cancelled = false;
@@ -156,6 +160,7 @@ export function useConfiguracoesController() {
           await deleteLocalPending(item.id);
         }
         setLocalPendingCount(0);
+        void syncPendingReminder();
         await queryClient.invalidateQueries({ queryKey: ['people'] });
         showAlert(t('Pronto'), t('Os cadastros salvos neste aparelho foram apagados.'));
       } catch {
@@ -206,6 +211,7 @@ export function useConfiguracoesController() {
       });
       if (!confirmed) return;
 
+      await unregisterPushDevice();
       try {
         await getAuthRepository().deleteAccount();
       } catch {
@@ -227,6 +233,7 @@ export function useConfiguracoesController() {
 
   return {
     ...emergencyShortcut,
+    ...notifications,
     goToEmergencyHelp: () =>
       router.push({ pathname: '/ajuda', params: { categoria: 'emergencia' } } as Href),
     goBack,

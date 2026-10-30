@@ -80,6 +80,10 @@ src/
     person-category.ts         # faixas de idade (crianças e adolescentes, adultos, idosos): filtros, rótulos, cores
     splash-state.ts            # se a abertura já saiu (o passo a passo só abre depois)
     safety-notes.ts            # avisos de segurança: tipos, horários, validade, bloqueio de dados pessoais, denúncia
+    notifications.ts           # expo-notifications (só se o módulo nativo existir): permissão, token, canal, rota do toque
+    notification-prefs.ts      # o que a pessoa escolheu receber (neste aparelho; tudo desligado por padrão)
+    pending-reminder.ts        # lembrete diário local (19h) dos cadastros salvos no aparelho
+    use-notifications-bootstrap.ts # boot no _layout: configura, reagenda o lembrete, registra o aparelho, trata o toque
   translations/                # dicionários en.ts e es.ts (a chave é o texto em português)
 assets/images/                 # imagens (logo.png é a logo oficial)
 locales/                       # textos das permissões do iOS por idioma (app.json → "locales")
@@ -185,6 +189,13 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   "recebido" com `alertId` + `receivedAt` na resposta. Sem isso: "não confirmado — ligue 190".
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
+- **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
+ até a pessoa ligar; a permissão só é pedida ao ligar uma opção ou tocar em "Acompanhar este caso". Título e corpo
+ nunca trazem nome, idade ou foto (tela bloqueada); `data` leva só `{ type, personId }`. O lembrete de cadastros
+ salvos é local e funciona sempre no celular. Casos perto, novos cadastros da região e "Acompanhar" dependem da API
+ (`POST`/`DELETE /Notification/device`, `GET`/`POST`/`DELETE /MissingPerson/{id}/follow`) e só aparecem com
+ `EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS`; sem ela, "Em breve" e botão oculto. Push remoto exige build nativo
+ (não funciona no Expo Go do Android nem no web) e `google-services.json` (Firebase) no Android.
 - **Premium e pets são demanda futura** (removidos em 17/10/2026). Não recriar telas, menu, ajuda, flags nem
   serviços até os sócios pedirem. O que já vale para quando voltar: busca de pessoas e emergência continuam
   gratuitas; pets desaparecidos entram junto com o Premium; não há cobrança no app sem a loja e a API de
@@ -222,6 +233,8 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `GOOGLE_MAPS_API_KEY` — só build nativo Android; não vai no Netlify.
 - `EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT` — envio do alerta de emergência à API. Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_MOCK_EMERGENCY_FAIL` — só no mock: `true` simula falha no envio do alerta (para testar a tela "não confirmado").
+- `EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS` — notificações vindas do servidor (casos perto, novos cadastros da região, "Acompanhar"). Vazio: ligado em dev (mock), desligado em produção (opções "Em breve", botão "Acompanhar" oculto).
+- `GOOGLE_SERVICES_JSON` — só build nativo Android (variável de arquivo no EAS); sem ela, usa `google-services.json` da raiz, se existir.
 - `EXPO_PUBLIC_WEB_URL` — endereço público do app web (sem barra no fim); entra no texto de "Divulgar este caso".
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.

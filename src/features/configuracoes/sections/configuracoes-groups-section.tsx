@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { NexoraSignature } from '@/components/nexora-signature';
@@ -8,6 +9,7 @@ import {
   SettingsSegmented,
 } from '@/components/settings-list';
 import type { ConfiguracoesController } from '@/features/configuracoes/configuracoes.controller';
+import type { NotificationAvailability } from '@/features/configuracoes/use-notification-settings';
 import { APPEARANCE_OPTIONS } from '@/lib/brand-theme';
 import type { ShortcutAvailability } from '@/lib/emergency-shortcut';
 import { useT } from '@/lib/i18n';
@@ -21,6 +23,55 @@ const SHORTCUT_UNAVAILABLE_TEXT: Record<ShortcutAvailability, string> = {
   'needs-update': msg('Atualize o Encontra-me para usar este recurso.'),
   unsupported: msg('Requer Android 7.1 ou mais recente.'),
 };
+
+const NOTIFICATION_UNAVAILABLE_TEXT: Record<NotificationAvailability, string> = {
+  available: '',
+  web: msg('Disponível só no aplicativo de celular.'),
+  'needs-update': msg('Atualize o Encontra-me para usar este recurso.'),
+};
+
+type RemoteNotificationRowProps = {
+  controller: ConfiguracoesController;
+  icon: ComponentProps<typeof SettingsRow>['icon'];
+  label: string;
+  description: string;
+  value: boolean;
+  onChange: (value: boolean) => void;
+};
+
+/** Aviso que depende do servidor: "Em breve" sem a flag, login antes de ligar. */
+function RemoteNotificationRow({ controller: c, icon, label, description, value, onChange }: RemoteNotificationRowProps) {
+  const t = useT();
+
+  if (!c.pushEnabled) {
+    return <SettingsRow icon={icon} label={label} unavailable />;
+  }
+  if (c.notificationAvailability !== 'available') {
+    return (
+      <SettingsRow
+        icon={icon}
+        label={label}
+        description={t(NOTIFICATION_UNAVAILABLE_TEXT[c.notificationAvailability])}
+        disabled
+      />
+    );
+  }
+  if (!c.loggedIn) {
+    return (
+      <SettingsRow icon={icon} label={label} description={t('Entre na sua conta para ativar.')} onPress={c.goToLogin} />
+    );
+  }
+  return (
+    <SettingsRow
+      icon={icon}
+      label={label}
+      description={description}
+      switchValue={value}
+      onSwitchChange={onChange}
+      disabled={c.notificationPrefs == null || c.notificationBusy}
+    />
+  );
+}
 
 export function ConfiguracoesGroupsSection({ controller: c }: Props) {
   const t = useT();
@@ -144,11 +195,56 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
 
       <SettingsGroup
         title={t('Notificações')}
-        footer={t('O Encontra-me ainda não envia notificações. Quando os alertas regionais forem lançados, você poderá escolher aqui o que receber.')}
+        footer={
+          c.pushEnabled
+            ? t('Os avisos são um apoio e podem atrasar ou não chegar. O Encontra-me não avisa a polícia: em emergência, ligue 190. Na tela bloqueada, a notificação não mostra nome nem foto.')
+            : t('Por enquanto, o Encontra-me só envia o lembrete de cadastros salvos neste aparelho. Os avisos de casos ainda não foram lançados.')
+        }
       >
-        <SettingsRow icon="bell-ring-outline" label={t('Alertas de desaparecimento')} unavailable />
-        <SettingsRow icon="map-marker-radius-outline" label={t('Alertas da minha região')} unavailable />
-        <SettingsRow icon="update" label={t('Atualizações dos casos que sigo')} unavailable />
+        {c.notificationsBlocked ? (
+          <SettingsRow
+            icon="bell-off-outline"
+            label={t('Notificações bloqueadas no celular')}
+            description={t('Toque para abrir os ajustes e permitir.')}
+            onPress={c.openDeviceSettings}
+          />
+        ) : null}
+        <SettingsRow
+          icon="file-clock-outline"
+          label={t('Lembrete de cadastros salvos')}
+          description={
+            c.notificationAvailability === 'available'
+              ? t('Uma vez por dia, às 19h, enquanto houver cadastro feito neste aparelho aguardando envio.')
+              : t(NOTIFICATION_UNAVAILABLE_TEXT[c.notificationAvailability])
+          }
+          switchValue={c.notificationPrefs?.pendingReminder ?? false}
+          onSwitchChange={c.togglePendingReminder}
+          disabled={c.notificationAvailability !== 'available' || c.notificationPrefs == null || c.notificationBusy}
+        />
+        <RemoteNotificationRow
+          controller={c}
+          icon="map-marker-radius-outline"
+          label={t('Casos perto de mim')}
+          description={t('Novos casos perto da sua região aproximada. Usa a localização só se você já permitiu.')}
+          value={c.notificationPrefs?.nearbyCases ?? false}
+          onChange={c.toggleNearbyCases}
+        />
+        <RemoteNotificationRow
+          controller={c}
+          icon="bell-ring-outline"
+          label={t('Novos cadastros da minha região')}
+          description={t('Pessoas desaparecidas recém-cadastradas na sua cidade e estado.')}
+          value={c.notificationPrefs?.regionNewCases ?? false}
+          onChange={c.toggleRegionNewCases}
+        />
+        <RemoteNotificationRow
+          controller={c}
+          icon="update"
+          label={t('Atualizações dos casos que acompanho')}
+          description={t('Quando um caso que você acompanha muda de situação ou recebe avistamento.')}
+          value={c.notificationPrefs?.followedUpdates ?? false}
+          onChange={c.toggleFollowedUpdates}
+        />
         <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
       </SettingsGroup>
 

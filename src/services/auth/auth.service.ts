@@ -14,6 +14,7 @@ import type {
   LoginPayload,
   SignupPayload,
 } from '@/services/auth/auth.types';
+import { unregisterPushDevice } from '@/services/notifications/notifications.service';
 
 /**
  * Camada de acesso à API de autenticação exposta como hooks do React Query.
@@ -91,6 +92,7 @@ export async function unlockAndRefreshSession(): Promise<AuthResult> {
 export async function revokeStoredSession(): Promise<void> {
   const stored = await peekStoredSession();
   try {
+    await unregisterPushDevice();
     await getAuthRepository().logout(stored?.refreshToken ?? null);
   } finally {
     await clearSession();

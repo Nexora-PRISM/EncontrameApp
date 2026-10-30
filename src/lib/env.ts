@@ -31,6 +31,16 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT !== 'false'),
   /**
+   * Notificações que dependem do servidor (casos perto, novos cadastros da região e "Acompanhar").
+   * Em desenvolvimento fica ligado (com mocks); em produção só com
+   * EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS=true — ligue quando a API guardar o aparelho e enviar
+   * os avisos. Desligado, essas opções aparecem como "Em breve" e o botão "Acompanhar" some.
+   * O lembrete de cadastros salvos no aparelho não depende desta flag.
+   */
+  pushEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

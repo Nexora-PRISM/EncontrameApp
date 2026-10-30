@@ -19,6 +19,10 @@ export interface PeopleRepository {
   create(payload: CreatePersonPayload): Promise<Person>;
   reportLastSeen(id: string, payload: ReportLastSeenPayload): Promise<void>;
   listLastSeenHistory(id: string): Promise<PersonLastSeen[]>;
+  /** A conta logada acompanha o caso (recebe aviso de mudança de status e de avistamento). */
+  getFollowStatus(id: string): Promise<boolean>;
+  follow(id: string): Promise<void>;
+  unfollow(id: string): Promise<void>;
 }
 
 /**
