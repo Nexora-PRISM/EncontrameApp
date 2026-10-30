@@ -220,3 +220,39 @@ justificativa em toda decisão e sem que nada mude um caso sozinho.
 **Arquivos**: `src/lib/team-rules.ts`, `src/lib/search-network-rules.ts`, `src/lib/team-labels.ts`,
 `src/services/team/*`, `src/features/equipe/*`, `src/pages/equipe/**`, `tests/team-rules.test.mjs` (criados);
 `src/lib/axios.ts`, `src/lib/auth-guard.ts`, `src/lib/env.ts`, `src/features/perfil/*`, `src/translations/*` (alterados).
+
+---
+
+## Etapas 5 a 8 — Rede de busca (lado da pessoa), "Quero ajudar", proteção de crianças e Central de Apoio (30/10/2026)
+
+**Etapa 5 — Rede inteligente de busca (pessoa comum)**, com `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK`:
+- Configurações › Notificações › "Casos perto de mim": escolha da distância (5, 10, 25 ou 50 km). Vai junto com o
+  registro do aparelho (`nearbyRadiusKm`, proposta; a API ainda não usa). Sem a variável, nada muda.
+- Página do caso › "Ajude a divulgar" › "Sugerir onde divulgar" (`/pessoa/{id}/sugerir-regiao`): cidade ou bairro e o
+  motivo. "Recebida" só com número e horário do servidor. A equipe decide se amplia.
+- A ampliação, a pausa, o limite de alertas e a teia ficam no Painel da equipe (etapas 4, 9 e 10).
+
+**Etapa 6 — "Quero ajudar"** (`/quero-ajudar`, menu › Pessoas), com `EXPO_PUBLIC_ENABLE_VOLUNTEERS`:
+- Orientações de segurança sempre visíveis, antes de tudo (nada de busca sozinho, abordagem, confronto ou dados das
+  famílias; sem ranking).
+- Cadastro mínimo: cidade ou bairro, formas de ajudar, disponibilidade (opcional), avisos da região e aceite das
+  orientações. O nome vem da conta. Dá para sair do voluntariado. Sem a variável, o cadastro aparece como "Em breve".
+
+**Etapa 7 — Crianças e adolescentes** (sem variável: não depende da API):
+- Cadastro de menor de 18: aviso de proteção reforçada e bloqueio do envio quando algum texto cita escola, endereço
+  de casa, condomínio, rotina ou rua com número (`lib/child-protection.ts`). A tela diz quais campos revisar.
+- Página do caso: faixa "Criança ou adolescente: prioridade" com a orientação de ligar 190.
+- Alertas prioritários para menores dependem do servidor (contrato).
+
+**Etapa 8 — Central de Apoio às Famílias** (`/central-de-apoio`, menu › Apoio; sem login, sem API):
+- Primeiras horas, boletim de ocorrência, lista do que reunir (marcação salva só no aparelho), golpes, quando a
+  pessoa for encontrada e "Cuide de você" (Sofia, grupo de apoio, CVV 188).
+- Duas perguntas novas na Central de Ajuda.
+
+**Arquivos**: `src/lib/collaboration-rules.ts`, `src/lib/child-protection.ts`, `src/services/collaboration/*`,
+`src/features/quero-ajudar/*`, `src/features/sugerir-regiao/*`, `src/features/central-apoio/*`,
+`src/pages/quero-ajudar/`, `src/pages/central-de-apoio/`, `src/pages/pessoa/[id]/sugerir-regiao/`,
+`tests/collaboration-rules.test.mjs` (criados); `src/lib/notification-prefs.ts`, `src/lib/env.ts`,
+`src/services/notifications/*`, `src/features/configuracoes/*`, `src/features/inicio/*` (menu),
+`src/features/pessoa-detalhe/*`, `src/features/cadastrar-pessoa/*`, `src/features/ajuda/help-content.ts`,
+`src/translations/*` (alterados).

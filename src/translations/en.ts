@@ -1663,4 +1663,151 @@ export const en: Readonly<Record<string, string>> = {
     'A case\'s status, reports, search monitoring and AI suggestions.',
   'Número do caso': 'Case number',
   'Abrir caso': 'Open case',
+  // evolução · etapas 5 a 8 (rede de busca, Quero ajudar, crianças, Central de Apoio)
+  'Proteja a criança': 'Protect the child',
+  'Não cite escola, endereço de casa, condomínio ou rotina. Use referências gerais, como o bairro ou uma praça. Revise: {fields}.':
+    'Do not mention school, home address, building complex or routine. Use general references, like the neighborhood or a square. Review: {fields}.',
+  'Proteção reforçada: não informe escola, endereço de casa, condomínio ou rotina da criança. Use referências gerais, como o bairro ou uma praça.':
+    'Extra protection: do not give the child\'s school, home address, building complex or routine. Use general references, like the neighborhood or a square.',
+  'Nas primeiras horas': 'In the first hours',
+  'Não espere: não existe prazo mínimo para comunicar um desaparecimento. A lei trata a busca como urgente.':
+    'Do not wait: there is no minimum time to report a disappearance. The law treats the search as urgent.',
+  'Se houver risco imediato, ligue 190.': 'If there is immediate danger, call 190.',
+  'Registre o boletim de ocorrência na delegacia mais próxima ou na delegacia on-line, se o seu estado oferecer.':
+    'File a police report at the nearest police station or online, if your state offers it.',
+  'Para crianças e adolescentes, a investigação deve começar imediatamente.':
+    'For children and teenagers, the investigation must start immediately.',
+  'Avise pessoas próximas: família, amigos e conhecidos.':
+    'Tell people close to you: family, friends and acquaintances.',
+  'Procure em hospitais e serviços de acolhimento da região.':
+    'Check hospitals and shelters in the area.',
+  'Como registrar o boletim de ocorrência': 'How to file a police report',
+  'Leve um documento seu e, se tiver, um documento da pessoa.':
+    'Bring your ID and, if you have it, the person\'s ID.',
+  'Leve uma foto recente e nítida.': 'Bring a recent, clear photo.',
+  'Informe o último local e o horário em que a pessoa foi vista.':
+    'Say the last place and time the person was seen.',
+  'Conte as roupas, as características e qualquer condição de saúde (isso é para a polícia, não para publicar).':
+    'Describe the clothes, features and any health condition (this is for the police, not for publishing).',
+  'Guarde o número do boletim: ele é pedido no cadastro do Encontra-me.':
+    'Keep the report number: it is requested in the Encontra-me registration.',
+  'Cuidado com golpes': 'Beware of scams',
+  'Ninguém cobra para encontrar uma pessoa. Desconfie de pedidos de dinheiro.':
+    'Nobody charges to find a person. Be wary of requests for money.',
+  'Não pague nenhum "resgate" sem falar com a polícia.':
+    'Do not pay any "ransom" without talking to the police.',
+  'Não publique seu endereço nem documentos nas redes.':
+    'Do not post your address or documents on social media.',
+  'Divulgue só o cartaz e o link oficiais do caso.':
+    'Share only the case\'s official poster and link.',
+  'Quando a pessoa for encontrada': 'When the person is found',
+  'Avise a polícia para atualizar o boletim de ocorrência.':
+    'Tell the police so they update the report.',
+  'Peça o encerramento do caso no Encontra-me, em "Pedir correção ou atualização", na página do caso.':
+    'Ask to close the case in Encontra-me, under "Request a correction or update" on the case page.',
+  'Peça para apagarem cartazes e publicações antigas.':
+    'Ask people to delete old posters and posts.',
+  'A privacidade da pessoa encontrada vem primeiro: não divulgue onde ela está nem o que aconteceu.':
+    'The found person\'s privacy comes first: do not share where they are or what happened.',
+  'Foto recente e nítida': 'Recent, clear photo',
+  'Roupas que a pessoa usava': 'Clothes the person was wearing',
+  'Altura, cabelo, olhos e sinais': 'Height, hair, eyes and marks',
+  'Último local e horário em que foi vista': 'Last place and time seen',
+  'Celular e redes sociais da pessoa': 'The person\'s phone and social media',
+  'Lugares que ela costuma frequentar': 'Places they usually go',
+  'Amigos e contatos próximos': 'Friends and close contacts',
+  'Condições de saúde e remédios (só para a polícia)':
+    'Health conditions and medication (for the police only)',
+  'Distância dos avisos de casos perto': 'Distance for nearby case alerts',
+  'Quero ajudar': 'I want to help',
+  'Central de Apoio às Famílias': 'Family Support Center',
+  'Criança ou adolescente: prioridade': 'Child or teenager: priority',
+  'Se você vir esta criança ou adolescente, ligue 190 e depois avise pelo app.':
+    'If you see this child or teenager, call 190 and then report it in the app.',
+  'Sugerir onde divulgar': 'Suggest where to share',
+  'O envio não foi confirmado. Tente de novo em alguns instantes.':
+    'Sending was not confirmed. Try again in a few moments.',
+  'Cadastro de voluntário recebido. Modo de demonstração: nada foi enviado de verdade.':
+    'Volunteer registration received. Demo mode: nothing was actually sent.',
+  'Cadastro de voluntário recebido. Obrigado por ajudar!':
+    'Volunteer registration received. Thank you for helping!',
+  'Sair do voluntariado?': 'Leave volunteering?',
+  'Você deixa de receber pedidos e alertas de voluntariado.':
+    'You will stop receiving volunteering requests and alerts.',
+  'Você saiu do voluntariado.': 'You left volunteering.',
+  'Compartilhar cartazes oficiais': 'Share official posters',
+  'Divulgar campanhas autorizadas': 'Share authorized campaigns',
+  'Informar avistamentos': 'Report sightings',
+  'Receber alertas da minha região': 'Receive alerts for my area',
+  'Ajudar a distribuir informações': 'Help distribute information',
+  'Participar de ações de apoio autorizadas': 'Take part in authorized support actions',
+  'Sugerir regiões e conexões relevantes': 'Suggest relevant regions and connections',
+  'Cadastro de voluntário': 'Volunteer registration',
+  'Para se cadastrar como voluntário, entre na sua conta.':
+    'To register as a volunteer, sign in to your account.',
+  'Seu cadastro de voluntário': 'Your volunteer registration',
+  'Quero me cadastrar': 'I want to sign up',
+  'Cidade ou bairro onde pode ajudar': 'City or neighborhood where you can help',
+  'Ex.: Contagem': 'E.g., Contagem',
+  'Informe a cidade ou o bairro.': 'Enter the city or neighborhood.',
+  'Como você quer ajudar?': 'How do you want to help?',
+  'Escolha pelo menos uma forma de ajudar.': 'Choose at least one way to help.',
+  'Quando você costuma ter tempo (opcional)': 'When you usually have time (optional)',
+  'Ex.: fins de semana': 'E.g., weekends',
+  'Avisos': 'Notices',
+  'Receber pedidos de ajuda da minha região': 'Receive help requests for my area',
+  'Confirme que vai seguir as orientações.': 'Confirm that you will follow the guidelines.',
+  'Li e vou seguir as orientações de segurança':
+    'I have read and will follow the safety guidelines',
+  'Salvar alterações': 'Save changes',
+  'Sair do voluntariado': 'Leave volunteering',
+  'Nunca faça buscas sozinho em lugares perigosos.': 'Never search alone in dangerous places.',
+  'Não entre em propriedades nem aborde pessoas.':
+    'Do not enter properties or approach people.',
+  'Não entre em confronto. Se houver risco, ligue 190.':
+    'Do not get into confrontations. If there is danger, call 190.',
+  'Não compartilhe dados das famílias nem de quem enviou informações.':
+    'Do not share the families\' data or that of people who sent information.',
+  'Não existe ranking: toda ajuda conta igual.':
+    'There is no ranking: all help counts the same.',
+  'Antes de ajudar': 'Before helping',
+  'Sugestão recebida. Modo de demonstração: nada foi enviado de verdade.':
+    'Suggestion received. Demo mode: nothing was actually sent.',
+  'Sugestão recebida. A equipe analisa antes de ampliar a divulgação.':
+    'Suggestion received. The team reviews it before expanding the outreach.',
+  'Um passo de cada vez. Aqui está o que fazer, o que reunir e onde encontrar apoio.':
+    'One step at a time. Here is what to do, what to gather and where to find support.',
+  'O que reunir': 'What to gather',
+  'As marcações ficam salvas só neste aparelho.':
+    'Your checkmarks are saved only on this device.',
+  'Cuide de você': 'Take care of yourself',
+  'Você não precisa passar por isso sozinho. A Sofia conversa a qualquer hora (ela não substitui profissionais), e o grupo de apoio reúne pessoas que passam pela mesma situação.':
+    'You don\'t have to go through this alone. Sofia talks at any time (she does not replace professionals), and the support group brings together people going through the same situation.',
+  'Ligar para o CVV (188)': 'Call CVV (188)',
+  'O CVV atende 24 horas, de graça, para apoio emocional.':
+    'CVV answers 24 hours a day, free of charge, for emotional support.',
+  'Conhece um lugar onde vale divulgar este caso? Conte qual e por quê. A equipe analisa antes de ampliar a divulgação.':
+    'Know a place where this case is worth sharing? Tell us where and why. The team reviews it before expanding the outreach.',
+  'Cidade ou bairro': 'City or neighborhood',
+  'Ex.: Betim': 'E.g., Betim',
+  'Por que essa região?': 'Why this region?',
+  'Ex.: ela tem parentes lá e costumava visitar.':
+    'E.g., she has relatives there and used to visit.',
+  'Não informe endereço de casa nem dados de outras pessoas.':
+    'Do not give a home address or other people\'s data.',
+  'Enviar sugestão': 'Send suggestion',
+  'Você pode ajudar a divulgar casos e a passar informações para a equipe, com segurança e sem se expor.':
+    'You can help share cases and pass information to the team, safely and without exposing yourself.',
+  'Como posso ajudar como voluntário?':
+    'How can I help as a volunteer?',
+  'No menu, toque em "Quero ajudar". Leia as orientações de segurança, informe a cidade ou o bairro e escolha como quer ajudar, como compartilhar cartazes oficiais ou receber alertas da sua região. Voluntários nunca fazem buscas sozinhos, não abordam pessoas e não recebem dados das famílias. Não existe ranking.':
+    'In the menu, tap "I want to help". Read the safety guidelines, enter your city or neighborhood and choose how you want to help, such as sharing official posters or receiving alerts for your area. Volunteers never search alone, do not approach people and do not receive the families\' data. There is no ranking.',
+  'voluntário voluntariado ajudar colaborar':
+    'volunteer volunteering help collaborate',
+  'Alguém da minha família desapareceu. O que eu faço?':
+    'Someone in my family is missing. What do I do?',
+  'Não espere: não existe prazo mínimo para comunicar um desaparecimento. Se houver risco imediato, ligue 190 e registre o boletim de ocorrência. No menu, a "Central de Apoio às Famílias" mostra o passo a passo, o que reunir, como evitar golpes e onde encontrar apoio.':
+    'Do not wait: there is no minimum time to report a disappearance. If there is immediate danger, call 190 and file a police report. In the menu, the "Family Support Center" shows the steps, what to gather, how to avoid scams and where to find support.',
+  'família desapareceu primeiros passos boletim apoio':
+    'family missing first steps report support',
 };

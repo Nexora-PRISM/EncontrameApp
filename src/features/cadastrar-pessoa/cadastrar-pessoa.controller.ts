@@ -10,6 +10,7 @@ import {
   isMinorAge,
   policeReportError,
 } from '@/features/cadastrar-pessoa/legitimacy';
+import { childSensitiveFields } from '@/lib/child-protection';
 import { parseApiError } from '@/lib/api-errors';
 import { showAlert } from '@/lib/dialog';
 import { tr, useT } from '@/lib/i18n';
@@ -404,6 +405,28 @@ export function useCadastrarPessoaController() {
   const handleRegister = async () => {
     const found = validate();
     setErrors(found);
+    // Proteção reforçada (evolução): para menores, nada de escola, endereço de casa, condomínio ou rotina.
+    if (Object.keys(found).length === 0 && isMinor) {
+      const sensitive = childSensitiveFields({
+        [t('Apelido')]: nickname,
+        [t('Roupas')]: clothes,
+        [t('Cabelo')]: hair,
+        [t('Olhos')]: eyes,
+        [t('Tatuagem')]: tattoo,
+        [t('Acessórios')]: accessories,
+        [t('Último local')]: location,
+        [t('Bairro')]: originNeighborhood,
+      });
+      if (sensitive.length > 0) {
+        showAlert(
+          t('Proteja a criança'),
+          t('Não cite escola, endereço de casa, condomínio ou rotina. Use referências gerais, como o bairro ou uma praça. Revise: {fields}.', {
+            fields: sensitive.join(', '),
+          }),
+        );
+        return;
+      }
+    }
     if (Object.keys(found).length > 0) {
       // Esses campos ficam no fim do formulário: avisa quem tocou no botão flutuante lá em cima.
       if (found.reporterRelationship || found.policeReport || found.declaration) {

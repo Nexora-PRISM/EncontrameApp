@@ -17,4 +17,6 @@ export interface RegisterDevicePayload {
   approxLatitude?: number;
   approxLongitude?: number;
   preferences: RemoteNotificationPreferences;
+  /** Rede de busca (evolução): distância escolhida para "Casos perto de mim". Proposta; a API ainda não usa. */
+  nearbyRadiusKm?: number;
 }

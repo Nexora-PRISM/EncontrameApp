@@ -55,6 +55,7 @@ export async function syncPushRegistration(): Promise<PushSyncResult> {
       regionNewCases: prefs.regionNewCases,
       followedUpdates: prefs.followedUpdates,
     },
+    ...(env.searchNetworkEnabled ? { nearbyRadiusKm: prefs.nearbyRadiusKm } : {}),
   });
   await setLocalItem(REGISTERED_TOKEN_KEY, token);
   return 'registered';

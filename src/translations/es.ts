@@ -1679,4 +1679,151 @@ export const es: Readonly<Record<string, string>> = {
     'Situación, reportes, seguimiento de la búsqueda y sugerencias de la IA de un caso.',
   'Número do caso': 'Número del caso',
   'Abrir caso': 'Abrir caso',
+  // evolução · etapas 5 a 8 (rede de busca, Quero ajudar, crianças, Central de Apoio)
+  'Proteja a criança': 'Protege al niño o niña',
+  'Não cite escola, endereço de casa, condomínio ou rotina. Use referências gerais, como o bairro ou uma praça. Revise: {fields}.':
+    'No menciones escuela, dirección de casa, condominio ni rutina. Usa referencias generales, como el barrio o una plaza. Revisa: {fields}.',
+  'Proteção reforçada: não informe escola, endereço de casa, condomínio ou rotina da criança. Use referências gerais, como o bairro ou uma praça.':
+    'Protección reforzada: no informes la escuela, la dirección de casa, el condominio ni la rutina del niño o niña. Usa referencias generales, como el barrio o una plaza.',
+  'Nas primeiras horas': 'En las primeras horas',
+  'Não espere: não existe prazo mínimo para comunicar um desaparecimento. A lei trata a busca como urgente.':
+    'No esperes: no hay un plazo mínimo para comunicar una desaparición. La ley trata la búsqueda como urgente.',
+  'Se houver risco imediato, ligue 190.': 'Si hay riesgo inmediato, llama al 190.',
+  'Registre o boletim de ocorrência na delegacia mais próxima ou na delegacia on-line, se o seu estado oferecer.':
+    'Registra la denuncia policial en la comisaría más cercana o en línea, si tu estado lo ofrece.',
+  'Para crianças e adolescentes, a investigação deve começar imediatamente.':
+    'Para niños, niñas y adolescentes, la investigación debe empezar de inmediato.',
+  'Avise pessoas próximas: família, amigos e conhecidos.':
+    'Avisa a las personas cercanas: familia, amigos y conocidos.',
+  'Procure em hospitais e serviços de acolhimento da região.':
+    'Busca en hospitales y servicios de acogida de la región.',
+  'Como registrar o boletim de ocorrência': 'Cómo registrar la denuncia policial',
+  'Leve um documento seu e, se tiver, um documento da pessoa.':
+    'Lleva un documento tuyo y, si tienes, un documento de la persona.',
+  'Leve uma foto recente e nítida.': 'Lleva una foto reciente y nítida.',
+  'Informe o último local e o horário em que a pessoa foi vista.':
+    'Indica el último lugar y la hora en que vieron a la persona.',
+  'Conte as roupas, as características e qualquer condição de saúde (isso é para a polícia, não para publicar).':
+    'Cuenta la ropa, las características y cualquier condición de salud (esto es para la policía, no para publicar).',
+  'Guarde o número do boletim: ele é pedido no cadastro do Encontra-me.':
+    'Guarda el número de la denuncia: se pide en el registro de Encontra-me.',
+  'Cuidado com golpes': 'Cuidado con las estafas',
+  'Ninguém cobra para encontrar uma pessoa. Desconfie de pedidos de dinheiro.':
+    'Nadie cobra por encontrar a una persona. Desconfía de los pedidos de dinero.',
+  'Não pague nenhum "resgate" sem falar com a polícia.':
+    'No pagues ningún "rescate" sin hablar con la policía.',
+  'Não publique seu endereço nem documentos nas redes.':
+    'No publiques tu dirección ni documentos en las redes.',
+  'Divulgue só o cartaz e o link oficiais do caso.':
+    'Difunde solo el cartel y el enlace oficiales del caso.',
+  'Quando a pessoa for encontrada': 'Cuando encuentren a la persona',
+  'Avise a polícia para atualizar o boletim de ocorrência.':
+    'Avisa a la policía para que actualice la denuncia.',
+  'Peça o encerramento do caso no Encontra-me, em "Pedir correção ou atualização", na página do caso.':
+    'Pide el cierre del caso en Encontra-me, en "Pedir corrección o actualización", en la página del caso.',
+  'Peça para apagarem cartazes e publicações antigas.':
+    'Pide que borren carteles y publicaciones antiguas.',
+  'A privacidade da pessoa encontrada vem primeiro: não divulgue onde ela está nem o que aconteceu.':
+    'La privacidad de la persona encontrada es lo primero: no difundas dónde está ni qué pasó.',
+  'Foto recente e nítida': 'Foto reciente y nítida',
+  'Roupas que a pessoa usava': 'Ropa que llevaba la persona',
+  'Altura, cabelo, olhos e sinais': 'Altura, cabello, ojos y señas',
+  'Último local e horário em que foi vista': 'Último lugar y hora en que fue vista',
+  'Celular e redes sociais da pessoa': 'Celular y redes sociales de la persona',
+  'Lugares que ela costuma frequentar': 'Lugares que suele frecuentar',
+  'Amigos e contatos próximos': 'Amigos y contactos cercanos',
+  'Condições de saúde e remédios (só para a polícia)':
+    'Condiciones de salud y medicamentos (solo para la policía)',
+  'Distância dos avisos de casos perto': 'Distancia de los avisos de casos cercanos',
+  'Quero ajudar': 'Quiero ayudar',
+  'Central de Apoio às Famílias': 'Centro de Apoyo a las Familias',
+  'Criança ou adolescente: prioridade': 'Niño, niña o adolescente: prioridad',
+  'Se você vir esta criança ou adolescente, ligue 190 e depois avise pelo app.':
+    'Si ves a este niño, niña o adolescente, llama al 190 y después avisa por la app.',
+  'Sugerir onde divulgar': 'Sugerir dónde difundir',
+  'O envio não foi confirmado. Tente de novo em alguns instantes.':
+    'El envío no se confirmó. Inténtalo de nuevo en unos instantes.',
+  'Cadastro de voluntário recebido. Modo de demonstração: nada foi enviado de verdade.':
+    'Registro de voluntario recibido. Modo de demostración: no se envió nada de verdad.',
+  'Cadastro de voluntário recebido. Obrigado por ajudar!':
+    'Registro de voluntario recibido. ¡Gracias por ayudar!',
+  'Sair do voluntariado?': '¿Dejar el voluntariado?',
+  'Você deixa de receber pedidos e alertas de voluntariado.':
+    'Dejarás de recibir pedidos y alertas de voluntariado.',
+  'Você saiu do voluntariado.': 'Dejaste el voluntariado.',
+  'Compartilhar cartazes oficiais': 'Compartir carteles oficiales',
+  'Divulgar campanhas autorizadas': 'Difundir campañas autorizadas',
+  'Informar avistamentos': 'Informar avistamientos',
+  'Receber alertas da minha região': 'Recibir alertas de mi región',
+  'Ajudar a distribuir informações': 'Ayudar a distribuir información',
+  'Participar de ações de apoio autorizadas': 'Participar en acciones de apoyo autorizadas',
+  'Sugerir regiões e conexões relevantes': 'Sugerir regiones y conexiones relevantes',
+  'Cadastro de voluntário': 'Registro de voluntario',
+  'Para se cadastrar como voluntário, entre na sua conta.':
+    'Para registrarte como voluntario, entra en tu cuenta.',
+  'Seu cadastro de voluntário': 'Tu registro de voluntario',
+  'Quero me cadastrar': 'Quiero registrarme',
+  'Cidade ou bairro onde pode ajudar': 'Ciudad o barrio donde puedes ayudar',
+  'Ex.: Contagem': 'Ej.: Contagem',
+  'Informe a cidade ou o bairro.': 'Indica la ciudad o el barrio.',
+  'Como você quer ajudar?': '¿Cómo quieres ayudar?',
+  'Escolha pelo menos uma forma de ajudar.': 'Elige al menos una forma de ayudar.',
+  'Quando você costuma ter tempo (opcional)': 'Cuándo sueles tener tiempo (opcional)',
+  'Ex.: fins de semana': 'Ej.: fines de semana',
+  'Avisos': 'Avisos',
+  'Receber pedidos de ajuda da minha região': 'Recibir pedidos de ayuda de mi región',
+  'Confirme que vai seguir as orientações.': 'Confirma que vas a seguir las orientaciones.',
+  'Li e vou seguir as orientações de segurança':
+    'Leí y voy a seguir las orientaciones de seguridad',
+  'Salvar alterações': 'Guardar cambios',
+  'Sair do voluntariado': 'Dejar el voluntariado',
+  'Nunca faça buscas sozinho em lugares perigosos.':
+    'Nunca busques solo en lugares peligrosos.',
+  'Não entre em propriedades nem aborde pessoas.':
+    'No entres en propiedades ni abordes a personas.',
+  'Não entre em confronto. Se houver risco, ligue 190.':
+    'No te enfrentes con nadie. Si hay riesgo, llama al 190.',
+  'Não compartilhe dados das famílias nem de quem enviou informações.':
+    'No compartas datos de las familias ni de quienes enviaron información.',
+  'Não existe ranking: toda ajuda conta igual.': 'No hay ranking: toda ayuda cuenta igual.',
+  'Antes de ajudar': 'Antes de ayudar',
+  'Sugestão recebida. Modo de demonstração: nada foi enviado de verdade.':
+    'Sugerencia recibida. Modo de demostración: no se envió nada de verdad.',
+  'Sugestão recebida. A equipe analisa antes de ampliar a divulgação.':
+    'Sugerencia recibida. El equipo la analiza antes de ampliar la difusión.',
+  'Um passo de cada vez. Aqui está o que fazer, o que reunir e onde encontrar apoio.':
+    'Un paso a la vez. Aquí está qué hacer, qué reunir y dónde encontrar apoyo.',
+  'O que reunir': 'Qué reunir',
+  'As marcações ficam salvas só neste aparelho.':
+    'Las marcas se guardan solo en este dispositivo.',
+  'Cuide de você': 'Cuídate',
+  'Você não precisa passar por isso sozinho. A Sofia conversa a qualquer hora (ela não substitui profissionais), e o grupo de apoio reúne pessoas que passam pela mesma situação.':
+    'No tienes que pasar por esto solo. Sofia conversa a cualquier hora (no sustituye a profesionales), y el grupo de apoyo reúne a personas que pasan por la misma situación.',
+  'Ligar para o CVV (188)': 'Llamar al CVV (188)',
+  'O CVV atende 24 horas, de graça, para apoio emocional.':
+    'El CVV atiende 24 horas, gratis, para apoyo emocional.',
+  'Conhece um lugar onde vale divulgar este caso? Conte qual e por quê. A equipe analisa antes de ampliar a divulgação.':
+    '¿Conoces un lugar donde vale la pena difundir este caso? Cuenta cuál y por qué. El equipo lo analiza antes de ampliar la difusión.',
+  'Cidade ou bairro': 'Ciudad o barrio',
+  'Ex.: Betim': 'Ej.: Betim',
+  'Por que essa região?': '¿Por qué esa región?',
+  'Ex.: ela tem parentes lá e costumava visitar.':
+    'Ej.: tiene parientes allí y solía visitarlos.',
+  'Não informe endereço de casa nem dados de outras pessoas.':
+    'No informes direcciones de casas ni datos de otras personas.',
+  'Enviar sugestão': 'Enviar sugerencia',
+  'Você pode ajudar a divulgar casos e a passar informações para a equipe, com segurança e sem se expor.':
+    'Puedes ayudar a difundir casos y a pasar información al equipo, con seguridad y sin exponerte.',
+  'Como posso ajudar como voluntário?':
+    '¿Cómo puedo ayudar como voluntario?',
+  'No menu, toque em "Quero ajudar". Leia as orientações de segurança, informe a cidade ou o bairro e escolha como quer ajudar, como compartilhar cartazes oficiais ou receber alertas da sua região. Voluntários nunca fazem buscas sozinhos, não abordam pessoas e não recebem dados das famílias. Não existe ranking.':
+    'En el menú, toca "Quiero ayudar". Lee las orientaciones de seguridad, indica la ciudad o el barrio y elige cómo quieres ayudar, como compartir carteles oficiales o recibir alertas de tu región. Los voluntarios nunca buscan solos, no abordan a personas y no reciben datos de las familias. No hay ranking.',
+  'voluntário voluntariado ajudar colaborar':
+    'voluntario voluntariado ayudar colaborar',
+  'Alguém da minha família desapareceu. O que eu faço?':
+    'Alguien de mi familia desapareció. ¿Qué hago?',
+  'Não espere: não existe prazo mínimo para comunicar um desaparecimento. Se houver risco imediato, ligue 190 e registre o boletim de ocorrência. No menu, a "Central de Apoio às Famílias" mostra o passo a passo, o que reunir, como evitar golpes e onde encontrar apoio.':
+    'No esperes: no hay un plazo mínimo para comunicar una desaparición. Si hay riesgo inmediato, llama al 190 y registra la denuncia policial. En el menú, el "Centro de Apoyo a las Familias" muestra el paso a paso, qué reunir, cómo evitar estafas y dónde encontrar apoyo.',
+  'família desapareceu primeiros passos boletim apoio':
+    'familia desapareció primeros pasos denuncia apoyo',
 };

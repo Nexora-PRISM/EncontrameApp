@@ -74,6 +74,14 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_AI_ASSIST === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_AI_ASSIST !== 'false'),
   /**
+   * "Quero ajudar": cadastro de voluntário com orientações de segurança (PUT/GET/DELETE /Volunteer/me).
+   * Em desenvolvimento fica ligado (com mocks); em produção só com EXPO_PUBLIC_ENABLE_VOLUNTEERS=true.
+   * Desligado, a tela mostra só as orientações e o cadastro aparece como "Em breve".
+   */
+  volunteersEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_VOLUNTEERS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_VOLUNTEERS !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

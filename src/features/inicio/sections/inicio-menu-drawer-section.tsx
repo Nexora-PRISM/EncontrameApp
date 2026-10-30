@@ -150,6 +150,13 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
           onPress: controller.goToAllPeopleFromMenu,
         },
         {
+          key: 'volunteer',
+          label: t('Quero ajudar'),
+          icon: 'hand-heart-outline',
+          color: brand.categoryAdult,
+          onPress: controller.goToVolunteer,
+        },
+        {
           key: 'safety-note',
           label: t('Avisar sobre um lugar perigoso'),
           icon: 'shield-alert-outline',
@@ -162,6 +169,13 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
       key: 'support',
       title: t('Apoio'),
       items: [
+        {
+          key: 'support-center',
+          label: t('Central de Apoio às Famílias'),
+          icon: 'home-heart',
+          color: brand.categoryAll,
+          onPress: controller.goToSupportCenter,
+        },
         {
           key: 'chat',
           label: t('Chat com a Sofia (IA)'),

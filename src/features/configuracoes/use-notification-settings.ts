@@ -133,6 +133,29 @@ export function useNotificationSettings(loggedIn: boolean) {
     })();
   };
 
+  /** Rede de busca: distância dos alertas de casos perto. Salva e atualiza o registro do aparelho. */
+  const setNearbyRadius = (km: number) => {
+    if (!prefs || busy || prefs.nearbyRadiusKm === km) return;
+    void (async () => {
+      setBusy(true);
+      const previous = prefs;
+      try {
+        const updated = { ...prefs, nearbyRadiusKm: km };
+        await saveNotificationPrefs(updated);
+        setPrefs(updated);
+        try {
+          await syncMutation.mutateAsync();
+        } catch {
+          await saveNotificationPrefs(previous);
+          setPrefs(previous);
+          showAlert(t('Não foi possível salvar'), t('Confira sua conexão e tente de novo.'));
+        }
+      } finally {
+        setBusy(false);
+      }
+    })();
+  };
+
   const anyOn = prefs
     ? prefs.pendingReminder || prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates
     : false;
@@ -148,5 +171,8 @@ export function useNotificationSettings(loggedIn: boolean) {
     toggleNearbyCases: (next: boolean) => toggleRemote('nearbyCases', next),
     toggleRegionNewCases: (next: boolean) => toggleRemote('regionNewCases', next),
     toggleFollowedUpdates: (next: boolean) => toggleRemote('followedUpdates', next),
+    /** A escolha da distância só aparece com a rede de busca ligada (EXPO_PUBLIC_ENABLE_SEARCH_NETWORK). */
+    nearbyRadiusEnabled: env.searchNetworkEnabled,
+    setNearbyRadius,
   };
 }

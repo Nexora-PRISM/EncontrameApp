@@ -21,6 +21,7 @@ import {
 import { useT } from '@/lib/i18n';
 import { loadNotificationPrefs, saveNotificationPrefs } from '@/lib/notification-prefs';
 import { ensureNotificationPermission, localNotificationsSupported } from '@/lib/notifications';
+import { isMinor } from '@/lib/child-protection';
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { shareText } from '@/lib/share';
@@ -597,6 +598,11 @@ export function usePessoaDetalheController() {
     openTimeline: () => router.push(`/pessoa/${id}/linha-do-tempo` as Href),
     /** Cartaz com QR Code para imprimir ou mostrar (docs/evolucao, etapa 3). */
     openPoster: () => router.push(`/pessoa/${id}/cartaz` as Href),
+    /** Criança ou adolescente: aviso de prioridade na página do caso. */
+    isMinorCase: isMinor(person?.age),
+    /** Rede de busca: sugerir uma região para divulgar (EXPO_PUBLIC_ENABLE_SEARCH_NETWORK). */
+    canSuggestRegion: env.searchNetworkEnabled && !isLocalPerson,
+    openRegionSuggestion: () => router.push(`/pessoa/${id}/sugerir-regiao` as Href),
     closeHistory: () => setHistoryOpen(false),
     useCurrentLocation,
     submitSighting,

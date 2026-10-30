@@ -227,3 +227,17 @@ Regras para o servidor: só conexão **validada por pessoa** gera nova divulgaç
 pessoa a cada 24 h; nunca a mesma informação do mesmo caso duas vezes; nada sai com alertas pausados; alertas só
 para quem autorizou e só dentro da área do caso. A IA não confirma identidade, não faz reconhecimento facial e não
 muda nenhum caso.
+
+---
+
+## Etapas 5 a 7 — Colaboração da comunidade
+
+| Endpoint | Para quê |
+|---|---|
+| `POST /Notification/device` (campo novo `nearbyRadiusKm`: 5, 10, 25 ou 50) | Distância escolhida para "Casos perto de mim" |
+| `POST /MissingPerson/{id}/region-suggestions` `{ place, reason }` → `{ id, receivedAt }` | Sugestão de região para divulgar (a equipe decide) |
+| `GET /Volunteer/me` (404 quando não é voluntário) · `PUT /Volunteer/me` `{ region, ways[], availability?, alerts }` → `{ id, receivedAt }` · `DELETE /Volunteer/me` | Voluntariado. `ways`: `share_posters`, `share_campaigns`, `report_sightings`, `regional_alerts`, `distribute_info`, `support_actions`, `suggest_connections` |
+
+Regras para o servidor: voluntários nunca recebem dados privados de famílias ou de quem relatou; não existe ranking;
+casos de crianças e adolescentes têm alerta prioritário na região, mas nunca com escola, endereço ou rotina; o
+servidor também deve recusar esses dados em cadastros de menores (o app já bloqueia).

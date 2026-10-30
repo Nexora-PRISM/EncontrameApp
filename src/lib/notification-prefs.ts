@@ -13,15 +13,22 @@ export interface NotificationPrefs {
   regionNewCases: boolean;
   /** Atualizações dos casos que a pessoa acompanha. */
   followedUpdates: boolean;
+  /** Distância máxima (km) dos "Casos perto de mim" — rede de busca (evolução). */
+  nearbyRadiusKm: number;
 }
 
-export type RemoteNotificationPref = Exclude<keyof NotificationPrefs, 'pendingReminder'>;
+/** Distâncias que a pessoa pode escolher para os alertas de casos perto. */
+export const NEARBY_RADIUS_OPTIONS = [5, 10, 25, 50] as const;
+export const DEFAULT_NEARBY_RADIUS_KM = 10;
+
+export type RemoteNotificationPref = Exclude<keyof NotificationPrefs, 'pendingReminder' | 'nearbyRadiusKm'>;
 
 export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
   pendingReminder: false,
   nearbyCases: false,
   regionNewCases: false,
   followedUpdates: false,
+  nearbyRadiusKm: DEFAULT_NEARBY_RADIUS_KM,
 };
 
 const STORAGE_KEY = 'encontrame.notificationPrefs';
@@ -37,6 +44,9 @@ export function parseNotificationPrefs(raw: string | null): NotificationPrefs {
       nearbyCases: value.nearbyCases === true,
       regionNewCases: value.regionNewCases === true,
       followedUpdates: value.followedUpdates === true,
+      nearbyRadiusKm: (NEARBY_RADIUS_OPTIONS as readonly unknown[]).includes(value.nearbyRadiusKm)
+        ? (value.nearbyRadiusKm as number)
+        : DEFAULT_NEARBY_RADIUS_KM,
     };
   } catch {
     return { ...DEFAULT_NOTIFICATION_PREFS };

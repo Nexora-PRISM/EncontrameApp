@@ -14,6 +14,7 @@ import { APPEARANCE_OPTIONS } from '@/lib/brand-theme';
 import type { ShortcutAvailability } from '@/lib/emergency-shortcut';
 import { useT } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
+import { NEARBY_RADIUS_OPTIONS } from '@/lib/notification-prefs';
 
 type Props = { controller: ConfiguracoesController };
 
@@ -229,6 +230,16 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           value={c.notificationPrefs?.nearbyCases ?? false}
           onChange={c.toggleNearbyCases}
         />
+        {c.nearbyRadiusEnabled && c.notificationPrefs?.nearbyCases ? (
+          <View style={styles.radius}>
+            <SettingsSegmented
+              label={t('Distância dos avisos de casos perto')}
+              options={NEARBY_RADIUS_OPTIONS.map((km) => ({ value: String(km), label: `${km} km` }))}
+              value={String(c.notificationPrefs.nearbyRadiusKm)}
+              onChange={(value) => c.setNearbyRadius(Number(value))}
+            />
+          </View>
+        ) : null}
         <RemoteNotificationRow
           controller={c}
           icon="bell-ring-outline"
@@ -388,5 +399,9 @@ const styles = StyleSheet.create({
   company: {
     paddingTop: 4,
     paddingBottom: 8,
+  },
+  radius: {
+    paddingHorizontal: 4,
+    paddingVertical: 8,
   },
 });

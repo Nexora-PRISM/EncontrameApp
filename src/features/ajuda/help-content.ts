@@ -34,12 +34,13 @@ export type HelpArticle = {
   /** Palavras extras para a busca (sinônimos). */
   keywords?: string;
   /** Só aparece quando o recurso está ligado neste aplicativo (ver lib/env.ts). */
-  requires?: 'sightingReports';
+  requires?: 'sightingReports' | 'volunteers';
 };
 
 /** Recursos que dependem de variável de ambiente: a ajuda só fala deles quando estão ligados. */
 const FEATURE_ENABLED: Record<NonNullable<HelpArticle['requires']>, boolean> = {
   sightingReports: env.sightingReportsEnabled,
+  volunteers: env.volunteersEnabled,
 };
 
 export const HELP_CATEGORIES: HelpCategory[] = [
@@ -240,6 +241,23 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
     answer:
       msg('Na página do caso, toque em "Linha do tempo do caso". Ela mostra, em ordem, o que se sabe do caso: o cadastro, os avistamentos informados e, quando houver, mudanças de situação e atualizações. Cada item diz se a informação foi confirmada, informada no cadastro, está aguardando análise, não foi confirmada ou foi corrigida. Os locais aparecem só com bairro e cidade. Avistamentos não confirmam onde a pessoa está.'),
     keywords: msg('linha do tempo histórico acontecimentos classificação'),
+  },
+  {
+    id: 'quero-ajudar',
+    category: 'alertas',
+    question: msg('Como posso ajudar como voluntário?'),
+    answer:
+      msg('No menu, toque em "Quero ajudar". Leia as orientações de segurança, informe a cidade ou o bairro e escolha como quer ajudar, como compartilhar cartazes oficiais ou receber alertas da sua região. Voluntários nunca fazem buscas sozinhos, não abordam pessoas e não recebem dados das famílias. Não existe ranking.'),
+    keywords: msg('voluntário voluntariado ajudar colaborar'),
+    requires: 'volunteers',
+  },
+  {
+    id: 'central-apoio',
+    category: 'alertas',
+    question: msg('Alguém da minha família desapareceu. O que eu faço?'),
+    answer:
+      msg('Não espere: não existe prazo mínimo para comunicar um desaparecimento. Se houver risco imediato, ligue 190 e registre o boletim de ocorrência. No menu, a "Central de Apoio às Famílias" mostra o passo a passo, o que reunir, como evitar golpes e onde encontrar apoio.'),
+    keywords: msg('família desapareceu primeiros passos boletim apoio'),
   },
   {
     id: 'cartaz-qr',

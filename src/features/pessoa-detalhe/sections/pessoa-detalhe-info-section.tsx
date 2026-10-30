@@ -40,6 +40,12 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
 
   return (
     <View style={styles.list}>
+      {controller.isMinorCase ? (
+        <View style={styles.minor} accessibilityRole="alert">
+          <Text style={styles.minorTitle}>{t('Criança ou adolescente: prioridade')}</Text>
+          <Text style={styles.minorText}>{t('Se você vir esta criança ou adolescente, ligue 190 e depois avise pelo app.')}</Text>
+        </View>
+      ) : null}
       {rows.map((row) => (
         <View key={row.label} style={styles.row}>
           <Text style={styles.label}>{row.label}</Text>
@@ -86,6 +92,16 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
               containerStyle={isWide ? styles.actionSlot : styles.actionFull}
               style={isWide ? undefined : styles.actionFull}
             />
+            {controller.canSuggestRegion ? (
+              <BrandButton
+                label={t('Sugerir onde divulgar')}
+                variant="outline"
+                trailingIcon="map-marker-plus-outline"
+                onPress={controller.openRegionSuggestion}
+                containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+                style={isWide ? undefined : styles.actionFull}
+              />
+            ) : null}
             <BrandButton
               label={t('Cartaz com QR Code')}
               variant="outline"
@@ -164,6 +180,22 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
     group: {
       gap: 10,
       marginTop: 6,
+    },
+    minor: {
+      gap: 4,
+      padding: 14,
+      borderRadius: 12,
+      backgroundColor: brand.cream,
+    },
+    minorTitle: {
+      fontSize: 17,
+      fontWeight: '800',
+      color: brand.navy,
+    },
+    minorText: {
+      fontSize: 15,
+      lineHeight: 21,
+      color: brand.navy,
     },
     groupTitle: {
       fontSize: 14,

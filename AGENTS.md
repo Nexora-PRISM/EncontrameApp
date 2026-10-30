@@ -214,6 +214,10 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Painel da equipe** (evolução; `/equipe`, `services/team/`): só para a equipe (a API responde 403 aos outros).
   Toda decisão pede justificativa. A IA só sugere, com motivo e "indicação" (nunca "confirmado"); quem decide é uma
   pessoa. Alerta enviado não é pessoa mobilizada. Só conexão validada por pessoa gera nova divulgação.
+- **Crianças e adolescentes** (evolução; `lib/child-protection.ts`): cadastro de menor não pode citar escola, endereço
+  de casa, condomínio, rotina nem rua com número; a página do caso mostra a faixa de prioridade.
+- **Voluntários** (evolução; `/quero-ajudar`): orientações de segurança antes de tudo; nada de busca sozinho,
+  abordagem ou confronto; sem ranking; voluntário não recebe dados das famílias.
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
@@ -267,6 +271,7 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_MOCK_SIGHTING_FAIL` — só no mock: `true` simula falha no envio do relato (mensagem "não confirmado").
 - `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK` — (evolução) rede de busca: raio, sugestão de região, ampliação e teia. Vazio: ligada em dev (mock), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_AI_ASSIST` — (evolução) sugestões da IA no Painel da equipe. Vazio: ligada em dev (mock), desligada em produção.
+- `EXPO_PUBLIC_ENABLE_VOLUNTEERS` — (evolução) cadastro de voluntário em "Quero ajudar". Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` — (evolução) linha do tempo completa vinda da API. Vazio: ligada em dev (mock), desligada em produção; desligada, a linha do tempo é montada com o cadastro e o histórico de avistamentos.
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.

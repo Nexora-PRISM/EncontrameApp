@@ -57,6 +57,11 @@ export function CadastrarPessoaResponsibilitySection({ controller: c }: Props) {
           ? t('Para crianças e adolescentes, o número do boletim de ocorrência é obrigatório. Registre na delegacia mais próxima ou, se o seu estado permitir, na delegacia on-line — não é preciso esperar 24 horas.')
           : t('Recomendado. Com o boletim de ocorrência, o caso fica mais confiável para a comunidade.')}
       </Text>
+      {c.isMinor ? (
+        <Text style={styles.hint}>
+          {t('Proteção reforçada: não informe escola, endereço de casa, condomínio ou rotina da criança. Use referências gerais, como o bairro ou uma praça.')}
+        </Text>
+      ) : null}
 
       <BrandCheckbox
         checked={c.declarationAccepted}
