@@ -186,3 +186,37 @@ por perto" continua por último, logo acima do formulário que ele abre. Os bot�
 
 **Depende de integração**: nada novo no backend. Usa `GET /MissingPerson/{id}` e o endereço público do app web.
 
+---
+
+## Etapas 4, 9 e 10 — Painel da equipe: moderação, IA de apoio, teia e acompanhamento (30/10/2026)
+
+**Objetivo.** Dar à equipe um lugar para moderar, analisar relatos, ampliar a busca e revisar sugestões da IA, com
+justificativa em toda decisão e sem que nada mude um caso sozinho.
+
+**Como funciona**
+
+1. `/equipe` é rota protegida (login). Quem não é da equipe vê "Esta área é só para a equipe". A verificação usa um
+   endpoint que **já existe** (`GET /Moderation/reports` responde 403 para quem não é da equipe), sem aviso de erro na
+   tela. O atalho "Painel da equipe" no Perfil só aparece para a equipe.
+2. **Denúncias abertas** (já existe na API): lista com golpes e informação falsa primeiro, "Ocultar" e "Manter".
+3. **Caso** (`/equipe/caso/{número}`), com um campo de justificativa que vale para a próxima decisão:
+   - Situação do caso (já existe na API), só com as mudanças permitidas pelo servidor. A justificativa vai junto, mas a
+     API ainda não a guarda (contrato).
+   - Relatos para análise (com `EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS`): Em análise, Relevante, Não confirmado, Encerrado.
+   - Acompanhamento da busca (com `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK`): alcance, alertas enviados e entregues ("não
+     informado" quando o serviço não diz), relatos recebidos, regiões mais ativas, últimas atualizações; **teia** no mapa
+     (ponto inicial, regiões, informações; linha contínua = validada por pessoa, tracejada = sugerida/aguardando);
+     ampliação da busca por níveis (bairro → cidade → vizinhas → estado → país → exterior) e pausa dos alertas.
+     O texto deixa claro que alerta enviado não é pessoa mobilizada.
+   - Sugestões da IA (com `EXPO_PUBLIC_ENABLE_AI_ASSIST`): tipo, indicação fraca/moderada/forte (nunca "confirmado"),
+     motivos e relatos envolvidos; "Aceitar para análise" ou "Descartar". Sem reconhecimento facial.
+4. Regras testadas: transições de situação iguais às do servidor, justificativa obrigatória, ordem da fila de
+   denúncias, níveis de ampliação, limite de alertas (no máximo 3 por pessoa a cada 24 h, nunca a mesma informação do
+   mesmo caso duas vezes, nada com alertas pausados), só conexão validada gera nova divulgação, leitura da pontuação
+   da IA e distância entre pontos.
+5. `lib/axios.ts` ganhou a opção `QUIET` (não vai ao servidor) para a tela tratar a falha sem o aviso global de erro.
+   Sem ela, nada muda.
+
+**Arquivos**: `src/lib/team-rules.ts`, `src/lib/search-network-rules.ts`, `src/lib/team-labels.ts`,
+`src/services/team/*`, `src/features/equipe/*`, `src/pages/equipe/**`, `tests/team-rules.test.mjs` (criados);
+`src/lib/axios.ts`, `src/lib/auth-guard.ts`, `src/lib/env.ts`, `src/features/perfil/*`, `src/translations/*` (alterados).

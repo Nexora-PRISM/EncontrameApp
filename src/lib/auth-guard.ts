@@ -10,6 +10,8 @@ const PROTECTED_PREFIXES = [
   '/aviso-seguranca',
   // Evolução: relatos da própria conta (GET /SightingReport/mine é autenticado).
   '/meus-relatos',
+  // Evolução: Painel da equipe (a API confirma se a conta é da equipe).
+  '/equipe',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */

@@ -6,6 +6,7 @@ import { useSafeBack } from '@/lib/safe-back';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSessionUser } from '@/lib/use-session-user';
 import { listLocalPending } from '@/services/people/people.local.store';
+import { useIsStaffQuery } from '@/services/team/team.service';
 
 /** Iniciais para o avatar (ex.: "Maria Souza" → "MS"). */
 function initialsOf(name: string): string {
@@ -31,6 +32,8 @@ export function usePerfilController() {
   const user = useSessionUser();
   const goBack = useSafeBack('/inicio');
   const [localDrafts, setLocalDrafts] = useState<LocalDraftSummary[] | null>(null);
+  // Uma consulta por sessão: a API responde 403 para quem não é da equipe (sem aviso de erro na tela).
+  const staffQuery = useIsStaffQuery();
 
   useFocusEffect(
     useCallback(() => {
@@ -70,6 +73,9 @@ export function usePerfilController() {
     /** "Meus relatos" só existe com EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS (depende da API de relatos). */
     sightingReportsEnabled: env.sightingReportsEnabled,
     goToMyReports: () => router.push('/meus-relatos' as Href),
+    /** Só aparece para contas da equipe. */
+    isStaff: staffQuery.data === true,
+    goToTeamPanel: () => router.push('/equipe' as Href),
     goToRegister: () => router.push('/cadastrar-pessoa'),
     goToAllPeople: () => router.push('/pessoas-desaparecidas' as Href),
     goToGroupChat: () => router.push('/grupo-chat'),

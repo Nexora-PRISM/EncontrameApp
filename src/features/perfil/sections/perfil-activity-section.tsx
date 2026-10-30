@@ -117,6 +117,14 @@ export function PerfilActivitySection({ controller }: Props) {
       <SettingsGroup title={t('Mais')}>
         <SettingsRow icon="help-circle-outline" label={t('Ajuda e suporte')} onPress={controller.goToHelp} />
         <SettingsRow icon="cog-outline" label={t('Configurações')} onPress={controller.goToSettings} />
+        {controller.isStaff ? (
+          <SettingsRow
+            icon="shield-account-outline"
+            label={t('Painel da equipe')}
+            description={t('Denúncias, relatos e acompanhamento das buscas.')}
+            onPress={controller.goToTeamPanel}
+          />
+        ) : null}
       </SettingsGroup>
     </View>
   );

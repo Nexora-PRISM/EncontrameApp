@@ -18,7 +18,13 @@ import {
 } from '@/lib/session';
 import { getAuthRepository } from '@/services/auth/auth.repository';
 
-type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
+type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean; quietErrors?: boolean };
+
+/**
+ * Opção de requisição (não vai ao servidor): a tela trata a falha sozinha, sem o modal global de erro.
+ * Ex.: `api.get(url, QUIET)` ao verificar se a conta é da equipe (403 é resposta esperada).
+ */
+export const QUIET = { quietErrors: true } as const;
 
 /**
  * Instância única do axios usada pelos repositórios *.axios.repository.ts.
@@ -96,7 +102,7 @@ api.interceptors.response.use(
       }
     }
 
-    if (!isQuietErrorPath(url)) {
+    if (!isQuietErrorPath(url) && !original?.quietErrors) {
       notifyApiError(apiErrorDisplayMessage(error));
     }
     return Promise.reject(error);

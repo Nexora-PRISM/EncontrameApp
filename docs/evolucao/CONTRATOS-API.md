@@ -201,3 +201,29 @@ De onde vem cada tipo:
 Melhoria pequena e útil já agora: o histórico de avistamentos devolver também a data em que a pessoa foi vista
 (`dtLastSeen`), e não só quando o registro foi feito.
 
+---
+
+## Etapas 4, 9 e 10 — Painel da equipe
+
+**Já existem e o app usa:** `GET /Moderation/reports`, `POST /Moderation/reports/{id}/hide`,
+`POST /Moderation/reports/{id}/dismiss`, `POST /Moderation/missing-person/{id}/status` (`{ statusId }`).
+
+**O app já envia, a API ainda não guarda:** `justification` nas decisões acima. Proposta: gravar a justificativa,
+quem decidiu e quando, em registro de auditoria que não pode ser apagado.
+
+**Propostos (o app está pronto, desligados em produção):**
+
+| Endpoint | Para quê |
+|---|---|
+| `GET /SightingReport?missingPersonId=&status=pending_review` | Fila de relatos de um caso (equipe) |
+| `PATCH /SightingReport/{id}/status` `{ status, justification }` | Decisão sobre um relato |
+| `GET /MissingPerson/{id}/search` | Acompanhamento: `level`, `radiusKm`, `paused`, `notificationsSent`, `notificationsDelivered` (ou null), `reportsReceived`, `activeRegions[]`, `lastUpdates[]`, `expansions[]`, `nodes[]`, `connections[]` |
+| `POST /MissingPerson/{id}/search/expansions` `{ to, justification }` | Ampliar a busca (registrar nível anterior, novo, justificativa, quem, quando e alcance estimado) |
+| `POST /MissingPerson/{id}/search/pause` `{ paused, justification }` | Pausar ou retomar os alertas do caso |
+| `GET /MissingPerson/{id}/ai-suggestions` | Sugestões: `id`, `kind` (`related_reports`, `duplicate_case`, `conflict`, `new_region`), `score` 0–1, `reasons[]`, `reportIds[]`, `status` |
+| `POST /AiSuggestion/{id}/decision` `{ accept, justification }` | Decisão humana sobre a sugestão |
+
+Regras para o servidor: só conexão **validada por pessoa** gera nova divulgação; no máximo 3 alertas de casos por
+pessoa a cada 24 h; nunca a mesma informação do mesmo caso duas vezes; nada sai com alertas pausados; alertas só
+para quem autorizou e só dentro da área do caso. A IA não confirma identidade, não faz reconhecimento facial e não
+muda nenhum caso.

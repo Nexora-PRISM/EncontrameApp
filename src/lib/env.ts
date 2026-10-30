@@ -59,6 +59,21 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_CASE_TIMELINE === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CASE_TIMELINE !== 'false'),
   /**
+   * Rede inteligente de busca: raio dos alertas, sugestão de região e, no Painel da equipe, ampliação da busca,
+   * pausa dos alertas e a "teia" do caso. Depende de endpoints novos (docs/evolucao/CONTRATOS-API.md).
+   * Em desenvolvimento fica ligada (com mocks); em produção só com EXPO_PUBLIC_ENABLE_SEARCH_NETWORK=true.
+   */
+  searchNetworkEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_SEARCH_NETWORK === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_SEARCH_NETWORK !== 'false'),
+  /**
+   * Sugestões da IA para a equipe (relatos relacionados, duplicidades, contradições), sempre com decisão humana.
+   * Em desenvolvimento fica ligada (com mocks); em produção só com EXPO_PUBLIC_ENABLE_AI_ASSIST=true.
+   */
+  aiAssistEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_AI_ASSIST === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_AI_ASSIST !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

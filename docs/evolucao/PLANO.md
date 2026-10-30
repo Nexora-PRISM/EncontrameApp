@@ -14,13 +14,13 @@ Legenda: **Feita** (código pronto e validado na checagem) · **Em andamento** �
 | 1 | "Eu vi essa pessoa" (F2) | Relato completo: data, horário, descrição, roupa, características, direção, foto opcional, referência; correção do local; número e status do relato; "Meus relatos"; limite contra envios repetidos | Sim: `POST /SightingReport`, `GET /SightingReport/mine` | Código pronto; falta a checagem completa no GitHub e a API |
 | 2 | Linha do tempo (F4) | Eventos do caso com classificação (confirmado, informado no cadastro, aguardando análise, não confirmado, corrigido); local só com bairro e cidade | Só a versão completa (`GET /MissingPerson/{id}/timeline`); a versão básica usa a API de hoje | Código pronto; falta a checagem completa no GitHub |
 | 3 | Cartaz digital com QR Code (F6) | Cartaz vertical, quadrado e para impressão; link público; QR Code que segue o status do caso | Não (usa a API de hoje e `EXPO_PUBLIC_WEB_URL`) | Código pronto; falta a checagem completa no GitHub. "Salvar como imagem" depende de biblioteca nova |
-| 4 | Proteção contra fraudes (F7) | Classificação da informação (oficial, em análise, não confirmada, corrigida, removida), limites de envio, histórico de alterações, ferramentas de moderação | Sim | Planejada |
+| 4 | Proteção contra fraudes (F7) | Painel da equipe: denúncias (ocultar/manter), situação do caso, relatos para análise, justificativa obrigatória; classificação da informação na linha do tempo (etapa 2); limite de envio (etapa 1) | Em parte (denúncias e situação já existem na API) | Código pronto |
 | 5 | Rede inteligente de busca (F1, itens 5.1 a 5.7) | Região inicial, raio, alertas regionais com limite de frequência, expansão registrada (região anterior, nova, justificativa, responsável), controle da teia | Sim | Planejada |
 | 6 | Modo voluntário "Quero ajudar" (F5) | Cadastro mínimo, formas de colaborar, orientações de segurança, sem ranking | Sim | Planejada |
 | 7 | Modo crianças (F8) | Fluxo prioritário, proteção reforçada, nada de endereço, escola ou rotina | Sim | Planejada |
 | 8 | Central de apoio às famílias (F9) | Orientações (o que fazer, boletim de ocorrência, quais informações organizar…) | Pouco (conteúdo pode ficar no app) | Planejada; aguarda o restante do prompt (item 13 em diante) |
-| 9 | IA de apoio (F3) | Contrato da análise de relatos, painel restrito para moderadores, motivos das sugestões, decisão sempre humana; sem reconhecimento facial | Sim | Planejada |
-| 10 | Painel da teia e acompanhamento da busca (F1, itens 5.8 e 5.9) | Visualização administrativa da rede e números da busca, sem confundir alcance com pessoas mobilizadas | Sim | Planejada |
+| 9 | IA de apoio (F3) | Sugestões no Painel da equipe com motivo e indicação (nunca "confirmado"), decisão humana; sem reconhecimento facial | Sim | Código pronto (mock); falta a API |
+| 10 | Painel da teia e acompanhamento da busca (F1, itens 5.8 e 5.9) | Teia no mapa, números da busca (sem confundir alcance com pessoas mobilizadas), ampliação e pausa dos alertas | Sim | Código pronto (mock); falta a API |
 | 11+ | Trajeto monitorado, modo offline, busca internacional, mapa de áreas, cofre do caso, painel para autoridades | Conforme o documento institucional | Sim | Planejada; aguarda o restante do prompt |
 
 ## Regras que valem para todas as etapas
