@@ -256,3 +256,28 @@ justificativa em toda decisão e sem que nada mude um caso sozinho.
 `src/services/notifications/*`, `src/features/configuracoes/*`, `src/features/inicio/*` (menu),
 `src/features/pessoa-detalhe/*`, `src/features/cadastrar-pessoa/*`, `src/features/ajuda/help-content.ts`,
 `src/translations/*` (alterados).
+
+## Verificação das etapas anteriores na checagem do GitHub (30/10/2026)
+
+- `c55f62a` — opção `QUIET` do axios declarada nos tipos (a checagem acusava erro de tipo no Painel da equipe).
+- `a903c11` — checagem automática em passos separados (tipos, lint, traduções, testes), com anotações por arquivo e
+  linha, inclusive erros do ESLint sem nome de regra.
+- `b4a443e` — "Quero ajudar" preenche o formulário sem `setState` dentro de efeito (regra do React Compiler no lint).
+- Resultado: checagem completa verde (tipos, lint, traduções, 76 testes, build web, build de demonstração e prints).
+
+## Encontra-me Vision — rede de câmeras participantes (30/10/2026)
+
+Commit `eb97072` (mais os de documentação e ajustes listados abaixo). Documento completo: `VISION.md`.
+
+- Três ambientes: comunidade (`/vision`, sem conta: só região + nível de cobertura), responsável por câmera
+  (`/vision/minhas-cameras`, `/vision/pedidos`) e institucional (`/vision/institucional`, operações, auditoria).
+- Regras puras em `src/lib/vision-rules.ts` com 19 testes: funções e habilitação, justificativa, auditoria (inclusive
+  negadas), raio em passos, situação das gravações pelo prazo de guarda, pedido de preservação (fluxo, intervalo,
+  urgência, texto formal), análise visual sem biometria, classificação com decisão humana, trajeto só com evidência,
+  próximas câmeras, confiabilidade de outras fontes.
+- Demonstração completa em memória (`vision.mock.repository.ts`): 17 câmeras fictícias, 2 operações, 7 pedidos,
+  5 correspondências, 3 informações de outras fontes, perfis para testar cada ambiente.
+- Mapa esquemático próprio (sem serviço externo) e quadro sintético no lugar de vídeo.
+- Variável `EXPO_PUBLIC_ENABLE_VISION` (desligada em produção); item no menu e pergunta na Central de Ajuda só com ela.
+- Checagem: build de demonstração com todas as variáveis da evolução ligadas e teste de fumaça das telas novas
+  (`.github/scripts/smoke-routes.js`).

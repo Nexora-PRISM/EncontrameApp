@@ -17,6 +17,10 @@ Atualizado em 30/10/2026.
 |---|---|---|
 | Relato completo de avistamento e "Meus relatos" | `EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS` | Pronto no app, só com mock. Falta a API |
 | Linha do tempo completa (mudanças de situação, atualizações, correções) | `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` | Pronto no app, só com mock. Sem a variável, a versão básica já funciona com a API de hoje |
+| Rede de busca (raio dos alertas, sugestão de região, teia e ampliação no Painel da equipe) | `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK` | Pronto no app, só com mock. Falta a API |
+| Sugestões da IA para a equipe | `EXPO_PUBLIC_ENABLE_AI_ASSIST` | Pronto no app, só com mock. Falta a API |
+| Cadastro de voluntário ("Quero ajudar") | `EXPO_PUBLIC_ENABLE_VOLUNTEERS` | Pronto no app, só com mock. Sem a variável, só as orientações aparecem |
+| Encontra-me Vision (rede de câmeras) | `EXPO_PUBLIC_ENABLE_VISION` | Demonstração com dados fictícios. Falta API, convênios, armazenamento e análise de vídeo, verificação de autoridades e avaliação jurídica (`VISION.md`) |
 
 ## Decisões que cabem aos sócios
 
@@ -26,8 +30,15 @@ Atualizado em 30/10/2026.
   (relato → análise → só então vira informação do caso), mas mudar o comportamento atual do histórico depende de
   decisão e da API nova. Esta cópia não alterou o histórico de avistamentos existente.
 
+- **Encontra-me Vision.** Antes de ligar: escopo, termo de adesão dos responsáveis por câmeras, política de acesso
+  de autoridades, retenção das gravações, relatório de impacto (LGPD) e escolha do serviço de análise visual (sem
+  reconhecimento facial). Ver `VISION.md`, itens 8 a 11.
+
 ## Riscos e observações
 
+- Vision: mapa esquemático (sem ruas) e quadro sintético no lugar de vídeo. Trocar por mapa com ruas e player
+  (`expo-video`) é opcional e depende de instalar biblioteca.
+- Vision: os dados de demonstração ficam na memória e voltam ao início quando o app recarrega.
 - O limite de 3 relatos por caso a cada 10 minutos fica só na memória do aparelho (some ao fechar o app). O limite
   de verdade precisa estar no servidor.
 - A verificação de tipos feita durante o desenvolvimento usou declarações simplificadas das bibliotecas. Só a

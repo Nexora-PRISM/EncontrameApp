@@ -21,7 +21,7 @@ const PUBLIC_ROUTES = [
   { path: '/pessoa/p1/cartaz', expect: 'QR' },
 ];
 
-/** Rotas que exigem conta (login fictício do modo de demonstração). */
+/** Rotas que exigem conta (sessão fictícia do modo de demonstração, gravada antes de abrir a página). */
 const PRIVATE_ROUTES = [
   { path: '/vision/minhas-cameras', expect: 'Cadastrar uma câmera' },
   { path: '/vision/minhas-cameras/nova', expect: 'Nome da câmera' },
@@ -72,7 +72,13 @@ async function check(page, errors, label, route, expect) {
   if (route) await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
   const ok = await waitForText(page, expect);
   const pageErrors = errors.slice(before);
-  results.push({ label, ok: ok && pageErrors.length === 0, detail: ok ? pageErrors.join(' | ') : `texto "${expect}" não apareceu` });
+  let detail = pageErrors.join(' | ');
+  if (!ok) {
+    // Diagnóstico: endereço final e começo do texto da tela.
+    const body = await page.evaluate(() => document.body.innerText).catch(() => '');
+    detail = `texto "${expect}" não apareceu em ${page.url()} — tela: ${String(body).slice(0, 160)} ${detail}`;
+  }
+  results.push({ label, ok: ok && pageErrors.length === 0, detail });
 }
 
 (async () => {
@@ -83,20 +89,24 @@ async function check(page, errors, label, route, expect) {
     geolocation: { latitude: -19.9245, longitude: -43.9352 },
     permissions: ['geolocation'],
   });
+  // Sessão fictícia do modo de demonstração (o mesmo que o login de teste grava no navegador).
+  await context.addInitScript(() => {
+    if (!sessionStorage.getItem('smoke-session')) {
+      sessionStorage.setItem('smoke-session', '1');
+      localStorage.setItem('encontrame.auth.accessToken', 'mock-access-token-login');
+      localStorage.setItem('encontrame.auth.refreshToken', 'mock-refresh-token-login');
+      localStorage.setItem(
+        'encontrame.auth.user',
+        JSON.stringify({ id: 'mock-user-1', name: 'Usuário Mock', email: 'demo@encontra.me' }),
+      );
+    }
+  });
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
 
   try {
     for (const route of PUBLIC_ROUTES) await check(page, errors, route.path, route.path, route.expect);
-
-    // Login fictício (o modo de demonstração aceita qualquer conta).
-    await page.goto(`${base}/login`, { waitUntil: 'domcontentloaded' });
-    await waitForText(page, 'Entrar');
-    await page.getByPlaceholder('exemplo@email.com').first().fill('demo@encontra.me');
-    await page.locator('input[type="password"]').first().fill('Senha-Demo-123');
-    await tap(page, 'Entrar');
-    await page.waitForTimeout(2500);
 
     for (const route of PRIVATE_ROUTES) await check(page, errors, route.path, route.path, route.expect);
 

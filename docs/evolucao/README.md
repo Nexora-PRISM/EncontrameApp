@@ -61,6 +61,7 @@ Para desfazer uma etapa: `git revert` dos commits dela (listados em `REGISTRO.md
 | `CONTRATOS-API.md` | Endpoints e formatos que o backend .NET precisa implementar |
 | `TESTES.md` | O que foi testado em cada etapa e o resultado |
 | `PROBLEMAS-CONHECIDOS.md` | Bloqueios, riscos e itens experimentais |
+| `VISION.md` | Encontra-me Vision: o que foi feito, arquitetura, riscos, infraestrutura, ativação e integração |
 
 ## Quando o dono do app decidir atualizar o app oficial
 

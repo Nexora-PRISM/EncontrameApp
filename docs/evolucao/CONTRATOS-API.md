@@ -241,3 +241,58 @@ muda nenhum caso.
 Regras para o servidor: voluntários nunca recebem dados privados de famílias ou de quem relatou; não existe ranking;
 casos de crianças e adolescentes têm alerta prioritário na região, mas nunca com escola, endereço ou rotina; o
 servidor também deve recusar esses dados em cadastros de menores (o app já bloqueia).
+
+---
+
+## Encontra-me Vision — rede de câmeras participantes
+
+Nenhum destes endpoints existe. O app está pronto para eles (`src/services/vision/vision.axios.repository.ts`) e fica
+desligado em produção (`EXPO_PUBLIC_ENABLE_VISION`). Detalhes do módulo em `VISION.md`.
+
+**Acesso e habilitação**
+
+| Endpoint | Para quê |
+|---|---|
+| `GET /Vision/access/me` → `{ role, verified, ownsCameras, userName, institution?, pendingRequest? }` | Função da conta: `community`, `owner`, `agent`, `coordinator`, `auditor`, `technical`. `verified` só é `true` depois da verificação institucional |
+| `POST /Vision/access/requests` `{ institution, position, registration, institutionalEmail, reason }` → `{ id, receivedAt }` | Pedido de habilitação. **Nunca aprova sozinho**; a equipe confirma com a instituição |
+
+**Comunidade e responsável por câmera**
+
+| Endpoint | Para quê |
+|---|---|
+| `GET /Vision/coverage` → `{ areas: [{ region, city, level }] }` | Cobertura pública: `level` = `high` (6+ câmeras), `medium` (3 a 5) ou `low`. **Nada além disso** (sem posição, responsável, ângulo, horário ou contagem). Só câmeras `authorized` |
+| `GET /Vision/cameras/mine` | Câmeras da conta (campos de `Camera` em `src/lib/vision-rules.ts`) |
+| `POST /Vision/cameras` · `PUT /Vision/cameras/{id}` `{ name, source, region, city, coverage, equipment, latitude?, longitude?, hoursStart?, hoursEnd?, retentionDays (1–90), integration, sharing, consent: true }` → `{ id, receivedAt }` | Cadastro. O servidor deve recusar textos com senha, usuário, IP ou endereço de acesso (mesma regra de `containsSecret`). Câmera nova nasce `pending` |
+| `POST /Vision/cameras/{id}/participation` `{ status: suspended \| revoked \| pending }` | O responsável pausa, encerra ou pede para voltar (voltar passa por nova verificação) |
+| `GET /Vision/preservation-requests/received` | Pedidos para as câmeras da conta |
+
+**Ambiente institucional** (só `agent`, `coordinator`, `auditor` com `verified = true`; o servidor decide, o app só esconde)
+
+| Endpoint | Para quê |
+|---|---|
+| `GET /Vision/operations` | Lista: `id, caseId, caseLabel, lastKnownPlace, lastSeenAt, radiusKm, status, createdAt, createdByName, openRequests, matchesToReview` |
+| `POST /Vision/operations` `{ caseId, latitude, longitude, lastKnownPlace, lastSeenAt, radiusKm, description, scope, justification }` → `{ id, receivedAt }` | Só `coordinator`. `radiusKm` ∈ {0,5; 1; 2; 3; 5; 10; 20} |
+| `GET /Vision/operations/{id}` → `{ operation, cameras[], requests[], matches[], infos[] }` | Detalhe. `cameras` = participantes até 20 km (o app filtra pelo raio) |
+| `PUT /Vision/operations/{id}/radius` `{ radiusKm, justification }` | Só `coordinator` |
+| `POST /Vision/operations/{id}/preservation-requests` `{ cameraId, from, to, justification }` → `{ id, receivedAt }` | Cria o pedido como `draft`. Intervalo de no máximo 12 h, sem futuro |
+| `POST /Vision/preservation-requests/{id}/status` `{ status, note }` | `sent`, `images_received`, `cancelled` (instituição); `accepted`, `declined` (só o responsável pela câmera); `expired` (servidor). Fluxo em `preservationNext` |
+| `POST /Vision/matches/{id}/classification` `{ classification, note }` | Só `coordinator`. `confirmed` exige que a mesma pessoa tenha aberto o trecho antes |
+| `POST /Vision/clips/{clipId}/access` `{ justification }` → `{ clipId, grantedAt, expiresAt, url }` | URL temporária (ex.: 10 min), por pessoa e justificativa; registrar sempre |
+| `POST /Vision/infos/{id}/reliability` `{ reliability, note }` | `low`, `medium`, `high` |
+| `GET /Vision/audit?operationId=` → `[{ id, at, actorId, actorName, role, action, target, justification?, result }]` | Só `coordinator` e `auditor`. Inclui as tentativas **negadas** |
+
+Correspondência (`matches[]`): `id, cameraId, cameraName, region, latitude, longitude, seenAt, confidence (0–1),
+features[{ kind, value }], reason, limitations[], clipId, classification, aiSuggestion, reviewedByName?, reviewedAt?,
+reviewNote?`. `kind` ∈ `clothing_color, clothing_type, backpack, bag, accessory, direction, vehicle, other`.
+
+Regras para o servidor:
+
+- Toda ação institucional exige justificativa (15 a 500 caracteres) e gera registro de auditoria **só de inclusão**
+  (sem UPDATE/DELETE), inclusive quando negada (403).
+- A IA **nunca** grava `confirmed` nem `discarded`; só sugere `probable` (confiança ≥ 0,75) ou `inconclusive`
+  (0,35 a 0,75). Abaixo de 0,35, não mostra.
+- Nada biométrico: sem reconhecimento facial, íris, digital, modo de andar ou voz. Atributos com essas palavras são
+  descartados.
+- Nenhuma resposta deve dizer que a pessoa foi encontrada por causa de uma correspondência.
+- Credenciais de câmeras nunca passam pela API do app; ficam em cofre, configuradas com o responsável.
+- Gravações: criptografadas, acesso por URL temporária, marca d'água com quem abriu, retenção definida.

@@ -218,6 +218,15 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   de casa, condomínio, rotina nem rua com número; a página do caso mostra a faixa de prioridade.
 - **Voluntários** (evolução; `/quero-ajudar`): orientações de segurança antes de tudo; nada de busca sozinho,
   abordagem ou confronto; sem ranking; voluntário não recebe dados das famílias.
+- **Encontra-me Vision** (evolução; `/vision*`, `lib/vision-rules.ts`, `services/vision/`, `docs/evolucao/VISION.md`):
+  três ambientes. A comunidade vê só região + nível de cobertura (nunca posição, responsável, ângulo, horário ou
+  contagem). O cadastro de câmera nunca aceita senha, usuário, IP ou endereço de acesso, e câmera nova começa
+  "Aguardando verificação". O ambiente institucional exige habilitação verificada (`verified`); dizer que é autoridade
+  não libera nada. Ações sensíveis pedem justificativa e vão para a auditoria, inclusive as negadas. A IA só sugere
+  "provável" ou "inconclusiva"; confirmar exige pessoa que abriu o trecho. Nada biométrico
+  (`BIOMETRIC_ANALYSIS_ENABLED = false`). Semelhança nunca vira "pessoa encontrada". Sem evidência, sem trajeto.
+  Câmera indisponível não prova ausência. O app nunca envia pedido de preservação sozinho. Dados de demonstração
+  sempre marcados como fictícios.
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
@@ -272,6 +281,7 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK` — (evolução) rede de busca: raio, sugestão de região, ampliação e teia. Vazio: ligada em dev (mock), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_AI_ASSIST` — (evolução) sugestões da IA no Painel da equipe. Vazio: ligada em dev (mock), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_VOLUNTEERS` — (evolução) cadastro de voluntário em "Quero ajudar". Vazio: ligado em dev (mock), desligado em produção.
+- `EXPO_PUBLIC_ENABLE_VISION` — (evolução) Encontra-me Vision (rede de câmeras participantes). Vazio: ligado em dev (dados fictícios), desligado em produção. Só ligar com a API `/Vision/*`, convênios e avaliação jurídica.
 - `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` — (evolução) linha do tempo completa vinda da API. Vazio: ligada em dev (mock), desligada em produção; desligada, a linha do tempo é montada com o cadastro e o histórico de avistamentos.
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.

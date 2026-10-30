@@ -85,7 +85,7 @@ jobs:
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.49.1 serve@14.2.4
           npx playwright install --with-deps chromium
-          npx serve dist-demo -l 4173 > /tmp/serve.log 2>&1 &
+          npx serve dist-demo -s -l 4173 > /tmp/serve.log 2>&1 &
           sleep 3
           node .github/scripts/preview-screenshots.js http://localhost:4173 prints
         continue-on-error: true
