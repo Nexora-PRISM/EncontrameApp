@@ -1,27 +1,20 @@
 import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
 
 import type { MapPin } from '@/components/brand-map';
 import { buildCarouselPeople } from '@/features/inicio/carousel-people';
+import { updateHomeState, useHomeSharedState } from '@/features/inicio/home-shared-state';
+import { useHomeShellController } from '@/features/inicio/home-shell.controller';
 import { TUTORIAL_LAST_STEP } from '@/features/inicio/tutorial-steps';
 import { completeAppOnboarding, isAppOnboardingComplete } from '@/lib/app-onboarding';
-import { useBrand, useBrandTheme } from '@/lib/brand-theme';
+import { useBrand } from '@/lib/brand-theme';
 import { showAlert } from '@/lib/dialog';
-import { useI18n, useT } from '@/lib/i18n';
-import {
-  categoryAgeRange,
-  matchesCategory,
-  type CategoryFilter,
-} from '@/lib/person-category';
+import { useT } from '@/lib/i18n';
+import { categoryAgeRange, matchesCategory } from '@/lib/person-category';
 import { isPersonSearchingStatus, resolvePersonStatusColor } from '@/lib/person-status';
 import { safetyNoteCategoryInfo } from '@/lib/safety-notes';
-import { signOut } from '@/lib/sign-out';
-import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSplashDone } from '@/lib/splash-state';
-import { useSessionUser } from '@/lib/use-session-user';
-import { useUserLocation } from '@/lib/use-user-location';
-import { useNearbyPeopleQuery, usePeopleSearchQuery, useRecentPeopleQuery } from '@/services/people/people.service';
+import { usePeopleSearchQuery, useRecentPeopleQuery } from '@/services/people/people.service';
 import type { Person } from '@/services/people/people.types';
 import {
   useNearbySafetyNotesQuery,
@@ -33,45 +26,29 @@ import { useReportContentMutation } from '@/services/moderation/moderation.servi
 /** Item tocado no mapa: abre o cartão flutuante em vez de trocar de tela. */
 type MapSelection = { kind: 'person'; id: string } | { kind: 'note'; id: string } | null;
 
-/** Iniciais para o avatar (ex.: "Maria Souza" → "MS"). */
-function initialsOf(name: string | undefined): string {
-  const parts = name?.trim().split(/\s+/).filter(Boolean) ?? [];
-  if (parts.length === 0) return '?';
-  const first = parts[0]?.[0] ?? '';
-  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : '';
-  return `${first}${last}`.toUpperCase();
-}
-
 /** Centraliza dados e navegação da tela inicial (dashboard). */
 export function useInicioController() {
   const router = useRouter();
   const t = useT();
   const brand = useBrand();
-  const sessionUser = useSessionUser();
-  const { appearance, setAppearance } = useBrandTheme();
-  const { preference: languagePreference, setPreference: setLanguagePreference } = useI18n();
-  const { location: userLocation, denied: locationDenied } = useUserLocation();
-  const [search, setSearch] = useState('');
-  const [query, setQuery] = useState('');
-  const peopleQuery = useNearbyPeopleQuery({
-    query,
-    latitude: userLocation?.latitude,
-    longitude: userLocation?.longitude,
-  });
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  /** Filtro por faixa de idade: vale para os alertas e para os pins do mapa. */
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+  const shell = useHomeShellController();
+  const { people, query, userLocation, categoryFilter, loggedIn } = shell;
+  // Passo a passo no estado compartilhado: o menu da web (fora desta tela) também abre.
+  const { onboardingVisible, onboardingStep } = useHomeSharedState();
   /** Mapa com imagem de satélite (com nomes de ruas por cima). */
   const [satellite, setSatellite] = useState(false);
   /** Camada dos avisos de segurança no mapa (liga/desliga). */
   const [showSafetyNotes, setShowSafetyNotes] = useState(true);
   const [selection, setSelection] = useState<MapSelection>(null);
-  const [onboardingVisible, setOnboardingVisible] = useState(false);
-  const [onboardingStep, setOnboardingStep] = useState(0);
-  const loggedIn = sessionUser != null;
+  const [selectionFilter, setSelectionFilter] = useState(categoryFilter);
   /** O passo a passo só aparece depois da abertura (senão o Modal cobriria a logo). */
   const splashDone = useSplashDone();
+
+  // Trocar a faixa de idade (no header da web ou no mapa) fecha o cartão do pin tocado.
+  if (selectionFilter !== categoryFilter) {
+    setSelectionFilter(categoryFilter);
+    setSelection(null);
+  }
 
   // Confere a cada volta ao Início (não só na montagem): "Ver o passo a passo de novo", em
   // Configurações, precisa abrir o tutorial quando a pessoa volta para cá.
@@ -80,8 +57,7 @@ export function useInicioController() {
       let cancelled = false;
       void isAppOnboardingComplete().then((done) => {
         if (!cancelled && !done) {
-          setOnboardingStep(0);
-          setOnboardingVisible(true);
+          updateHomeState({ onboardingVisible: true, onboardingStep: 0 });
         }
       });
       return () => {
@@ -90,7 +66,6 @@ export function useInicioController() {
     }, []),
   );
 
-  const people = useMemo(() => peopleQuery.data ?? [], [peopleQuery.data]);
   // Sem busca ativa, o carrossel completa as pessoas próximas com casos recentes.
   const recentQuery = useRecentPeopleQuery(query.trim().length === 0);
   const carouselPeople = useMemo(
@@ -128,13 +103,6 @@ export function useInicioController() {
       void alertsPages.fetchNextPage();
     }
   };
-  const waitingLocation = !locationDenied && userLocation == null;
-  const showPeopleSkeleton =
-    waitingLocation ||
-    peopleQuery.isLoading ||
-    peopleQuery.isPlaceholderData ||
-    (peopleQuery.isFetching && people.length === 0);
-
   const notesQuery = useNearbySafetyNotesQuery(
     userLocation ? { latitude: userLocation.latitude, longitude: userLocation.longitude } : null,
     showSafetyNotes,
@@ -245,48 +213,23 @@ export function useInicioController() {
     })();
   };
 
-  const closeMenu = () => setMenuOpen(false);
-
-  /** Fecha o menu e navega para a rota escolhida. */
-  const goTo = (action: () => void) => {
-    closeMenu();
-    // No Android, navegar no mesmo instante em que o menu fecha derruba o app.
-    setTimeout(action, Platform.OS === 'android' ? 50 : 0);
-  };
-
-  const handleSearch = () => {
-    setQuery(search.trim());
-  };
-
-  const clearSearch = () => {
-    setSearch('');
-    setQuery('');
-  };
-
   const finishOnboarding = (after?: () => void) => {
-    setOnboardingVisible(false);
+    updateHomeState({ onboardingVisible: false });
     void completeAppOnboarding();
     after?.();
   };
 
   const onboardingContinue = () => {
-    setOnboardingStep((current) => Math.min(current + 1, TUTORIAL_LAST_STEP));
+    updateHomeState({ onboardingStep: Math.min(onboardingStep + 1, TUTORIAL_LAST_STEP) });
   };
 
   const onboardingBack = () => {
-    setOnboardingStep((current) => Math.max(current - 1, 0));
+    updateHomeState({ onboardingStep: Math.max(onboardingStep - 1, 0) });
   };
 
   /** "Pular": fecha o passo a passo em qualquer passo e não mostra de novo sozinho. */
   const onboardingSkip = () => {
     finishOnboarding();
-  };
-
-  /** Menu "Como usar o app": abre o passo a passo do começo. */
-  const openTutorial = () => {
-    closeMenu();
-    setOnboardingStep(0);
-    setOnboardingVisible(true);
   };
 
   const onboardingReport = () => {
@@ -311,23 +254,8 @@ export function useInicioController() {
     onboardingSkip();
   };
 
-  const logout = () =>
-    goTo(() => {
-      void signOut()
-        .catch(() => undefined)
-        .finally(() => {
-          router.replace('/inicio');
-        });
-    });
-
-  const locationLine = (person: Person) =>
-    [person.neighborhood, person.city, person.state].filter(Boolean).join(', ') ||
-    person.lastSeen ||
-    person.location ||
-    '';
-
   return {
-    people,
+    ...shell,
     carouselPeople,
     alertPeople,
     scrollPeople,
@@ -336,11 +264,6 @@ export function useInicioController() {
     pins,
     /** Pessoas no mapa com o filtro atual (sem contar os avisos). */
     personPinsCount: personPins.length,
-    categoryFilter,
-    setCategoryFilter: (value: CategoryFilter) => {
-      setCategoryFilter(value);
-      setSelection(null);
-    },
     satellite,
     toggleSatellite: () => setSatellite((current) => !current),
     showSafetyNotes,
@@ -349,7 +272,6 @@ export function useInicioController() {
       setSelection(null);
     },
     safetyNotesCount: safetyNotes.length,
-    goToNewSafetyNote: () => goTo(() => router.push('/aviso-seguranca' as Href)),
     /** Cartão flutuante do item tocado no mapa. */
     selectedPerson,
     selectedNote,
@@ -358,54 +280,11 @@ export function useInicioController() {
     voteSafetyNote,
     votingSafetyNote: voteMutation.isPending,
     reportSafetyNote,
-    userLocation,
-    locationDenied,
-    search,
-    setSearch,
-    handleSearch,
-    clearSearch,
-    loading: peopleQuery.isLoading || peopleQuery.isFetching,
-    showPeopleSkeleton,
-    loggedIn,
-    /** Iniciais do avatar no canto do Início. */
-    userInitials: initialsOf(sessionUser?.name),
-    /** Tema do app (Automático / Claro / Escuro) — atalho no menu; também em Configurações. */
-    appearance,
-    setAppearance,
-    /** Idioma (Português / English / Español / Automático) — também em Configurações. */
-    languagePreference,
-    setLanguagePreference,
-    menuOpen,
-    openMenu: () => setMenuOpen(true),
-    closeMenu,
-    goToPerson: (personId: string) => router.push(`/pessoa/${personId}` as Href),
-    goToChat: () =>
-      goTo(() => {
-        void isSofiaWelcomeComplete().then((done) => {
-          router.push((done ? '/chat' : '/sofia-welcome') as Href);
-        });
-      }),
-    goToTheme: () => goTo(() => router.push('/sofia-theme' as Href)),
-    goToSettings: () => goTo(() => router.push('/configuracoes' as Href)),
-    goToProfile: () => goTo(() => router.push('/perfil' as Href)),
-    goToHelp: () => goTo(() => router.push('/ajuda' as Href)),
-    goToGroupChat: () => goTo(() => router.push('/grupo-chat')),
-    // Já estamos no Início: só fecha o menu (antes empilhava outra cópia da tela).
-    goToHomeFromMenu: closeMenu,
-    goToRegisterFromMenu: () => goTo(() => router.push('/cadastrar-pessoa')),
-    goToAllPeopleFromMenu: () => goTo(() => router.push('/pessoas-desaparecidas' as Href)),
-    goToAllPeople: () => router.push('/pessoas-desaparecidas' as Href),
-    goToLogin: () => goTo(() => router.push('/login')),
-    goToProfileOrLogin: () =>
-      goTo(() => router.push((sessionUser ? '/perfil' : '/login') as Href)),
-    logout,
-    locationLine,
     onboardingVisible: onboardingVisible && splashDone,
     onboardingStep,
     onboardingContinue,
     onboardingBack,
     onboardingSkip,
-    openTutorial,
     onboardingReport,
     onboardingRegister,
     onboardingExplore,

@@ -12,17 +12,24 @@ import {
 
 import { BrandEnter, useEnterOnce } from '@/components/brand-enter';
 import { PersonAlertIcon } from '@/components/person-alert-icon';
+import { StatusRipple } from '@/components/status-ripple';
 import { Radius, type BrandColors, type ColorSchemeName } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
-import type { InicioController } from '@/features/inicio/inicio.controller';
+import type { HomeShellController } from '@/features/inicio/home-shell.controller';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { matchesCategory } from '@/lib/person-category';
-import { resolvePersonStatusBadge } from '@/lib/person-status';
+import {
+  isPersonSearchingStatus,
+  resolvePersonStatusBadge,
+  resolvePersonStatusColor,
+} from '@/lib/person-status';
 import type { Person } from '@/services/people/people.types';
 
+const PHOTO = 56;
+
 interface InicioPeopleSidebarSectionProps {
-  controller: InicioController;
+  controller: HomeShellController;
 }
 
 /** Lista lateral da home no desktop: linhas com um traço embaixo, no formato do Maps. */
@@ -98,7 +105,7 @@ function SidebarPersonRow({
   person: Person;
   index: number;
   skip: boolean;
-  controller: InicioController;
+  controller: HomeShellController;
   brand: BrandColors;
   styles: ReturnType<typeof makeStyles>;
 }) {
@@ -124,13 +131,21 @@ function SidebarPersonRow({
         accessibilityRole="button"
         accessibilityLabel={t('Ver detalhes de {fullName}', { fullName: person.fullName })}
       >
-        <View style={styles.photo}>
-          {person.photoUri ? (
-            <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
-          ) : (
-            <MaterialCommunityIcons name="account" size={26} color={brand.avatarIcon} />
-          )}
-        </View>
+        <StatusRipple
+          active={isPersonSearchingStatus(person.statusId, person.statusDescription)}
+          color={resolvePersonStatusColor(brand, person.statusId, person.statusDescription)}
+          size={PHOTO}
+          radius={Radius.sm}
+          spread={1.25}
+        >
+          <View style={styles.photo}>
+            {person.photoUri ? (
+              <Image source={{ uri: person.photoUri }} style={styles.photoImage} resizeMode="cover" />
+            ) : (
+              <MaterialCommunityIcons name="account" size={26} color={brand.avatarIcon} />
+            )}
+          </View>
+        </StatusRipple>
         <View style={styles.info}>
           <View style={styles.nameRow}>
             <Text style={styles.name} numberOfLines={1}>
@@ -204,8 +219,8 @@ function makeStyles(brand: BrandColors, colorScheme: ColorSchemeName) {
       backgroundColor: colorScheme === 'dark' ? brand.surface : brand.white,
     },
     photo: {
-      width: 56,
-      height: 56,
+      width: PHOTO,
+      height: PHOTO,
       borderRadius: Radius.sm,
       overflow: 'hidden',
       alignItems: 'center',

@@ -6,8 +6,10 @@ import { runOnJS, useAnimatedReaction, useSharedValue, withTiming } from 'react-
 /** Como a fileira recolhida desenha cada pessoa. */
 export type AlertViewMode = 'avatar' | 'card';
 
+/** Espaço acima das fotos para a onda de quem está sendo procurado não ser cortada. */
+export const ALERTS_RIPPLE_ROOM = 8;
 /** Altura da fileira de fotos, com o nome embaixo. */
-export const ALERTS_AVATAR_TRACK = 92;
+export const ALERTS_AVATAR_TRACK = 92 + ALERTS_RIPPLE_ROOM;
 /** Altura da fileira de cartões. */
 export const ALERTS_CARD_TRACK = 124;
 /** Lista aberta: pelo menos isto, no máximo uma fatia da tela. */

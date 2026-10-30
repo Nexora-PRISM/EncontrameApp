@@ -8,7 +8,7 @@ import { NexoraSignature } from '@/components/nexora-signature';
 import { SettingsSegmented } from '@/components/settings-list';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { brandTiming } from '@/constants/motion';
-import type { InicioController } from '@/features/inicio/inicio.controller';
+import type { HomeShellController } from '@/features/inicio/home-shell.controller';
 import { APPEARANCE_OPTIONS, useBrand } from '@/lib/brand-theme';
 import { LANGUAGE_SHORT_OPTIONS, useT } from '@/lib/i18n';
 import { hexToRgba } from '@/lib/map-style';
@@ -24,7 +24,7 @@ const MENU_THEME_OPTIONS = APPEARANCE_OPTIONS.map((option) =>
 );
 
 interface InicioMenuDrawerSectionProps {
-  controller: InicioController;
+  controller: HomeShellController;
 }
 
 type MenuItem = {

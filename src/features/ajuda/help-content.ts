@@ -221,7 +221,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'emergencia',
     question: msg('O que faz o botão vermelho "Pedir ajuda"?'),
     answer:
-      msg('Ele fica no centro da barra inferior. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.'),
+      msg('No celular ele fica no centro da barra inferior; no computador, no alto da tela, ao lado da busca. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.'),
     keywords: msg('emergência 190 polícia ligar socorro botão vermelho pânico'),
   },
   {

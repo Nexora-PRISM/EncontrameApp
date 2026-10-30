@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { BrandSplash } from '@/components/brand-splash';
 import type { BrandColors } from '@/constants/brand';
+import { WebShellFrame } from '@/features/web-shell/web-shell-frame';
 import { ApiErrorModalProvider } from '@/lib/api-error-modal';
 import { setSessionExpiredHandler } from '@/lib/auth-events';
 import { isProtectedPath } from '@/lib/auth-guard';
@@ -68,40 +69,42 @@ function RootLayoutInner() {
     <>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       {showStack ? (
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: brand.white },
-            animation: 'slide_from_right',
-            animationMatchesGesture: true,
-          }}
-        >
-          <Stack.Screen name="index" />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="signup" />
-          <Stack.Screen name="signup-password" />
-          <Stack.Screen name="inicio" />
-          <Stack.Screen name="cadastrar-pessoa" />
-          <Stack.Screen name="pessoas-proximas" />
-          <Stack.Screen name="pessoas-desaparecidas" />
-          <Stack.Screen name="pessoa/[id]" />
-          <Stack.Screen name="chat" />
-          <Stack.Screen name="exercises" />
-          <Stack.Screen name="grupo-chat" />
-          <Stack.Screen name="sofia-welcome" />
-          <Stack.Screen name="sofia-theme" />
-          <Stack.Screen name="sofia-perfil" />
-          <Stack.Screen name="perfil" />
-          <Stack.Screen name="configuracoes" />
-          <Stack.Screen name="ajuda" />
-          <Stack.Screen name="sobre" />
-          <Stack.Screen name="pedir-ajuda" />
-          <Stack.Screen name="regras" />
-          <Stack.Screen name="alerta-emergencia" />
-          <Stack.Screen name="compartilhar-localizacao" />
-          <Stack.Screen name="contatos-confianca" />
-          <Stack.Screen name="aviso-seguranca" />
-        </Stack>
+        <WebShellFrame>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: brand.white },
+              animation: 'slide_from_right',
+              animationMatchesGesture: true,
+            }}
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="login" />
+            <Stack.Screen name="signup" />
+            <Stack.Screen name="signup-password" />
+            <Stack.Screen name="inicio" />
+            <Stack.Screen name="cadastrar-pessoa" />
+            <Stack.Screen name="pessoas-proximas" />
+            <Stack.Screen name="pessoas-desaparecidas" />
+            <Stack.Screen name="pessoa/[id]" />
+            <Stack.Screen name="chat" />
+            <Stack.Screen name="exercises" />
+            <Stack.Screen name="grupo-chat" />
+            <Stack.Screen name="sofia-welcome" />
+            <Stack.Screen name="sofia-theme" />
+            <Stack.Screen name="sofia-perfil" />
+            <Stack.Screen name="perfil" />
+            <Stack.Screen name="configuracoes" />
+            <Stack.Screen name="ajuda" />
+            <Stack.Screen name="sobre" />
+            <Stack.Screen name="pedir-ajuda" />
+            <Stack.Screen name="regras" />
+            <Stack.Screen name="alerta-emergencia" />
+            <Stack.Screen name="compartilhar-localizacao" />
+            <Stack.Screen name="contatos-confianca" />
+            <Stack.Screen name="aviso-seguranca" />
+          </Stack>
+        </WebShellFrame>
       ) : (
         <View style={styles.boot} />
       )}

@@ -1,12 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { Image, Keyboard, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
-import type { InicioController } from '@/features/inicio/inicio.controller';
-import { useHomeChrome } from '@/features/inicio/home-chrome';
+import type { HomeShellController } from '@/features/inicio/home-shell.controller';
+import { type HomeChrome, useHomeChrome } from '@/features/inicio/home-chrome';
 import { AppInfo } from '@/lib/app-info';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
@@ -15,7 +15,7 @@ import { useTimedOpacity } from '@/lib/use-brand-transition';
 import { useWideLayout } from '@/lib/use-wide-layout';
 
 interface InicioTopBarSectionProps {
-  controller: InicioController;
+  controller: HomeShellController;
   /** No celular o menu fica no rodapé. No layout largo o botão continua nesta barra. */
   showMenu?: boolean;
   /** Avatar, marca e nome sobre a faixa colorida do desktop. */
@@ -27,6 +27,10 @@ interface InicioTopBarSectionProps {
   /** Quando definido, o campo filtra a lista em vez da busca do mapa. */
   browseQuery?: string;
   onBrowseQueryChange?: (value: string) => void;
+  /** Na faixa do desktop: entre a marca e a busca (filtros rápidos), com a busca à direita. */
+  children?: ReactNode;
+  /** Na faixa do desktop: depois da busca (o "Pedir ajuda" da web). */
+  trailing?: ReactNode;
 }
 
 export function InicioTopBarSection({
@@ -37,14 +41,16 @@ export function InicioTopBarSection({
   embedded = false,
   browseQuery,
   onBrowseQueryChange,
+  children,
+  trailing,
 }: InicioTopBarSectionProps) {
   const t = useT();
   const brand = useBrand();
   const chrome = useHomeChrome();
   const { isWide } = useWideLayout();
   const styles = useMemo(
-    () => makeStyles(brand, isWide, embedded, onChrome, chrome.ink),
-    [brand, chrome.ink, embedded, isWide, onChrome],
+    () => makeStyles(brand, isWide, embedded, onChrome, chrome),
+    [brand, chrome, embedded, isWide, onChrome],
   );
   const ink = onChrome ? chrome.ink : brand.label;
   const browsing = onBrowseQueryChange != null;
@@ -128,14 +134,32 @@ export function InicioTopBarSection({
             </View>
           ) : null}
 
+          {children}
+
           <View style={styles.searchCluster}>
             <View style={styles.searchField}>
+              {onChrome ? (
+                <Pressable
+                  onPress={submitSearch}
+                  onPressIn={() => setSearchHighlighted(true)}
+                  onPressOut={() => setSearchHighlighted(false)}
+                  onHoverIn={() => setSearchHighlighted(true)}
+                  onHoverOut={() => setSearchHighlighted(false)}
+                  hitSlop={8}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('Buscar')}
+                >
+                  <Animated.View style={searchPressOpacity}>
+                    <MaterialCommunityIcons name="magnify" size={22} color={chrome.ink} />
+                  </Animated.View>
+                </Pressable>
+              ) : null}
               <TextInput
                 style={styles.searchInput}
                 value={searchValue}
                 onChangeText={browsing ? onBrowseQueryChange : controller.setSearch}
                 placeholder={t('Nome, bairro ou cidade')}
-                placeholderTextColor={onChrome ? hexToRgba(brand.navy, 0.45) : brand.placeholder}
+                placeholderTextColor={onChrome ? chrome.muted : brand.placeholder}
                 returnKeyType="search"
                 onSubmitEditing={submitSearch}
                 accessibilityLabel={t('Buscar pessoas')}
@@ -147,29 +171,33 @@ export function InicioTopBarSection({
                   accessibilityRole="button"
                   accessibilityLabel={t('Limpar busca')}
                 >
-                  <MaterialCommunityIcons name="close-circle" size={20} color={brand.placeholder} />
+                  <MaterialCommunityIcons
+                    name="close-circle"
+                    size={20}
+                    color={onChrome ? chrome.muted : brand.placeholder}
+                  />
                 </Pressable>
               ) : null}
             </View>
 
-            <Pressable
-              onPress={submitSearch}
-              onPressIn={() => setSearchHighlighted(true)}
-              onPressOut={() => setSearchHighlighted(false)}
-              onHoverIn={() => setSearchHighlighted(true)}
-              onHoverOut={() => setSearchHighlighted(false)}
-              accessibilityRole="button"
-              accessibilityLabel={t('Buscar')}
-            >
-              <Animated.View style={[styles.searchButton, searchPressOpacity]}>
-                <MaterialCommunityIcons
-                  name="magnify"
-                  size={20}
-                  color={onChrome ? brand.scrim : brand.orange}
-                />
-              </Animated.View>
-            </Pressable>
+            {onChrome ? null : (
+              <Pressable
+                onPress={submitSearch}
+                onPressIn={() => setSearchHighlighted(true)}
+                onPressOut={() => setSearchHighlighted(false)}
+                onHoverIn={() => setSearchHighlighted(true)}
+                onHoverOut={() => setSearchHighlighted(false)}
+                accessibilityRole="button"
+                accessibilityLabel={t('Buscar')}
+              >
+                <Animated.View style={[styles.searchButton, searchPressOpacity]}>
+                  <MaterialCommunityIcons name="magnify" size={20} color={brand.orange} />
+                </Animated.View>
+              </Pressable>
+            )}
           </View>
+
+          {trailing}
         </View>
 
         {controller.locationDenied ? (
@@ -187,10 +215,12 @@ function makeStyles(
   isWide: boolean,
   embedded: boolean,
   onChrome: boolean,
-  ink: string,
+  chrome: HomeChrome,
 ) {
+  const { ink } = chrome;
   return StyleSheet.create({
     wrap: {
+      flex: onChrome ? 1 : undefined,
       flexShrink: onChrome ? 1 : 0,
       minWidth: onChrome ? 0 : undefined,
       paddingHorizontal: onChrome ? 0 : isWide ? 4 : embedded ? 0 : PageGutter,
@@ -218,9 +248,12 @@ function makeStyles(
     },
     searchCluster: {
       flexGrow: onChrome ? 0 : 1,
-      flexShrink: 1,
-      width: onChrome ? 300 : undefined,
-      minWidth: onChrome ? 180 : 0,
+      // Na faixa do desktop a busca encolhe antes dos filtros quando a janela aperta.
+      flexShrink: onChrome ? 3 : 1,
+      width: onChrome ? 380 : undefined,
+      minWidth: onChrome ? 200 : 0,
+      // Na faixa do desktop a busca encosta à direita; o espaço livre fica entre ela e os filtros.
+      marginLeft: onChrome ? 'auto' : undefined,
       flexDirection: 'row',
       alignItems: 'center',
       gap: onChrome ? 10 : 8,
@@ -230,19 +263,20 @@ function makeStyles(
       minWidth: 0,
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 8,
-      height: onChrome ? 40 : isWide ? 40 : 46,
-      paddingHorizontal: onChrome ? 14 : 16,
+      gap: onChrome ? 10 : 8,
+      height: onChrome ? 44 : isWide ? 40 : 46,
+      paddingHorizontal: 16,
       borderRadius: Radius.pill,
-      backgroundColor: onChrome ? brand.onPrimary : brand.fieldBackground,
-      borderWidth: onChrome ? 1.5 : 1,
-      borderColor: onChrome ? brand.softBorder : brand.fieldBorder,
+      // Na faixa colorida: o mesmo tom da faixa, só um pouco mais claro (contraste suave).
+      backgroundColor: onChrome ? chrome.glass : brand.fieldBackground,
+      borderWidth: 1,
+      borderColor: onChrome ? hexToRgba(ink, 0.18) : brand.fieldBorder,
     },
     searchInput: {
       flex: 1,
       paddingVertical: 0,
-      fontSize: onChrome ? 14 : isWide ? 14 : 15,
-      color: onChrome ? brand.navy : brand.textDark,
+      fontSize: onChrome ? 15 : isWide ? 14 : 15,
+      color: onChrome ? ink : brand.textDark,
     },
     searchButton: {
       width: onChrome ? 40 : isWide ? 40 : 46,
@@ -260,7 +294,7 @@ function makeStyles(
     logo: {
       flexDirection: 'row',
       alignItems: 'center',
-      flexShrink: 1,
+      flexShrink: onChrome ? 0 : 1,
       gap: 8,
       minWidth: 0,
     },
