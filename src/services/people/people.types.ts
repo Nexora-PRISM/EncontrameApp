@@ -41,6 +41,8 @@ export interface Person {
   statusDescription?: string;
   /** Conta que publicou a ficha. Ausente em rascunho local. */
   authorId?: string;
+  /** Quando o caso foi cadastrado na API (ISO). Usado na linha do tempo. */
+  dtRegistration?: string;
 }
 
 /** Dados enviados ao cadastrar uma nova pessoa. */

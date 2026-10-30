@@ -56,6 +56,15 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
         />
         {controller.isLocalPerson ? null : (
           <BrandButton
+            label={t('Linha do tempo do caso')}
+            variant="outline"
+            onPress={controller.openTimeline}
+            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+            style={isWide ? undefined : styles.actionFull}
+          />
+        )}
+        {controller.isLocalPerson ? null : (
+          <BrandButton
             label={t('Divulgar este caso')}
             variant="outline"
             onPress={controller.shareCase}

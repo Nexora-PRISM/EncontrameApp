@@ -1454,4 +1454,52 @@ export const en: Readonly<Record<string, string>> = {
   'Não foi possível confirmar a informação.': 'The information could not be confirmed.',
   'Encerrado': 'Closed',
   'A análise deste relato terminou.': 'The review of this report has ended.',
+  // evolução · linha do tempo do caso
+  'Data não informada': 'Date not provided',
+  '{date}, aproximadamente': '{date}, approximately',
+  'De {from} para {to}': 'From {from} to {to}',
+  'Nova situação: {to}': 'New status: {to}',
+  'Organizada pela equipe a partir do cadastro, dos relatos analisados e das mudanças de situação. Só aparece o que pode ser público.':
+    'Organized by the team from the registration, the reviewed reports and the status changes. Only what can be public is shown.',
+  'Montada com os dados do cadastro e os avistamentos informados. Os avistamentos ainda não passam por análise e não confirmam onde a pessoa está.':
+    'Built from the registration data and the reported sightings. Sightings are not reviewed yet and do not confirm where the person is.',
+  'Este cadastro ainda está só neste aparelho. A linha do tempo aparece depois que ele for enviado.':
+    'This registration is still only on this device. The timeline appears after it is sent.',
+  'Não foi possível carregar a linha do tempo.': 'Could not load the timeline.',
+  'Ainda não há acontecimentos registrados neste caso.':
+    'There are no recorded events in this case yet.',
+  'Local: {place}': 'Place: {place}',
+  'Por: {actor}': 'By: {actor}',
+  'Avistamentos são informações da comunidade e não confirmam onde a pessoa está. Em urgência, ligue 190. A linha do tempo não substitui a investigação das autoridades.':
+    'Sightings are information from the community and do not confirm where the person is. In an emergency, call 190. The timeline does not replace the investigation by the authorities.',
+  'Classificação: {label}': 'Classification: {label}',
+  'Linha do tempo do caso': 'Case timeline',
+  'Caso cadastrado': 'Case registered',
+  'Avistamento informado': 'Sighting reported',
+  'Mudança de situação': 'Status change',
+  'Atualização da família': 'Family update',
+  'Busca ampliada': 'Search expanded',
+  'Informação corrigida': 'Information corrected',
+  'Caso encerrado': 'Case closed',
+  'Confirmado': 'Confirmed',
+  'Verificado pela equipe ou registrado pelo próprio sistema.':
+    'Verified by the team or recorded by the system itself.',
+  'Informado no cadastro': 'Stated in the registration',
+  'Declarado por quem cadastrou o caso. Não foi verificado.':
+    'Stated by whoever registered the case. It was not verified.',
+  'Recebido e esperando a análise da equipe.': 'Received and waiting for the team\'s review.',
+  'Informação da comunidade que não foi verificada.':
+    'Information from the community that was not verified.',
+  'Substituída por uma informação mais precisa.': 'Replaced by more accurate information.',
+  'Família': 'Family',
+  'Comunidade': 'Community',
+  'Equipe do Encontra-me': 'Encontra-me team',
+  'Sistema': 'System',
+  'Linha do tempo': 'Timeline',
+  'O que é a linha do tempo do caso?':
+    'What is the case timeline?',
+  'Na página do caso, toque em "Linha do tempo do caso". Ela mostra, em ordem, o que se sabe do caso: o cadastro, os avistamentos informados e, quando houver, mudanças de situação e atualizações. Cada item diz se a informação foi confirmada, informada no cadastro, está aguardando análise, não foi confirmada ou foi corrigida. Os locais aparecem só com bairro e cidade. Avistamentos não confirmam onde a pessoa está.':
+    'On the case page, tap "Case timeline". It shows, in order, what is known about the case: the registration, the reported sightings and, when there are any, status changes and updates. Each item says whether the information was confirmed, stated in the registration, is awaiting review, was not confirmed or was corrected. Places show only the neighborhood and city. Sightings do not confirm where the person is.',
+  'linha do tempo histórico acontecimentos classificação':
+    'timeline history events classification',
 };

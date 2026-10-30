@@ -581,6 +581,8 @@ export function usePessoaDetalheController() {
     handlePinDragEnd,
     openSightingForm,
     openHistory: () => setHistoryOpen(true),
+    /** Linha do tempo pública do caso (docs/evolucao, etapa 2). */
+    openTimeline: () => router.push(`/pessoa/${id}/linha-do-tempo` as Href),
     closeHistory: () => setHistoryOpen(false),
     useCurrentLocation,
     submitSighting,

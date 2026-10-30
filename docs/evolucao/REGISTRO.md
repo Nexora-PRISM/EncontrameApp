@@ -78,3 +78,50 @@ Com a variável desligada (produção hoje), nada muda: o app continua com o reg
 | Alterado | `src/translations/en.ts`, `es.ts` | 70 textos novos em inglês e espanhol |
 
 **Depende de integração**: `POST /SightingReport` e `GET /SightingReport/mine` na API .NET (ver `CONTRATOS-API.md`).
+
+---
+
+## Etapa 2 — Linha do tempo do caso (30/10/2026)
+
+**Objetivo.** Mostrar, em ordem, o que se sabe de um caso, deixando claro o peso de cada informação.
+
+**Como funciona**
+
+1. Na página do caso, o botão "Linha do tempo do caso" abre `/pessoa/{id}/linha-do-tempo` (não exige login; rascunho
+   salvo só no aparelho não tem linha do tempo).
+2. Cada acontecimento mostra data e horário (com "aproximadamente" quando for o caso), tipo, classificação, local
+   resumido, mudança de situação ("De Pendente para Procurado"), observação e quem fez (Família, Comunidade, Equipe do
+   Encontra-me, Sistema — nunca nomes).
+3. Classificações: Confirmado, Informado no cadastro, Aguardando análise, Não confirmado, Informação corrigida. O topo
+   da tela explica as que aparecem no caso e de onde vieram os dados.
+4. **Sem a variável `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` (funciona com a API de hoje):** a linha do tempo é montada com
+   o cadastro e o histórico de avistamentos. Avistamentos aparecem como "Não confirmado", porque hoje não passam por
+   análise. A data do desaparecimento só aparece quando não há avistamentos (limite da API atual).
+5. **Com a variável:** vem de `GET /MissingPerson/{id}/timeline` (contrato em `CONTRATOS-API.md`), com mudanças de
+   situação, atualizações da família, buscas ampliadas e correções.
+6. Os locais aparecem só com bairro, cidade e estado. Rua, número e CEP são retirados.
+
+**Consulta ao backend.** O repositório `Nexora-PRISM/EncontrameApi` foi lido (somente leitura, nenhuma alteração) para
+alinhar os contratos com o que já existe: histórico de situações (`MissingPersonStatus`), `PersonLastSeen` com
+`DtLastSeen` e o envio direto de avistamentos, hoje sem análise. Detalhes em `CONTRATOS-API.md`.
+
+**Arquivos**
+
+| Situação | Arquivo | Para quê |
+|---|---|---|
+| Criado | `src/lib/case-timeline-rules.ts` | Regras puras: tipos, classificações, local resumido, linha do tempo montada no app, ordem |
+| Criado | `src/lib/case-timeline.ts` | Rótulos, ícones e cores das classificações; nomes das situações |
+| Criado | `src/services/timeline/*` (tipos, repositório, axios, mock, service) | Linha do tempo da API ou montada com os dados de hoje |
+| Criado | `src/features/linha-do-tempo/*` (controller e sections) | Tela da linha do tempo |
+| Criado | `src/pages/pessoa/[id]/linha-do-tempo/index.tsx` | Rota |
+| Criado | `tests/case-timeline-rules.test.mjs` | 14 testes das regras |
+| Alterado | `src/features/pessoa-detalhe/pessoa-detalhe.controller.ts`, `sections/pessoa-detalhe-info-section.tsx` | Botão "Linha do tempo do caso" |
+| Alterado | `src/services/people/people.types.ts`, `people.axios.repository.ts` | Campo `dtRegistration` (data do cadastro), que a API já devolvia |
+| Alterado | `src/features/ajuda/help-content.ts` | Pergunta "O que é a linha do tempo do caso?" |
+| Alterado | `src/lib/env.ts`, `.env.example`, `AGENTS.md` | Variável `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` e regra da linha do tempo |
+| Alterado | `src/translations/en.ts`, `es.ts` | 36 textos novos |
+| Alterado | `docs/evolucao/CONTRATOS-API.md` | O que a API já tem; contrato de `GET /MissingPerson/{id}/timeline` |
+
+**Depende de integração (só para a versão completa)**: `GET /MissingPerson/{id}/timeline`. A versão montada com os
+dados de hoje não depende de nada novo.
+

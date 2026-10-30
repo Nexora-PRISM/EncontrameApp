@@ -50,6 +50,15 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS !== 'false'),
   /**
+   * Linha do tempo completa do caso vinda da API (GET /MissingPerson/{id}/timeline): mudanças de situação,
+   * atualizações da família, correções e buscas ampliadas. Em desenvolvimento fica ligada (com mocks); em produção
+   * só com EXPO_PUBLIC_ENABLE_CASE_TIMELINE=true. Desligada, a linha do tempo é montada com o que a API de hoje já
+   * devolve (cadastro e histórico de avistamentos).
+   */
+  caseTimelineApiEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_CASE_TIMELINE === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CASE_TIMELINE !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

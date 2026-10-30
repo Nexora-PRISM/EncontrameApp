@@ -205,6 +205,11 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   servidor, pode fazer isso. A tela só diz "recebido" com número + horário na resposta; sem isso, "não confirmado".
   Limite de 3 relatos por caso a cada 10 minutos no aparelho (o servidor precisa ter o seu). O botão continua
   "Vi essa pessoa por perto" (o passo a passo cita esse texto).
+- **Linha do tempo do caso** (evolução; `lib/case-timeline*.ts`, `services/timeline/`, `/pessoa/[id]/linha-do-tempo`):
+  cada item tem classificação (Confirmado, Informado no cadastro, Aguardando análise, Não confirmado, Informação
+  corrigida). "Confirmado" só para o que a equipe verificou ou fatos do sistema; o que a família declarou é
+  "Informado no cadastro"; avistamento sem análise é "Não confirmado". Local só com bairro, cidade e estado
+  (`coarseLocation`), nunca rua e número. Classificação desconhecida vira "Não confirmado".
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
@@ -256,6 +261,7 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_WEB_URL` — endereço público do app web (sem barra no fim); entra no texto de "Divulgar este caso".
 - `EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS` — (evolução) relato completo de avistamento e "Meus relatos". Vazio: ligado em dev (mock), desligado em produção; desligado, vale o registro simples de avistamento.
 - `EXPO_PUBLIC_MOCK_SIGHTING_FAIL` — só no mock: `true` simula falha no envio do relato (mensagem "não confirmado").
+- `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` — (evolução) linha do tempo completa vinda da API. Vazio: ligada em dev (mock), desligada em produção; desligada, a linha do tempo é montada com o cadastro e o histórico de avistamentos.
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.
 

@@ -1469,4 +1469,53 @@ export const es: Readonly<Record<string, string>> = {
   'Não foi possível confirmar a informação.': 'No fue posible confirmar la información.',
   'Encerrado': 'Cerrado',
   'A análise deste relato terminou.': 'El análisis de este reporte terminó.',
+  // evolução · linha do tempo do caso
+  'Data não informada': 'Fecha no informada',
+  '{date}, aproximadamente': '{date}, aproximadamente',
+  'De {from} para {to}': 'De {from} a {to}',
+  'Nova situação: {to}': 'Nueva situación: {to}',
+  'Organizada pela equipe a partir do cadastro, dos relatos analisados e das mudanças de situação. Só aparece o que pode ser público.':
+    'Organizada por el equipo a partir del registro, de los reportes analizados y de los cambios de situación. Solo aparece lo que puede ser público.',
+  'Montada com os dados do cadastro e os avistamentos informados. Os avistamentos ainda não passam por análise e não confirmam onde a pessoa está.':
+    'Armada con los datos del registro y los avistamientos informados. Los avistamientos aún no pasan por análisis y no confirman dónde está la persona.',
+  'Este cadastro ainda está só neste aparelho. A linha do tempo aparece depois que ele for enviado.':
+    'Este registro todavía está solo en este dispositivo. La línea de tiempo aparece después de enviarlo.',
+  'Não foi possível carregar a linha do tempo.': 'No se pudo cargar la línea de tiempo.',
+  'Ainda não há acontecimentos registrados neste caso.':
+    'Aún no hay acontecimientos registrados en este caso.',
+  'Local: {place}': 'Lugar: {place}',
+  'Por: {actor}': 'Por: {actor}',
+  'Avistamentos são informações da comunidade e não confirmam onde a pessoa está. Em urgência, ligue 190. A linha do tempo não substitui a investigação das autoridades.':
+    'Los avistamientos son información de la comunidad y no confirman dónde está la persona. En una urgencia, llama al 190. La línea de tiempo no sustituye la investigación de las autoridades.',
+  'Classificação: {label}': 'Clasificación: {label}',
+  'Linha do tempo do caso': 'Línea de tiempo del caso',
+  'Caso cadastrado': 'Caso registrado',
+  'Avistamento informado': 'Avistamiento informado',
+  'Mudança de situação': 'Cambio de situación',
+  'Atualização da família': 'Actualización de la familia',
+  'Busca ampliada': 'Búsqueda ampliada',
+  'Informação corrigida': 'Información corregida',
+  'Caso encerrado': 'Caso cerrado',
+  'Confirmado': 'Confirmado',
+  'Verificado pela equipe ou registrado pelo próprio sistema.':
+    'Verificado por el equipo o registrado por el propio sistema.',
+  'Informado no cadastro': 'Informado en el registro',
+  'Declarado por quem cadastrou o caso. Não foi verificado.':
+    'Declarado por quien registró el caso. No fue verificado.',
+  'Recebido e esperando a análise da equipe.': 'Recibido y esperando el análisis del equipo.',
+  'Informação da comunidade que não foi verificada.':
+    'Información de la comunidad que no fue verificada.',
+  'Substituída por uma informação mais precisa.':
+    'Sustituida por una información más precisa.',
+  'Família': 'Familia',
+  'Comunidade': 'Comunidad',
+  'Equipe do Encontra-me': 'Equipo de Encontra-me',
+  'Sistema': 'Sistema',
+  'Linha do tempo': 'Línea de tiempo',
+  'O que é a linha do tempo do caso?':
+    '¿Qué es la línea de tiempo del caso?',
+  'Na página do caso, toque em "Linha do tempo do caso". Ela mostra, em ordem, o que se sabe do caso: o cadastro, os avistamentos informados e, quando houver, mudanças de situação e atualizações. Cada item diz se a informação foi confirmada, informada no cadastro, está aguardando análise, não foi confirmada ou foi corrigida. Os locais aparecem só com bairro e cidade. Avistamentos não confirmam onde a pessoa está.':
+    'En la página del caso, toca "Línea de tiempo del caso". Muestra, en orden, lo que se sabe del caso: el registro, los avistamientos informados y, cuando los haya, cambios de situación y actualizaciones. Cada elemento dice si la información fue confirmada, informada en el registro, está esperando análisis, no fue confirmada o fue corregida. Los lugares aparecen solo con barrio y ciudad. Los avistamientos no confirman dónde está la persona.',
+  'linha do tempo histórico acontecimentos classificação':
+    'línea de tiempo historial acontecimientos clasificación',
 };

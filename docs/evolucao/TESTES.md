@@ -1,5 +1,22 @@
 # Relatório de testes
 
+## Etapa 2 — Linha do tempo do caso (30/10/2026)
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Regras da linha do tempo e do relato | `npm test` (31 testes no total, 14 novos) | 31 de 31 passaram, no ambiente da IA |
+| Traduções | `node scripts/check-i18n.js --strict` | OK: 1108 textos, nenhum faltando |
+| Tipos entre os arquivos novos e alterados | `tsc` com declarações simplificadas das bibliotecas | Nenhum erro nos arquivos das etapas 1 e 2 |
+| Tipos completos, lint e build web | Checagem automática do GitHub | **Pendente**: depende do repositório privado |
+
+Casos cobertos: classificação e tipo vindos da API (inclusive em português; tipo desconhecido é descartado e
+classificação desconhecida vira "Não confirmado"); local resumido sem rua, número, CEP nem texto genérico; linha do
+tempo montada com os dados de hoje (com e sem avistamentos, sem inventar a data do desaparecimento); ordem e contagem.
+
+Roteiro manual: abrir um caso › "Linha do tempo do caso"; conferir datas, classificações, locais só com bairro e
+cidade; repetir com `EXPO_PUBLIC_ENABLE_CASE_TIMELINE=false` (linha do tempo montada com os dados de hoje).
+
+
 ## Etapa 1 — Relato de avistamento (30/10/2026)
 
 | Verificação | Como | Resultado |

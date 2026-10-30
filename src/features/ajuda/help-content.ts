@@ -234,6 +234,14 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
     requires: 'sightingReports',
   },
   {
+    id: 'linha-do-tempo',
+    category: 'relatos',
+    question: msg('O que é a linha do tempo do caso?'),
+    answer:
+      msg('Na página do caso, toque em "Linha do tempo do caso". Ela mostra, em ordem, o que se sabe do caso: o cadastro, os avistamentos informados e, quando houver, mudanças de situação e atualizações. Cada item diz se a informação foi confirmada, informada no cadastro, está aguardando análise, não foi confirmada ou foi corrigida. Os locais aparecem só com bairro e cidade. Avistamentos não confirmam onde a pessoa está.'),
+    keywords: msg('linha do tempo histórico acontecimentos classificação'),
+  },
+  {
     id: 'avistamento-confirmado',
     category: 'relatos',
     question: msg('Um avistamento significa que a pessoa foi encontrada?'),
