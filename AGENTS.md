@@ -228,12 +228,17 @@ No Netlify: Site configuration → Environment variables (disponíveis no **buil
 
 ## Branches e pull requests
 
-Quando a pessoa pedir uma **feature** para a IA implementar:
+A branch depende do modo do Cursor em que o pedido foi feito:
 
-1. Crie uma branch nova a partir da `main` atualizada (`git fetch`, `git checkout main`, `git pull`, depois `git checkout -b feature/<descricao-curta>` em kebab-case), **antes** de editar código.
-2. Faça todas as alterações dessa feature nessa branch. Não commite nem faça push direto na `main`.
-3. Para subir o trabalho à `main`, abra um pull request da branch `feature/...` para `main`. Esse é o único caminho: sem merge local na `main` e sem push direto na `main`.
-4. Assim que o PR existir, copie a URL para a área de transferência e envie o mesmo link no chat, para quem precisar encaminhar a outra pessoa aprovar. No PowerShell: `Set-Clipboard -Value "<url>"`. Confirme no chat que o link já está copiado.
+- **Modo Agent ou Debug**: faça a implementação na **branch atual**. Não crie branch nova.
+- **Modo Planejamento (Plan)**: ao implementar o plano, crie uma branch nova a partir da `main` atualizada
+ (`git fetch`, `git checkout main`, `git pull`, depois `git checkout -b feature/<descricao-curta>` em kebab-case),
+ **antes** de editar código, e faça nela todas as alterações.
+
+Para levar uma branch `feature/...` à `main`:
+
+1. Abra um pull request da branch para `main`. Sem merge local na `main`.
+2. Assim que o PR existir, copie a URL para a área de transferência e envie o mesmo link no chat, para quem precisar encaminhar a outra pessoa aprovar. No PowerShell: `Set-Clipboard -Value "<url>"`. Confirme no chat que o link já está copiado.
 
 ## Regras de trabalho para o agente
 
@@ -248,6 +253,6 @@ Quando a pessoa pedir uma **feature** para a IA implementar:
 6. Feature nova sempre com repositório mock além do axios; o service escolhe por env.
 7. Se as rotas tipadas quebrarem (`.expo/types/router.d.ts` com caminhos estranhos), rode
    `npx expo start --clear` para regenerar antes do `npm run check`.
-8. Feature pedida à IA: branch `feature/...` a partir da `main`, e subida à `main` só por pull request.
-   Ao abrir o PR, copie a URL para a área de transferência e mande o link no chat
-   (veja **Branches e pull requests**).
+8. Modo Agent ou Debug: implemente na branch atual. Modo Planejamento: branch `feature/...` nova a partir
+   da `main`, subida à `main` por pull request. Ao abrir o PR, copie a URL para a área de transferência
+   e mande o link no chat (veja **Branches e pull requests**).
