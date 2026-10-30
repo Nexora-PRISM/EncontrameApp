@@ -1365,4 +1365,93 @@ export const en: Readonly<Record<string, string>> = {
     'Reason (false, offensive, prejudiced, mentions people, no longer true, other):',
   'Novo aviso de segurança': 'New safety note',
   '{name}: voltar ao início': '{name}: back to home',
+  // evolução · relato de avistamento ("Eu vi essa pessoa") e "Meus relatos"
+  'Situação: {status}': 'Status: {status}',
+  'O que acontece depois que envio um relato de avistamento?':
+    'What happens after I send a sighting report?',
+  'O relato recebe um número e a situação "Recebido". Ele não é publicado: a equipe analisa antes de qualquer mudança no caso, e a situação pode passar para "Aguardando análise", "Em análise", "Considerado relevante", "Não confirmado" ou "Encerrado". A foto, se você anexar, vai só para a análise. Acompanhe tudo em Perfil › Meus relatos. Se o envio não for confirmado, a tela avisa e você pode tentar de novo.':
+    'The report gets a number and the status "Received". It is not published: the team reviews it before any change to the case, and the status may change to "Awaiting review", "Under review", "Considered relevant", "Not confirmed" or "Closed". If you attach a photo, it goes only to the review. Follow everything in Profile › My reports. If sending is not confirmed, the screen tells you and you can try again.',
+  'relato número situação análise meus relatos foto':
+    'report number status review my reports photo',
+  'Este recurso ainda não está disponível no seu aplicativo.':
+    'This feature is not available in your app yet.',
+  'Entre na sua conta para ver os relatos que você enviou.':
+    'Sign in to see the reports you sent.',
+  'Não foi possível carregar seus relatos.': 'Could not load your reports.',
+  'Tentar de novo': 'Try again',
+  'Você ainda não enviou relatos': 'You haven\'t sent any reports yet',
+  'Quando você informar que viu alguém, o relato aparece aqui com a situação da análise.':
+    'When you report that you saw someone, the report shows up here with its review status.',
+  'Caso nº {id}': 'Case #{id}',
+  'Abre a página do caso': 'Opens the case page',
+  'Visto em {date}': 'Seen on {date}',
+  'Relato nº {id} · enviado em {date}': 'Report #{id} · sent on {date}',
+  'com foto': 'with photo',
+  'A situação muda conforme a análise da equipe. "Considerado relevante" não quer dizer que a pessoa foi encontrada.':
+    'The status changes as the team reviews it. "Considered relevant" does not mean the person was found.',
+  'Meus relatos': 'My reports',
+  'Os avistamentos que você enviou ficam em "Meus relatos". Em breve você verá aqui também os alertas que publicou.':
+    'The sightings you sent are in "My reports". Soon you will also see the alerts you published here.',
+  'Você enviou vários relatos sobre este caso há pouco. Para evitar repetições, espere {minutes} min para enviar outro.':
+    'You sent several reports about this case a moment ago. To avoid repeats, wait {minutes} min before sending another.',
+  'O envio não foi confirmado: seu relato pode não ter chegado. Tente de novo em alguns instantes. Se a pessoa estiver em perigo agora, ligue 190.':
+    'Sending was not confirmed: your report may not have arrived. Try again in a few moments. If the person is in danger right now, call 190.',
+  'Confira os campos destacados.': 'Check the highlighted fields.',
+  'Relato de avistamento': 'Sighting report',
+  'Caso: {name} · nº {id}': 'Case: {name} · #{id}',
+  'Se a pessoa parece estar em perigo agora, ligue 190 antes de preencher. Não aborde nem siga a pessoa.':
+    'If the person seems to be in danger right now, call 190 before filling this in. Do not approach or follow the person.',
+  'Ponto de referência': 'Landmark',
+  'Ex.: em frente à farmácia': 'E.g., in front of the pharmacy',
+  'Data': 'Date',
+  'Horário': 'Time',
+  'hh:mm': 'hh:mm',
+  'O horário é aproximado': 'The time is approximate',
+  'O que você viu?': 'What did you see?',
+  'Ex.: estava sentada no ponto de ônibus e parecia confusa.':
+    'E.g., she was sitting at the bus stop and seemed confused.',
+  'Roupa que a pessoa usava': 'Clothes the person was wearing',
+  'Ex.: casaco azul e calça jeans': 'E.g., blue coat and jeans',
+  'Características visíveis': 'Visible features',
+  'Ex.: cabelo preso, mochila vermelha': 'E.g., hair tied up, red backpack',
+  'Para onde a pessoa seguia': 'Where the person was heading',
+  'Ex.: a pé, em direção ao centro': 'E.g., on foot, toward downtown',
+  'Foto (opcional)': 'Photo (optional)',
+  'Foto anexada ao relato': 'Photo attached to the report',
+  'A foto vai só para a equipe de análise e não é publicada. Não se aproxime nem se arrisque para fotografar.':
+    'The photo goes only to the review team and is not published. Do not get close or take risks to take a photo.',
+  'Informações complementares': 'Additional information',
+  'Algo mais que possa ajudar a análise': 'Anything else that may help the review',
+  'Seu relato não é publicado. Ele fica ligado à sua conta e passa por análise antes de qualquer mudança no caso. O local exato não aparece para outras pessoas.':
+    'Your report is not published. It stays linked to your account and is reviewed before any change to the case. The exact location is not shown to other people.',
+  'Enviar relato': 'Send report',
+  'Relato recebido · nº {id}': 'Report received · #{id}',
+  'Ele passa por análise antes de qualquer mudança no caso. Acompanhe a situação em "Meus relatos".':
+    'It is reviewed before any change to the case. Follow its status in "My reports".',
+  'Modo de demonstração: nada foi enviado de verdade.':
+    'Demo mode: nothing was actually sent.',
+  'Ver meus relatos': 'See my reports',
+  'Informe a data.': 'Enter the date.',
+  'Use o formato dd/mm/aaaa.': 'Use the format dd/mm/yyyy.',
+  'A data não pode estar no futuro.': 'The date cannot be in the future.',
+  'Informe o horário, mesmo que aproximado.': 'Enter the time, even if approximate.',
+  'Use o formato hh:mm (ex.: 14:30).': 'Use the format hh:mm (e.g., 14:30).',
+  'O horário não pode estar no futuro.': 'The time cannot be in the future.',
+  'Conte o que você viu.': 'Tell us what you saw.',
+  'Escreva pelo menos 10 letras.': 'Write at least 10 characters.',
+  'Texto muito longo.': 'The text is too long.',
+  'Recebido': 'Received',
+  'O servidor recebeu o relato.': 'The server received the report.',
+  'Aguardando análise': 'Awaiting review',
+  'O relato está na fila da equipe de análise.': 'The report is in the review team\'s queue.',
+  'Em análise': 'Under review',
+  'Uma pessoa da equipe está verificando o relato.':
+    'Someone on the team is checking the report.',
+  'Considerado relevante': 'Considered relevant',
+  'A equipe considerou a informação útil para o caso. Isso não confirma que era a pessoa.':
+    'The team found the information useful for the case. This does not confirm it was the person.',
+  'Não confirmado': 'Not confirmed',
+  'Não foi possível confirmar a informação.': 'The information could not be confirmed.',
+  'Encerrado': 'Closed',
+  'A análise deste relato terminou.': 'The review of this report has ended.',
 };

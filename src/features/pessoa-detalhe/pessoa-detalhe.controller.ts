@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { MapPin, MapPolyline } from '@/components/brand-map';
 import { buildCaseFeedbackMessage } from '@/features/pessoa-detalhe/case-feedback';
 import { buildPersonShareMessage } from '@/features/pessoa-detalhe/person-share';
+import { type SightingLocationInput, useSightingReportForm } from '@/features/pessoa-detalhe/sighting-report-form';
 import { AppInfo } from '@/lib/app-info';
 import { confirmAction, showAlert } from '@/lib/dialog';
 import { env } from '@/lib/env';
@@ -23,6 +24,8 @@ import { ensureNotificationPermission, localNotificationsSupported } from '@/lib
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { shareText } from '@/lib/share';
+import { checkSightingRateLimit, rememberSightingSent } from '@/lib/sighting-report';
+import { isConfirmedReceipt, retryMinutes } from '@/lib/sighting-report-rules';
 import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
@@ -36,6 +39,8 @@ import {
 import { useBlockUserMutation, useReportContentMutation } from '@/services/moderation/moderation.service';
 import { syncPushRegistration } from '@/services/notifications/notifications.service';
 import type { PersonLastSeen } from '@/services/people/people.types';
+import { useSubmitSightingReportMutation } from '@/services/sightings/sightings.service';
+import type { SightingLocationSource, SightingReceipt } from '@/services/sightings/sightings.types';
 
 const SUGGEST_MIN_CHARS = 3;
 const SUGGEST_DEBOUNCE_MS = 300;
@@ -65,6 +70,12 @@ export function usePessoaDetalheController() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [locating, setLocating] = useState(false);
   const suggestGen = useRef(0);
+  /** Relato completo (docs/evolucao): só com EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS; senão, o registro simples de hoje. */
+  const reportEnabled = env.sightingReportsEnabled;
+  const reportForm = useSightingReportForm();
+  const submitReportMutation = useSubmitSightingReportMutation();
+  const [locationSource, setLocationSource] = useState<SightingLocationSource>('address');
+  const [receipt, setReceipt] = useState<SightingReceipt | null>(null);
   const historyQuery = useLastSeenHistoryQuery(id, historyOpen);
 
   const person = personQuery.data ?? null;
@@ -233,6 +244,7 @@ export function usePessoaDetalheController() {
     setFormOpen(true);
     setFormMessage(undefined);
     setThanksOpen(false);
+    setReceipt(null);
     setAddressError(undefined);
     setSuggestions([]);
   };
@@ -258,6 +270,7 @@ export function usePessoaDetalheController() {
           longitude: current.coords.longitude,
         };
         setCoords(next);
+        setLocationSource('gps');
         const label = await reverseGeocode(next.latitude, next.longitude);
         setAddress(label ?? t('Localização atual'));
       } catch {
@@ -280,6 +293,7 @@ export function usePessoaDetalheController() {
       suggestGen.current += 1;
       setAddress(resolved.label);
       setCoords({ latitude: resolved.latitude, longitude: resolved.longitude });
+      setLocationSource('address');
       setSuggestions([]);
       setSuggesting(false);
     })();
@@ -288,6 +302,7 @@ export function usePessoaDetalheController() {
   const placeSightingOnMap = (latitude: number, longitude: number) => {
     const generation = ++suggestGen.current;
     setCoords({ latitude, longitude });
+    setLocationSource('map');
     setSuggestions([]);
     setSuggesting(false);
     if (addressError) setAddressError(undefined);
@@ -393,6 +408,42 @@ export function usePessoaDetalheController() {
     ];
   }, [id, mappedSightings]);
 
+  /** Envia o relato completo. Só diz "recebido" com número e horário devolvidos pelo servidor. */
+  const submitFullReport = async (
+    location: SightingLocationInput,
+    seenAt: string,
+  ) => {
+    const rate = checkSightingRateLimit(id);
+    if (!rate.allowed) {
+      setFormMessage(
+        t('Você enviou vários relatos sobre este caso há pouco. Para evitar repetições, espere {minutes} min para enviar outro.', {
+          minutes: retryMinutes(rate.retryInMs),
+        }),
+      );
+      return;
+    }
+
+    const notConfirmed = t('O envio não foi confirmado: seu relato pode não ter chegado. Tente de novo em alguns instantes. Se a pessoa estiver em perigo agora, ligue 190.');
+    try {
+      const result = await submitReportMutation.mutateAsync(reportForm.toPayload(location, seenAt));
+      rememberSightingSent(id);
+      if (!isConfirmedReceipt(result)) {
+        setFormMessage(notConfirmed);
+        return;
+      }
+      setFormOpen(false);
+      setAddress('');
+      setCoords(null);
+      setSuggestions([]);
+      setLocationSource('address');
+      reportForm.reset();
+      setReceipt(result);
+      setThanksOpen(true);
+    } catch {
+      setFormMessage(notConfirmed);
+    }
+  };
+
   const submitSighting = () => {
     void (async () => {
       if (isLocalPersonId(id)) {
@@ -406,6 +457,8 @@ export function usePessoaDetalheController() {
 
       setAddressError(undefined);
       setFormMessage(undefined);
+      // No relato completo, valida os outros campos antes, para mostrar todos os erros de uma vez.
+      const seenAt = reportEnabled ? reportForm.validate() : null;
 
       let point = coords;
       const trimmed = address.trim();
@@ -425,6 +478,24 @@ export function usePessoaDetalheController() {
           setAddressError(t('Não encontramos esse endereço. Tente outro ou use sua localização.'));
           return;
         }
+      }
+
+      if (reportEnabled) {
+        if (!seenAt) {
+          setFormMessage(t('Confira os campos destacados.'));
+          return;
+        }
+        await submitFullReport(
+          {
+            personId: id,
+            location: trimmed || t('Localização atual'),
+            latitude: point.latitude,
+            longitude: point.longitude,
+            locationSource,
+          },
+          seenAt,
+        );
+        return;
       }
 
       try {
@@ -455,6 +526,7 @@ export function usePessoaDetalheController() {
       suggestGen.current += 1;
       setAddress(value);
       setCoords(null);
+      setLocationSource('address');
       setSuggestions([]);
       setSuggesting(false);
       if (addressError) setAddressError(undefined);
@@ -467,7 +539,15 @@ export function usePessoaDetalheController() {
     thanksOpen,
     historyOpen,
     locating,
-    submitting: reportMutation.isPending,
+    submitting: reportEnabled ? submitReportMutation.isPending : reportMutation.isPending,
+    reportEnabled,
+    report: reportForm,
+    receipt,
+    /** Abre "Meus relatos" (relatos enviados pela conta e a situação de cada um). */
+    goToMyReports: () => {
+      setThanksOpen(false);
+      router.push('/meus-relatos' as Href);
+    },
     historyLoading: historyQuery.isLoading,
     historyError: historyQuery.isError,
     isLocalPerson,

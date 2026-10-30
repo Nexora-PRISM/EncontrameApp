@@ -1379,4 +1379,94 @@ export const es: Readonly<Record<string, string>> = {
     'Motivo (aviso falso, ofensivo, con prejuicios, menciona a personas, ya no es verdad, otro):',
   'Novo aviso de segurança': 'Nuevo aviso de seguridad',
   '{name}: voltar ao início': '{name}: volver al inicio',
+  // evolução · relato de avistamento ("Eu vi essa pessoa") e "Meus relatos"
+  'Situação: {status}': 'Situación: {status}',
+  'O que acontece depois que envio um relato de avistamento?':
+    '¿Qué pasa después de enviar un reporte de avistamiento?',
+  'O relato recebe um número e a situação "Recebido". Ele não é publicado: a equipe analisa antes de qualquer mudança no caso, e a situação pode passar para "Aguardando análise", "Em análise", "Considerado relevante", "Não confirmado" ou "Encerrado". A foto, se você anexar, vai só para a análise. Acompanhe tudo em Perfil › Meus relatos. Se o envio não for confirmado, a tela avisa e você pode tentar de novo.':
+    'El reporte recibe un número y la situación "Recibido". No se publica: el equipo lo analiza antes de cualquier cambio en el caso, y la situación puede pasar a "Esperando análisis", "En análisis", "Considerado relevante", "No confirmado" o "Cerrado". Si adjuntas una foto, va solo al análisis. Sigue todo en Perfil › Mis reportes. Si el envío no se confirma, la pantalla te avisa y puedes intentarlo de nuevo.',
+  'relato número situação análise meus relatos foto':
+    'reporte número situación análisis mis reportes foto',
+  'Este recurso ainda não está disponível no seu aplicativo.':
+    'Esta función aún no está disponible en tu aplicación.',
+  'Entre na sua conta para ver os relatos que você enviou.':
+    'Entra en tu cuenta para ver los reportes que enviaste.',
+  'Não foi possível carregar seus relatos.': 'No se pudieron cargar tus reportes.',
+  'Tentar de novo': 'Intentar de nuevo',
+  'Você ainda não enviou relatos': 'Aún no has enviado reportes',
+  'Quando você informar que viu alguém, o relato aparece aqui com a situação da análise.':
+    'Cuando informes que viste a alguien, el reporte aparece aquí con la situación del análisis.',
+  'Caso nº {id}': 'Caso n.º {id}',
+  'Abre a página do caso': 'Abre la página del caso',
+  'Visto em {date}': 'Visto el {date}',
+  'Relato nº {id} · enviado em {date}': 'Reporte n.º {id} · enviado el {date}',
+  'com foto': 'con foto',
+  'A situação muda conforme a análise da equipe. "Considerado relevante" não quer dizer que a pessoa foi encontrada.':
+    'La situación cambia según el análisis del equipo. "Considerado relevante" no quiere decir que la persona haya sido encontrada.',
+  'Meus relatos': 'Mis reportes',
+  'Os avistamentos que você enviou ficam em "Meus relatos". Em breve você verá aqui também os alertas que publicou.':
+    'Los avistamientos que enviaste están en "Mis reportes". Pronto también verás aquí las alertas que publicaste.',
+  'Você enviou vários relatos sobre este caso há pouco. Para evitar repetições, espere {minutes} min para enviar outro.':
+    'Enviaste varios reportes sobre este caso hace poco. Para evitar repeticiones, espera {minutes} min para enviar otro.',
+  'O envio não foi confirmado: seu relato pode não ter chegado. Tente de novo em alguns instantes. Se a pessoa estiver em perigo agora, ligue 190.':
+    'El envío no se confirmó: es posible que tu reporte no haya llegado. Inténtalo de nuevo en unos instantes. Si la persona está en peligro ahora, llama al 190.',
+  'Confira os campos destacados.': 'Revisa los campos destacados.',
+  'Relato de avistamento': 'Reporte de avistamiento',
+  'Caso: {name} · nº {id}': 'Caso: {name} · n.º {id}',
+  'Se a pessoa parece estar em perigo agora, ligue 190 antes de preencher. Não aborde nem siga a pessoa.':
+    'Si la persona parece estar en peligro ahora, llama al 190 antes de completar esto. No te acerques ni sigas a la persona.',
+  'Ponto de referência': 'Punto de referencia',
+  'Ex.: em frente à farmácia': 'Ej.: frente a la farmacia',
+  'Data': 'Fecha',
+  'Horário': 'Hora',
+  'hh:mm': 'hh:mm',
+  'O horário é aproximado': 'La hora es aproximada',
+  'O que você viu?': '¿Qué viste?',
+  'Ex.: estava sentada no ponto de ônibus e parecia confusa.':
+    'Ej.: estaba sentada en la parada de autobús y parecía confundida.',
+  'Roupa que a pessoa usava': 'Ropa que llevaba la persona',
+  'Ex.: casaco azul e calça jeans': 'Ej.: abrigo azul y jeans',
+  'Características visíveis': 'Características visibles',
+  'Ex.: cabelo preso, mochila vermelha': 'Ej.: cabello recogido, mochila roja',
+  'Para onde a pessoa seguia': 'Hacia dónde iba la persona',
+  'Ex.: a pé, em direção ao centro': 'Ej.: a pie, hacia el centro',
+  'Foto (opcional)': 'Foto (opcional)',
+  'Foto anexada ao relato': 'Foto adjunta al reporte',
+  'A foto vai só para a equipe de análise e não é publicada. Não se aproxime nem se arrisque para fotografar.':
+    'La foto va solo al equipo de análisis y no se publica. No te acerques ni te arriesgues para tomarla.',
+  'Informações complementares': 'Información adicional',
+  'Algo mais que possa ajudar a análise': 'Algo más que pueda ayudar al análisis',
+  'Seu relato não é publicado. Ele fica ligado à sua conta e passa por análise antes de qualquer mudança no caso. O local exato não aparece para outras pessoas.':
+    'Tu reporte no se publica. Queda vinculado a tu cuenta y se analiza antes de cualquier cambio en el caso. El lugar exacto no se muestra a otras personas.',
+  'Enviar relato': 'Enviar reporte',
+  'Relato recebido · nº {id}': 'Reporte recibido · n.º {id}',
+  'Ele passa por análise antes de qualquer mudança no caso. Acompanhe a situação em "Meus relatos".':
+    'Se analiza antes de cualquier cambio en el caso. Sigue la situación en "Mis reportes".',
+  'Modo de demonstração: nada foi enviado de verdade.':
+    'Modo de demostración: no se envió nada de verdad.',
+  'Ver meus relatos': 'Ver mis reportes',
+  'Informe a data.': 'Indica la fecha.',
+  'Use o formato dd/mm/aaaa.': 'Usa el formato dd/mm/aaaa.',
+  'A data não pode estar no futuro.': 'La fecha no puede estar en el futuro.',
+  'Informe o horário, mesmo que aproximado.': 'Indica la hora, aunque sea aproximada.',
+  'Use o formato hh:mm (ex.: 14:30).': 'Usa el formato hh:mm (ej.: 14:30).',
+  'O horário não pode estar no futuro.': 'La hora no puede estar en el futuro.',
+  'Conte o que você viu.': 'Cuenta lo que viste.',
+  'Escreva pelo menos 10 letras.': 'Escribe al menos 10 caracteres.',
+  'Texto muito longo.': 'El texto es demasiado largo.',
+  'Recebido': 'Recibido',
+  'O servidor recebeu o relato.': 'El servidor recibió el reporte.',
+  'Aguardando análise': 'Esperando análisis',
+  'O relato está na fila da equipe de análise.':
+    'El reporte está en la fila del equipo de análisis.',
+  'Em análise': 'En análisis',
+  'Uma pessoa da equipe está verificando o relato.':
+    'Una persona del equipo está verificando el reporte.',
+  'Considerado relevante': 'Considerado relevante',
+  'A equipe considerou a informação útil para o caso. Isso não confirma que era a pessoa.':
+    'El equipo consideró la información útil para el caso. Esto no confirma que fuera la persona.',
+  'Não confirmado': 'No confirmado',
+  'Não foi possível confirmar a informação.': 'No fue posible confirmar la información.',
+  'Encerrado': 'Cerrado',
+  'A análise deste relato terminou.': 'El análisis de este reporte terminó.',
 };

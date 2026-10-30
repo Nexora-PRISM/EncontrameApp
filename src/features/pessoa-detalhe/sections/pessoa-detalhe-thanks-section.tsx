@@ -4,6 +4,7 @@ import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BrandButton } from '@/components/brand-button';
+import { SightingStatusChip } from '@/components/sighting-status-chip';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
@@ -21,6 +22,7 @@ export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSe
   const { isWide } = useWideLayout();
   const styles = useMemo(() => makeStyles(brand, isWide), [brand, isWide]);
   const personName = controller.person?.nickname ?? controller.person?.fullName;
+  const receipt = controller.receipt;
 
   return (
     <Modal
@@ -55,7 +57,7 @@ export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSe
           <View style={styles.body}>
             <Image
               source={require('@/assets/images/sofia-avatar.jpg')}
-              style={styles.avatar}
+              style={receipt ? [styles.avatar, styles.avatarSmall] : styles.avatar}
               resizeMode="cover"
               accessibilityLabel={t('Sofia')}
             />
@@ -66,9 +68,30 @@ export function PessoaDetalheThanksSection({ controller }: PessoaDetalheThanksSe
                 ? t('Cada avistamento pode ser o passo que faltava para encontrar {personName}. Sua ajuda é muito importante — de verdade.', { personName })
                 : t('Cada avistamento pode ser o passo que faltava para alguém voltar para casa. Sua ajuda é muito importante — de verdade.')}
             </Text>
+            {receipt?.reportId ? (
+              <View style={styles.receipt}>
+                <Text style={styles.receiptLabel}>{t('Relato recebido · nº {id}', { id: receipt.reportId })}</Text>
+                <SightingStatusChip status={receipt.status} />
+                <Text style={styles.receiptText}>
+                  {t('Ele passa por análise antes de qualquer mudança no caso. Acompanhe a situação em "Meus relatos".')}
+                </Text>
+                {receipt.simulated ? (
+                  <Text style={styles.receiptDemo}>
+                    {t('Modo de demonstração: nada foi enviado de verdade.')}
+                  </Text>
+                ) : null}
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.footer}>
+            {receipt ? (
+              <BrandButton
+                label={t('Ver meus relatos')}
+                variant="outline"
+                onPress={controller.goToMyReports}
+              />
+            ) : null}
             <BrandButton
               label={t('Voltar para o início')}
               variant="orange"
@@ -122,6 +145,40 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       borderWidth: 4,
       borderColor: brand.orange,
     },
+    avatarSmall: {
+      width: 96,
+      height: 96,
+      borderRadius: 48,
+    },
+    receipt: {
+      marginTop: 20,
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      gap: 10,
+      padding: 16,
+      borderRadius: Radius.lg,
+      borderWidth: 1,
+      borderColor: brand.divider,
+      backgroundColor: brand.surface,
+    },
+    receiptLabel: {
+      fontSize: 16,
+      fontWeight: '800',
+      textAlign: 'center',
+      color: brand.textDark,
+    },
+    receiptText: {
+      fontSize: 15,
+      lineHeight: 21,
+      textAlign: 'center',
+      color: brand.textMuted,
+    },
+    receiptDemo: {
+      fontSize: 13,
+      fontWeight: '700',
+      textAlign: 'center',
+      color: brand.orangeText,
+    },
     name: {
       marginTop: 16,
       fontSize: 15,
@@ -144,6 +201,7 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       maxWidth: 360,
     },
     footer: {
+      gap: 12,
       paddingHorizontal: PageGutter,
       paddingBottom: 16,
       paddingTop: 8,

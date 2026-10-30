@@ -1,6 +1,7 @@
 import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 
+import { env } from '@/lib/env';
 import { useSafeBack } from '@/lib/safe-back';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSessionUser } from '@/lib/use-session-user';
@@ -66,6 +67,9 @@ export function usePerfilController() {
     goToTrustedContacts: () => router.push('/contatos-confianca' as Href),
     goToShareLocation: () => router.push('/compartilhar-localizacao' as Href),
     goToHelp: () => router.push('/ajuda' as Href),
+    /** "Meus relatos" só existe com EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS (depende da API de relatos). */
+    sightingReportsEnabled: env.sightingReportsEnabled,
+    goToMyReports: () => router.push('/meus-relatos' as Href),
     goToRegister: () => router.push('/cadastrar-pessoa'),
     goToAllPeople: () => router.push('/pessoas-desaparecidas' as Href),
     goToGroupChat: () => router.push('/grupo-chat'),

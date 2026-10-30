@@ -199,6 +199,12 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   sistema pergunta da localização); ao fim abre o discador com o 190 — o app não liga sozinho. O envio ao servidor
   (`POST /EmergencyAlert`) só existe com `EXPO_PUBLIC_ENABLE_EMERGENCY_ALERT` e conta conectada, e a tela só diz
   "recebido" com `alertId` + `receivedAt` na resposta. Sem isso: "não confirmado — ligue 190".
+- **Relato de avistamento** (evolução, `EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS`; `lib/sighting-report*.ts`,
+  `services/sightings/`, `/meus-relatos`): data, horário, descrição obrigatória, roupa, características, direção,
+  referência e foto opcional. O relato **não** muda o último local do caso nem é publicado: só a análise humana, no
+  servidor, pode fazer isso. A tela só diz "recebido" com número + horário na resposta; sem isso, "não confirmado".
+  Limite de 3 relatos por caso a cada 10 minutos no aparelho (o servidor precisa ter o seu). O botão continua
+  "Vi essa pessoa por perto" (o passo a passo cita esse texto).
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
@@ -248,6 +254,8 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS` — notificações vindas do servidor (casos perto, novos cadastros da região, "Acompanhar"). Vazio: ligado em dev (mock), desligado em produção (opções "Em breve", botão "Acompanhar" oculto).
 - `GOOGLE_SERVICES_JSON` — só build nativo Android (variável de arquivo no EAS); sem ela, usa `google-services.json` da raiz, se existir.
 - `EXPO_PUBLIC_WEB_URL` — endereço público do app web (sem barra no fim); entra no texto de "Divulgar este caso".
+- `EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS` — (evolução) relato completo de avistamento e "Meus relatos". Vazio: ligado em dev (mock), desligado em produção; desligado, vale o registro simples de avistamento.
+- `EXPO_PUBLIC_MOCK_SIGHTING_FAIL` — só no mock: `true` simula falha no envio do relato (mensagem "não confirmado").
 
 No Netlify: Site configuration → Environment variables (disponíveis no **build**), depois um novo deploy. `netlify.toml` usa `npx expo export --platform web` e publica `dist`.
 

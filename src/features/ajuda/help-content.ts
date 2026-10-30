@@ -1,5 +1,6 @@
 import type { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { env } from '@/lib/env';
 import { msg } from '@/lib/i18n-msg';
 
 /**
@@ -32,6 +33,13 @@ export type HelpArticle = {
   answer: string;
   /** Palavras extras para a busca (sinônimos). */
   keywords?: string;
+  /** Só aparece quando o recurso está ligado neste aplicativo (ver lib/env.ts). */
+  requires?: 'sightingReports';
+};
+
+/** Recursos que dependem de variável de ambiente: a ajuda só fala deles quando estão ligados. */
+const FEATURE_ENABLED: Record<NonNullable<HelpArticle['requires']>, boolean> = {
+  sightingReports: env.sightingReportsEnabled,
 };
 
 export const HELP_CATEGORIES: HelpCategory[] = [
@@ -47,7 +55,7 @@ export const HELP_CATEGORIES: HelpCategory[] = [
   { id: 'sofia', title: msg('Sofia e grupo de apoio'), icon: 'robot-happy-outline' },
 ];
 
-export const HELP_ARTICLES: HelpArticle[] = [
+const ALL_HELP_ARTICLES: HelpArticle[] = [
   {
     id: 'prioridade',
     category: 'protecao',
@@ -215,6 +223,15 @@ export const HELP_ARTICLES: HelpArticle[] = [
     answer:
       msg('Abra o caso da pessoa e toque para informar um avistamento. Você pode usar sua localização atual, digitar o endereço ou ajustar o ponto no mapa. É preciso estar com a conta conectada.'),
     keywords: msg('vi avistei relato informar'),
+  },
+  {
+    id: 'avistamento-relato',
+    category: 'relatos',
+    question: msg('O que acontece depois que envio um relato de avistamento?'),
+    answer:
+      msg('O relato recebe um número e a situação "Recebido". Ele não é publicado: a equipe analisa antes de qualquer mudança no caso, e a situação pode passar para "Aguardando análise", "Em análise", "Considerado relevante", "Não confirmado" ou "Encerrado". A foto, se você anexar, vai só para a análise. Acompanhe tudo em Perfil › Meus relatos. Se o envio não for confirmado, a tela avisa e você pode tentar de novo.'),
+    keywords: msg('relato número situação análise meus relatos foto'),
+    requires: 'sightingReports',
   },
   {
     id: 'avistamento-confirmado',
@@ -409,6 +426,10 @@ export const HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('grupo conversa comunidade'),
   },
 ];
+
+export const HELP_ARTICLES: HelpArticle[] = ALL_HELP_ARTICLES.filter(
+  (article) => !article.requires || FEATURE_ENABLED[article.requires],
+);
 
 /** Normaliza para busca sem acento e sem maiúsculas. */
 export function normalizeSearch(value: string): string {

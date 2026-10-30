@@ -7,6 +7,11 @@ import { BrandField } from '@/components/brand-field';
 import { BrandMap } from '@/components/brand-map';
 import { Radius, type BrandColors } from '@/constants/brand';
 import type { PessoaDetalheController } from '@/features/pessoa-detalhe/pessoa-detalhe.controller';
+import {
+  SightingReportFields,
+  SightingReportIntro,
+  SightingReportReferenceField,
+} from '@/features/pessoa-detalhe/sections/pessoa-detalhe-sighting-report-fields';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 import { useWideLayout } from '@/lib/use-wide-layout';
@@ -56,11 +61,14 @@ export function PessoaDetalheSightingSection({ controller }: PessoaDetalheSighti
         </>
       ) : null}
 
-      {controller.formMessage ? <Text style={styles.message}>{controller.formMessage}</Text> : null}
+      {controller.formMessage && !(controller.reportEnabled && controller.formOpen) ? (
+        <Text style={styles.message}>{controller.formMessage}</Text>
+      ) : null}
 
       {controller.formOpen ? (
         <BrandEnter from="down" withExit>
           <View style={styles.form}>
+          {controller.reportEnabled ? <SightingReportIntro controller={controller} /> : null}
           <View>
             <BrandField
               label={t('Onde você viu?')}
@@ -100,17 +108,38 @@ export function PessoaDetalheSightingSection({ controller }: PessoaDetalheSighti
             />
           </View>
           <Text style={styles.hint}>{t('Toque no mapa ou arraste o pin para indicar o local.')}</Text>
+          {controller.reportEnabled ? (
+            <>
+              <BrandButton
+                label={t('Usar minha localização')}
+                variant="outline"
+                loading={controller.locating}
+                onPress={controller.useCurrentLocation}
+                containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+                style={isWide ? undefined : styles.actionFull}
+              />
+              <SightingReportReferenceField controller={controller} />
+              <SightingReportFields controller={controller} />
+              {controller.formMessage ? (
+                <Text style={styles.formError} accessibilityLiveRegion="polite">
+                  {controller.formMessage}
+                </Text>
+              ) : null}
+            </>
+          ) : null}
           <View style={styles.actions}>
+            {controller.reportEnabled ? null : (
+              <BrandButton
+                label={t('Usar minha localização')}
+                variant="outline"
+                loading={controller.locating}
+                onPress={controller.useCurrentLocation}
+                containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+                style={isWide ? undefined : styles.actionFull}
+              />
+            )}
             <BrandButton
-              label={t('Usar minha localização')}
-              variant="outline"
-              loading={controller.locating}
-              onPress={controller.useCurrentLocation}
-              containerStyle={isWide ? styles.actionSlot : styles.actionFull}
-              style={isWide ? undefined : styles.actionFull}
-            />
-            <BrandButton
-              label={t('Registrar avistamento')}
+              label={controller.reportEnabled ? t('Enviar relato') : t('Registrar avistamento')}
               variant="orange"
               loading={controller.submitting}
               onPress={controller.submitSighting}
@@ -154,6 +183,12 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       fontSize: 14,
       fontWeight: '600',
       color: brand.textMuted,
+    },
+    formError: {
+      fontSize: 15,
+      lineHeight: 21,
+      fontWeight: '700',
+      color: brand.orangeText,
     },
     hint: {
       marginTop: 8,

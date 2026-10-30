@@ -29,6 +29,14 @@ export function PerfilActivitySection({ controller }: Props) {
     { key: 'sofia', icon: 'robot-happy-outline', label: t('Falar com a Sofia'), onPress: controller.goToChat },
     { key: 'group', icon: 'account-group-outline', label: t('Grupo de apoio'), onPress: controller.goToGroupChat },
   ];
+  if (controller.sightingReportsEnabled) {
+    shortcuts.push({
+      key: 'reports',
+      icon: 'eye-check-outline',
+      label: t('Meus relatos'),
+      onPress: controller.goToMyReports,
+    });
+  }
 
   const pending = controller.localPendingCount;
 
@@ -48,7 +56,9 @@ export function PerfilActivitySection({ controller }: Props) {
           </View>
         </View>
         <Text style={styles.note}>
-          {t('Em breve você verá aqui os alertas que publicou e os avistamentos que enviou.')}
+          {controller.sightingReportsEnabled
+            ? t('Os avistamentos que você enviou ficam em "Meus relatos". Em breve você verá aqui também os alertas que publicou.')
+            : t('Em breve você verá aqui os alertas que publicou e os avistamentos que enviou.')}
         </Text>
       </View>
 

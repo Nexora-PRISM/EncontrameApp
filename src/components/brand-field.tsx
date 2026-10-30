@@ -43,6 +43,8 @@ type Props = {
   autoComplete?: TextInputProps['autoComplete'];
   /** Limite de caracteres digitados. */
   maxLength?: number;
+  /** Campo de várias linhas, para descrições (ex.: o que a pessoa viu num avistamento). */
+  multiline?: boolean;
 };
 
 export function BrandField({
@@ -63,6 +65,7 @@ export function BrandField({
   editable = true,
   autoComplete,
   maxLength,
+  multiline = false,
 }: Props) {
   const t = useT();
   const brand = useBrand();
@@ -78,9 +81,13 @@ export function BrandField({
         {label}
         {required ? <Text style={styles.requiredMark}> *</Text> : null}
       </Text>
-      <Animated.View style={[styles.field, error ? styles.fieldError : borderStyle]}>
+      <Animated.View
+        style={[styles.field, multiline && styles.fieldMultiline, error ? styles.fieldError : borderStyle]}
+      >
         <TextInput
-          style={styles.input}
+          style={[styles.input, multiline && styles.inputMultiline]}
+          multiline={multiline}
+          textAlignVertical={multiline ? 'top' : undefined}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -151,6 +158,9 @@ function makeStyles(brand: BrandColors, control: ControlMetrics) {
       borderColor: brand.fieldBorder,
       backgroundColor: brand.fieldBackground,
     },
+    fieldMultiline: {
+      alignItems: 'flex-start',
+    },
     fieldError: {
       borderColor: brand.error,
     },
@@ -159,6 +169,9 @@ function makeStyles(brand: BrandColors, control: ControlMetrics) {
       fontSize: control.fieldFont,
       color: brand.textDark,
       paddingVertical: control.fieldPadV,
+    },
+    inputMultiline: {
+      minHeight: 96,
     },
     errorText: {
       fontSize: 13,

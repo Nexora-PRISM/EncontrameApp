@@ -41,6 +41,15 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_PUSH_NOTIFICATIONS !== 'false'),
   /**
+   * Relato completo de avistamento ("Eu vi essa pessoa"): data, horário, descrição, foto opcional, número e
+   * situação do relato, e a tela "Meus relatos". Depende de POST /SightingReport e GET /SightingReport/mine
+   * (docs/evolucao/CONTRATOS-API.md). Em desenvolvimento fica ligado (com mocks); em produção só com
+   * EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS=true. Desligado, o app usa o registro simples de avistamento de hoje.
+   */
+  sightingReportsEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */
