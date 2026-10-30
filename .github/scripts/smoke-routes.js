@@ -18,7 +18,7 @@ const PUBLIC_ROUTES = [
   { path: '/central-de-apoio', expect: 'O que reunir' },
   { path: '/quero-ajudar', expect: 'Antes de ajudar' },
   { path: '/pessoa/p1/linha-do-tempo', expect: 'Linha do tempo' },
-  { path: '/pessoa/p1/cartaz', expect: 'QR' },
+  { path: '/pessoa/p2/cartaz', expect: 'QR' },
 ];
 
 /** Rotas que exigem conta (sessão fictícia do modo de demonstração, gravada antes de abrir a página). */
@@ -139,7 +139,7 @@ async function check(page, errors, label, route, expect) {
   }
 
   const failed = results.filter((item) => !item.ok);
-  for (const item of failed.slice(0, 10)) {
+  for (const item of failed.slice(0, 9)) {
     console.log(`::error title=Fumaça ${clean(item.label)}::${clean(item.detail)}`);
   }
   const passed = results.filter((item) => item.ok).map((item) => item.label);

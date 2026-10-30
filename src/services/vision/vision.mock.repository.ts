@@ -1,3 +1,4 @@
+import { readDemoValue, writeDemoValue } from '@/lib/demo-profile';
 import {
   type AccessDecision,
   type AuditEntry,
@@ -16,6 +17,7 @@ import {
   validateCamera,
   type VisionAction,
   type VisionRole,
+  VISION_ROLES,
 } from '@/lib/vision-rules';
 import { VisionDeniedError } from '@/services/vision/vision.errors';
 import type { VisionRepository } from '@/services/vision/vision.repository';
@@ -84,12 +86,14 @@ const DEMO_PROFILES: Record<VisionRole, DemoProfile> = {
   technical: { id: 'demo-technical', name: 'Técnico fictício (Nexora Prism)', role: 'technical', verified: true },
 };
 
-let demoRole: VisionRole = 'community';
+const savedRole = readDemoValue('visionRole');
+let demoRole: VisionRole = (VISION_ROLES as readonly string[]).includes(savedRole ?? '') ? (savedRole as VisionRole) : 'community';
 const pendingRequests: Partial<Record<VisionRole, { id: string; requestedAt: string }>> = {};
 
 /** Troca o perfil de demonstração (só existe no modo de demonstração). */
 export function setVisionDemoRole(role: VisionRole) {
   demoRole = role;
+  writeDemoValue('visionRole', role);
 }
 
 export function getVisionDemoRole(): VisionRole {
