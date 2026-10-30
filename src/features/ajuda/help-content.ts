@@ -242,6 +242,14 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('linha do tempo histórico acontecimentos classificação'),
   },
   {
+    id: 'cartaz-qr',
+    category: 'alertas',
+    question: msg('Como faço um cartaz com QR Code?'),
+    answer:
+      msg('Abra o caso e toque em "Cartaz com QR Code". Escolha o formato (vertical para imprimir ou quadrado para redes sociais) e o que aparece. O QR Code leva à página do caso, que mostra sempre a situação atual. No computador, use "Imprimir ou salvar em PDF"; no celular, mostre o cartaz na tela ou tire um print. O cartaz nunca mostra telefone, endereço ou documentos, e não é gerado para casos encerrados ou ainda em aprovação.'),
+    keywords: msg('cartaz qr code imprimir divulgar pdf'),
+  },
+  {
     id: 'avistamento-confirmado',
     category: 'relatos',
     question: msg('Um avistamento significa que a pessoa foi encontrada?'),

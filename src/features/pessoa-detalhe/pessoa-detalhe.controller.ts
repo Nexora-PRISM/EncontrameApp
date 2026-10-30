@@ -595,6 +595,8 @@ export function usePessoaDetalheController() {
     openHistory: () => setHistoryOpen(true),
     /** Linha do tempo pública do caso (docs/evolucao, etapa 2). */
     openTimeline: () => router.push(`/pessoa/${id}/linha-do-tempo` as Href),
+    /** Cartaz com QR Code para imprimir ou mostrar (docs/evolucao, etapa 3). */
+    openPoster: () => router.push(`/pessoa/${id}/cartaz` as Href),
     closeHistory: () => setHistoryOpen(false),
     useCurrentLocation,
     submitSighting,

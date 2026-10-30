@@ -1,5 +1,21 @@
 # Relatório de testes
 
+## Etapa 3 — Cartaz digital com QR Code (30/10/2026)
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Regras de todas as etapas | `npm test` (53 testes, 22 novos) | 53 de 53 passaram, no ambiente da IA |
+| QR Code lido por um leitor de verdade | 71 QR Codes gerados (versões 1 a 10, links de casos, acentos e emoji) renderizados em PNG e lidos com OpenCV (`cv2.QRCodeDetector`) | 71 de 71 lidos com o texto exato. Na primeira tentativa (8 px por módulo), 66 de 71; os outros 5 foram lidos em outro tamanho de imagem — limitação conhecida do detector do OpenCV, não do código (as mesmas versões e máscaras foram lidas em outros casos) |
+| Traduções | `node scripts/check-i18n.js --strict` | OK: 1139 textos |
+| Tipos entre os arquivos da evolução | `tsc` com declarações simplificadas | Nenhum erro |
+| Tipos completos, lint, build web e prints | Checagem automática do GitHub | **Pendente**: depende do repositório privado |
+| Impressão no navegador e leitura do QR impresso com celular | Manual | **Pendente** |
+
+Roteiro manual: abrir um caso em busca › "Cartaz com QR Code"; trocar o formato; desligar idade, data e
+características; no computador, "Imprimir ou salvar em PDF" (deve sair só o cartaz, com as cores); ler o QR com a
+câmera do celular (deve abrir a página do caso). Abrir o cartaz de um caso Encontrado ou Pendente: não deve gerar.
+
+
 ## Etapa 2 — Linha do tempo do caso (30/10/2026)
 
 | Verificação | Como | Resultado |

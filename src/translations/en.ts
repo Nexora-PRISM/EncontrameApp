@@ -1502,4 +1502,44 @@ export const en: Readonly<Record<string, string>> = {
     'On the case page, tap "Case timeline". It shows, in order, what is known about the case: the registration, the reported sightings and, when there are any, status changes and updates. Each item says whether the information was confirmed, stated in the registration, is awaiting review, was not confirmed or was corrected. Places show only the neighborhood and city. Sightings do not confirm where the person is.',
   'linha do tempo histórico acontecimentos classificação':
     'timeline history events classification',
+  // evolução · cartaz com QR Code e botões agrupados no caso
+  'Imprimir ou salvar em PDF': 'Print or save as PDF',
+  'No celular, mostre o cartaz na tela ou tire um print. Para imprimir, abra este caso no computador.':
+    'On your phone, show the poster on the screen or take a screenshot. To print, open this case on a computer.',
+  'Compartilhar texto e link do caso': 'Share the case text and link',
+  'O QR Code aparece quando o endereço público do app estiver configurado (EXPO_PUBLIC_WEB_URL).':
+    'The QR code appears once the app\'s public address is configured (EXPO_PUBLIC_WEB_URL).',
+  'Vertical (para imprimir)': 'Portrait (to print)',
+  'Quadrado (redes sociais)': 'Square (social media)',
+  'Ajustar o cartaz': 'Adjust the poster',
+  'Formato do cartaz': 'Poster format',
+  'O que aparece': 'What appears',
+  'O cartaz usa só o que já é público na página do caso. Telefone, endereço e documentos nunca aparecem.':
+    'The poster only uses what is already public on the case page. Phone numbers, addresses and documents never appear.',
+  'Data em que foi vista': 'Date last seen',
+  'Roupas e características': 'Clothes and features',
+  'Mais opções': 'More options',
+  'Salvar como imagem': 'Save as image',
+  'Cartaz do caso de {name}': 'Poster for the case of {name}',
+  'PESSOA DESAPARECIDA': 'MISSING PERSON',
+  'Ajude a encontrar': 'Help find them',
+  'QR Code com o link da página do caso': 'QR code with the link to the case page',
+  'Aponte a câmera do celular para ver o caso atualizado e avisar se viu esta pessoa.':
+    'Point your phone camera here to see the updated case and report if you saw this person.',
+  'Veja o caso e avise se viu esta pessoa pelo app {app}.':
+    'See the case and report if you saw this person in the {app} app.',
+  'Em emergência, ligue 190': 'In an emergency, call 190',
+  'Saiba mais sobre o caso': 'Learn more about the case',
+  'Ajude a divulgar': 'Help spread the word',
+  'Cartaz com QR Code': 'Poster with QR code',
+  'Este caso foi encerrado e não deve mais ser divulgado. Se encontrar um cartaz antigo, não compartilhe.':
+    'This case was closed and should no longer be shared. If you find an old poster, do not share it.',
+  'O cartaz fica disponível depois que a equipe aprovar o caso.':
+    'The poster becomes available after the team approves the case.',
+  'Voltar para o caso': 'Back to the case',
+  'Cartaz do caso': 'Case poster',
+  'Como faço um cartaz com QR Code?': 'How do I make a poster with a QR code?',
+  'Abra o caso e toque em "Cartaz com QR Code". Escolha o formato (vertical para imprimir ou quadrado para redes sociais) e o que aparece. O QR Code leva à página do caso, que mostra sempre a situação atual. No computador, use "Imprimir ou salvar em PDF"; no celular, mostre o cartaz na tela ou tire um print. O cartaz nunca mostra telefone, endereço ou documentos, e não é gerado para casos encerrados ou ainda em aprovação.':
+    'Open the case and tap "Poster with QR code". Choose the format (portrait to print or square for social media) and what appears. The QR code leads to the case page, which always shows the current status. On a computer, use "Print or save as PDF"; on a phone, show the poster on the screen or take a screenshot. The poster never shows phone numbers, addresses or documents, and it is not made for closed cases or cases still awaiting approval.',
+  'cartaz qr code imprimir divulgar pdf': 'poster qr code print share pdf',
 };

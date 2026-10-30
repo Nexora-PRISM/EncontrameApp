@@ -46,44 +46,70 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
           <Text style={styles.value}>{row.value}</Text>
         </View>
       ))}
-      <View style={styles.actions}>
-        <BrandButton
-          label={t('Histórico de avistamentos')}
-          variant="outline"
-          onPress={controller.openHistory}
-          containerStyle={isWide ? styles.actionSlot : styles.actionFull}
-          style={isWide ? undefined : styles.actionFull}
-        />
-        {controller.isLocalPerson ? null : (
+      {/* Botões em grupos curtos, com um título cada, para ficar fácil de achar (pensado também para idosos). */}
+      <View style={styles.group}>
+        <Text style={styles.groupTitle} accessibilityRole="header">
+          {t('Saiba mais sobre o caso')}
+        </Text>
+        <View style={styles.actions}>
+          {controller.isLocalPerson ? null : (
+            <BrandButton
+              label={t('Linha do tempo do caso')}
+              variant="outline"
+              trailingIcon="timeline-clock-outline"
+              onPress={controller.openTimeline}
+              containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+              style={isWide ? undefined : styles.actionFull}
+            />
+          )}
           <BrandButton
-            label={t('Linha do tempo do caso')}
+            label={t('Histórico de avistamentos')}
             variant="outline"
-            onPress={controller.openTimeline}
+            trailingIcon="map-marker-path"
+            onPress={controller.openHistory}
             containerStyle={isWide ? styles.actionSlot : styles.actionFull}
             style={isWide ? undefined : styles.actionFull}
           />
-        )}
-        {controller.isLocalPerson ? null : (
-          <BrandButton
-            label={t('Divulgar este caso')}
-            variant="outline"
-            onPress={controller.shareCase}
-            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
-            style={isWide ? undefined : styles.actionFull}
-          />
-        )}
-        {controller.canFollow ? (
-          <BrandButton
-            label={controller.following ? t('Acompanhando este caso') : t('Acompanhar este caso')}
-            variant="outline"
-            trailingIcon={controller.following ? 'bell-check-outline' : 'bell-outline'}
-            loading={controller.followBusy}
-            onPress={controller.toggleFollow}
-            containerStyle={isWide ? styles.actionSlot : styles.actionFull}
-            style={isWide ? undefined : styles.actionFull}
-          />
-        ) : null}
-        {controller.sightingBlockedMessage ? null : (
+        </View>
+      </View>
+      {controller.isLocalPerson ? null : (
+        <View style={styles.group}>
+          <Text style={styles.groupTitle} accessibilityRole="header">
+            {t('Ajude a divulgar')}
+          </Text>
+          <View style={styles.actions}>
+            <BrandButton
+              label={t('Divulgar este caso')}
+              variant="outline"
+              trailingIcon="share-variant-outline"
+              onPress={controller.shareCase}
+              containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+              style={isWide ? undefined : styles.actionFull}
+            />
+            <BrandButton
+              label={t('Cartaz com QR Code')}
+              variant="outline"
+              trailingIcon="qrcode"
+              onPress={controller.openPoster}
+              containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+              style={isWide ? undefined : styles.actionFull}
+            />
+            {controller.canFollow ? (
+              <BrandButton
+                label={controller.following ? t('Acompanhando este caso') : t('Acompanhar este caso')}
+                variant="outline"
+                trailingIcon={controller.following ? 'bell-check-outline' : 'bell-outline'}
+                loading={controller.followBusy}
+                onPress={controller.toggleFollow}
+                containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+                style={isWide ? undefined : styles.actionFull}
+              />
+            ) : null}
+          </View>
+        </View>
+      )}
+      {controller.sightingBlockedMessage ? null : (
+        <View style={styles.actions}>
           <BrandButton
             label={t('Vi essa pessoa por perto')}
             variant="orange"
@@ -91,8 +117,8 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
             containerStyle={isWide ? styles.actionSlot : styles.actionFull}
             style={isWide ? undefined : styles.actionFull}
           />
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -134,6 +160,15 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       flexGrow: 0,
       flexShrink: 1,
       maxWidth: '100%',
+    },
+    group: {
+      gap: 10,
+      marginTop: 6,
+    },
+    groupTitle: {
+      fontSize: 14,
+      fontWeight: '800',
+      color: brand.textMuted,
     },
     row: {
       gap: 2,

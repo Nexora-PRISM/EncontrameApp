@@ -8,7 +8,7 @@ Atualizado em 30/10/2026.
 |---|---|---|
 | Repositório privado `EncontrameApp-Evolucao` ainda não existe no GitHub | A cópia fica só no ambiente de trabalho da IA, que é temporário; a checagem automática não roda | Um administrador cria o repositório vazio e privado; a IA envia `main` e `evolucao` |
 | Ambiente da IA sem acesso ao registro do npm | Não dá para instalar dependências nem rodar `npm run check` localmente. A validação completa (tipos, lint, build web) acontece na checagem automática do GitHub | Usar a checagem do GitHub, ou rodar na máquina da equipe |
-| Bibliotecas novas não podem ser adicionadas daqui | O `package-lock.json` não pode ser atualizado sem o registro do npm. Afeta a etapa 3 (QR Code e geração de imagem do cartaz) | Alguém da equipe roda `npx expo install <pacote>` e envia o lock atualizado, ou a etapa usa só o que já está instalado |
+| Bibliotecas novas não podem ser adicionadas daqui | O `package-lock.json` não pode ser atualizado sem o registro do npm. O QR Code foi feito sem biblioteca; falta "Salvar como imagem" do cartaz (precisa de `react-native-view-shot` e `expo-sharing` ou `expo-media-library`) | Alguém da equipe roda `npx expo install <pacote>` e envia o lock atualizado |
 | Backend .NET (`EncontrameApi`) com acesso só de leitura | Toda funcionalidade nova que precisa de endpoint novo fica só com mock até a API implementar os contratos. A IA não altera o backend | Implementar os endpoints de `CONTRATOS-API.md` (com os testes exigidos no repositório da API) |
 | Prompt mestre recebido incompleto (termina no item 13.1) | Funcionalidades depois da Central de Apoio seguem o documento institucional | Enviar o restante do prompt |
 

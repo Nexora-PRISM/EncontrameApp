@@ -139,3 +139,51 @@ Revisão do código antes de seguir, conforme o prompt "Evolução do Encontra-m
 Também conferido: variáveis e imports sem uso (nenhum), rotas novas e proteção de login, traduções (completas) e
 os 31 testes das regras (todos passando).
 
+---
+
+## Etapa 3 — Cartaz digital com QR Code (30/10/2026)
+
+**Objetivo.** Um cartaz pronto para divulgar, com QR Code que leva sempre à página atualizada do caso.
+
+**Como funciona**
+
+1. Na página do caso, "Cartaz com QR Code" abre `/pessoa/{id}/cartaz` (não exige login).
+2. A prévia vem primeiro, depois as ações e por último os ajustes, para quem só quer o cartaz pronto.
+3. Formatos: vertical (proporção A4, para imprimir) e quadrado (redes sociais). Dá para esconder idade, data e
+   características. Telefone, endereço e documentos nunca aparecem (só o que já é público na página do caso; local
+   só com bairro e cidade).
+4. O QR Code aponta para a página do caso. Como a página mostra a situação atual, o QR "acompanha" o caso.
+   Caso encerrado (Encontrado ou Cancelado) ou ainda pendente de aprovação não gera cartaz.
+5. No computador: "Imprimir ou salvar em PDF" (imprime só o cartaz). No celular: mostrar na tela ou tirar print.
+   "Salvar como imagem" aparece como "Em breve" (precisa de biblioteca nova; ver problemas conhecidos).
+6. Sem `EXPO_PUBLIC_WEB_URL` configurada, o cartaz sai sem QR Code e com o aviso para procurar o caso no app.
+7. Vermelho não é usado no cartaz (é exclusivo do "Pedir ajuda"): faixa azul-marinho, destaque laranja e rodapé creme.
+
+**QR Code sem biblioteca nova.** Como este ambiente não instala pacotes, o gerador foi escrito em
+`src/lib/qr-code.ts` (padrão ISO/IEC 18004, nível M, versões 1 a 10, estrutura da implementação de referência de
+Project Nayuki). Foi validado decodificando os QR Codes gerados com o OpenCV (ver `TESTES.md`). Pode ser trocado por
+uma biblioteca mantida sem mudar quem usa `encodeQr`.
+
+**Organização da página do caso** (pedido de 30/10: "bem organizadinho, fácil de manusear, algo que até um idoso
+consiga usar"): os botões passaram a ficar em dois grupos com título — "Saiba mais sobre o caso" (linha do tempo,
+histórico de avistamentos) e "Ajude a divulgar" (divulgar, cartaz, acompanhar) — e o botão laranja "Vi essa pessoa
+por perto" continua por último, logo acima do formulário que ele abre. Os botões ganharam ícones.
+
+**Arquivos**
+
+| Situação | Arquivo | Para quê |
+|---|---|---|
+| Criado | `src/lib/qr-code.ts` | Gerador de QR Code sem dependências |
+| Criado | `src/lib/case-poster-rules.ts` | Quando o cartaz pode ser gerado, link do caso, conteúdo do cartaz |
+| Criado | `src/lib/print-poster.ts` | Impressão só do cartaz na versão web |
+| Criado | `src/components/qr-code-view.tsx` | Desenho do QR Code (um retângulo por trecho escuro, leve) |
+| Criado | `src/features/cartaz/*` (controller e 3 sections) | Tela do cartaz |
+| Criado | `src/pages/pessoa/[id]/cartaz/index.tsx` | Rota |
+| Criado | `tests/qr-code.test.mjs`, `tests/case-poster-rules.test.mjs` | 22 testes novos |
+| Alterado | `src/features/pessoa-detalhe/sections/pessoa-detalhe-info-section.tsx` | Botões em grupos, com ícones; botão do cartaz |
+| Alterado | `src/features/pessoa-detalhe/pessoa-detalhe.controller.ts` | `openPoster` |
+| Alterado | `src/features/ajuda/help-content.ts` | Pergunta "Como faço um cartaz com QR Code?" |
+| Alterado | `src/translations/en.ts`, `es.ts` | 31 textos novos |
+
+**Depende de integração**: nada novo no backend. Usa `GET /MissingPerson/{id}` e o endereço público do app web.
+

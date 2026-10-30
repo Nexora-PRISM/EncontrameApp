@@ -1518,4 +1518,44 @@ export const es: Readonly<Record<string, string>> = {
     'En la página del caso, toca "Línea de tiempo del caso". Muestra, en orden, lo que se sabe del caso: el registro, los avistamientos informados y, cuando los haya, cambios de situación y actualizaciones. Cada elemento dice si la información fue confirmada, informada en el registro, está esperando análisis, no fue confirmada o fue corregida. Los lugares aparecen solo con barrio y ciudad. Los avistamientos no confirman dónde está la persona.',
   'linha do tempo histórico acontecimentos classificação':
     'línea de tiempo historial acontecimientos clasificación',
+  // evolução · cartaz com QR Code e botões agrupados no caso
+  'Imprimir ou salvar em PDF': 'Imprimir o guardar en PDF',
+  'No celular, mostre o cartaz na tela ou tire um print. Para imprimir, abra este caso no computador.':
+    'En el celular, muestra el cartel en la pantalla o haz una captura. Para imprimir, abre este caso en la computadora.',
+  'Compartilhar texto e link do caso': 'Compartir texto y enlace del caso',
+  'O QR Code aparece quando o endereço público do app estiver configurado (EXPO_PUBLIC_WEB_URL).':
+    'El código QR aparece cuando la dirección pública de la app esté configurada (EXPO_PUBLIC_WEB_URL).',
+  'Vertical (para imprimir)': 'Vertical (para imprimir)',
+  'Quadrado (redes sociais)': 'Cuadrado (redes sociales)',
+  'Ajustar o cartaz': 'Ajustar el cartel',
+  'Formato do cartaz': 'Formato del cartel',
+  'O que aparece': 'Qué aparece',
+  'O cartaz usa só o que já é público na página do caso. Telefone, endereço e documentos nunca aparecem.':
+    'El cartel solo usa lo que ya es público en la página del caso. Teléfono, dirección y documentos nunca aparecen.',
+  'Data em que foi vista': 'Fecha en que fue vista',
+  'Roupas e características': 'Ropa y características',
+  'Mais opções': 'Más opciones',
+  'Salvar como imagem': 'Guardar como imagen',
+  'Cartaz do caso de {name}': 'Cartel del caso de {name}',
+  'PESSOA DESAPARECIDA': 'PERSONA DESAPARECIDA',
+  'Ajude a encontrar': 'Ayuda a encontrarla',
+  'QR Code com o link da página do caso': 'Código QR con el enlace de la página del caso',
+  'Aponte a câmera do celular para ver o caso atualizado e avisar se viu esta pessoa.':
+    'Apunta la cámara del celular para ver el caso actualizado y avisar si viste a esta persona.',
+  'Veja o caso e avise se viu esta pessoa pelo app {app}.':
+    'Mira el caso y avisa si viste a esta persona en la app {app}.',
+  'Em emergência, ligue 190': 'En una emergencia, llama al 190',
+  'Saiba mais sobre o caso': 'Más sobre el caso',
+  'Ajude a divulgar': 'Ayuda a difundir',
+  'Cartaz com QR Code': 'Cartel con código QR',
+  'Este caso foi encerrado e não deve mais ser divulgado. Se encontrar um cartaz antigo, não compartilhe.':
+    'Este caso fue cerrado y ya no debe difundirse. Si encuentras un cartel antiguo, no lo compartas.',
+  'O cartaz fica disponível depois que a equipe aprovar o caso.':
+    'El cartel estará disponible después de que el equipo apruebe el caso.',
+  'Voltar para o caso': 'Volver al caso',
+  'Cartaz do caso': 'Cartel del caso',
+  'Como faço um cartaz com QR Code?': '¿Cómo hago un cartel con código QR?',
+  'Abra o caso e toque em "Cartaz com QR Code". Escolha o formato (vertical para imprimir ou quadrado para redes sociais) e o que aparece. O QR Code leva à página do caso, que mostra sempre a situação atual. No computador, use "Imprimir ou salvar em PDF"; no celular, mostre o cartaz na tela ou tire um print. O cartaz nunca mostra telefone, endereço ou documentos, e não é gerado para casos encerrados ou ainda em aprovação.':
+    'Abre el caso y toca "Cartel con código QR". Elige el formato (vertical para imprimir o cuadrado para redes sociales) y lo que aparece. El código QR lleva a la página del caso, que siempre muestra la situación actual. En la computadora, usa "Imprimir o guardar en PDF"; en el celular, muestra el cartel en la pantalla o haz una captura. El cartel nunca muestra teléfono, dirección ni documentos, y no se genera para casos cerrados o que aún esperan aprobación.',
+  'cartaz qr code imprimir divulgar pdf': 'cartel código qr imprimir difundir pdf',
 };
