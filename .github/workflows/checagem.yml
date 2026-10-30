@@ -1,13 +1,14 @@
 # Checagem automática do app a cada envio para a branch de desenvolvimento e a cada pull request.
+# Versão independente (EncontrameApp-Evolucao): a branch de trabalho é "evolucao". Nada aqui publica o app.
 # Roda as mesmas verificações exigidas antes de um PR (npm run check) e o build web do Netlify.
 # Também gera prints das telas principais (modo demonstração, dados fictícios) para revisão visual.
 name: Checagem do app
 
 on:
   push:
-    branches: [desenvolvimento, 'feature/**', 'fix/**']
+    branches: [evolucao, desenvolvimento, 'feature/**', 'fix/**']
   pull_request:
-    branches: [main, desenvolvimento]
+    branches: [main, evolucao, desenvolvimento]
   workflow_dispatch:
 
 permissions:
@@ -36,6 +37,9 @@ jobs:
       - name: Checagem (tipos + lint + traduções)
         run: npm run check
 
+      - name: Testes das regras de negócio (node --test)
+        run: npm test
+
       - name: Formatação (Biome, só informativo)
         run: npm run format:check
         continue-on-error: true
@@ -48,6 +52,7 @@ jobs:
         run: npx expo export --platform web --output-dir dist-demo --clear
         env:
           EXPO_PUBLIC_USE_MOCKS: 'true'
+          EXPO_PUBLIC_ENABLE_SIGHTING_REPORTS: 'true'
 
       - name: Prints das telas (celular, claro e escuro)
         run: |

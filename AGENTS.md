@@ -3,6 +3,18 @@
 > Fonte única de verdade para IA (Cursor lê `AGENTS.md`; Claude lê `CLAUDE.md`, que importa este arquivo via `@AGENTS.md`).
 > Leia este arquivo inteiro **antes de qualquer implementação**.
 
+## Esta é a versão independente de evolução
+
+Este repositório é uma **cópia separada** do Encontra-me (`EncontrameApp-Evolucao`), criada em 30/10/2026 a partir
+do commit `7cc8304` da `main` do original. Antes de qualquer coisa, leia `docs/evolucao/README.md`.
+
+- **Nunca** faça commit, branch, merge, PR ou push no repositório original `Nexora-PRISM/EncontrameApp`.
+- Trabalhe na branch `evolucao` (a `main` daqui guarda a base sem alteração, para comparação).
+- **Nada é publicado daqui**: sem Google Play, App Store, EAS Update, deploy do site, backend ou notificações reais.
+- Funcionalidade nova fica atrás de `EXPO_PUBLIC_ENABLE_*` (ligada em dev com mock, desligada em produção) até a API existir.
+- Registre cada etapa em `docs/evolucao/REGISTRO.md` e `TESTES.md`; contratos de API em `CONTRATOS-API.md`.
+- As seções "Branches e pull requests" e a regra 8 abaixo valem para o repositório original, não para esta cópia.
+
 ## Sobre o app
 
 Aplicativo para **encontrar pessoas desaparecidas** — *"para que nenhuma história termine em silêncio"*.

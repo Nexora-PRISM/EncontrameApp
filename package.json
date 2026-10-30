@@ -65,6 +65,7 @@
     "format:check": "biome format .",
     "i18n:check": "node scripts/check-i18n.js",
     "check": "npm run typecheck && npm run lint && npm run i18n:check",
+    "test": "node --experimental-strip-types --no-warnings --test \"tests/**/*.test.mjs\"",
     "postinstall": "patch-package",
     "prepare": "husky"
   },
