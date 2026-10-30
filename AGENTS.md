@@ -71,6 +71,7 @@ src/
     nexora-signature.tsx       # assinatura "Um produto da Nexora Prism" (abertura, menu, Sobre, Configurações)
     emergency-sheet.tsx        # folha "Pedir ajuda": 190/180/100/192/193 + comunicar desaparecimento / avistamento
     settings-list.tsx          # SettingsGroup / SettingsRow / SettingsSegmented / SettingsChoiceList (configurações, perfil, sobre)
+    document-title.tsx         # título da aba no web ("<página> — Encontra-me"), renderizado no _layout
   constants/
     brand.ts                   # Paletas light/dark + Radius — hex só aqui; UI usa useBrand()
   lib/
@@ -79,6 +80,7 @@ src/
     i18n-msg.ts                # msg(): marca textos de listas/constantes para tradução
     person-category.ts         # faixas de idade (crianças e adolescentes, adultos, idosos): filtros, rótulos, cores
     splash-state.ts            # se a abertura já saiu (o passo a passo só abre depois)
+    page-titles.ts             # título da aba por rota (1º segmento da URL); rota nova entra aqui, nunca com dados da pessoa
     safety-notes.ts            # avisos de segurança: tipos, horários, validade, bloqueio de dados pessoais, denúncia
     notifications.ts           # expo-notifications (só se o módulo nativo existir): permissão, token, canal, rota do toque
     notification-prefs.ts      # o que a pessoa escolheu receber (neste aparelho; tudo desligado por padrão)

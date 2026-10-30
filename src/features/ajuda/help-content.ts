@@ -333,7 +333,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'conta',
     question: msg('Posso entrar com a digital ou o rosto?'),
     answer:
-      msg('Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, ao sair o app só trava a conta; para sair de vez, desligue a biometria antes.'),
+      msg('Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, o app pede a biometria assim que abre e, ao sair, só trava a conta; para sair de vez, desligue a biometria antes.'),
     keywords: msg('digital face id biometria'),
   },
   {

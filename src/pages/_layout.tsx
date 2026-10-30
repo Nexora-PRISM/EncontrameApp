@@ -8,7 +8,9 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { BrandSplash } from '@/components/brand-splash';
+import { DocumentTitle } from '@/components/document-title';
 import type { BrandColors } from '@/constants/brand';
+import { useBiometricLaunchUnlock } from '@/features/biometric/use-biometric-launch-unlock';
 import { WebShellFrame } from '@/features/web-shell/web-shell-frame';
 import { ApiErrorModalProvider } from '@/lib/api-error-modal';
 import { setSessionExpiredHandler } from '@/lib/auth-events';
@@ -67,9 +69,11 @@ function RootLayoutInner() {
   const showStack = sessionReady && languageReady && !blocked;
 
   useNotificationsBootstrap(showStack);
+  useBiometricLaunchUnlock(showStack && splashDone);
 
   return (
     <>
+      <DocumentTitle />
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       {showStack ? (
         <WebShellFrame>

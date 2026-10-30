@@ -1,31 +1,24 @@
 import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 
+import {
+  BIOMETRIC_FAIL,
+  lockedSessionCopy,
+  unlockWithBiometric,
+} from '@/features/biometric/biometric-unlock';
 import { useBiometricEnroll } from '@/features/biometric/use-biometric-enroll';
 import { useGoogleAuth } from '@/features/google-auth/use-google-auth';
 import { parseApiError } from '@/lib/api-errors';
 import { safeReturnTo } from '@/lib/auth-guard';
-import {
-  authenticate,
-  biometricCopy,
-  getBiometricEnabled,
-  getBiometricKind,
-  isBiometricAvailable,
-  type BiometricCopy,
-} from '@/lib/biometric';
+import type { BiometricCopy } from '@/lib/biometric';
 import { generalErrorMessage } from '@/lib/error-messages';
 import { useT } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
-import { hasStoredSession } from '@/lib/session';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import { collectErrors, textError } from '@/lib/validation';
-import {
-  revokeStoredSession,
-  unlockAndRefreshSession,
-  useLoginMutation,
-} from '@/services/auth/auth.service';
+import { revokeStoredSession, useLoginMutation } from '@/services/auth/auth.service';
 
-const BIOMETRIC_FAIL = msg('Não foi possível entrar com a digital. Use e-mail e senha.');
+const BIOMETRIC_OFFLINE = msg('Não foi possível conectar. Verifique sua internet.');
 
 /** Volta para o Início que já está aberto. Empilhar outro mapa no Android fecha o app. */
 function finishLogin(
@@ -94,12 +87,15 @@ export function useLoginController() {
     setBiometricSubmitting(true);
     setFormError('');
     try {
-      const copy = biometricCopyState ?? biometricCopy(await getBiometricKind());
-      const ok = await authenticate(t(copy.loginPrompt));
-      if (!ok) return;
-
-      await unlockAndRefreshSession();
-      finishLogin(router, dest);
+      const result = await unlockWithBiometric();
+      if (result === 'unlocked') {
+        finishLogin(router, dest);
+      } else if (result === 'offline') {
+        setFormError(t(BIOMETRIC_OFFLINE));
+      } else if (result === 'rejected') {
+        setFormError(t(BIOMETRIC_FAIL));
+        setBiometricCopyState(null);
+      }
     } catch {
       setFormError(t(BIOMETRIC_FAIL));
       await revokeStoredSession();
@@ -120,15 +116,8 @@ export function useLoginController() {
     let cancelled = false;
 
     void (async () => {
-      const [enabled, stored, available] = await Promise.all([
-        getBiometricEnabled(),
-        hasStoredSession(),
-        isBiometricAvailable(),
-      ]);
-      if (cancelled || !enabled || !stored || !available) return;
-
-      const copy = biometricCopy(await getBiometricKind());
-      if (cancelled) return;
+      const copy = await lockedSessionCopy();
+      if (cancelled || !copy) return;
       setBiometricCopyState(copy);
 
       if (autoPrompted.current) return;

@@ -233,8 +233,8 @@ export const es: Readonly<Record<string, string>> = {
     'La recuperación de contraseña desde la propia app todavía no está disponible. Usa "Hablar con soporte", elige "Registro, inicio de sesión o contraseña" y escribe el correo de tu cuenta. Nunca envíes tu contraseña a nadie, ni siquiera a soporte.',
   'senha esqueci recuperar acesso': 'contraseña olvidé recuperar acceso',
   'Posso entrar com a digital ou o rosto?': '¿Puedo entrar con la huella o el rostro?',
-  'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, ao sair o app só trava a conta; para sair de vez, desligue a biometria antes.':
-    'Sí, en el celular. Actívalo en Configuración > Seguridad > "Entrar con biometría". Con ella activada, al salir la app solo bloquea la cuenta; para salir del todo, desactiva antes la biometría.',
+  'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, o app pede a biometria assim que abre e, ao sair, só trava a conta; para sair de vez, desligue a biometria antes.':
+    'Sí, en el celular. Actívalo en Configuración > Seguridad > "Entrar con biometría". Con ella activada, la app pide la biometría apenas se abre y, al salir, solo bloquea la cuenta; para salir del todo, desactiva antes la biometría.',
   'digital face id biometria': 'huella face id biometría',
   'Como excluo minha conta?': '¿Cómo elimino mi cuenta?',
   'Em Configurações > Minha conta, toque em "Excluir minha conta" e confirme. A conta e os dados pessoais são apagados na hora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar. Sem o app instalado, o pedido também pode ser feito pela página da política de privacidade.':

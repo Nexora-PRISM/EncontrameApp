@@ -228,8 +228,8 @@ export const en: Readonly<Record<string, string>> = {
     'Password recovery in the app itself is not available yet. Use "Contact support", choose "Registration, sign-in or password" and write your account\'s email. Never send your password to anyone, not even to support.',
   'senha esqueci recuperar acesso': 'password forgot recover access',
   'Posso entrar com a digital ou o rosto?': 'Can I sign in with my fingerprint or face?',
-  'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, ao sair o app só trava a conta; para sair de vez, desligue a biometria antes.':
-    'Yes, on your phone. Turn it on in Settings > Security > "Sign in with biometrics". With it on, signing out only locks the account; to sign out completely, turn off biometrics first.',
+  'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, o app pede a biometria assim que abre e, ao sair, só trava a conta; para sair de vez, desligue a biometria antes.':
+    'Yes, on your phone. Turn it on in Settings > Security > "Sign in with biometrics". With it on, the app asks for your biometrics as soon as it opens, and signing out only locks the account; to sign out completely, turn off biometrics first.',
   'digital face id biometria': 'fingerprint face id biometrics',
   'Como excluo minha conta?': 'How do I delete my account?',
   'Em Configurações > Minha conta, toque em "Excluir minha conta" e confirme. A conta e os dados pessoais são apagados na hora. Cadastros de pessoas desaparecidas que você publicou podem continuar no ar. Sem o app instalado, o pedido também pode ser feito pela página da política de privacidade.':
