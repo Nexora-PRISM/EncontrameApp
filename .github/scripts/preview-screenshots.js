@@ -82,6 +82,17 @@ async function run(scheme) {
       await shot(page, `${scheme}-13-pedir-ajuda`);
     }
 
+    // Novidades: ficha de identificação, chegada segura e B.O. pela internet na Central de Apoio.
+    for (const [route, name] of [
+      ['/ficha', '23-ficha'],
+      ['/ficha/nova', '24-ficha-nova'],
+      ['/chegada-segura', '25-chegada-segura'],
+      ['/cadastrar-pessoa', '26-cadastro-ponto-no-mapa'],
+    ]) {
+      await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+      await shot(page, `${scheme}-${name}`, 2000);
+    }
+
     // Nossos apoiadores (empresas fictícias): página completa, seção no Sobre e a grade em tablet e computador.
     await page.goto(`${base}/apoiadores`, { waitUntil: 'domcontentloaded' });
     await shot(page, `${scheme}-20-apoiadores`, 2000);

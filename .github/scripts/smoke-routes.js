@@ -183,6 +183,27 @@ async function check(page, errors, label, route, expect) {
       results.push({ label: 'ficha › saúde fora do cadastro', ok: !healthLeak, detail: healthLeak ? 'observação de saúde apareceu no cadastro' : '' });
     } catch (error) {
       results.push({ label: 'ficha (criar e usar)', ok: false, detail: error.message });
+    }
+
+    // Chegada segura: começar, ver a contagem e encerrar com "Cheguei bem".
+    try {
+      await check(page, errors, '/chegada-segura', '/chegada-segura', 'não acompanha você pelo mapa');
+      await tap(page, 'Começar');
+      await check(page, errors, 'chegada segura › contagem', null, 'Chegada combinada para');
+      await tap(page, 'Cheguei bem');
+      await check(page, errors, 'chegada segura › encerrada', null, 'Em quanto tempo você espera chegar?');
+    } catch (error) {
+      results.push({ label: 'chegada segura', ok: false, detail: error.message });
+    }
+
+    // Central de Apoio: boletim pela internet por estado (link oficial) e direitos.
+    try {
+      await check(page, errors, 'central › direitos', '/central-de-apoio', 'Lei 13.812/2019, art. 3º');
+      await page.getByText('Escolha o estado', { exact: true }).first().click();
+      await page.getByText('Minas Gerais (MG)', { exact: true }).last().click();
+      await check(page, errors, 'central › B.O. pela internet (MG)', null, 'Aceita o registro de desaparecimento pela internet');
+    } catch (error) {
+      results.push({ label: 'central › B.O. pela internet', ok: false, detail: error.message });
     } finally {
       page.off('dialog', acceptDialog);
     }
