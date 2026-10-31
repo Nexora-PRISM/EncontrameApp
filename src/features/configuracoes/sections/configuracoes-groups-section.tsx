@@ -155,6 +155,12 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           description={t('Por WhatsApp, SMS ou outro aplicativo.')}
           onPress={c.goToShareLocation}
         />
+        <SettingsRow
+          icon="timer-sand"
+          label={t('Chegada segura')}
+          description={t('O app pergunta se você chegou no horário combinado. Sem rastreamento.')}
+          onPress={c.goToSafeArrival}
+        />
         {c.shortcutAvailability !== 'available' ? (
           <SettingsRow
             icon="alarm-light-outline"

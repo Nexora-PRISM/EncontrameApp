@@ -207,6 +207,13 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
           onPress: controller.goToSupportCenter,
         },
         {
+          key: 'safe-arrival',
+          label: t('Chegada segura'),
+          icon: 'timer-sand',
+          color: brand.categoryAdult,
+          onPress: controller.goToSafeArrival,
+        },
+        {
           key: 'chat',
           label: t('Chat com a Sofia (IA)'),
           icon: 'robot-happy-outline',

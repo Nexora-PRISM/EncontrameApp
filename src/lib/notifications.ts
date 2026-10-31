@@ -20,7 +20,13 @@ const CHANNEL_NAME = msg('Casos e lembretes');
 
 export type NotificationPermission = 'granted' | 'denied' | 'unsupported';
 
-export type NotificationType = 'nearby-case' | 'region-new-case' | 'followed-update' | 'pending-reminder';
+export type NotificationType =
+  | 'nearby-case'
+  | 'region-new-case'
+  | 'followed-update'
+  | 'pending-reminder'
+  /** Chegada segura: lembrete local no horário combinado (nada vai ao servidor). */
+  | 'arrival-check';
 
 export interface NotificationData {
   type?: NotificationType;
@@ -149,6 +155,7 @@ export function parseNotificationData(raw: unknown): NotificationData {
 export function routeFromNotification(raw: unknown): Href | null {
   const data = parseNotificationData(raw);
   if (data.type === 'pending-reminder') return '/perfil' as Href;
+  if (data.type === 'arrival-check') return '/chegada-segura' as Href;
   if (data.personId) return `/pessoa/${data.personId}` as Href;
   return null;
 }
@@ -158,6 +165,7 @@ function isNotificationType(value: unknown): value is NotificationType {
     value === 'nearby-case' ||
     value === 'region-new-case' ||
     value === 'followed-update' ||
-    value === 'pending-reminder'
+    value === 'pending-reminder' ||
+    value === 'arrival-check'
   );
 }

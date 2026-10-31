@@ -362,6 +362,14 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('localização compartilhar mandar onde estou mapa whatsapp'),
   },
   {
+    id: 'chegada-segura',
+    category: 'emergencia',
+    question: msg('O app pode perguntar se eu cheguei bem?'),
+    answer:
+      msg('Sim. No menu, "Chegada segura": diga para onde vai (opcional) e em quanto tempo espera chegar. No horário, uma notificação pergunta se você chegou; toque em "Cheguei bem" para encerrar ou peça mais 15 minutos. Se não confirmar, o app mostra a opção de mandar sua localização daquele momento para seus contatos de confiança e de ligar 190. O app não acompanha você pelo mapa e não avisa ninguém sozinho: a mensagem só sai quando você envia. Combine antes com alguém de confiança.'),
+    keywords: msg('chegada segura cheguei bem voltar para casa sozinha trajeto lembrete'),
+  },
+  {
     id: 'atalho-emergencia',
     category: 'emergencia',
     question: msg('Posso pedir ajuda sem abrir o app?'),

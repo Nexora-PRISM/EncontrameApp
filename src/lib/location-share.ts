@@ -15,7 +15,8 @@ export interface SharedLocation {
   capturedAt: number;
 }
 
-export type LocationMessageMode = 'emergency' | 'share';
+/** `arrival`: chegada segura vencida, sem a pessoa confirmar que chegou. */
+export type LocationMessageMode = 'emergency' | 'share' | 'arrival';
 
 /** Link que abre no Google Maps (e em qualquer navegador) — funciona sem o app instalado. */
 export function mapsLink(latitude: number, longitude: number): string {
@@ -46,6 +47,7 @@ export function buildLocationMessage(
 ): string {
   const lines: string[] = [];
   if (mode === 'emergency') lines.push(t('PRECISO DE AJUDA.'));
+  if (mode === 'arrival') lines.push(t('Ainda não confirmei que cheguei bem.'));
 
   if (location) {
     const details = [
@@ -64,7 +66,7 @@ export function buildLocationMessage(
     lines.push(t('Não consegui pegar minha localização pelo GPS.'));
   }
 
-  if (mode === 'emergency') lines.push(t('Se não conseguir falar comigo, ligue 190.'));
+  if (mode === 'emergency' || mode === 'arrival') lines.push(t('Se não conseguir falar comigo, ligue 190.'));
   lines.push(t('Enviado pelo app Encontra-me.'));
   return lines.join('\n');
 }

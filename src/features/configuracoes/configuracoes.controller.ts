@@ -273,6 +273,7 @@ export function useConfiguracoesController() {
     goToEmergencyAlert: () => router.push('/alerta-emergencia' as Href),
     goToTrustedContacts: () => router.push('/contatos-confianca' as Href),
     goToShareLocation: () => router.push('/compartilhar-localizacao' as Href),
+    goToSafeArrival: () => router.push('/chegada-segura' as Href),
     deleteLocalPeople,
     replayTutorial,
     logout,
