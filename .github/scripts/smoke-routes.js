@@ -152,7 +152,8 @@ async function check(page, errors, label, route, expect) {
       await waitForText(page, 'Autorização de uso da marca');
       await page.getByLabel('Nome da empresa ou organização, obrigatório').fill('Instituto Fumaça Exemplo');
       await page.getByLabel('Site oficial').fill('https://www.exemplo.com.br');
-      await tap(page, 'Parceiro');
+      // A lista da equipe continua montada (escondida) atrás do formulário: por isso o rádio, e não o texto.
+      await page.getByRole('radio', { name: /^Parceiro,/ }).click();
       await page.getByRole('switch', { name: 'Autorização confirmada' }).click();
       await page.getByRole('switch', { name: 'Publicar no app' }).click();
       await tap(page, 'Cadastrar apoiador');
@@ -161,6 +162,27 @@ async function check(page, errors, label, route, expect) {
       await check(page, errors, 'apoiador cadastrado (página pública)', null, 'Instituto Fumaça Exemplo');
     } catch (error) {
       results.push({ label: 'apoiadores (cadastro)', ok: false, detail: error.message });
+    }
+
+    // Ficha de identificação: criar (só no navegador), mostrar para a polícia e abrir o cadastro já preenchido.
+    try {
+      await check(page, errors, '/ficha', '/ficha', 'Prepare antes, ganhe tempo depois');
+      await tap(page, 'Nova ficha');
+      await waitForText(page, 'Foto do dia (opcional)');
+      await page.getByLabel('Nome completo, obrigatório').fill('Criança Exemplo Fumaça');
+      await page.getByLabel('Data de nascimento').fill('15/11/2019');
+      await page.getByLabel('Saúde e comunicação').fill('Autista, não fala');
+      await tap(page, 'Salvar ficha');
+      await check(page, errors, 'ficha salva', null, 'Mostrar para a polícia');
+      await tap(page, 'Mostrar para a polícia');
+      await check(page, errors, 'ficha › mostrar', null, 'Preparada pela família no app Encontra-me');
+      const sheetId = (page.url().match(/\/ficha\/([^/?#]+)\/mostrar/) || [])[1];
+      if (!sheetId) throw new Error(`endereço inesperado: ${page.url()}`);
+      await check(page, errors, 'cadastro com a ficha', `/cadastrar-pessoa?ficha=${sheetId}`, 'Dados da ficha de identificação');
+      const healthLeak = await page.evaluate(() => document.body.innerText.includes('Autista'));
+      results.push({ label: 'ficha › saúde fora do cadastro', ok: !healthLeak, detail: healthLeak ? 'observação de saúde apareceu no cadastro' : '' });
+    } catch (error) {
+      results.push({ label: 'ficha (criar e usar)', ok: false, detail: error.message });
     } finally {
       page.off('dialog', acceptDialog);
     }

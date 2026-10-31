@@ -74,6 +74,9 @@ export interface CreatePersonPayload {
   policeReportNumber?: string;
   /** Momento em que quem cadastra aceitou a declaração de veracidade (ISO). */
   declarationAcceptedAt?: string;
+  /** Ponto no mapa de onde a pessoa foi vista (opcional, arredondado para cerca de 110 m). */
+  latitude?: number;
+  longitude?: number;
 }
 
 /** Avistamento enviado ao registrar um last-seen. */

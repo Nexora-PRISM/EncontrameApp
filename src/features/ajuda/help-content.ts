@@ -69,6 +69,14 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
     keywords: msg('público todos prioridade'),
   },
   {
+    id: 'ficha-identificacao',
+    category: 'protecao',
+    question: msg('Como deixar os dados prontos caso alguém da família suma?'),
+    answer:
+      msg('No menu, "Ficha de identificação" guarda foto do rosto, sinais particulares, informações de saúde e comunicação e o telefone de quem cuida — útil para crianças, idosos e pessoas com Alzheimer ou autismo. Antes de um passeio, tire a "foto do dia" com a roupa de hoje; ela some sozinha em 24 horas. A ficha fica só neste aparelho, nada é enviado. Se a pessoa sumir, ligue 190, use "Mostrar para a polícia" e, se quiser, "Comunicar desaparecimento", que abre o cadastro já preenchido para você conferir (as informações de saúde não vão para o cadastro público).'),
+    keywords: msg('ficha identificação foto do dia roupa prevenção criança idoso alzheimer autismo'),
+  },
+  {
     id: 'crianca-desapareceu',
     category: 'protecao',
     question: msg('Uma criança desapareceu. O que faço primeiro?'),

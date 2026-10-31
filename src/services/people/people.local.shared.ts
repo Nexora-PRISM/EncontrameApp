@@ -56,6 +56,10 @@ export function toPerson(id: string, payload: CreatePersonPayload): Person {
     originCountry: payload.originCountry || undefined,
     originNeighborhood: payload.originNeighborhood || undefined,
     phone: payload.phone || undefined,
+    coords:
+      payload.latitude != null && payload.longitude != null
+        ? { latitude: payload.latitude, longitude: payload.longitude }
+        : undefined,
     photoUri: payload.photoUri || toPhotoUri(payload.photo),
     statusId: LOCAL_PERSON_STATUS_ID,
     statusDescription: LOCAL_PERSON_STATUS_LABEL,

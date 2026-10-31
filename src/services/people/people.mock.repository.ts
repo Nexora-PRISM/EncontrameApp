@@ -410,6 +410,10 @@ export const peopleMockRepository: PeopleRepository = {
       originCountry: payload.originCountry || undefined,
       originNeighborhood: payload.originNeighborhood || undefined,
       city: payload.location || undefined,
+      coords:
+        payload.latitude != null && payload.longitude != null
+          ? { latitude: payload.latitude, longitude: payload.longitude }
+          : undefined,
       phone: payload.phone,
       photoUri: payload.photoUri,
       statusId: 1,

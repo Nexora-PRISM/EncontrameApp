@@ -25,6 +25,8 @@ export interface DraftFormValues {
   phone: string;
   reporterRelationship: string;
   policeReport: string;
+  /** Ponto no mapa salvo com o rascunho (já arredondado). */
+  point: { latitude: number; longitude: number } | null;
 }
 
 /**
@@ -66,5 +68,9 @@ export function draftToFormValues(payload: CreatePersonPayload): DraftFormValues
       ? relationship
       : '',
     policeReport: payload.policeReportNumber ?? '',
+    point:
+      payload.latitude != null && payload.longitude != null
+        ? { latitude: payload.latitude, longitude: payload.longitude }
+        : null,
   };
 }

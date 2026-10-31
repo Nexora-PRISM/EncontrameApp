@@ -3,6 +3,7 @@ import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
 
+import { useCaseLocation } from '@/features/cadastrar-pessoa/case-location';
 import { draftToFormValues } from '@/features/cadastrar-pessoa/draft-review';
 import {
   RELATIONSHIP_OPTIONS,
@@ -15,6 +16,8 @@ import { parseApiError } from '@/lib/api-errors';
 import { showAlert } from '@/lib/dialog';
 import { tr, useT } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
+import { sheetToCaseValues } from '@/lib/id-sheet-rules';
+import { getIdSheet } from '@/lib/id-sheet-store';
 import { maskDate, maskDigits, maskPhone } from '@/lib/masks';
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
@@ -66,12 +69,18 @@ const API_FIELD_MAP = {
 export function useCadastrarPessoaController() {
   const t = useT();
   const router = useRouter();
-  const params = useLocalSearchParams<{ rascunho?: string | string[] }>();
+  const params = useLocalSearchParams<{ rascunho?: string | string[]; ficha?: string | string[] }>();
   const rawDraftId = Array.isArray(params.rascunho) ? params.rascunho[0] : params.rascunho;
   const draftId = rawDraftId && isLocalPersonId(rawDraftId) ? rawDraftId : null;
+  // `?ficha=<id local>`: começa com os dados da ficha de identificação guardada neste aparelho.
+  const rawSheetId = Array.isArray(params.ficha) ? params.ficha[0] : params.ficha;
+  const sheetId = !draftId && rawSheetId ? rawSheetId : null;
   const createMutation = useCreatePersonMutation();
   const submitDraftMutation = useSubmitLocalDraftMutation();
   const { errors, setErrors, setFieldCode, markDirty, isDirty, fieldError } = useFieldErrors();
+  /** Ponto no mapa (opcional) de onde a pessoa foi vista. */
+  const casePoint = useCaseLocation();
+  const restoreCasePoint = casePoint.restore;
 
   const [photoUri, setPhotoUri] = useState('');
   const [photoBase64, setPhotoBase64] = useState('');
@@ -99,6 +108,9 @@ export function useCadastrarPessoaController() {
   const [draftLoading, setDraftLoading] = useState(draftId != null);
   /** Rascunho já aplicado ao formulário — evita sobrescrever o que a pessoa editou. */
   const appliedDraftRef = useRef<string | null>(null);
+  /** Ficha de identificação já aplicada ao formulário. */
+  const appliedSheetRef = useRef<string | null>(null);
+  const [fromSheet, setFromSheet] = useState(false);
   const isMinor = isMinorAge(age);
   /** True quando o botão "Cadastrar" do formulário entra na área visível. */
   const [nearFormEnd, setNearFormEnd] = useState(false);
@@ -152,6 +164,7 @@ export function useCadastrarPessoaController() {
         setPhone(values.phone);
         setReporterRelationshipState(values.reporterRelationship);
         setPoliceReport(values.policeReport);
+        restoreCasePoint(values.point);
         setDeclarationAccepted(false);
       })
       .catch(() => {
@@ -166,7 +179,39 @@ export function useCadastrarPessoaController() {
     return () => {
       cancelled = true;
     };
-  }, [draftId, router]);
+  }, [draftId, router, restoreCasePoint]);
+
+  // Ficha de identificação: preenche uma vez. Saúde e comunicação ficam de fora (o cadastro é público).
+  useEffect(() => {
+    if (!sheetId || appliedSheetRef.current === sheetId) return;
+    let cancelled = false;
+    void getIdSheet(sheetId)
+      .then((sheet) => {
+        if (cancelled || !sheet) return;
+        appliedSheetRef.current = sheetId;
+        const values = sheetToCaseValues(sheet, new Date());
+        setFullName(values.fullName);
+        setNickname(values.nickname);
+        setAge(values.age);
+        setHeightCm(values.heightCm);
+        setEthnicity(values.ethnicity);
+        setBuild(values.build);
+        setHair(values.hair);
+        setEyes(values.eyes);
+        setTattoo(values.tattoo);
+        if (values.clothes) setClothes(values.clothes);
+        setPhone(values.phone);
+        if (values.photoBase64) {
+          setPhotoBase64(values.photoBase64);
+          setPhotoUri(`data:image/jpeg;base64,${values.photoBase64}`);
+        }
+        setFromSheet(true);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [sheetId]);
 
   const changeFullName = (value: string) => {
     setFullName(value);
@@ -462,6 +507,7 @@ export function useCadastrarPessoaController() {
       reporterRelationship,
       policeReportNumber: policeReport.trim(),
       declarationAcceptedAt: new Date().toISOString(),
+      ...(casePoint.point ? { latitude: casePoint.point.latitude, longitude: casePoint.point.longitude } : {}),
     };
 
     try {
@@ -533,6 +579,7 @@ export function useCadastrarPessoaController() {
     location,
     setLocation: changeLocation,
     blurLocation,
+    casePoint,
     originCity,
     setOriginCity,
     originState,
@@ -561,6 +608,8 @@ export function useCadastrarPessoaController() {
     submitting: createMutation.isPending || submitDraftMutation.isPending,
     /** Revisando um cadastro feito sem conta neste aparelho (`?rascunho=`). */
     reviewingDraft: draftId != null,
+    /** Formulário começou com os dados de uma ficha de identificação (`?ficha=`). */
+    fromSheet,
     draftLoading,
     nearFormEnd,
     updateSubmitVisibility,

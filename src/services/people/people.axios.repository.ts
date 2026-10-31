@@ -118,6 +118,9 @@ export const peopleAxiosRepository: PeopleRepository = {
       dtLastSeen: payload.lastSeen ? dateToIso(payload.lastSeen) : null,
       // Telefone de contato do caso (só dígitos), gravado em missing_person.contact_phone.
       contactPhone: payload.phone ? payload.phone.replace(/\D/g, '') : null,
+      // Ponto no mapa (opcional): a API grava com o último local e usa na busca por perto e nos avisos da região.
+      latitude: payload.latitude ?? null,
+      longitude: payload.longitude ?? null,
       // Legitimidade e responsabilização (a API valida e grava os três campos).
       reporterRelationship: payload.reporterRelationship || null,
       policeReportNumber: payload.policeReportNumber?.trim() || null,

@@ -151,6 +151,13 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
           onPress: controller.goToAllPeopleFromMenu,
         },
         {
+          key: 'id-sheet',
+          label: t('Ficha de identificação'),
+          icon: 'card-account-details-outline',
+          color: brand.categoryElder,
+          onPress: controller.goToIdSheets,
+        },
+        {
           key: 'volunteer',
           label: t('Quero ajudar'),
           icon: 'hand-heart-outline',

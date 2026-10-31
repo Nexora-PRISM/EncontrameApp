@@ -11,6 +11,7 @@ import {
   type CadastrarPessoaController,
   ETHNICITY_OPTIONS,
 } from '@/features/cadastrar-pessoa/cadastrar-pessoa.controller';
+import { CadastrarPessoaLocationSection } from '@/features/cadastrar-pessoa/sections/cadastrar-pessoa-location-section';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
 
@@ -34,6 +35,17 @@ export function CadastrarPessoaBasicSection({ controller }: CadastrarPessoaBasic
               {controller.draftLoading
                 ? t('Carregando o cadastro…')
                 : t('Confira os dados, complete o que faltar e confirme a declaração no fim. Ao enviar, o caso fica ligado à sua conta.')}
+            </Text>
+          </View>
+        </View>
+      ) : null}
+      {controller.fromSheet ? (
+        <View style={styles.notice} accessible accessibilityRole="summary">
+          <MaterialCommunityIcons name="card-account-details-outline" size={24} color={brand.blue} />
+          <View style={styles.noticeTexts}>
+            <Text style={styles.noticeTitle}>{t('Dados da ficha de identificação')}</Text>
+            <Text style={styles.noticeBody}>
+              {t('Confira tudo antes de enviar. As informações de saúde e comunicação não entram no cadastro público: mostre a ficha à polícia.')}
             </Text>
           </View>
         </View>
@@ -72,6 +84,7 @@ export function CadastrarPessoaBasicSection({ controller }: CadastrarPessoaBasic
           {t('Onde a pessoa foi vista pela última vez: bairro ou ponto de referência e cidade.')}
         </Text>
       </View>
+      <CadastrarPessoaLocationSection controller={controller} />
 
       <Text style={styles.groupLabel} accessibilityRole="header">
         {t('De onde a pessoa é (opcional)')}
