@@ -1,5 +1,20 @@
 # Relatório de testes
 
+## Novidades — branch `evolucao-novidades` (31/10/2026)
+
+Checagem automática do GitHub no commit `33e6859`: **job verde**. O passo de formatação (Biome) continua só informativo,
+como antes desta branch.
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Tipos, lint (com as regras do React Compiler), build web e build de demonstração | Checagem do GitHub | Passou |
+| Traduções | `npm run i18n:check` na checagem; `--strict` no ambiente da IA | Passou: 2235 textos em inglês e espanhol, nenhum faltando |
+| Regras de negócio | `npm test` | **132 de 132** (20 novos: apoiadores, ponto no mapa, ficha de identificação, chegada segura, links oficiais do B.O.) |
+| Telas no navegador (Chromium, 412 px, dados fictícios) | `.github/scripts/smoke-routes.js` | **54 de 54**, entre elas: `/apoiadores`, seção no Sobre, cadastro de apoiador pelo Painel da equipe até aparecer na página pública; criar ficha, "Mostrar para a polícia" e cadastro preenchido **sem** a informação de saúde; chegada segura (começar, contagem, "Cheguei bem"); Central de Apoio com MG e os direitos |
+| Prints (claro e escuro; apoiadores também em 820 e 1280 px) | `.github/scripts/preview-screenshots.js` | Gerados no artefato `prints-das-telas` da checagem. **Não revisados aqui**: o download de artefatos é bloqueado neste ambiente |
+| API Node.js dos apoiadores | `npm test` com Postgres local (branch `api-node-novidades`) | **102 de 102** |
+| Celular físico, leitor de tela, notificação real da chegada segura, impressão da ficha | Manual | **Pendente** |
+
 ## Central de Inteligência — branch `evolucao-central` (31/10/2026)
 
 Checagem automática do GitHub no commit `1012e70`: **tudo verde**.

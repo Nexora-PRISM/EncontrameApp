@@ -5,6 +5,17 @@ Cada etapa tem commits próprios na branch `evolucao`. Para ver os commits de um
 
 ---
 
+## Novidades — ponto no mapa, ficha de identificação, chegada segura e B.O. pela internet (31/10/2026, branch `evolucao-novidades`)
+
+- Cadastro de caso com ponto opcional no mapa (arredondado para ~110 m), enviado como `latitude`/`longitude`.
+- Ficha de identificação (`/ficha`), só no aparelho, com foto do dia de 24 h, tela para a polícia e cadastro já
+  preenchido sem as informações de saúde.
+- Chegada segura (`/chegada-segura`): lembrete local no horário combinado, sem rastreamento e sem envio automático.
+- Central de Apoio: B.O. pela internet por estado (só links oficiais conferidos) e direitos com a lei de cada item.
+- A seção "Encontrei alguém" foi só avaliada (não implementada), como pedido.
+
+Detalhes em `docs/evolucao/NOVIDADES.md`.
+
 ## Novidades — Nossos apoiadores (31/10/2026, branch `evolucao-novidades`)
 
 Área institucional "Nossos apoiadores": seção no fim da lista do Início e no Sobre, página `/apoiadores`, item no

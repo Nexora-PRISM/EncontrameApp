@@ -241,6 +241,16 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   marca do ar. Categorias (apoiador, parceiro, patrocinador) só organizam o reconhecimento, nunca por valor. Logotipo
   só PNG, JPG ou WebP até 300 KB, conferido pelo conteúdo (sem SVG). Site só `https`, aberto depois de confirmação.
   Nenhuma empresa real entra nos dados de demonstração. Visual discreto, sem cara de anúncio, e nunca acima dos casos.
+- **Ficha de identificação** (branch `evolucao-novidades`; `/ficha*`, `lib/id-sheet-rules.ts`, `lib/id-sheet-store*`):
+  só no aparelho, nada vai à API. "Saúde e comunicação" nunca entra no cadastro público (`sheetToCaseValues`). Foto do
+  dia apagada depois de 24 h. A rota do cadastro leva só o id local (`?ficha=`).
+- **Chegada segura** (branch `evolucao-novidades`; `/chegada-segura`, `lib/arrival-check*`): não é rastreamento. Nenhuma
+  posição durante o trajeto; só depois do horário vencido, com a tela aberta, e a mensagem só sai quando a pessoa envia.
+  Notificação local com texto genérico; permissão pedida só ao tocar em "Começar".
+- **Ponto no mapa do cadastro** (`lib/case-location-rules.ts`): sempre arredondado (~110 m) e com o aviso de não marcar
+  o endereço de casa.
+- **B.O. pela internet** (`lib/police-report-states.ts`): só link oficial conferido (https, gov.br), com a data da
+  conferência; estado sem conferência mostra a orientação geral, nunca link adivinhado.
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado

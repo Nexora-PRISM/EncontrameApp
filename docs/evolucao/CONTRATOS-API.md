@@ -392,3 +392,13 @@ Regras (as mesmas no app e na API):
   arquivo (não pelo nome); SVG e qualquer outro formato são recusados. O logotipo é servido com
   `X-Content-Type-Options: nosniff` e `Content-Security-Policy: sandbox`.
 - Categorias não têm relação com valores e não há ordenação automática: a ordem é a que a equipe definir.
+
+---
+
+## Ponto no mapa no cadastro de caso (branch `evolucao-novidades`)
+
+Sem endpoint novo. O `POST /MissingPerson` passa a mandar `latitude` e `longitude` quando a pessoa marca o ponto (os
+dois juntos, ou nenhum). A API .NET e a Node já aceitam esses campos e gravam o ponto com o último local. O app manda o
+ponto já arredondado para 3 casas decimais (~110 m).
+
+Ficha de identificação, chegada segura e B.O. pela internet não usam a API.
