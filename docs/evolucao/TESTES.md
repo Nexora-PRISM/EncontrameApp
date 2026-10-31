@@ -1,5 +1,22 @@
 # Relatório de testes
 
+## Central de Inteligência — branch `evolucao-central` (31/10/2026)
+
+Checagem automática do GitHub no commit `1012e70`: **tudo verde**.
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Tipos, lint, traduções | Checagem do GitHub | Passou (o lint pegou `Buffer` sem importar num teste; corrigido em `1012e70`). 2018 textos em inglês e espanhol |
+| Regras de negócio | `npm test` | **112 de 112** (17 novos: funções e MFA, auditoria encadeada, pista confidencial, ocultação, exportação, manifesto, links, cruzamento de pistas, mobilização, encerramento, retenção, SHA-256, ZIP, Base64, pacote criptografado) |
+| SHA-256 | Comparado com o `crypto` do Node e o vetor oficial "abc" | Igual em todos os casos |
+| ZIP | Lido pelo Python (`zipfile.testzip`) e pelo `unzip`, com nomes acentuados | Íntegro |
+| Pacote criptografado | Aberto no Chromium: senha errada recusada; senha certa baixa o ZIP original | Passou |
+| Build web e build de demonstração | `npx expo export --platform web` | Passou |
+| Telas no navegador (Chromium, 412 px) | `.github/scripts/smoke-routes.js` | **39 de 39**: as 21 do Vision e da evolução + informação confidencial, verificação de integridade, Central com troca de perfil, dossiê e as 8 abas, auditoria encadeada |
+| Exportação de ponta a ponta | Na mesma fumaça: preencher a revisão, gerar o pacote criptografado, abrir com a senha mostrada, conferir **cada SHA-256 do manifesto** com os arquivos do ZIP, garantir que identidade de testemunha não saiu, e conferir um arquivo na tela "Verificar integridade" | Passou |
+| Aparelho físico, leitor de tela, app nativo | Manual | **Pendente** |
+
+
 ## Encontra-me Vision e verificação geral (30/10/2026)
 
 Checagem automática do GitHub no commit `c49b5e5` da branch `evolucao`: **tudo verde**.
