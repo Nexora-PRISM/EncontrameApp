@@ -159,7 +159,18 @@ async function check(page, errors, label, route, expect) {
       await tap(page, 'Cadastrar apoiador');
       await check(page, errors, 'apoiador cadastrado (equipe)', null, 'Instituto Fumaça Exemplo');
       await tap(page, 'Ver como o público vê');
-      await check(page, errors, 'apoiador cadastrado (página pública)', null, 'Instituto Fumaça Exemplo');
+      // A lista da equipe continua montada (escondida) com o mesmo nome: procura só o texto visível.
+      const publicOk = await page
+        .locator(':text("Instituto Fumaça Exemplo"):visible')
+        .first()
+        .waitFor({ state: 'visible', timeout: 12000 })
+        .then(() => true)
+        .catch(() => false);
+      results.push({
+        label: 'apoiador cadastrado (página pública)',
+        ok: publicOk && page.url().endsWith('/apoiadores'),
+        detail: publicOk ? '' : `não apareceu em ${page.url()}`,
+      });
     } catch (error) {
       results.push({ label: 'apoiadores (cadastro)', ok: false, detail: error.message });
     }
