@@ -18,6 +18,7 @@ import { PhotoRing } from '@/components/photo-ring';
 import { StatusRipple } from '@/components/status-ripple';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { PageGutter } from '@/constants/theme';
+import { SupportersSection } from '@/features/apoiadores/sections/supporters-section';
 import { ALERTS_RIPPLE_ROOM, type AlertViewMode } from '@/features/inicio/alerts-sheet';
 import type { InicioController } from '@/features/inicio/inicio.controller';
 import { useHomeChrome } from '@/features/inicio/home-chrome';
@@ -169,7 +170,9 @@ export function InicioAlertsSection({
             ListFooterComponent={
               controller.alertsLoadingMore ? (
                 <ActivityIndicator color={chrome.ink} style={styles.footer} />
-              ) : null
+              ) : (
+                <SupportersSection spaced />
+              )
             }
             renderItem={({ item }) =>
               view === 'avatar' ? (

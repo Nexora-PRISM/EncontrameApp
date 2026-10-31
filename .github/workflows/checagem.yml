@@ -82,6 +82,7 @@ jobs:
           EXPO_PUBLIC_ENABLE_VISION: 'true'
           EXPO_PUBLIC_ENABLE_CENTRAL: 'true'
           EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS: 'true'
+          EXPO_PUBLIC_ENABLE_SUPPORTERS: 'true'
 
       - name: Prints das telas (celular, claro e escuro)
         run: |

@@ -29,6 +29,13 @@ const PRIVATE_ROUTES = [
   { path: '/meus-relatos', expect: 'relatos' },
 ];
 
+/** Nossos apoiadores: página pública e seção no Sobre (empresas fictícias do modo de demonstração). */
+const SUPPORTER_ROUTES = [
+  { path: '/apoiadores', expect: 'Empresa Exemplo A' },
+  { path: '/sobre', expect: 'Conheça nossos apoiadores' },
+  { path: '/equipe/apoiadores', expect: 'Marca Exemplo E' },
+];
+
 /** Central de Inteligência: rotas abertas. */
 const CENTRAL_PUBLIC_ROUTES = [
   { path: '/pista-confidencial?caso=p2', expect: 'O que você sabe' },
@@ -135,6 +142,28 @@ async function check(page, errors, label, route, expect) {
     for (const route of PUBLIC_ROUTES) await check(page, errors, route.path, route.path, route.expect);
 
     for (const route of PRIVATE_ROUTES) await check(page, errors, route.path, route.path, route.expect);
+
+    // Nossos apoiadores: telas e cadastro pelo Painel da equipe, até aparecer na página pública.
+    for (const route of SUPPORTER_ROUTES) await check(page, errors, route.path, route.path, route.expect);
+    const acceptDialog = (dialog) => void dialog.accept().catch(() => undefined);
+    page.on('dialog', acceptDialog);
+    try {
+      await tap(page, 'Novo apoiador');
+      await waitForText(page, 'Autorização de uso da marca');
+      await page.getByLabel('Nome da empresa ou organização, obrigatório').fill('Instituto Fumaça Exemplo');
+      await page.getByLabel('Site oficial').fill('https://www.exemplo.com.br');
+      await tap(page, 'Parceiro');
+      await page.getByRole('switch', { name: 'Autorização confirmada' }).click();
+      await page.getByRole('switch', { name: 'Publicar no app' }).click();
+      await tap(page, 'Cadastrar apoiador');
+      await check(page, errors, 'apoiador cadastrado (equipe)', null, 'Instituto Fumaça Exemplo');
+      await tap(page, 'Ver como o público vê');
+      await check(page, errors, 'apoiador cadastrado (página pública)', null, 'Instituto Fumaça Exemplo');
+    } catch (error) {
+      results.push({ label: 'apoiadores (cadastro)', ok: false, detail: error.message });
+    } finally {
+      page.off('dialog', acceptDialog);
+    }
 
     // Vision: troca para o perfil de coordenação e percorre a operação de demonstração.
     await page.goto(`${base}/vision/institucional`, { waitUntil: 'domcontentloaded' });

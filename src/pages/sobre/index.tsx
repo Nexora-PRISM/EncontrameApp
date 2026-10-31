@@ -6,6 +6,7 @@ import { BottomBar } from '@/components/bottom-bar';
 import { ContentShell } from '@/components/content-shell';
 import { ScreenHeader } from '@/components/screen-header';
 import { type BrandColors } from '@/constants/brand';
+import { SupportersSection } from '@/features/apoiadores/sections/supporters-section';
 import { useSobreController } from '@/features/sobre/sobre.controller';
 import { SobreInfoSection } from '@/features/sobre/sections/sobre-info-section';
 import { useBrand } from '@/lib/brand-theme';
@@ -30,6 +31,7 @@ export default function SobrePage() {
           <ContentShell style={styles.shell}>
             <ScreenHeader title={t('Sobre o app')} onBack={controller.goBack} />
             <SobreInfoSection controller={controller} />
+            <SupportersSection />
           </ContentShell>
         </ScrollView>
       </KeyboardAvoidingView>

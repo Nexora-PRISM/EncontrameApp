@@ -102,6 +102,14 @@ export const env = {
    * Envio de pista confidencial (POST /ConfidentialTip), com a identidade separada da pista. Em desenvolvimento fica
    * ligado com mock; em produção só com EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS=true.
    */
+  /**
+   * Nossos Apoiadores: seção no fim da lista do Início, no Sobre e no menu, página /apoiadores e administração no
+   * Painel da equipe (GET/POST/PUT/DELETE /Supporter). Em desenvolvimento fica ligado com empresas fictícias; em
+   * produção só com EXPO_PUBLIC_ENABLE_SUPPORTERS=true, depois da API e de haver apoiador com marca autorizada.
+   */
+  supportersEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_SUPPORTERS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_SUPPORTERS !== 'false'),
   confidentialTipsEnabled:
     process.env.EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS !== 'false'),

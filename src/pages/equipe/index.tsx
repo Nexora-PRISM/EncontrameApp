@@ -43,6 +43,16 @@ export default function EquipePage() {
                 onPress={c.goToReports}
               />
             </SettingsGroup>
+            {c.supportersEnabled ? (
+              <SettingsGroup title={t('Institucional')}>
+                <SettingsRow
+                  icon="handshake-outline"
+                  label={t('Nossos apoiadores')}
+                  description={t('Cadastrar marcas, confirmar a autorização, publicar e ordenar.')}
+                  onPress={c.goToSupporters}
+                />
+              </SettingsGroup>
+            ) : null}
             <View style={styles.caseBox}>
               <Text style={styles.caseTitle} accessibilityRole="header">
                 {t('Abrir um caso')}

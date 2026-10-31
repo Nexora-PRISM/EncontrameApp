@@ -227,6 +227,17 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
           color: brand.categoryAdult,
           onPress: controller.goToHelp,
         },
+        ...(env.supportersEnabled
+          ? [
+              {
+                key: 'supporters',
+                label: t('Nossos apoiadores'),
+                icon: 'handshake-outline' as const,
+                color: brand.categoryElder,
+                onPress: controller.goToSupporters,
+              },
+            ]
+          : []),
       ],
     },
     {

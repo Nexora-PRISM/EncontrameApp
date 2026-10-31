@@ -15,6 +15,7 @@ import { PersonAlertIcon } from '@/components/person-alert-icon';
 import { StatusRipple } from '@/components/status-ripple';
 import { Radius, type BrandColors, type ColorSchemeName } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
+import { SupportersSection } from '@/features/apoiadores/sections/supporters-section';
 import type { HomeShellController } from '@/features/inicio/home-shell.controller';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
@@ -79,6 +80,7 @@ export function InicioPeopleSidebarSection({ controller }: InicioPeopleSidebarSe
           style={styles.list}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          ListFooterComponent={<SupportersSection spaced />}
           ListEmptyComponent={
             <BrandEnter from="fade">
               <Text style={styles.emptyText}>

@@ -5,6 +5,14 @@ Cada etapa tem commits próprios na branch `evolucao`. Para ver os commits de um
 
 ---
 
+## Novidades — Nossos apoiadores (31/10/2026, branch `evolucao-novidades`)
+
+Área institucional "Nossos apoiadores": seção no fim da lista do Início e no Sobre, página `/apoiadores`, item no
+menu e cadastro pelo Painel da equipe, com autorização de uso da marca obrigatória para publicar. Detalhes, regras e
+arquivos em `docs/evolucao/NOVIDADES.md`; contrato da API em `CONTRATOS-API.md`.
+
+---
+
 ## Etapa 0 — Ambiente independente (30/10/2026)
 
 **O que foi feito**

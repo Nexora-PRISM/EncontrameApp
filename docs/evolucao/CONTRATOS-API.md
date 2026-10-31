@@ -327,3 +327,68 @@ Regras para o servidor: valores legais `legalBasis` = `authority_request`, `cour
 sozinho a autoridades; não expor a identidade de quem enviou pistas em nenhuma resposta pública; MFA para as ações
 marcadas em `MFA_ACTIONS`; alertas só com `notifyDecision` (consentimento, área ativa, 3 por dia, 6 h entre alertas do
 caso, nada depois do encerramento).
+
+---
+
+## Nossos apoiadores (branch `evolucao-novidades`)
+
+Variável no app: `EXPO_PUBLIC_ENABLE_SUPPORTERS`. Código: `src/services/supporters/supporters.axios.repository.ts`.
+Estes endpoints já estão implementados na API em Node.js (branch `api-node-novidades` do repositório da API, com
+testes); o backend .NET não os tem. Nada foi publicado.
+
+| Método e rota | Quem | O que faz |
+|---|---|---|
+| `GET /Supporter` (`?home=true` opcional) | Público (`X-App-Key`) | Apoiadores publicados **e** com autorização confirmada, na ordem definida. `home=true`: só os marcados para o Início |
+| `GET /Supporter/{id}/logo` | Público | O logotipo (PNG, JPEG ou WebP) de quem está publicado; os outros respondem 404. Cache público com `ETag` |
+| `GET /Supporter/admin` | Equipe | Todos, com situação, autorização e ordem |
+| `GET /Supporter/admin/{id}/logo` | Equipe | `{ "logo": "data:image/...;base64,..." }`, inclusive de quem ainda não foi publicado |
+| `POST /Supporter` | Equipe | Cadastra |
+| `PUT /Supporter/{id}` | Equipe | Edita. Mande nome, site e categoria sempre; `isActive`, `showOnHome` e `authorizationConfirmed` ausentes mantêm o valor; `logo` ausente mantém o logotipo |
+| `PUT /Supporter/order` | Equipe | `{ "supporterIds": [3, 1, 2] }` com **todos** os ids, sem repetir |
+| `DELETE /Supporter/{id}` | Equipe | Exclui (marca e logotipo) |
+
+Contas que não são da equipe recebem 403 nas rotas da equipe.
+
+Resposta pública (item):
+
+```json
+{
+  "supporterId": 3,
+  "name": "Empresa Exemplo",
+  "websiteUrl": "https://www.exemplo.com.br/",
+  "category": "parceiro",
+  "logoUrl": "/api/Supporter/3/logo?v=4f1c2a9b0d3e",
+  "logoWidth": 600,
+  "logoHeight": 240
+}
+```
+
+O app transforma `logoUrl` em endereço completo com `EXPO_PUBLIC_API_URL`. A visão da equipe acrescenta `isActive`,
+`showOnHome`, `displayOrder`, `authorizationConfirmed`, `authorizationConfirmedAt`, `authorizationNote` e `hasLogo`.
+
+Envio (`POST`/`PUT`):
+
+```json
+{
+  "name": "Empresa Exemplo",
+  "websiteUrl": "https://www.exemplo.com.br",
+  "category": "apoiador | parceiro | patrocinador",
+  "logo": "<base64 ou data URL>",
+  "removeLogo": false,
+  "isActive": true,
+  "showOnHome": true,
+  "authorizationConfirmed": true,
+  "authorizationNote": "Contrato assinado em 10/10/2026"
+}
+```
+
+Regras (as mesmas no app e na API):
+
+- Nome de 2 a 80 caracteres; site opcional, só `https`; categoria entre as três.
+- **Publicar (`isActive: true`) exige `authorizationConfirmed: true`**; sem isso, 400 com
+  `{ "field": "authorizationConfirmed", "error": "required" }`. Mandar `authorizationConfirmed: false` revoga a
+  autorização e tira a marca do ar. A data e quem confirmou ficam guardados.
+- Logotipo: PNG, JPEG ou WebP, até 300 KB, de 32 a 4000 px por lado. O tipo é conferido pelo **conteúdo** do
+  arquivo (não pelo nome); SVG e qualquer outro formato são recusados. O logotipo é servido com
+  `X-Content-Type-Options: nosniff` e `Content-Security-Policy: sandbox`.
+- Categorias não têm relação com valores e não há ordenação automática: a ordem é a que a equipe definir.

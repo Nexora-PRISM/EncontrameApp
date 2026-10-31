@@ -7,22 +7,39 @@ import { useT } from '@/lib/i18n';
 
 const DEFAULT_MAX_BYTES = 2 * 1024 * 1024;
 const ALLOWED_WEB_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg']);
+const LOGO_WEB_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg', 'image/webp']);
+
+type PhotoPickerOptions = {
+  /**
+   * Logotipo: só galeria/arquivo, sem recorte nem recompressão (preserva PNG transparente e proporção)
+   * e aceita WebP. Usado no cadastro de apoiadores do Painel da equipe.
+   */
+  logo?: boolean;
+};
 
 /**
  * Escolha de foto (câmera/galeria no celular, arquivo no web), com limite de tamanho.
  * Mesmas regras do cadastro de pessoa: PNG/JPG, até 2 MB, enviada em base64.
  */
-export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
+export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES, options: PhotoPickerOptions = {}) {
   const t = useT();
   const [photoUri, setPhotoUri] = useState('');
   const [photoBase64, setPhotoBase64] = useState('');
-  const maxMb = Math.round(maxBytes / (1024 * 1024));
+  const logo = options.logo === true;
+
+  const showTooLarge = () => {
+    if (maxBytes < 1024 * 1024) {
+      showAlert(t('Foto muito grande'), t('A imagem deve ter no máximo {maxKb} KB.', { maxKb: Math.round(maxBytes / 1024) }));
+      return;
+    }
+    showAlert(t('Foto muito grande'), t('A foto deve ter no máximo {maxMb} MB.', { maxMb: Math.round(maxBytes / (1024 * 1024)) }));
+  };
 
   const applyPhoto = (uri: string, base64OrDataUrl: string) => {
     const normalized = stripDataUrlPrefix(base64OrDataUrl);
     const size = estimateBase64Bytes(normalized);
     if (size > maxBytes) {
-      showAlert(t('Foto muito grande'), t('A foto deve ter no máximo {maxMb} MB.', { maxMb }));
+      showTooLarge();
       return;
     }
     if (size <= 0) {
@@ -41,8 +58,8 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      allowsEditing: true,
-      quality: 0.7,
+      allowsEditing: !logo,
+      quality: logo ? 1 : 0.7,
       base64: true,
     });
     if (result.canceled || !result.assets[0]) return;
@@ -79,16 +96,19 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
     if (typeof document === 'undefined') return;
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/png,image/jpeg,.png,.jpg,.jpeg';
+    input.accept = logo ? 'image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp' : 'image/png,image/jpeg,.png,.jpg,.jpeg';
     input.onchange = () => {
       const file = input.files?.[0];
       if (!file) return;
-      if (!ALLOWED_WEB_MIME.has(file.type) && !/\.(png|jpe?g)$/i.test(file.name)) {
-        showAlert(t('Formato inválido'), t('Envie apenas fotos PNG ou JPG.'));
+      const allowed = logo
+        ? LOGO_WEB_MIME.has(file.type) || /\.(png|jpe?g|webp)$/i.test(file.name)
+        : ALLOWED_WEB_MIME.has(file.type) || /\.(png|jpe?g)$/i.test(file.name);
+      if (!allowed) {
+        showAlert(t('Formato inválido'), logo ? t('Envie apenas imagens PNG, JPG ou WebP.') : t('Envie apenas fotos PNG ou JPG.'));
         return;
       }
       if (file.size > maxBytes) {
-        showAlert(t('Foto muito grande'), t('A foto deve ter no máximo {maxMb} MB.', { maxMb }));
+        showTooLarge();
         return;
       }
       const reader = new FileReader();
@@ -111,6 +131,10 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
   const pickPhoto = () => {
     if (Platform.OS === 'web') {
       pickFromWebFile();
+      return;
+    }
+    if (logo) {
+      void pickFromLibrary();
       return;
     }
     Alert.alert(t('Adicionar foto'), t('Escolha a origem da imagem'), [

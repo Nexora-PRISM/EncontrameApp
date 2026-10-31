@@ -87,6 +87,10 @@ const BrandLight = {
   onSafetyNote: '#0B2442',
   /** Texto/ícone na cor do aviso sobre fundo claro (contraste ≥ 4.5:1) */
   safetyNoteText: '#8A5A00',
+  /** Quadro dos logotipos dos apoiadores: sempre claro, para a marca aparecer como foi enviada */
+  logoTile: '#FFFFFF',
+  /** Nome do apoiador sem logotipo, sobre o quadro claro */
+  onLogoTile: '#1F2430',
 } as const;
 
 const BrandDark = {
@@ -149,6 +153,8 @@ const BrandDark = {
   safetyNote: '#F5C542',
   onSafetyNote: '#0B2442',
   safetyNoteText: '#F5C542',
+  logoTile: '#F4F6F8',
+  onLogoTile: '#1F2430',
 } as const;
 
 export type ColorSchemeName = 'light' | 'dark';

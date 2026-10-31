@@ -81,6 +81,22 @@ async function run(scheme) {
     if (await tap(page, ['Pedir ajuda'])) {
       await shot(page, `${scheme}-13-pedir-ajuda`);
     }
+
+    // Nossos apoiadores (empresas fictícias): página completa, seção no Sobre e a grade em tablet e computador.
+    await page.goto(`${base}/apoiadores`, { waitUntil: 'domcontentloaded' });
+    await shot(page, `${scheme}-20-apoiadores`, 2000);
+    await page.goto(`${base}/sobre`, { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(1500);
+    await page.getByText('Conheça nossos apoiadores').first().scrollIntoViewIfNeeded().catch(() => undefined);
+    await shot(page, `${scheme}-21-sobre-apoiadores`);
+    for (const [width, label] of [
+      [820, 'tablet'],
+      [1280, 'computador'],
+    ]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`${base}/apoiadores`, { waitUntil: 'domcontentloaded' });
+      await shot(page, `${scheme}-22-apoiadores-${label}`, 2000);
+    }
   } catch (error) {
     console.log(`[${scheme}] parou: ${error.message}`);
     await page.screenshot({ path: path.join(out, `${scheme}-99-erro.png`) }).catch(() => undefined);

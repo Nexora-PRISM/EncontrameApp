@@ -8,7 +8,7 @@
 Esta branch é uma linha de desenvolvimento separada, criada em 30/10/2026 a partir do commit `7cc8304` da `main`.
 Antes de qualquer coisa, leia `docs/evolucao/README.md`.
 
-- Commits **só** nas branches `evolucao`, `evolucao-central` (Central de Inteligência) e `evolucao-revisao-auditoria` (revisão e consolidação, `docs/evolucao/REVISAO-AUDITORIA.md`). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
+- Commits **só** nas branches `evolucao`, `evolucao-central` (Central de Inteligência), `evolucao-revisao-auditoria` (revisão e consolidação, `docs/evolucao/REVISAO-AUDITORIA.md`) e `evolucao-novidades` (Nossos apoiadores e novidades, `docs/evolucao/NOVIDADES.md`). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
 - Sem pull request, merge, rebase ou deploy: integrar e publicar ficam com o dono do app.
 - O repositório é público: não coloque segredos nem detalhes internos da API (privada) nesta branch.
 - **Nada é publicado daqui**: sem Google Play, App Store, EAS Update, deploy do site, backend ou notificações reais.
@@ -235,6 +235,12 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   quem autorizou (segunda pessoa quando há sigilo); a exportação é registrada antes de entregar e nada é enviado
   sozinho. Arquivo original nunca é alterado. Hash não é certificação de autenticidade. A equipe técnica não vê
   conteúdo de dossiês. Encerrar o caso não autoriza divulgar endereço, destino ou condição da pessoa.
+- **Nossos apoiadores** (branch `evolucao-novidades`; `/apoiadores`, `/equipe/apoiadores*`, `lib/supporter-rules.ts`,
+  `services/supporters/`, `components/supporters-grid.tsx`): só a equipe cadastra e publica marcas, no Painel da equipe
+  (não existe cadastro aberto). Publicar exige a autorização de uso da marca confirmada; tirar a autorização tira a
+  marca do ar. Categorias (apoiador, parceiro, patrocinador) só organizam o reconhecimento, nunca por valor. Logotipo
+  só PNG, JPG ou WebP até 300 KB, conferido pelo conteúdo (sem SVG). Site só `https`, aberto depois de confirmação.
+  Nenhuma empresa real entra nos dados de demonstração. Visual discreto, sem cara de anúncio, e nunca acima dos casos.
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
@@ -291,6 +297,7 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_ENABLE_VOLUNTEERS` — (evolução) cadastro de voluntário em "Quero ajudar". Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_ENABLE_CENTRAL` — (evolução, branch `evolucao-central`) Central de Inteligência e Central técnica. Vazio: ligada em dev (dados fictícios), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS` — (evolução, branch `evolucao-central`) envio de informação confidencial. Vazio: ligado em dev (mock), desligado em produção.
+- `EXPO_PUBLIC_ENABLE_SUPPORTERS` — (evolução, branch `evolucao-novidades`) Nossos apoiadores: seção no fim da lista do Início e no Sobre, página `/apoiadores`, item no menu e cadastro no Painel da equipe. Vazio: ligado em dev (empresas fictícias), desligado em produção. Só ligar com a API `/Supporter` e ao menos uma marca autorizada.
 - `EXPO_PUBLIC_ENABLE_VISION` — (evolução) Encontra-me Vision (rede de câmeras participantes). Vazio: ligado em dev (dados fictícios), desligado em produção. Só ligar com a API `/Vision/*`, convênios e avaliação jurídica.
 - `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` — (evolução) linha do tempo completa vinda da API. Vazio: ligada em dev (mock), desligada em produção; desligada, a linha do tempo é montada com o cadastro e o histórico de avistamentos.
 

@@ -38,6 +38,9 @@ export function useEquipeController() {
       router.push(`/equipe/caso/${encodeURIComponent(caseNumber)}` as Href);
     },
     goToReports: () => router.push('/equipe/denuncias' as Href),
+    /** Nossos apoiadores: cadastro, publicação e ordem das marcas (EXPO_PUBLIC_ENABLE_SUPPORTERS). */
+    supportersEnabled: env.supportersEnabled,
+    goToSupporters: () => router.push('/equipe/apoiadores' as Href),
     retry: () => {
       void staffQuery.refetch();
     },

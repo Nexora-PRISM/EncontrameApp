@@ -34,7 +34,7 @@ export type HelpArticle = {
   /** Palavras extras para a busca (sinônimos). */
   keywords?: string;
   /** Só aparece quando o recurso está ligado neste aplicativo (ver lib/env.ts). */
-  requires?: 'sightingReports' | 'volunteers' | 'vision' | 'confidentialTips';
+  requires?: 'sightingReports' | 'volunteers' | 'vision' | 'confidentialTips' | 'supporters';
 };
 
 /** Recursos que dependem de variável de ambiente: a ajuda só fala deles quando estão ligados. */
@@ -43,6 +43,7 @@ const FEATURE_ENABLED: Record<NonNullable<HelpArticle['requires']>, boolean> = {
   volunteers: env.volunteersEnabled,
   vision: env.visionEnabled,
   confidentialTips: env.confidentialTipsEnabled,
+  supporters: env.supportersEnabled,
 };
 
 export const HELP_CATEGORIES: HelpCategory[] = [
@@ -270,6 +271,15 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
       msg('Sim. No menu ou na página do caso, toque em "Enviar informação confidencial". Sua identidade nunca aparece na área pública e fica guardada separada da informação; só pessoas autorizadas podem abri-la, e cada acesso fica registrado. Você pode escolher não ser contatado. Não é anonimato absoluto: o servidor guarda dados técnicos de acesso exigidos por lei, e a Justiça pode pedir esses dados. Em caso de risco agora, ligue 190.'),
     keywords: msg('confidencial denúncia anônimo sigilo testemunha pista'),
     requires: 'confidentialTips',
+  },
+  {
+    id: 'apoiadores',
+    category: 'inicio',
+    question: msg('Quem são os apoiadores do Encontra-me?'),
+    answer:
+      msg('São empresas e organizações que apoiam o projeto. Elas aparecem no fim da lista do Início, no "Sobre o app" e em "Nossos apoiadores", no menu, só depois que a equipe confirma a autorização para mostrar o nome e o logotipo. Apoiar o projeto não dá acesso a dados de casos nem de quem usa o app. Empresas interessadas podem falar com a equipe pela página "Nossos apoiadores".'),
+    keywords: msg('apoiador apoiadores patrocinador parceiro empresa marca logotipo'),
+    requires: 'supporters',
   },
   {
     id: 'central-apoio',

@@ -50,6 +50,8 @@
   --safety-note: #f2b705;
   --on-safety-note: #0b2442;
   --safety-note-text: #8a5a00;
+  --logo-tile: #ffffff;
+  --on-logo-tile: #1f2430;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -96,6 +98,8 @@
     --safety-note: #f5c542;
     --on-safety-note: #0b2442;
     --safety-note-text: #f5c542;
+    --logo-tile: #f4f6f8;
+    --on-logo-tile: #1f2430;
   }
 }
 

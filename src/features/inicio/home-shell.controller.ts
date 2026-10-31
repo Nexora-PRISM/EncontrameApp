@@ -121,6 +121,8 @@ export function useHomeShellController() {
     /** Evolução: voluntariado e Central de Apoio às Famílias. */
     goToVolunteer: () => goTo(() => router.push('/quero-ajudar' as Href)),
     goToSupportCenter: () => goTo(() => router.push('/central-de-apoio' as Href)),
+    /** Nossos apoiadores (EXPO_PUBLIC_ENABLE_SUPPORTERS). */
+    goToSupporters: () => goTo(() => router.push('/apoiadores' as Href)),
     /** Evolução: Encontra-me Vision (rede de câmeras participantes). */
     goToVision: () => goTo(() => router.push('/vision' as Href)),
     /** Evolução: pista confidencial (Central de Inteligência, ambiente público). */
