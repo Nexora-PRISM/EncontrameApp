@@ -795,10 +795,6 @@ export const es: Readonly<Record<string, string>> = {
   'Digite sua mensagem aqui...': 'Escribe tu mensaje aquí...',
   // features/grupo-chat/sections/grupo-chat-messages-section.tsx
   'Usuário': 'Usuario',
-  // features/home/sections/home-actions-section.tsx
-  'Começar': 'Empezar',
-  'Já possuo uma conta ›': 'Ya tengo una cuenta ›',
-  // features/home/sections/home-desktop-auth-section.tsx
   'Criar uma conta': 'Crear una cuenta',
   // features/inicio/sections/inicio-onboarding-section.tsx
   'Passo {value} de {count}': 'Paso {value} de {count}',

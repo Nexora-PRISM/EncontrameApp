@@ -8,7 +8,7 @@
 Esta branch é uma linha de desenvolvimento separada, criada em 30/10/2026 a partir do commit `7cc8304` da `main`.
 Antes de qualquer coisa, leia `docs/evolucao/README.md`.
 
-- Commits **só** nas branches `evolucao` e `evolucao-central` (esta, para a Central de Inteligência). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
+- Commits **só** nas branches `evolucao`, `evolucao-central` (Central de Inteligência) e `evolucao-revisao-auditoria` (revisão e consolidação, `docs/evolucao/REVISAO-AUDITORIA.md`). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
 - Sem pull request, merge, rebase ou deploy: integrar e publicar ficam com o dono do app.
 - O repositório é público: não coloque segredos nem detalhes internos da API (privada) nesta branch.
 - **Nada é publicado daqui**: sem Google Play, App Store, EAS Update, deploy do site, backend ou notificações reais.

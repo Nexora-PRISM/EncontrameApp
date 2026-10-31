@@ -296,3 +296,13 @@ Branch criada a partir da `evolucao` (commit `961ab54`), exclusiva para esta rev
 - Ambiente técnico (`/central-tecnica`): saúde do sistema sem conteúdo dos casos e pedido de acesso excepcional.
 - Bibliotecas próprias, sem dependência nova: SHA-256, gerador de ZIP, pacote criptografado com Web Crypto.
 - 17 testes novos (total 112). Teste de fumaça ampliado com a exportação de ponta a ponta no navegador.
+
+## Revisão e consolidação — branch `evolucao-revisao-auditoria` (31/10/2026)
+
+Branch criada a partir da `evolucao-central` (commit `fb05935`). Documento completo: `REVISAO-AUDITORIA.md`.
+
+- Removido o código sem uso de `src/features/home` (substituído por `/inicio`) e as traduções que só ele usava.
+- "Último local" sem trechos repetidos (`src/lib/address-text.ts`, com teste).
+- Inventário dos módulos pedidos (existe, demonstração, parcial ou não existe) e pendências que dependem de decisão
+  ou do backend.
+
