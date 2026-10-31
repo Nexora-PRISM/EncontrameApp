@@ -123,6 +123,8 @@ export function useHomeShellController() {
     goToSupportCenter: () => goTo(() => router.push('/central-de-apoio' as Href)),
     /** Evolução: Encontra-me Vision (rede de câmeras participantes). */
     goToVision: () => goTo(() => router.push('/vision' as Href)),
+    /** Evolução: pista confidencial (Central de Inteligência, ambiente público). */
+    goToConfidentialTip: () => goTo(() => router.push('/pista-confidencial' as Href)),
     // No Início só fecha o menu (antes empilhava outra cópia da tela).
     goToHomeFromMenu: onHome ? closeMenu : () => goTo(goHome),
     goToRegisterFromMenu: () => goTo(() => router.push('/cadastrar-pessoa')),

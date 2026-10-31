@@ -296,3 +296,34 @@ Regras para o servidor:
 - Nenhuma resposta deve dizer que a pessoa foi encontrada por causa de uma correspondência.
 - Credenciais de câmeras nunca passam pela API do app; ficam em cofre, configuradas com o responsável.
 - Gravações: criptografadas, acesso por URL temporária, marca d'água com quem abriu, retenção definida.
+
+---
+
+## Central de Inteligência (branch `evolucao-central`)
+
+Nenhum destes endpoints existe. O app está pronto para eles (`src/services/central/central.axios.repository.ts`) e
+fica desligado em produção (`EXPO_PUBLIC_ENABLE_CENTRAL`, `EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS`). Detalhes em
+`CENTRAL.md`.
+
+| Endpoint | Para quê |
+|---|---|
+| `POST /ConfidentialTip` `{ tip: { caseId?, text, when?, place?, hasIdentity }, identity: { name?, contactPreference, contact? } \| null }` → `{ id, receivedAt }` | Pista confidencial (com ou sem conta). **Guardar `identity` em tabela separada**, criptografada, sem ligação visível na pista |
+| `GET /Central/access/me` → `{ role, verified, mfa, userName, institution? }` | `role`: `public`, `analyst`, `admin`, `auditor`, `technical`. `mfa` = segundo fator confirmado nesta sessão |
+| `GET /Central/dossiers` · `GET /Central/dossiers/{id}` | Lista e dossiê (campos em `central.types.ts`) |
+| `GET /Central/dossiers/{id}/files/{fileId}/original` | Bytes do original (nunca alterado) |
+| `POST /Central/tips/{id}/review` `{ dossierId, status, note }` | `under_review`, `relevant`, `not_confirmed`, `duplicate` |
+| `POST /Central/tips/{id}/identity` `{ dossierId, justification }` → `{ name?, contactPreference, contact? }` | Só `admin` com MFA; sempre registrado |
+| `POST /Central/dossiers/{id}/preservation` `{ legalBasis, reference, scope, until, justification }` | Preservação |
+| `POST /Central/dossiers/{id}/mobilization` `{ areaId, action: expand \| pause \| resume, justification }` | Áreas de mobilização |
+| `POST /Central/dossiers/{id}/closure` `{ outcome: found \| cancelled, justification }` | Protocolo de encerramento (para notificações e mobilização na hora) |
+| `POST /Central/dossiers/{id}/exports` `{ authorizedBy, recipient, purpose, legalBasis, manifestSha256, files, delivery, justification }` → `{ id, receivedAt }` | Registro da exportação (o pacote é gerado no aparelho; com dois autorizadores quando há sigilo) |
+| `POST /Central/exports/{id}/links` `{ hours (1–168), justification }` · `POST /Central/exports/{id}/links/{linkId}/revoke` | Link seguro: pacote no servidor, acesso autenticado do destinatário, download registrado, revogável |
+| `GET /Central/audit` → `[{ seq, at, actorName, role, action, target, justification?, result, prevHash, hash }]` | Auditoria encadeada: `hash = SHA-256(JSON([seq, at, actorName, role, action, target, justification, result, prevHash]))`, primeiro `prevHash` = 64 zeros. Tabela só de inclusão |
+| `GET /Technical/status` | Saúde sem conteúdo de dossiês |
+| `POST /Technical/exceptional-access` `{ target, justification }` → `{ id, receivedAt }` | Pedido; aprovação por quem responde pelos dados, prazo curto, registro |
+
+Regras para o servidor: valores legais `legalBasis` = `authority_request`, `court_order`, `family_consent`,
+`protection_of_life`; destinatário com e-mail de órgão público e confirmação por canal oficial; nunca enviar nada
+sozinho a autoridades; não expor a identidade de quem enviou pistas em nenhuma resposta pública; MFA para as ações
+marcadas em `MFA_ACTIONS`; alertas só com `notifyDecision` (consentimento, área ativa, 3 por dia, 6 h entre alertas do
+caso, nada depois do encerramento).

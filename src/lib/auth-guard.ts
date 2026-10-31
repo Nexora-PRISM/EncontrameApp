@@ -17,6 +17,10 @@ const PROTECTED_PREFIXES = [
   '/vision/minhas-cameras',
   '/vision/pedidos',
   '/vision/institucional',
+  // Evolução (Central de Inteligência): ambiente institucional e central técnica. A pista confidencial e a
+  // verificação de integridade continuam abertas, sem conta.
+  '/institucional',
+  '/central-tecnica',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */

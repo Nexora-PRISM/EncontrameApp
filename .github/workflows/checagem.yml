@@ -6,7 +6,7 @@ name: Checagem do app
 
 on:
   push:
-    branches: [evolucao, desenvolvimento, 'feature/**', 'fix/**']
+    branches: [evolucao, 'evolucao-*', desenvolvimento, 'feature/**', 'fix/**']
   pull_request:
     branches: [main, evolucao, desenvolvimento]
   workflow_dispatch:
@@ -80,6 +80,8 @@ jobs:
           EXPO_PUBLIC_ENABLE_AI_ASSIST: 'true'
           EXPO_PUBLIC_ENABLE_VOLUNTEERS: 'true'
           EXPO_PUBLIC_ENABLE_VISION: 'true'
+          EXPO_PUBLIC_ENABLE_CENTRAL: 'true'
+          EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS: 'true'
 
       - name: Prints das telas (celular, claro e escuro)
         run: |

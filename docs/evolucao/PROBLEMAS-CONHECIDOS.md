@@ -20,6 +20,8 @@ Atualizado em 30/10/2026.
 | Rede de busca (raio dos alertas, sugestão de região, teia e ampliação no Painel da equipe) | `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK` | Pronto no app, só com mock. Falta a API |
 | Sugestões da IA para a equipe | `EXPO_PUBLIC_ENABLE_AI_ASSIST` | Pronto no app, só com mock. Falta a API |
 | Cadastro de voluntário ("Quero ajudar") | `EXPO_PUBLIC_ENABLE_VOLUNTEERS` | Pronto no app, só com mock. Sem a variável, só as orientações aparecem |
+| Central de Inteligência e Central técnica (branch `evolucao-central`) | `EXPO_PUBLIC_ENABLE_CENTRAL` | Demonstração com dados fictícios. Falta API, verificação de autoridades, cofre de identidades, auditoria no banco e MFA (`CENTRAL.md`) |
+| Informação confidencial (branch `evolucao-central`) | `EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS` | Pronto no app, só com mock. Falta `POST /ConfidentialTip` |
 | Encontra-me Vision (rede de câmeras) | `EXPO_PUBLIC_ENABLE_VISION` | Demonstração com dados fictícios. Falta API, convênios, armazenamento e análise de vídeo, verificação de autoridades e avaliação jurídica (`VISION.md`) |
 
 ## Decisões que cabem aos sócios
@@ -34,7 +36,17 @@ Atualizado em 30/10/2026.
   de autoridades, retenção das gravações, relatório de impacto (LGPD) e escolha do serviço de análise visual (sem
   reconhecimento facial). Ver `VISION.md`, itens 8 a 11.
 
+- **Central de Inteligência.** Antes de ligar: quem verifica as autoridades, política de retenção por tipo de
+  registro, fundamentos legais aceitos para exportar, texto final da confidencialidade (revisão jurídica) e convênios
+  com órgãos. Ver `CENTRAL.md`.
+
 ## Riscos e observações
+
+- Central: a geração do pacote, o PDF e a verificação de integridade funcionam na versão web (computador). No
+  celular, precisariam de bibliotecas novas (`expo-file-system`, `expo-sharing`, `expo-document-picker`).
+- Central: a ocultação automática pega CPF, CNPJ, telefone, e-mail, CEP e placa; nomes não. A tela pede revisão.
+- Central: a "organização automática" das pistas usa regras (tempo, distância e texto), não um modelo de IA. A IA do
+  servidor é contrato.
 
 - Vision: mapa esquemático (sem ruas) e quadro sintético no lugar de vídeo. Trocar por mapa com ruas e player
   (`expo-video`) é opcional e depende de instalar biblioteca.

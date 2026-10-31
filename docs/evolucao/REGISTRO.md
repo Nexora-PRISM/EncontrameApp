@@ -281,3 +281,18 @@ Commit `eb97072` (mais os de documentação e ajustes listados abaixo). Document
 - Variável `EXPO_PUBLIC_ENABLE_VISION` (desligada em produção); item no menu e pergunta na Central de Ajuda só com ela.
 - Checagem: build de demonstração com todas as variáveis da evolução ligadas e teste de fumaça das telas novas
   (`.github/scripts/smoke-routes.js`).
+
+## Central de Inteligência — branch `evolucao-central` (30 e 31/10/2026)
+
+Branch criada a partir da `evolucao` (commit `961ab54`), exclusiva para esta revisão. Documento completo: `CENTRAL.md`.
+
+- Ambiente público: informação confidencial (`/pista-confidencial`, também na página do caso e no menu), com a
+  identidade separada da pista e explicação correta dos limites da confidencialidade; verificação de integridade de
+  pacotes (`/verificar-integridade`, sem conta).
+- Ambiente institucional (`/institucional`): dossiês com 8 abas, natureza de cada informação, central de pistas com
+  organização automática, arquivos com SHA-256 e custódia, preservação, mobilização, protocolo de encerramento,
+  histórico, exportação segura para autoridades (revisão, ocultação, segunda aprovação, ZIP com relatórios e
+  manifesto, pacote criptografado AES-256-GCM, PDF) e auditoria encadeada com verificação.
+- Ambiente técnico (`/central-tecnica`): saúde do sistema sem conteúdo dos casos e pedido de acesso excepcional.
+- Bibliotecas próprias, sem dependência nova: SHA-256, gerador de ZIP, pacote criptografado com Web Crypto.
+- 17 testes novos (total 112). Teste de fumaça ampliado com a exportação de ponta a ponta no navegador.

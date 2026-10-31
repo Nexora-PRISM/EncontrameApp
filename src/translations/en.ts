@@ -2282,4 +2282,384 @@ export const en: Readonly<Record<string, string>> = {
   'Ler o texto completo do pedido': 'Read the full request text',
   'Ex.: gravações guardadas em um pendrive': 'E.g., recordings saved on a USB drive',
   'Histórico do pedido': 'Request history',
+  // Evolução — Central de Inteligência
+  'Posso enviar uma informação sem me expor?':
+    'Can I send information without exposing myself?',
+  'Sim. No menu ou na página do caso, toque em "Enviar informação confidencial". Sua identidade nunca aparece na área pública e fica guardada separada da informação; só pessoas autorizadas podem abri-la, e cada acesso fica registrado. Você pode escolher não ser contatado. Não é anonimato absoluto: o servidor guarda dados técnicos de acesso exigidos por lei, e a Justiça pode pedir esses dados. Em caso de risco agora, ligue 190.':
+    'Yes. In the menu or on the case page, tap "Send confidential information". Your identity never appears in the public area and is stored separately from the information; only authorized people can open it, and each access is recorded. You can choose not to be contacted. It is not absolute anonymity: the server keeps technical access data required by law, and the courts can request that data. If there is a risk right now, call 190.',
+  'confidencial denúncia anônimo sigilo testemunha pista':
+    'confidential report anonymous secrecy witness tip',
+  'Diga o que precisa acessar e por quê (pelo menos 15 letras).':
+    'Say what you need to access and why (at least 15 letters).',
+  'Pedido {id} registrado. O acesso só é liberado depois da aprovação de quem responde pelos dados, por tempo limitado e com registro.':
+    'Request {id} recorded. Access is only granted after approval by whoever is responsible for the data, for a limited time and with a record.',
+  'Cronologia': 'Chronology',
+  'Pistas': 'Tips',
+  'Arquivos': 'Files',
+  'Mobilização': 'Mobilization',
+  'Encerramento': 'Closure',
+  'Confirme o segundo fator (autenticação em dois fatores) para fazer isto.':
+    'Confirm the second factor (two-factor authentication) to do this.',
+  'Preencha fundamento, referência do pedido, escopo e a data final (dd/mm/aaaa).':
+    'Fill in the legal basis, request reference, scope and end date (dd/mm/yyyy).',
+  'Encerrar o caso?': 'Close the case?',
+  'Os alertas e a mobilização param, a página pública passa a mostrar só a situação, e os registros ficam preservados.':
+    'Alerts and mobilization stop, the public page only shows the status, and records are preserved.',
+  'Use o computador': 'Use a computer',
+  'A geração do pacote funciona na versão web do app, num computador.':
+    'Package generation works in the web version of the app, on a computer.',
+  'Gerar o pacote?': 'Generate the package?',
+  'A exportação fica registrada com finalidade, fundamento, destinatário e quem autorizou. Nada é enviado automaticamente: você entrega o arquivo pelo canal combinado.':
+    'The export is recorded with purpose, legal basis, recipient and who authorized it. Nothing is sent automatically: you deliver the file through the agreed channel.',
+  'Gerar': 'Generate',
+  'Exportação não registrada': 'Export not recorded',
+  'O registro não foi confirmado, por isso o pacote não foi entregue. Tente de novo.':
+    'The record was not confirmed, so the package was not delivered. Try again.',
+  'Não foi possível gerar o pacote': 'Could not generate the package',
+  'Eu ({name})': 'Me ({name})',
+  'Eu': 'Me',
+  '{name} (demonstração)': '{name} (demo)',
+  'Demonstração: ver a Central como': 'Demo: view the Center as',
+  'Segundo fator confirmado (simulado)': 'Second factor confirmed (simulated)',
+  'Perfis fictícios. Na versão real, a função vem da conta, a habilitação é verificada pela equipe e o segundo fator é pedido a cada sessão.':
+    'Fictitious profiles. In the real version, the role comes from the account, access is verified by the team and the second factor is requested every session.',
+  'Central de pistas': 'Tip center',
+  'A identidade de quem enviou cada pista fica guardada em separado. Abrir exige justificativa, segundo fator e fica registrado. Ela nunca aparece na área pública.':
+    'The identity of whoever sent each tip is stored separately. Opening it requires a justification and a second factor, and is recorded. It never appears in the public area.',
+  'Organização automática': 'Automatic organization',
+  'Regras do app cruzam horário, lugar e texto das pistas. São sugestões para análise humana: não confirmam identidade nem apontam suspeitos.':
+    'App rules cross-check time, place and text of the tips. They are suggestions for human review: they do not confirm identity or point to suspects.',
+  'Nenhuma relação encontrada.': 'No relationship found.',
+  '{minutes} min de diferença': '{minutes} min apart',
+  'Hipótese de deslocamento: {ids}': 'Movement hypothesis: {ids}',
+  'Relato não verificado': 'Unverified report',
+  'Aconteceu por volta de {date}': 'Happened around {date}',
+  'Horário não informado': 'Time not given',
+  'Identidade (sigilosa)': 'Identity (confidential)',
+  'Sem nome informado': 'No name given',
+  'Este acesso ficou registrado na auditoria. Não copie para outros sistemas.':
+    'This access was recorded in the audit. Do not copy it to other systems.',
+  'Quem enviou deixou contato. A identidade está guardada em separado.':
+    'The sender left contact details. The identity is stored separately.',
+  'Enviada sem identificação.': 'Sent without identification.',
+  'Abrir identidade (fica registrado)': 'Open identity (recorded)',
+  'Preservação de informações': 'Information preservation',
+  'Com pedido formal e fundamento legal, os registros do caso ficam preservados: originais, origem, datas, histórico de alterações e quem consultou, exportou ou compartilhou.':
+    'With a formal request and legal basis, the case records are preserved: originals, source, dates, change history and who viewed, exported or shared them.',
+  'Nenhuma preservação registrada.': 'No preservation recorded.',
+  'Ativa': 'Active',
+  'Vencida': 'Expired',
+  'Liberada': 'Released',
+  'Pedida em {date} por {name}': 'Requested on {date} by {name}',
+  'até {date}': 'until {date}',
+  'Registrar preservação': 'Record preservation',
+  'Fundamento': 'Legal basis',
+  'Referência do pedido (ofício, processo)':
+    'Request reference (official letter, case number)',
+  'O que preservar': 'What to preserve',
+  'Preservar até': 'Preserve until',
+  'Mobilização geográfica': 'Geographic mobilization',
+  'Alertas só para quem autorizou e está dentro de uma área ativa, no máximo {perDay} por dia e com pelo menos {gap} horas entre alertas do mesmo caso. Ninguém é rastreado: o servidor só compara a área com a localização que a pessoa permitiu usar. Os alertas param sozinhos quando o caso é encerrado.':
+    'Alerts only for people who allowed them and are inside an active area, at most {perDay} per day and at least {gap} hours between alerts for the same case. Nobody is tracked: the server only compares the area with the location the person allowed to be used. Alerts stop on their own when the case is closed.',
+  'Motivo: {text}': 'Reason: {text}',
+  'Ampliar para {distance}': 'Expand to {distance}',
+  'Retomar': 'Resume',
+  'Protocolo de encerramento': 'Closure protocol',
+  'Encerrado em {date} por {name}.': 'Closed on {date} by {name}.',
+  'Na área pública fica só "Pessoa localizada". Foto, último local, endereço, destino e condição da pessoa não são divulgados.':
+    'The public area only shows "Person located". Photo, last location, address, destination and the person\'s condition are not disclosed.',
+  'Na área pública fica só "Caso encerrado". Foto, último local e detalhes não são divulgados.':
+    'The public area only shows "Case closed". Photo, last location and details are not disclosed.',
+  'Ao encerrar, estes passos acontecem juntos:': 'When closing, these steps happen together:',
+  'Encontrar a pessoa não autoriza divulgar endereço, destino, condição pessoal ou outras informações privadas.':
+    'Finding the person does not authorize disclosing address, destination, personal condition or other private information.',
+  'Resultado': 'Outcome',
+  'Pessoa localizada': 'Person located',
+  'Encerramento administrativo (sem localização)': 'Administrative closure (not located)',
+  'Encerrar o caso': 'Close the case',
+  'Só a administração institucional encerra casos.':
+    'Only institutional administration closes cases.',
+  'Ex.: requisição do delegado responsável, ofício nº…':
+    'E.g., request from the police chief in charge, official letter no.…',
+  'Preservações ativas': 'Active preservations',
+  'Ligações com outros módulos': 'Links with other modules',
+  'Operação de câmeras {id} (Vision)': 'Camera operation {id} (Vision)',
+  'Relatos de avistamento: {ids}': 'Sighting reports: {ids}',
+  'Cada registro guarda a sua origem. A mesma informação vinda de módulos diferentes aparece uma vez só.':
+    'Each record keeps its source. The same information coming from different modules appears only once.',
+  'Exportar dossiê para autoridades': 'Export dossier to authorities',
+  'Tudo': 'All',
+  'Origem: {origin}': 'Source: {origin}',
+  'Arquivos do caso': 'Case files',
+  'Os arquivos originais nunca são alterados. Organização, visualização e exportação usam cópias controladas, e cada passo fica no histórico de custódia.':
+    'Original files are never changed. Organization, viewing and export use controlled copies, and each step goes into the custody history.',
+  'recebido em {date}': 'received on {date}',
+  '{size} bytes': '{size} bytes',
+  'O prazo de guarda mostrado é provisório (demonstração). A política real de retenção e descarte é decisão dos sócios e do jurídico.':
+    'The retention period shown is provisional (demo). The real retention and disposal policy is a decision for the partners and the legal team.',
+  'Providências': 'Actions taken',
+  'Exportações': 'Exports',
+  'Nenhuma exportação.': 'No exports.',
+  'autorizado por {name}': 'authorized by {name}',
+  'Finalidade: {text}': 'Purpose: {text}',
+  'Manifesto (SHA-256): {hash}': 'Manifest (SHA-256): {hash}',
+  'vence {date}': 'expires {date}',
+  'simulado: não funciona sem a API': 'simulated: does not work without the API',
+  'Revogar': 'Revoke',
+  'Link seguro por {hours} h': 'Secure link for {hours} h',
+  'Link seguro exige a API: o pacote fica no servidor, o acesso pede autenticação, cada download fica registrado e o link pode ser revogado. Nada é enviado automaticamente.':
+    'A secure link requires the API: the package stays on the server, access requires authentication, each download is recorded and the link can be revoked. Nothing is sent automatically.',
+  'Este arquivo não é um manifesto do Encontra-me (manifesto-integridade.json).':
+    'This file is not an Encontra-me manifest (manifesto-integridade.json).',
+  'Enviar informação confidencial': 'Send confidential information',
+  'Central de Inteligência': 'Intelligence Center',
+  'Ambiente para autoridades habilitadas. O acesso é verificado e registrado.':
+    'Area for authorized authorities. Access is verified and recorded.',
+  'Informação sensível': 'Sensitive information',
+  'Público': 'Public',
+  'Analista institucional': 'Institutional analyst',
+  'Administração institucional': 'Institutional administration',
+  'Consultar dossiês': 'View dossiers',
+  'Registrar anotação': 'Add a note',
+  'Analisar pista': 'Review tip',
+  'Abrir identidade de quem enviou a pista': 'Open the identity of who sent the tip',
+  'Ajustar a mobilização': 'Adjust mobilization',
+  'Exportar dossiê': 'Export dossier',
+  'Autorizar exportação': 'Authorize export',
+  'Criar ou revogar link seguro': 'Create or revoke secure link',
+  'Encerrar caso': 'Close case',
+  'Ver a saúde técnica': 'View technical health',
+  'Pedir acesso excepcional': 'Request exceptional access',
+  'Pista confidencial recebida': 'Confidential tip received',
+  'Pacote de exportação gerado': 'Export package generated',
+  'Arquivo recebido': 'File received',
+  'Fato documentado': 'Documented fact',
+  'Em busca': 'Searching',
+  'Localizada': 'Located',
+  'Nova': 'New',
+  'Relevante': 'Relevant',
+  'Não confirmada': 'Not confirmed',
+  'Repetida': 'Duplicate',
+  'Pista confidencial': 'Confidential tip',
+  'Telefone da equipe': 'Team phone line',
+  'Câmera (Vision)': 'Camera (Vision)',
+  'Podem estar ligadas (perto no tempo e no lugar)': 'May be linked (close in time and place)',
+  'Parecem repetidas': 'Look like duplicates',
+  'Divergem: lugares distantes quase no mesmo horário':
+    'Conflict: distant places at almost the same time',
+  'Comum': 'Ordinary',
+  'Dados pessoais': 'Personal data',
+  'Sigiloso': 'Confidential',
+  'Identidade de testemunha': 'Witness identity',
+  'Requisição de autoridade competente': 'Request from a competent authority',
+  'Ordem judicial': 'Court order',
+  'Pedido ou consentimento da família': 'Family request or consent',
+  'Proteção da vida ou da integridade física': 'Protection of life or physical safety',
+  'Descreva a finalidade (pelo menos 15 letras).':
+    'Describe the purpose (at least 15 letters).',
+  'Escolha o fundamento.': 'Choose the legal basis.',
+  'Informe a instituição e o nome de quem recebe.':
+    'Enter the institution and the name of the recipient.',
+  'Use um e-mail institucional (.gov.br, .jus.br, .mp.br, .def.br, .leg.br ou .mil.br).':
+    'Use an institutional email (.gov.br, .jus.br, .mp.br, .def.br, .leg.br or .mil.br).',
+  'Confirme o destinatário por canal oficial antes de exportar.':
+    'Confirm the recipient through an official channel before exporting.',
+  'Informe quem autorizou.': 'Enter who authorized it.',
+  'Identidade de testemunha ou documento sigiloso exige autorização de outra pessoa.':
+    'Witness identity or a confidential document requires authorization from another person.',
+  'Escolha pelo menos um item.': 'Choose at least one item.',
+  'Conte com um pouco mais de detalhe (pelo menos 20 letras).':
+    'Give a bit more detail (at least 20 letters).',
+  'Informe um contato válido ou escolha "Não quero ser contatado".':
+    'Enter a valid contact or choose "I don\'t want to be contacted".',
+  'Marque que você leu como funciona a confidencialidade.':
+    'Check that you read how confidentiality works.',
+  'Não quero ser contatado': 'I don\'t want to be contacted',
+  'Pela minha conta no app': 'Through my account in the app',
+  'Por telefone': 'By phone',
+  'Por e-mail': 'By email',
+  'Situação do caso atualizada': 'Case status updated',
+  'Notificações de busca interrompidas': 'Search notifications stopped',
+  'Áreas de mobilização encerradas': 'Mobilization areas ended',
+  'Página pública e cartaz atualizados': 'Public page and poster updated',
+  'Alertas antigos marcados como encerrados': 'Old alerts marked as closed',
+  'Registros preservados conforme prazos e pedidos legais':
+    'Records preserved according to legal deadlines and requests',
+  'Foto, último local e detalhes retirados da área pública':
+    'Photo, last location and details removed from the public area',
+  'Histórico de mudanças mantido': 'Change history kept',
+  'Encerramento administrativo registrado': 'Administrative closure recorded',
+  'Pausada': 'Paused',
+  'Funcionando': 'Working',
+  'Lento ou instável': 'Slow or unstable',
+  'Fora do ar': 'Down',
+  'Não conectado': 'Not connected',
+  'Dentro do prazo de guarda': 'Within the retention period',
+  'Guarda legal (preservação ativa)': 'Legal hold (active preservation)',
+  'Prazo vencido: revisar descarte seguro': 'Period ended: review secure disposal',
+  'Foto atual': 'Current photo',
+  'Foto antiga': 'Old photo',
+  'Documento': 'Document',
+  'Vídeo': 'Video',
+  'Outro arquivo': 'Other file',
+  'Ativo': 'Active',
+  'Vencido': 'Expired',
+  'Revogado': 'Revoked',
+  'Central técnica': 'Technical center',
+  'A Central de Inteligência ainda não está disponível.':
+    'The Intelligence Center is not available yet.',
+  'Só a equipe técnica da Nexora Prism acessa esta área.':
+    'Only the Nexora Prism technical team can access this area.',
+  'Não foi possível carregar a saúde do sistema.': 'Could not load the system health.',
+  'Dados de demonstração: os estados abaixo são simulados.':
+    'Demo data: the statuses below are simulated.',
+  'Esta área mostra o funcionamento da plataforma, nunca o conteúdo dos dossiês, pistas ou gravações. Os registros técnicos chegam sem dados pessoais.':
+    'This area shows how the platform is running, never the content of dossiers, tips or recordings. Technical logs arrive without personal data.',
+  'Disponibilidade': 'Availability',
+  'Conferido em {date}': 'Checked on {date}',
+  'Alertas de segurança': 'Security alerts',
+  'Registros técnicos (sem conteúdo dos casos)': 'Technical logs (no case content)',
+  'Integrações': 'Integrations',
+  'Acesso excepcional a conteúdo': 'Exceptional access to content',
+  'Só em último caso (por exemplo, para corrigir um arquivo corrompido). O pedido precisa de aprovação de quem responde pelos dados, vale por tempo limitado e fica registrado.':
+    'Only as a last resort (for example, to fix a corrupted file). The request needs approval from whoever is responsible for the data, is valid for a limited time and is recorded.',
+  'O que precisa acessar': 'What you need to access',
+  'Auditoria da Central': 'Center audit',
+  'Só a administração institucional e a auditoria veem este registro.':
+    'Only institutional administration and audit see this record.',
+  'Corrente íntegra: {count} registros conferidos. Cada registro guarda o hash do anterior; qualquer alteração ou remoção aparece aqui.':
+    'Chain intact: {count} records checked. Each record keeps the hash of the previous one; any change or removal shows up here.',
+  'Corrente quebrada a partir do registro {seq}: algum registro foi alterado, removido ou fora de ordem.':
+    'Chain broken from record {seq}: a record was changed, removed or put out of order.',
+  'Teste: simular alteração de um registro (só nesta tela)':
+    'Test: simulate a change to a record (this screen only)',
+  'Só a administração institucional exporta dossiês.':
+    'Only institutional administration exports dossiers.',
+  'Pacote gerado e exportação registrada': 'Package generated and export recorded',
+  'Registro: {id} em {date}': 'Record: {id} on {date}',
+  'Modo de demonstração: o registro é fictício e fica só neste aparelho.':
+    'Demo mode: the record is fictitious and stays only on this device.',
+  'Arquivo: {name} ({count} arquivos dentro)': 'File: {name} ({count} files inside)',
+  'SHA-256 do manifesto: {hash}': 'Manifest SHA-256: {hash}',
+  'Senha do pacote (mostrada só agora)': 'Package password (shown only now)',
+  'Envie a senha por outro canal (telefone ou mensagem separada), nunca junto com o arquivo. O destinatário abre o arquivo .html no navegador e digita a senha.':
+    'Send the password through another channel (phone or a separate message), never together with the file. The recipient opens the .html file in the browser and types the password.',
+  'O relatório abriu numa nova janela: escolha "Salvar como PDF" na impressão.':
+    'The report opened in a new window: choose "Save as PDF" when printing.',
+  'Nada foi enviado automaticamente. Entregue o arquivo pelo canal combinado com a autoridade.':
+    'Nothing was sent automatically. Deliver the file through the channel agreed with the authority.',
+  'O SHA-256 permite conferir se cada arquivo continua igual ao que foi registrado. Ele não certifica, sozinho, a autenticidade ou a veracidade do conteúdo.':
+    'SHA-256 lets you check whether each file is still the same as when it was recorded. On its own, it does not certify the authenticity or truthfulness of the content.',
+  'Baixar o manifesto (texto)': 'Download the manifest (text)',
+  'Gerar outro pacote': 'Generate another package',
+  'Voltar ao dossiê': 'Back to the dossier',
+  'Exportar exige o segundo fator confirmado nesta sessão.':
+    'Exporting requires the second factor confirmed in this session.',
+  'A geração do pacote funciona na versão web do app, num computador. Aqui dá para revisar a seleção.':
+    'Package generation works in the web version of the app, on a computer. Here you can review the selection.',
+  '1. O que vai no pacote': '1. What goes in the package',
+  'Começa com a opção mais protetora: identidade de testemunhas e documentos sigilosos ficam de fora, e dados pessoais (CPF, telefone, e-mail, CEP, placa) são ocultados nos textos. Nomes não são detectados: revise.':
+    'It starts with the most protective option: witness identities and confidential documents are left out, and personal data (CPF, phone, email, postal code, license plate) is hidden in the texts. Names are not detected: review them.',
+  'Ocultar dados pessoais': 'Hide personal data',
+  'Ocultar dados pessoais (gera cópia controlada; o original não muda)':
+    'Hide personal data (creates a controlled copy; the original does not change)',
+  '2. Para quem e por quê': '2. To whom and why',
+  'Finalidade': 'Purpose',
+  'Instituição destinatária': 'Recipient institution',
+  'Nome de quem recebe': 'Recipient name',
+  'E-mail institucional de quem recebe': 'Recipient\'s institutional email',
+  'Destinatário confirmado por canal oficial':
+    'Recipient confirmed through an official channel',
+  'Confirmei o destinatário por canal oficial (telefone do órgão, ofício ou sistema da instituição).':
+    'I confirmed the recipient through an official channel (the agency\'s phone, an official letter or the institution\'s system).',
+  '3. Quem autoriza': '3. Who authorizes',
+  'Você incluiu identidade de testemunha ou documento sigiloso: a exportação precisa da autorização de outra pessoa da administração.':
+    'You included a witness identity or a confidential document: the export needs authorization from another person in the administration.',
+  'Autorizado por': 'Authorized by',
+  '4. Como entregar': '4. How to deliver',
+  'Formato da entrega': 'Delivery format',
+  'Pacote criptografado (recomendado)': 'Encrypted package (recommended)',
+  'Arquivo .html protegido por senha (AES-256). A senha aparece uma vez e vai por outro canal.':
+    'Password-protected .html file (AES-256). The password appears once and goes through another channel.',
+  'Baixar o ZIP sem senha': 'Download the ZIP without a password',
+  'Relatórios, anexos, índice e manifesto SHA-256. Use só em canal seguro.':
+    'Reports, attachments, index and SHA-256 manifest. Use only over a secure channel.',
+  'Relatório institucional em PDF': 'Institutional report as PDF',
+  'Abre o relatório para imprimir ou salvar em PDF.':
+    'Opens the report to print or save as PDF.',
+  'Link seguro com prazo, autenticação e revogação: depois de registrar, no histórico do dossiê (precisa da API).':
+    'Secure link with expiry, authentication and revocation: after recording, in the dossier history (requires the API).',
+  'Gerar e registrar a exportação': 'Generate and record the export',
+  'Dossiê {id}': 'Dossier {id}',
+  'Não foi possível carregar o dossiê.': 'Could not load the dossier.',
+  'Sua função: {role}': 'Your role: {role}',
+  'Fatos documentados, relatos não verificados e hipóteses aparecem separados. Nada aqui identifica suspeitos ou substitui a decisão das autoridades.':
+    'Documented facts, unverified reports and hypotheses appear separately. Nothing here identifies suspects or replaces the decision of the authorities.',
+  'Dossiês': 'Dossiers',
+  'Não foi possível carregar os dossiês.': 'Could not load the dossiers.',
+  'Nenhum dossiê.': 'No dossiers.',
+  '{count} pistas para analisar': '{count} tips to review',
+  'A equipe técnica não tem acesso automático aos dossiês. Um acesso excepcional precisa de pedido justificado, aprovação e registro.':
+    'The technical team has no automatic access to dossiers. Exceptional access needs a justified request, approval and a record.',
+  'A auditoria vê quem acessou o quê, sem abrir os dossiês.':
+    'Audit sees who accessed what, without opening the dossiers.',
+  'Esta área é só para autoridades e profissionais habilitados. A habilitação é verificada pela equipe; dizer que é autoridade não libera nada.':
+    'This area is only for authorized authorities and professionals. Access is verified by the team; saying you are an authority does not unlock anything.',
+  'Ambientes e ferramentas': 'Areas and tools',
+  'Operações de câmeras (Vision)': 'Camera operations (Vision)',
+  'Auditoria (registro encadeado)': 'Audit (chained record)',
+  'Verificar integridade de um pacote': 'Verify a package integrity',
+  'Central técnica (Nexora Prism)': 'Technical center (Nexora Prism)',
+  'Segurança e governança': 'Security and governance',
+  'Dependem da API: nada disso está ligado de verdade ainda.':
+    'These depend on the API: none of this is actually turned on yet.',
+  'Autenticação em dois fatores': 'Two-factor authentication',
+  'Sessões ativas e encerramento remoto': 'Active sessions and remote sign-out',
+  'Permissões individuais por função': 'Individual permissions by role',
+  'Política de retenção e descarte': 'Retention and disposal policy',
+  'Resposta a incidentes de segurança': 'Security incident response',
+  'Informação confidencial': 'Confidential information',
+  'O envio de informação confidencial ainda não está disponível. Em caso de emergência, ligue 190.':
+    'Sending confidential information is not available yet. In an emergency, call 190.',
+  'Número de protocolo: {id}': 'Protocol number: {id}',
+  'A equipe analisa antes de qualquer uso. Guarde o número de protocolo.':
+    'The team reviews it before any use. Keep the protocol number.',
+  'O app não avisa a polícia sozinho. Se houver risco agora, ligue 190.':
+    'The app does not alert the police on its own. If there is a risk right now, call 190.',
+  'Enviar outra informação': 'Send other information',
+  'Sua identidade nunca aparece na área pública e fica guardada separada da informação. Só pessoas autorizadas podem abri-la, e cada acesso fica registrado. Não é anonimato absoluto: o servidor guarda dados técnicos de acesso exigidos por lei, e a Justiça pode pedir esses dados.':
+    'Your identity never appears in the public area and is stored separately from the information. Only authorized people can open it, and each access is recorded. It is not absolute anonymity: the server keeps technical access data required by law, and the courts can request that data.',
+  'Sobre o caso {id}': 'About case {id}',
+  'O que você sabe': 'What you know',
+  'Ex.: vi uma pessoa parecida perto do ponto de ônibus, por volta das 18h.':
+    'E.g., I saw a similar person near the bus stop, around 6 p.m.',
+  'Parece que o texto tem telefone, e-mail ou documento. Para sua proteção, use o campo de contato abaixo e tire esses dados do texto.':
+    'The text seems to contain a phone number, email or ID number. For your protection, use the contact field below and remove that data from the text.',
+  'Quando aconteceu (opcional)': 'When it happened (optional)',
+  'Ex.: ontem, por volta das 18h': 'E.g., yesterday, around 6 p.m.',
+  'Onde (opcional)': 'Where (optional)',
+  'Ex.: praça perto da padaria': 'E.g., square near the bakery',
+  'A equipe pode falar com você?': 'Can the team contact you?',
+  'Como podemos chamar você (opcional)': 'What we can call you (optional)',
+  'Li como funciona a confidencialidade': 'I read how confidentiality works',
+  'Li como funciona a confidencialidade e entendo que informação falsa atrapalha a busca.':
+    'I read how confidentiality works and understand that false information hinders the search.',
+  'Enviar informação': 'Send information',
+  'Não vá atrás da pessoa nem de suspeitos. Se houver risco agora, ligue 190.':
+    'Do not go after the person or suspects. If there is a risk right now, call 190.',
+  'Verificar integridade': 'Verify integrity',
+  'Para quem recebeu um pacote do Encontra-me: confira se cada arquivo continua igual ao registrado no manifesto. O cálculo é feito neste computador; nada é enviado.':
+    'For those who received an Encontra-me package: check whether each file is still the same as recorded in the manifest. The calculation is done on this computer; nothing is sent.',
+  'A verificação funciona na versão web do app, num computador.':
+    'Verification works in the web version of the app, on a computer.',
+  '1. Escolher o manifesto (manifesto-integridade.json)':
+    '1. Choose the manifest (manifesto-integridade.json)',
+  'Manifesto do caso {id}, com {count} arquivos.':
+    'Manifest for case {id}, with {count} files.',
+  '2. Escolher os arquivos para conferir': '2. Choose the files to check',
+  'Confere com o manifesto': 'Matches the manifest',
+  'Diferente do manifesto: o arquivo mudou': 'Different from the manifest: the file changed',
+  'Não está no manifesto': 'Not in the manifest',
+  'Escolha o manifesto para comparar.': 'Choose the manifest to compare.',
+  'Limpar': 'Clear',
 };

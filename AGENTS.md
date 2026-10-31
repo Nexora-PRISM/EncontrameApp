@@ -8,7 +8,7 @@
 Esta branch é uma linha de desenvolvimento separada, criada em 30/10/2026 a partir do commit `7cc8304` da `main`.
 Antes de qualquer coisa, leia `docs/evolucao/README.md`.
 
-- Commits **só** na branch `evolucao`. Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
+- Commits **só** nas branches `evolucao` e `evolucao-central` (esta, para a Central de Inteligência). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
 - Sem pull request, merge, rebase ou deploy: integrar e publicar ficam com o dono do app.
 - O repositório é público: não coloque segredos nem detalhes internos da API (privada) nesta branch.
 - **Nada é publicado daqui**: sem Google Play, App Store, EAS Update, deploy do site, backend ou notificações reais.
@@ -227,6 +227,14 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   (`BIOMETRIC_ANALYSIS_ENABLED = false`). Semelhança nunca vira "pessoa encontrada". Sem evidência, sem trajeto.
   Câmera indisponível não prova ausência. O app nunca envia pedido de preservação sozinho. Dados de demonstração
   sempre marcados como fictícios.
+- **Central de Inteligência** (branch `evolucao-central`; `/institucional*`, `/central-tecnica`, `/pista-confidencial`,
+  `/verificar-integridade`, `lib/central-rules.ts`, `services/central/`, `docs/evolucao/CENTRAL.md`): cada informação
+  tem natureza (fato documentado, relato não verificado, hipótese) e nunca muda de natureza sozinha. A identidade de
+  quem envia pista fica separada e só abre com administração + segundo fator + justificativa + registro; nunca
+  prometa anonimato absoluto. Exportar exige revisão, finalidade, fundamento, destinatário institucional confirmado e
+  quem autorizou (segunda pessoa quando há sigilo); a exportação é registrada antes de entregar e nada é enviado
+  sozinho. Arquivo original nunca é alterado. Hash não é certificação de autenticidade. A equipe técnica não vê
+  conteúdo de dossiês. Encerrar o caso não autoriza divulgar endereço, destino ou condição da pessoa.
 - **Localização para contatos**: WhatsApp, SMS ou compartilhamento abrem com a mensagem pronta; a tela nunca diz que
   a mensagem foi entregue. Contatos de confiança (até 5) ficam só no aparelho (`lib/trusted-contacts.ts`).
 - **Notificações** (`lib/notifications.ts`, `services/notifications/`, Configurações › Notificações): tudo desligado
@@ -281,6 +289,8 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_ENABLE_SEARCH_NETWORK` — (evolução) rede de busca: raio, sugestão de região, ampliação e teia. Vazio: ligada em dev (mock), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_AI_ASSIST` — (evolução) sugestões da IA no Painel da equipe. Vazio: ligada em dev (mock), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_VOLUNTEERS` — (evolução) cadastro de voluntário em "Quero ajudar". Vazio: ligado em dev (mock), desligado em produção.
+- `EXPO_PUBLIC_ENABLE_CENTRAL` — (evolução, branch `evolucao-central`) Central de Inteligência e Central técnica. Vazio: ligada em dev (dados fictícios), desligada em produção.
+- `EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS` — (evolução, branch `evolucao-central`) envio de informação confidencial. Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_ENABLE_VISION` — (evolução) Encontra-me Vision (rede de câmeras participantes). Vazio: ligado em dev (dados fictícios), desligado em produção. Só ligar com a API `/Vision/*`, convênios e avaliação jurídica.
 - `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` — (evolução) linha do tempo completa vinda da API. Vazio: ligada em dev (mock), desligada em produção; desligada, a linha do tempo é montada com o cadastro e o histórico de avistamentos.
 

@@ -124,6 +124,23 @@ export function PessoaDetalheInfoSection({ controller }: PessoaDetalheInfoSectio
           </View>
         </View>
       )}
+      {controller.canSendConfidential ? (
+        <View style={styles.group}>
+          <Text style={styles.groupTitle} accessibilityRole="header">
+            {t('Informação sensível')}
+          </Text>
+          <View style={styles.actions}>
+            <BrandButton
+              label={t('Enviar informação confidencial')}
+              variant="outline"
+              trailingIcon="shield-lock-outline"
+              onPress={controller.openConfidentialTip}
+              containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+              style={isWide ? undefined : styles.actionFull}
+            />
+          </View>
+        </View>
+      ) : null}
       {controller.sightingBlockedMessage ? null : (
         <View style={styles.actions}>
           <BrandButton

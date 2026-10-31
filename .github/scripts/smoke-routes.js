@@ -29,6 +29,32 @@ const PRIVATE_ROUTES = [
   { path: '/meus-relatos', expect: 'relatos' },
 ];
 
+/** Central de Inteligência: rotas abertas. */
+const CENTRAL_PUBLIC_ROUTES = [
+  { path: '/pista-confidencial?caso=p2', expect: 'O que você sabe' },
+  { path: '/verificar-integridade', expect: '1. Escolher o manifesto' },
+];
+
+/** Leitor mínimo de ZIP (diretório central), só para conferir o pacote exportado. */
+function readZip(bytes) {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const end = bytes.length - 22;
+  if (view.getUint32(end, true) !== 0x06054b50) throw new Error('ZIP sem fim de diretório');
+  const count = view.getUint16(end + 10, true);
+  let offset = view.getUint32(end + 16, true);
+  const files = {};
+  for (let i = 0; i < count; i += 1) {
+    const size = view.getUint32(offset + 24, true);
+    const nameLength = view.getUint16(offset + 28, true);
+    const local = view.getUint32(offset + 42, true);
+    const name = Buffer.from(bytes.subarray(offset + 46, offset + 46 + nameLength)).toString('utf8');
+    const localNameLength = view.getUint16(local + 26, true);
+    files[name] = bytes.subarray(local + 30 + localNameLength, local + 30 + localNameLength + size);
+    offset += 46 + nameLength;
+  }
+  return files;
+}
+
 const clean = (text) => String(text).replace(/%/g, '%25').replace(/\r/g, '').replace(/\n/g, ' ').slice(0, 300);
 
 async function waitForText(page, text, timeout = 12000) {
@@ -132,6 +158,88 @@ async function check(page, errors, label, route, expect) {
     await check(page, errors, 'operação sem evidência › Trajeto', null, 'Evidências insuficientes');
     await check(page, errors, 'vision auditoria', '/vision/institucional/auditoria', 'Tentativas negadas');
     await check(page, errors, 'vision nova operação', '/vision/institucional/nova-operacao', 'Abrir operação');
+
+    // Central de Inteligência: telas abertas, troca de perfil, dossiê e as 8 abas.
+    for (const route of CENTRAL_PUBLIC_ROUTES) await check(page, errors, route.path, route.path, route.expect);
+    await check(page, errors, 'central (público)', '/institucional', 'Demonstração: ver a Central como');
+    await tap(page, 'Administração institucional');
+    await check(page, errors, 'central (administração)', null, 'Dossiês');
+    await check(page, errors, 'dossiê', '/institucional/dossie/D-TESTE-01', 'Ligações com outros módulos');
+    for (const [tab, expect] of [
+      ['Cronologia', 'Fato documentado'],
+      ['Pistas', 'Organização automática'],
+      ['Arquivos', 'SHA-256'],
+      ['Preservação', 'Preservação de informações'],
+      ['Mobilização', 'Mobilização geográfica'],
+      ['Encerramento', 'Protocolo de encerramento'],
+      ['Histórico', 'Exportações'],
+    ]) {
+      await tap(page, tab);
+      await check(page, errors, `dossiê › ${tab}`, null, expect);
+    }
+    await check(page, errors, 'central auditoria', '/institucional/auditoria', 'Corrente íntegra');
+
+    // Exportação de ponta a ponta: pacote criptografado → abrir com a senha → conferir o manifesto SHA-256.
+    try {
+      page.on('dialog', (dialog) => void dialog.accept());
+      await check(page, errors, 'exportar (revisão)', '/institucional/dossie/D-TESTE-01/exportar', '1. O que vai no pacote');
+      await page.getByLabel('Finalidade, obrigatório').fill('Instrução do inquérito do caso de demonstração');
+      await page.getByText('Escolher', { exact: true }).first().click();
+      await page.getByText('Requisição de autoridade competente', { exact: true }).last().click();
+      await page.getByLabel('Instituição destinatária, obrigatório').fill('Delegacia fictícia');
+      await page.getByLabel('Nome de quem recebe, obrigatório').fill('Delegada fictícia');
+      await page.getByLabel('E-mail institucional de quem recebe, obrigatório').fill('delegacia@exemplo.mg.gov.br');
+      await page.getByRole('checkbox', { name: 'Destinatário confirmado por canal oficial' }).click();
+      const [download] = await Promise.all([
+        page.waitForEvent('download', { timeout: 30000 }),
+        tap(page, 'Gerar e registrar a exportação'),
+      ]);
+      const htmlPath = require('path').join(require('os').tmpdir(), 'pacote-protegido.html');
+      await download.saveAs(htmlPath);
+      await check(page, errors, 'exportar (resultado)', null, 'Pacote gerado e exportação registrada');
+      const body = await page.evaluate(() => document.body.innerText);
+      const password = (body.match(/[A-Z2-9]{4}(?:-[A-Z2-9]{4}){5}/) || [])[0];
+      if (!password) throw new Error('senha do pacote não apareceu');
+
+      const opener = await page.context().newPage();
+      await opener.goto(`file://${htmlPath}`);
+      await opener.fill('#pw', password);
+      const [zipDownload] = await Promise.all([opener.waitForEvent('download', { timeout: 30000 }), opener.click('#go')]);
+      const zipBytes = new Uint8Array(require('fs').readFileSync(await zipDownload.path()));
+      await opener.close();
+      const files = readZip(zipBytes);
+      const manifest = JSON.parse(Buffer.from(files['manifesto-integridade.json']).toString('utf8'));
+      const crypto = require('crypto');
+      const wrong = manifest.files.filter(
+        (file) => !files[file.path] || crypto.createHash('sha256').update(files[file.path]).digest('hex') !== file.sha256,
+      );
+      const hasWitness = Object.keys(files).some((name) => name.startsWith('sigiloso/'));
+      const tips = files['03-relatorio-pistas.csv'] ? Buffer.from(files['03-relatorio-pistas.csv']).toString('utf8') : '';
+      results.push({
+        label: `pacote: ${manifest.files.length} arquivos no manifesto, hashes conferidos`,
+        ok: wrong.length === 0 && manifest.files.length > 3 && !hasWitness && !tips.includes('Testemunha'),
+        detail: wrong.length ? `hash diferente: ${wrong.map((file) => file.path).join(', ')}` : hasWitness ? 'identidade de testemunha saiu sem autorização' : '',
+      });
+
+      // Verificação de integridade pela tela pública, com o manifesto e um arquivo do pacote.
+      const tmp = require('os').tmpdir();
+      const manifestPath = require('path').join(tmp, 'manifesto-integridade.json');
+      const reportPath = require('path').join(tmp, '01-relatorio-institucional.html');
+      require('fs').writeFileSync(manifestPath, files['manifesto-integridade.json']);
+      require('fs').writeFileSync(reportPath, files['01-relatorio-institucional.html']);
+      await check(page, errors, 'verificar (tela)', '/verificar-integridade', '1. Escolher o manifesto');
+      const [manifestChooser] = await Promise.all([
+        page.waitForEvent('filechooser'),
+        tap(page, '1. Escolher o manifesto (manifesto-integridade.json)'),
+      ]);
+      await manifestChooser.setFiles(manifestPath);
+      await waitForText(page, 'Manifesto do caso');
+      const [fileChooser] = await Promise.all([page.waitForEvent('filechooser'), tap(page, '2. Escolher os arquivos para conferir')]);
+      await fileChooser.setFiles(reportPath);
+      await check(page, errors, 'verificar (arquivo confere)', null, 'Confere com o manifesto');
+    } catch (error) {
+      results.push({ label: 'exportação de ponta a ponta', ok: false, detail: error.message });
+    }
   } catch (error) {
     results.push({ label: 'execução', ok: false, detail: error.message });
   } finally {

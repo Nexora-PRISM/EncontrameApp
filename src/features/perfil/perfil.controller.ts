@@ -76,6 +76,9 @@ export function usePerfilController() {
     /** Só aparece para contas da equipe. */
     isStaff: staffQuery.data === true,
     goToTeamPanel: () => router.push('/equipe' as Href),
+    /** Central de Inteligência (EXPO_PUBLIC_ENABLE_CENTRAL); a função é conferida lá dentro. */
+    centralEnabled: env.centralEnabled,
+    goToCentral: () => router.push('/institucional' as Href),
     goToRegister: () => router.push('/cadastrar-pessoa'),
     goToAllPeople: () => router.push('/pessoas-desaparecidas' as Href),
     goToGroupChat: () => router.push('/grupo-chat'),

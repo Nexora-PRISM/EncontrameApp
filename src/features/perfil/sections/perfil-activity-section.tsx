@@ -125,6 +125,14 @@ export function PerfilActivitySection({ controller }: Props) {
             onPress={controller.goToTeamPanel}
           />
         ) : null}
+        {controller.centralEnabled ? (
+          <SettingsRow
+            icon="bank-outline"
+            label={t('Central de Inteligência')}
+            description={t('Ambiente para autoridades habilitadas. O acesso é verificado e registrado.')}
+            onPress={controller.goToCentral}
+          />
+        ) : null}
       </SettingsGroup>
     </View>
   );

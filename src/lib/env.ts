@@ -91,6 +91,21 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_VISION === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_VISION !== 'false'),
   /**
+   * Central de Inteligência (ambiente institucional de dossiês, pistas, preservação e exportação segura para
+   * autoridades) e Central técnica. Nenhum endpoint existe ainda (docs/evolucao/CENTRAL.md). Em desenvolvimento fica
+   * ligada com dados fictícios; em produção só com EXPO_PUBLIC_ENABLE_CENTRAL=true.
+   */
+  centralEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_CENTRAL === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CENTRAL !== 'false'),
+  /**
+   * Envio de pista confidencial (POST /ConfidentialTip), com a identidade separada da pista. Em desenvolvimento fica
+   * ligado com mock; em produção só com EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS=true.
+   */
+  confidentialTipsEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS !== 'false'),
+  /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.
    */

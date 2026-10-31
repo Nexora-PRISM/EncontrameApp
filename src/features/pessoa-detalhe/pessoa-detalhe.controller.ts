@@ -603,6 +603,9 @@ export function usePessoaDetalheController() {
     /** Rede de busca: sugerir uma região para divulgar (EXPO_PUBLIC_ENABLE_SEARCH_NETWORK). */
     canSuggestRegion: env.searchNetworkEnabled && !isLocalPerson,
     openRegionSuggestion: () => router.push(`/pessoa/${id}/sugerir-regiao` as Href),
+    /** Central de Inteligência: pista confidencial (a identidade fica separada da pista). */
+    canSendConfidential: env.confidentialTipsEnabled && !isLocalPersonId(id),
+    openConfidentialTip: () => router.push(`/pista-confidencial?caso=${encodeURIComponent(id)}` as Href),
     closeHistory: () => setHistoryOpen(false),
     useCurrentLocation,
     submitSighting,

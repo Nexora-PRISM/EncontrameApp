@@ -168,6 +168,17 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
               },
             ]
           : []),
+        ...(env.confidentialTipsEnabled
+          ? [
+              {
+                key: 'confidential-tip',
+                label: t('Enviar informação confidencial'),
+                icon: 'shield-lock-outline' as const,
+                color: brand.categoryAll,
+                onPress: controller.goToConfidentialTip,
+              },
+            ]
+          : []),
         {
           key: 'safety-note',
           label: t('Avisar sobre um lugar perigoso'),

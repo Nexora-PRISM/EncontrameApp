@@ -2301,4 +2301,384 @@ export const es: Readonly<Record<string, string>> = {
   'Ler o texto completo do pedido': 'Leer el texto completo del pedido',
   'Ex.: gravações guardadas em um pendrive': 'Ej.: grabaciones guardadas en un pendrive',
   'Histórico do pedido': 'Historial del pedido',
+  // Evolução — Central de Inteligência
+  'Posso enviar uma informação sem me expor?': '¿Puedo enviar una información sin exponerme?',
+  'Sim. No menu ou na página do caso, toque em "Enviar informação confidencial". Sua identidade nunca aparece na área pública e fica guardada separada da informação; só pessoas autorizadas podem abri-la, e cada acesso fica registrado. Você pode escolher não ser contatado. Não é anonimato absoluto: o servidor guarda dados técnicos de acesso exigidos por lei, e a Justiça pode pedir esses dados. Em caso de risco agora, ligue 190.':
+    'Sí. En el menú o en la página del caso, toca "Enviar información confidencial". Tu identidad nunca aparece en el área pública y se guarda separada de la información; solo personas autorizadas pueden abrirla, y cada acceso queda registrado. Puedes elegir no ser contactado. No es anonimato absoluto: el servidor guarda datos técnicos de acceso exigidos por ley, y la Justicia puede pedir esos datos. Si hay riesgo ahora, llama al 190.',
+  'confidencial denúncia anônimo sigilo testemunha pista':
+    'confidencial denuncia anónimo secreto testigo pista',
+  'Diga o que precisa acessar e por quê (pelo menos 15 letras).':
+    'Di qué necesitas acceder y por qué (al menos 15 letras).',
+  'Pedido {id} registrado. O acesso só é liberado depois da aprovação de quem responde pelos dados, por tempo limitado e com registro.':
+    'Pedido {id} registrado. El acceso solo se habilita después de la aprobación de quien responde por los datos, por tiempo limitado y con registro.',
+  'Cronologia': 'Cronología',
+  'Pistas': 'Pistas',
+  'Arquivos': 'Archivos',
+  'Mobilização': 'Movilización',
+  'Encerramento': 'Cierre',
+  'Confirme o segundo fator (autenticação em dois fatores) para fazer isto.':
+    'Confirma el segundo factor (autenticación en dos pasos) para hacer esto.',
+  'Preencha fundamento, referência do pedido, escopo e a data final (dd/mm/aaaa).':
+    'Completa el fundamento, la referencia del pedido, el alcance y la fecha final (dd/mm/aaaa).',
+  'Encerrar o caso?': '¿Cerrar el caso?',
+  'Os alertas e a mobilização param, a página pública passa a mostrar só a situação, e os registros ficam preservados.':
+    'Las alertas y la movilización se detienen, la página pública pasa a mostrar solo la situación, y los registros quedan preservados.',
+  'Use o computador': 'Usa la computadora',
+  'A geração do pacote funciona na versão web do app, num computador.':
+    'La generación del paquete funciona en la versión web de la app, en una computadora.',
+  'Gerar o pacote?': '¿Generar el paquete?',
+  'A exportação fica registrada com finalidade, fundamento, destinatário e quem autorizou. Nada é enviado automaticamente: você entrega o arquivo pelo canal combinado.':
+    'La exportación queda registrada con finalidad, fundamento, destinatario y quién la autorizó. No se envía nada automáticamente: entregas el archivo por el canal acordado.',
+  'Gerar': 'Generar',
+  'Exportação não registrada': 'Exportación no registrada',
+  'O registro não foi confirmado, por isso o pacote não foi entregue. Tente de novo.':
+    'El registro no se confirmó, por eso el paquete no se entregó. Inténtalo de nuevo.',
+  'Não foi possível gerar o pacote': 'No se pudo generar el paquete',
+  'Eu ({name})': 'Yo ({name})',
+  'Eu': 'Yo',
+  '{name} (demonstração)': '{name} (demostración)',
+  'Demonstração: ver a Central como': 'Demostración: ver la Central como',
+  'Segundo fator confirmado (simulado)': 'Segundo factor confirmado (simulado)',
+  'Perfis fictícios. Na versão real, a função vem da conta, a habilitação é verificada pela equipe e o segundo fator é pedido a cada sessão.':
+    'Perfiles ficticios. En la versión real, la función viene de la cuenta, la habilitación la verifica el equipo y el segundo factor se pide en cada sesión.',
+  'Central de pistas': 'Central de pistas',
+  'A identidade de quem enviou cada pista fica guardada em separado. Abrir exige justificativa, segundo fator e fica registrado. Ela nunca aparece na área pública.':
+    'La identidad de quien envió cada pista se guarda por separado. Abrirla exige justificación y segundo factor, y queda registrado. Nunca aparece en el área pública.',
+  'Organização automática': 'Organización automática',
+  'Regras do app cruzam horário, lugar e texto das pistas. São sugestões para análise humana: não confirmam identidade nem apontam suspeitos.':
+    'Las reglas de la app cruzan horario, lugar y texto de las pistas. Son sugerencias para análisis humano: no confirman identidad ni señalan sospechosos.',
+  'Nenhuma relação encontrada.': 'Ninguna relación encontrada.',
+  '{minutes} min de diferença': '{minutes} min de diferencia',
+  'Hipótese de deslocamento: {ids}': 'Hipótesis de desplazamiento: {ids}',
+  'Relato não verificado': 'Relato no verificado',
+  'Aconteceu por volta de {date}': 'Ocurrió alrededor de {date}',
+  'Horário não informado': 'Horario no informado',
+  'Identidade (sigilosa)': 'Identidad (confidencial)',
+  'Sem nome informado': 'Sin nombre informado',
+  'Este acesso ficou registrado na auditoria. Não copie para outros sistemas.':
+    'Este acceso quedó registrado en la auditoría. No lo copies a otros sistemas.',
+  'Quem enviou deixou contato. A identidade está guardada em separado.':
+    'Quien la envió dejó un contacto. La identidad está guardada por separado.',
+  'Enviada sem identificação.': 'Enviada sin identificación.',
+  'Abrir identidade (fica registrado)': 'Abrir identidad (queda registrado)',
+  'Preservação de informações': 'Preservación de información',
+  'Com pedido formal e fundamento legal, os registros do caso ficam preservados: originais, origem, datas, histórico de alterações e quem consultou, exportou ou compartilhou.':
+    'Con pedido formal y fundamento legal, los registros del caso quedan preservados: originales, origen, fechas, historial de cambios y quién consultó, exportó o compartió.',
+  'Nenhuma preservação registrada.': 'Ninguna preservación registrada.',
+  'Ativa': 'Activa',
+  'Vencida': 'Vencida',
+  'Liberada': 'Liberada',
+  'Pedida em {date} por {name}': 'Pedida el {date} por {name}',
+  'até {date}': 'hasta {date}',
+  'Registrar preservação': 'Registrar preservación',
+  'Fundamento': 'Fundamento',
+  'Referência do pedido (ofício, processo)': 'Referencia del pedido (oficio, proceso)',
+  'O que preservar': 'Qué preservar',
+  'Preservar até': 'Preservar hasta',
+  'Mobilização geográfica': 'Movilización geográfica',
+  'Alertas só para quem autorizou e está dentro de uma área ativa, no máximo {perDay} por dia e com pelo menos {gap} horas entre alertas do mesmo caso. Ninguém é rastreado: o servidor só compara a área com a localização que a pessoa permitiu usar. Os alertas param sozinhos quando o caso é encerrado.':
+    'Alertas solo para quien las autorizó y está dentro de un área activa, como máximo {perDay} por día y con al menos {gap} horas entre alertas del mismo caso. Nadie es rastreado: el servidor solo compara el área con la ubicación que la persona permitió usar. Las alertas se detienen solas cuando se cierra el caso.',
+  'Motivo: {text}': 'Motivo: {text}',
+  'Ampliar para {distance}': 'Ampliar a {distance}',
+  'Retomar': 'Reanudar',
+  'Protocolo de encerramento': 'Protocolo de cierre',
+  'Encerrado em {date} por {name}.': 'Cerrado el {date} por {name}.',
+  'Na área pública fica só "Pessoa localizada". Foto, último local, endereço, destino e condição da pessoa não são divulgados.':
+    'En el área pública queda solo "Persona localizada". Foto, último lugar, dirección, destino y condición de la persona no se divulgan.',
+  'Na área pública fica só "Caso encerrado". Foto, último local e detalhes não são divulgados.':
+    'En el área pública queda solo "Caso cerrado". Foto, último lugar y detalles no se divulgan.',
+  'Ao encerrar, estes passos acontecem juntos:': 'Al cerrar, estos pasos ocurren juntos:',
+  'Encontrar a pessoa não autoriza divulgar endereço, destino, condição pessoal ou outras informações privadas.':
+    'Encontrar a la persona no autoriza a divulgar dirección, destino, condición personal u otra información privada.',
+  'Resultado': 'Resultado',
+  'Pessoa localizada': 'Persona localizada',
+  'Encerramento administrativo (sem localização)': 'Cierre administrativo (sin localización)',
+  'Encerrar o caso': 'Cerrar el caso',
+  'Só a administração institucional encerra casos.':
+    'Solo la administración institucional cierra casos.',
+  'Ex.: requisição do delegado responsável, ofício nº…':
+    'Ej.: requerimiento del comisario responsable, oficio n.º…',
+  'Preservações ativas': 'Preservaciones activas',
+  'Ligações com outros módulos': 'Vínculos con otros módulos',
+  'Operação de câmeras {id} (Vision)': 'Operación de cámaras {id} (Vision)',
+  'Relatos de avistamento: {ids}': 'Relatos de avistamiento: {ids}',
+  'Cada registro guarda a sua origem. A mesma informação vinda de módulos diferentes aparece uma vez só.':
+    'Cada registro guarda su origen. La misma información que viene de módulos diferentes aparece una sola vez.',
+  'Exportar dossiê para autoridades': 'Exportar expediente a las autoridades',
+  'Tudo': 'Todo',
+  'Origem: {origin}': 'Origen: {origin}',
+  'Arquivos do caso': 'Archivos del caso',
+  'Os arquivos originais nunca são alterados. Organização, visualização e exportação usam cópias controladas, e cada passo fica no histórico de custódia.':
+    'Los archivos originales nunca se modifican. Organización, visualización y exportación usan copias controladas, y cada paso queda en el historial de custodia.',
+  'recebido em {date}': 'recibido el {date}',
+  '{size} bytes': '{size} bytes',
+  'O prazo de guarda mostrado é provisório (demonstração). A política real de retenção e descarte é decisão dos sócios e do jurídico.':
+    'El plazo de guarda mostrado es provisorio (demostración). La política real de retención y descarte la deciden los socios y el área jurídica.',
+  'Providências': 'Medidas tomadas',
+  'Exportações': 'Exportaciones',
+  'Nenhuma exportação.': 'Ninguna exportación.',
+  'autorizado por {name}': 'autorizado por {name}',
+  'Finalidade: {text}': 'Finalidad: {text}',
+  'Manifesto (SHA-256): {hash}': 'Manifiesto (SHA-256): {hash}',
+  'vence {date}': 'vence {date}',
+  'simulado: não funciona sem a API': 'simulado: no funciona sin la API',
+  'Revogar': 'Revocar',
+  'Link seguro por {hours} h': 'Enlace seguro por {hours} h',
+  'Link seguro exige a API: o pacote fica no servidor, o acesso pede autenticação, cada download fica registrado e o link pode ser revogado. Nada é enviado automaticamente.':
+    'El enlace seguro exige la API: el paquete queda en el servidor, el acceso pide autenticación, cada descarga queda registrada y el enlace se puede revocar. No se envía nada automáticamente.',
+  'Este arquivo não é um manifesto do Encontra-me (manifesto-integridade.json).':
+    'Este archivo no es un manifiesto de Encontra-me (manifesto-integridade.json).',
+  'Enviar informação confidencial': 'Enviar información confidencial',
+  'Central de Inteligência': 'Central de Inteligencia',
+  'Ambiente para autoridades habilitadas. O acesso é verificado e registrado.':
+    'Entorno para autoridades habilitadas. El acceso se verifica y se registra.',
+  'Informação sensível': 'Información sensible',
+  'Público': 'Público',
+  'Analista institucional': 'Analista institucional',
+  'Administração institucional': 'Administración institucional',
+  'Consultar dossiês': 'Consultar expedientes',
+  'Registrar anotação': 'Registrar anotación',
+  'Analisar pista': 'Analizar pista',
+  'Abrir identidade de quem enviou a pista': 'Abrir la identidad de quien envió la pista',
+  'Ajustar a mobilização': 'Ajustar la movilización',
+  'Exportar dossiê': 'Exportar expediente',
+  'Autorizar exportação': 'Autorizar exportación',
+  'Criar ou revogar link seguro': 'Crear o revocar enlace seguro',
+  'Encerrar caso': 'Cerrar caso',
+  'Ver a saúde técnica': 'Ver la salud técnica',
+  'Pedir acesso excepcional': 'Pedir acceso excepcional',
+  'Pista confidencial recebida': 'Pista confidencial recibida',
+  'Pacote de exportação gerado': 'Paquete de exportación generado',
+  'Arquivo recebido': 'Archivo recibido',
+  'Fato documentado': 'Hecho documentado',
+  'Em busca': 'En búsqueda',
+  'Localizada': 'Localizada',
+  'Nova': 'Nueva',
+  'Relevante': 'Relevante',
+  'Não confirmada': 'No confirmada',
+  'Repetida': 'Repetida',
+  'Pista confidencial': 'Pista confidencial',
+  'Telefone da equipe': 'Teléfono del equipo',
+  'Câmera (Vision)': 'Cámara (Vision)',
+  'Podem estar ligadas (perto no tempo e no lugar)':
+    'Pueden estar relacionadas (cerca en tiempo y lugar)',
+  'Parecem repetidas': 'Parecen repetidas',
+  'Divergem: lugares distantes quase no mesmo horário':
+    'Divergen: lugares distantes casi a la misma hora',
+  'Comum': 'Común',
+  'Dados pessoais': 'Datos personales',
+  'Sigiloso': 'Confidencial',
+  'Identidade de testemunha': 'Identidad de testigo',
+  'Requisição de autoridade competente': 'Requerimiento de autoridad competente',
+  'Ordem judicial': 'Orden judicial',
+  'Pedido ou consentimento da família': 'Pedido o consentimiento de la familia',
+  'Proteção da vida ou da integridade física':
+    'Protección de la vida o de la integridad física',
+  'Descreva a finalidade (pelo menos 15 letras).':
+    'Describe la finalidad (al menos 15 letras).',
+  'Escolha o fundamento.': 'Elige el fundamento.',
+  'Informe a instituição e o nome de quem recebe.':
+    'Indica la institución y el nombre de quien recibe.',
+  'Use um e-mail institucional (.gov.br, .jus.br, .mp.br, .def.br, .leg.br ou .mil.br).':
+    'Usa un correo institucional (.gov.br, .jus.br, .mp.br, .def.br, .leg.br o .mil.br).',
+  'Confirme o destinatário por canal oficial antes de exportar.':
+    'Confirma el destinatario por un canal oficial antes de exportar.',
+  'Informe quem autorizou.': 'Indica quién autorizó.',
+  'Identidade de testemunha ou documento sigiloso exige autorização de outra pessoa.':
+    'Identidad de testigo o documento confidencial exige autorización de otra persona.',
+  'Escolha pelo menos um item.': 'Elige al menos un ítem.',
+  'Conte com um pouco mais de detalhe (pelo menos 20 letras).':
+    'Cuenta con un poco más de detalle (al menos 20 letras).',
+  'Informe um contato válido ou escolha "Não quero ser contatado".':
+    'Indica un contacto válido o elige "No quiero ser contactado".',
+  'Marque que você leu como funciona a confidencialidade.':
+    'Marca que leíste cómo funciona la confidencialidad.',
+  'Não quero ser contatado': 'No quiero ser contactado',
+  'Pela minha conta no app': 'Por mi cuenta en la app',
+  'Por telefone': 'Por teléfono',
+  'Por e-mail': 'Por correo',
+  'Situação do caso atualizada': 'Situación del caso actualizada',
+  'Notificações de busca interrompidas': 'Notificaciones de búsqueda detenidas',
+  'Áreas de mobilização encerradas': 'Áreas de movilización cerradas',
+  'Página pública e cartaz atualizados': 'Página pública y cartel actualizados',
+  'Alertas antigos marcados como encerrados': 'Alertas antiguas marcadas como cerradas',
+  'Registros preservados conforme prazos e pedidos legais':
+    'Registros preservados según plazos y pedidos legales',
+  'Foto, último local e detalhes retirados da área pública':
+    'Foto, último lugar y detalles retirados del área pública',
+  'Histórico de mudanças mantido': 'Historial de cambios mantenido',
+  'Encerramento administrativo registrado': 'Cierre administrativo registrado',
+  'Pausada': 'Pausada',
+  'Funcionando': 'Funcionando',
+  'Lento ou instável': 'Lento o inestable',
+  'Fora do ar': 'Fuera de servicio',
+  'Não conectado': 'No conectado',
+  'Dentro do prazo de guarda': 'Dentro del plazo de guarda',
+  'Guarda legal (preservação ativa)': 'Guarda legal (preservación activa)',
+  'Prazo vencido: revisar descarte seguro': 'Plazo vencido: revisar descarte seguro',
+  'Foto atual': 'Foto actual',
+  'Foto antiga': 'Foto antigua',
+  'Documento': 'Documento',
+  'Vídeo': 'Video',
+  'Outro arquivo': 'Otro archivo',
+  'Ativo': 'Activo',
+  'Vencido': 'Vencido',
+  'Revogado': 'Revocado',
+  'Central técnica': 'Central técnica',
+  'A Central de Inteligência ainda não está disponível.':
+    'La Central de Inteligencia todavía no está disponible.',
+  'Só a equipe técnica da Nexora Prism acessa esta área.':
+    'Solo el equipo técnico de Nexora Prism accede a esta área.',
+  'Não foi possível carregar a saúde do sistema.': 'No se pudo cargar la salud del sistema.',
+  'Dados de demonstração: os estados abaixo são simulados.':
+    'Datos de demostración: los estados de abajo son simulados.',
+  'Esta área mostra o funcionamento da plataforma, nunca o conteúdo dos dossiês, pistas ou gravações. Os registros técnicos chegam sem dados pessoais.':
+    'Esta área muestra el funcionamiento de la plataforma, nunca el contenido de expedientes, pistas o grabaciones. Los registros técnicos llegan sin datos personales.',
+  'Disponibilidade': 'Disponibilidad',
+  'Conferido em {date}': 'Verificado el {date}',
+  'Alertas de segurança': 'Alertas de seguridad',
+  'Registros técnicos (sem conteúdo dos casos)':
+    'Registros técnicos (sin contenido de los casos)',
+  'Integrações': 'Integraciones',
+  'Acesso excepcional a conteúdo': 'Acceso excepcional a contenido',
+  'Só em último caso (por exemplo, para corrigir um arquivo corrompido). O pedido precisa de aprovação de quem responde pelos dados, vale por tempo limitado e fica registrado.':
+    'Solo como último recurso (por ejemplo, para corregir un archivo dañado). El pedido necesita la aprobación de quien responde por los datos, vale por tiempo limitado y queda registrado.',
+  'O que precisa acessar': 'Qué necesitas acceder',
+  'Auditoria da Central': 'Auditoría de la Central',
+  'Só a administração institucional e a auditoria veem este registro.':
+    'Solo la administración institucional y la auditoría ven este registro.',
+  'Corrente íntegra: {count} registros conferidos. Cada registro guarda o hash do anterior; qualquer alteração ou remoção aparece aqui.':
+    'Cadena íntegra: {count} registros verificados. Cada registro guarda el hash del anterior; cualquier cambio o eliminación aparece aquí.',
+  'Corrente quebrada a partir do registro {seq}: algum registro foi alterado, removido ou fora de ordem.':
+    'Cadena rota a partir del registro {seq}: algún registro fue modificado, eliminado o desordenado.',
+  'Teste: simular alteração de um registro (só nesta tela)':
+    'Prueba: simular el cambio de un registro (solo en esta pantalla)',
+  'Só a administração institucional exporta dossiês.':
+    'Solo la administración institucional exporta expedientes.',
+  'Pacote gerado e exportação registrada': 'Paquete generado y exportación registrada',
+  'Registro: {id} em {date}': 'Registro: {id} el {date}',
+  'Modo de demonstração: o registro é fictício e fica só neste aparelho.':
+    'Modo de demostración: el registro es ficticio y queda solo en este dispositivo.',
+  'Arquivo: {name} ({count} arquivos dentro)': 'Archivo: {name} ({count} archivos dentro)',
+  'SHA-256 do manifesto: {hash}': 'SHA-256 del manifiesto: {hash}',
+  'Senha do pacote (mostrada só agora)': 'Contraseña del paquete (mostrada solo ahora)',
+  'Envie a senha por outro canal (telefone ou mensagem separada), nunca junto com o arquivo. O destinatário abre o arquivo .html no navegador e digita a senha.':
+    'Envía la contraseña por otro canal (teléfono o mensaje separado), nunca junto con el archivo. El destinatario abre el archivo .html en el navegador y escribe la contraseña.',
+  'O relatório abriu numa nova janela: escolha "Salvar como PDF" na impressão.':
+    'El informe se abrió en una ventana nueva: elige "Guardar como PDF" al imprimir.',
+  'Nada foi enviado automaticamente. Entregue o arquivo pelo canal combinado com a autoridade.':
+    'No se envió nada automáticamente. Entrega el archivo por el canal acordado con la autoridad.',
+  'O SHA-256 permite conferir se cada arquivo continua igual ao que foi registrado. Ele não certifica, sozinho, a autenticidade ou a veracidade do conteúdo.':
+    'El SHA-256 permite verificar si cada archivo sigue igual al registrado. Por sí solo, no certifica la autenticidad ni la veracidad del contenido.',
+  'Baixar o manifesto (texto)': 'Descargar el manifiesto (texto)',
+  'Gerar outro pacote': 'Generar otro paquete',
+  'Voltar ao dossiê': 'Volver al expediente',
+  'Exportar exige o segundo fator confirmado nesta sessão.':
+    'Exportar exige el segundo factor confirmado en esta sesión.',
+  'A geração do pacote funciona na versão web do app, num computador. Aqui dá para revisar a seleção.':
+    'La generación del paquete funciona en la versión web de la app, en una computadora. Aquí puedes revisar la selección.',
+  '1. O que vai no pacote': '1. Qué va en el paquete',
+  'Começa com a opção mais protetora: identidade de testemunhas e documentos sigilosos ficam de fora, e dados pessoais (CPF, telefone, e-mail, CEP, placa) são ocultados nos textos. Nomes não são detectados: revise.':
+    'Empieza con la opción más protectora: la identidad de testigos y los documentos confidenciales quedan fuera, y los datos personales (CPF, teléfono, correo, código postal, matrícula) se ocultan en los textos. Los nombres no se detectan: revísalos.',
+  'Ocultar dados pessoais': 'Ocultar datos personales',
+  'Ocultar dados pessoais (gera cópia controlada; o original não muda)':
+    'Ocultar datos personales (genera una copia controlada; el original no cambia)',
+  '2. Para quem e por quê': '2. Para quién y por qué',
+  'Finalidade': 'Finalidad',
+  'Instituição destinatária': 'Institución destinataria',
+  'Nome de quem recebe': 'Nombre de quien recibe',
+  'E-mail institucional de quem recebe': 'Correo institucional de quien recibe',
+  'Destinatário confirmado por canal oficial': 'Destinatario confirmado por canal oficial',
+  'Confirmei o destinatário por canal oficial (telefone do órgão, ofício ou sistema da instituição).':
+    'Confirmé el destinatario por un canal oficial (teléfono del organismo, oficio o sistema de la institución).',
+  '3. Quem autoriza': '3. Quién autoriza',
+  'Você incluiu identidade de testemunha ou documento sigiloso: a exportação precisa da autorização de outra pessoa da administração.':
+    'Incluiste identidad de testigo o documento confidencial: la exportación necesita la autorización de otra persona de la administración.',
+  'Autorizado por': 'Autorizado por',
+  '4. Como entregar': '4. Cómo entregar',
+  'Formato da entrega': 'Formato de entrega',
+  'Pacote criptografado (recomendado)': 'Paquete cifrado (recomendado)',
+  'Arquivo .html protegido por senha (AES-256). A senha aparece uma vez e vai por outro canal.':
+    'Archivo .html protegido con contraseña (AES-256). La contraseña aparece una vez y va por otro canal.',
+  'Baixar o ZIP sem senha': 'Descargar el ZIP sin contraseña',
+  'Relatórios, anexos, índice e manifesto SHA-256. Use só em canal seguro.':
+    'Informes, anexos, índice y manifiesto SHA-256. Úsalo solo en un canal seguro.',
+  'Relatório institucional em PDF': 'Informe institucional en PDF',
+  'Abre o relatório para imprimir ou salvar em PDF.':
+    'Abre el informe para imprimir o guardar en PDF.',
+  'Link seguro com prazo, autenticação e revogação: depois de registrar, no histórico do dossiê (precisa da API).':
+    'Enlace seguro con plazo, autenticación y revocación: después de registrar, en el historial del expediente (necesita la API).',
+  'Gerar e registrar a exportação': 'Generar y registrar la exportación',
+  'Dossiê {id}': 'Expediente {id}',
+  'Não foi possível carregar o dossiê.': 'No se pudo cargar el expediente.',
+  'Sua função: {role}': 'Tu función: {role}',
+  'Fatos documentados, relatos não verificados e hipóteses aparecem separados. Nada aqui identifica suspeitos ou substitui a decisão das autoridades.':
+    'Hechos documentados, relatos no verificados e hipótesis aparecen separados. Nada aquí identifica sospechosos ni sustituye la decisión de las autoridades.',
+  'Dossiês': 'Expedientes',
+  'Não foi possível carregar os dossiês.': 'No se pudieron cargar los expedientes.',
+  'Nenhum dossiê.': 'Ningún expediente.',
+  '{count} pistas para analisar': '{count} pistas para analizar',
+  'A equipe técnica não tem acesso automático aos dossiês. Um acesso excepcional precisa de pedido justificado, aprovação e registro.':
+    'El equipo técnico no tiene acceso automático a los expedientes. Un acceso excepcional necesita pedido justificado, aprobación y registro.',
+  'A auditoria vê quem acessou o quê, sem abrir os dossiês.':
+    'La auditoría ve quién accedió a qué, sin abrir los expedientes.',
+  'Esta área é só para autoridades e profissionais habilitados. A habilitação é verificada pela equipe; dizer que é autoridade não libera nada.':
+    'Esta área es solo para autoridades y profesionales habilitados. La habilitación la verifica el equipo; decir que eres autoridad no habilita nada.',
+  'Ambientes e ferramentas': 'Entornos y herramientas',
+  'Operações de câmeras (Vision)': 'Operaciones de cámaras (Vision)',
+  'Auditoria (registro encadeado)': 'Auditoría (registro encadenado)',
+  'Verificar integridade de um pacote': 'Verificar la integridad de un paquete',
+  'Central técnica (Nexora Prism)': 'Central técnica (Nexora Prism)',
+  'Segurança e governança': 'Seguridad y gobernanza',
+  'Dependem da API: nada disso está ligado de verdade ainda.':
+    'Dependen de la API: nada de esto está activado de verdad todavía.',
+  'Autenticação em dois fatores': 'Autenticación en dos pasos',
+  'Sessões ativas e encerramento remoto': 'Sesiones activas y cierre remoto',
+  'Permissões individuais por função': 'Permisos individuales por función',
+  'Política de retenção e descarte': 'Política de retención y descarte',
+  'Resposta a incidentes de segurança': 'Respuesta a incidentes de seguridad',
+  'Informação confidencial': 'Información confidencial',
+  'O envio de informação confidencial ainda não está disponível. Em caso de emergência, ligue 190.':
+    'El envío de información confidencial todavía no está disponible. En caso de emergencia, llama al 190.',
+  'Número de protocolo: {id}': 'Número de protocolo: {id}',
+  'A equipe analisa antes de qualquer uso. Guarde o número de protocolo.':
+    'El equipo la analiza antes de cualquier uso. Guarda el número de protocolo.',
+  'O app não avisa a polícia sozinho. Se houver risco agora, ligue 190.':
+    'La app no avisa a la policía sola. Si hay riesgo ahora, llama al 190.',
+  'Enviar outra informação': 'Enviar otra información',
+  'Sua identidade nunca aparece na área pública e fica guardada separada da informação. Só pessoas autorizadas podem abri-la, e cada acesso fica registrado. Não é anonimato absoluto: o servidor guarda dados técnicos de acesso exigidos por lei, e a Justiça pode pedir esses dados.':
+    'Tu identidad nunca aparece en el área pública y se guarda separada de la información. Solo personas autorizadas pueden abrirla, y cada acceso queda registrado. No es anonimato absoluto: el servidor guarda datos técnicos de acceso exigidos por ley, y la Justicia puede pedir esos datos.',
+  'Sobre o caso {id}': 'Sobre el caso {id}',
+  'O que você sabe': 'Lo que sabes',
+  'Ex.: vi uma pessoa parecida perto do ponto de ônibus, por volta das 18h.':
+    'Ej.: vi a una persona parecida cerca de la parada de autobús, alrededor de las 18 h.',
+  'Parece que o texto tem telefone, e-mail ou documento. Para sua proteção, use o campo de contato abaixo e tire esses dados do texto.':
+    'Parece que el texto tiene teléfono, correo o documento. Para tu protección, usa el campo de contacto de abajo y quita esos datos del texto.',
+  'Quando aconteceu (opcional)': 'Cuándo ocurrió (opcional)',
+  'Ex.: ontem, por volta das 18h': 'Ej.: ayer, alrededor de las 18 h',
+  'Onde (opcional)': 'Dónde (opcional)',
+  'Ex.: praça perto da padaria': 'Ej.: plaza cerca de la panadería',
+  'A equipe pode falar com você?': '¿El equipo puede hablar contigo?',
+  'Como podemos chamar você (opcional)': 'Cómo podemos llamarte (opcional)',
+  'Li como funciona a confidencialidade': 'Leí cómo funciona la confidencialidad',
+  'Li como funciona a confidencialidade e entendo que informação falsa atrapalha a busca.':
+    'Leí cómo funciona la confidencialidad y entiendo que la información falsa perjudica la búsqueda.',
+  'Enviar informação': 'Enviar información',
+  'Não vá atrás da pessoa nem de suspeitos. Se houver risco agora, ligue 190.':
+    'No vayas tras la persona ni tras sospechosos. Si hay riesgo ahora, llama al 190.',
+  'Verificar integridade': 'Verificar integridad',
+  'Para quem recebeu um pacote do Encontra-me: confira se cada arquivo continua igual ao registrado no manifesto. O cálculo é feito neste computador; nada é enviado.':
+    'Para quien recibió un paquete de Encontra-me: verifica si cada archivo sigue igual al registrado en el manifiesto. El cálculo se hace en esta computadora; no se envía nada.',
+  'A verificação funciona na versão web do app, num computador.':
+    'La verificación funciona en la versión web de la app, en una computadora.',
+  '1. Escolher o manifesto (manifesto-integridade.json)':
+    '1. Elegir el manifiesto (manifesto-integridade.json)',
+  'Manifesto do caso {id}, com {count} arquivos.':
+    'Manifiesto del caso {id}, con {count} archivos.',
+  '2. Escolher os arquivos para conferir': '2. Elegir los archivos para verificar',
+  'Confere com o manifesto': 'Coincide con el manifiesto',
+  'Diferente do manifesto: o arquivo mudou': 'Diferente del manifiesto: el archivo cambió',
+  'Não está no manifesto': 'No está en el manifiesto',
+  'Escolha o manifesto para comparar.': 'Elige el manifiesto para comparar.',
+  'Limpar': 'Limpiar',
 };

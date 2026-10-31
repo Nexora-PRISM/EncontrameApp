@@ -34,7 +34,7 @@ export type HelpArticle = {
   /** Palavras extras para a busca (sinônimos). */
   keywords?: string;
   /** Só aparece quando o recurso está ligado neste aplicativo (ver lib/env.ts). */
-  requires?: 'sightingReports' | 'volunteers' | 'vision';
+  requires?: 'sightingReports' | 'volunteers' | 'vision' | 'confidentialTips';
 };
 
 /** Recursos que dependem de variável de ambiente: a ajuda só fala deles quando estão ligados. */
@@ -42,6 +42,7 @@ const FEATURE_ENABLED: Record<NonNullable<HelpArticle['requires']>, boolean> = {
   sightingReports: env.sightingReportsEnabled,
   volunteers: env.volunteersEnabled,
   vision: env.visionEnabled,
+  confidentialTips: env.confidentialTipsEnabled,
 };
 
 export const HELP_CATEGORIES: HelpCategory[] = [
@@ -260,6 +261,15 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
       msg('É uma rede de câmeras participantes: moradores, comércios, condomínios e instituições cadastram suas câmeras para ajudar nas buscas. No menu, "Rede de câmeras" mostra só as regiões com mais ou menos cobertura — ninguém assiste a gravações nem vê onde ficam as câmeras. Quem tem câmera pode cadastrá-la e decide cada pedido de preservação de imagens, podendo pausar ou sair quando quiser. As gravações só são analisadas por autoridades habilitadas, com justificativa e registro. A análise compara roupas e acessórios, nunca o rosto, e semelhança não confirma que a pessoa foi encontrada.'),
     keywords: msg('câmera câmeras vision rede gravação imagens preservação'),
     requires: 'vision',
+  },
+  {
+    id: 'pista-confidencial',
+    category: 'relatos',
+    question: msg('Posso enviar uma informação sem me expor?'),
+    answer:
+      msg('Sim. No menu ou na página do caso, toque em "Enviar informação confidencial". Sua identidade nunca aparece na área pública e fica guardada separada da informação; só pessoas autorizadas podem abri-la, e cada acesso fica registrado. Você pode escolher não ser contatado. Não é anonimato absoluto: o servidor guarda dados técnicos de acesso exigidos por lei, e a Justiça pode pedir esses dados. Em caso de risco agora, ligue 190.'),
+    keywords: msg('confidencial denúncia anônimo sigilo testemunha pista'),
+    requires: 'confidentialTips',
   },
   {
     id: 'central-apoio',
