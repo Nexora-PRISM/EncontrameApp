@@ -9,6 +9,7 @@ import { ContentShell } from '@/components/content-shell';
 import { ScreenHeader } from '@/components/screen-header';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { useCentralApoioController } from '@/features/central-apoio/central-apoio.controller';
+import { CentralApoioPoliceSection } from '@/features/central-apoio/sections/central-apoio-police-section';
 import { SUPPORT_CHECKLIST, SUPPORT_SECTIONS } from '@/features/central-apoio/support-content';
 import { useBrand } from '@/lib/brand-theme';
 import { useT } from '@/lib/i18n';
@@ -45,6 +46,8 @@ export default function CentralApoioPage() {
               ))}
             </View>
           ))}
+
+          <CentralApoioPoliceSection controller={c} />
 
           <View style={styles.card}>
             <View style={styles.cardHead}>
