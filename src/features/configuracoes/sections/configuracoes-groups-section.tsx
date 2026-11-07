@@ -161,6 +161,14 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           description={t('O app pergunta se você chegou no horário combinado. Sem rastreamento.')}
           onPress={c.goToSafeArrival}
         />
+        {c.tripSharingEnabled && c.loggedIn ? (
+          <SettingsRow
+            icon="map-marker-path"
+            label={t('Compartilhar meu trajeto')}
+            description={t('Contatos que você escolhe acompanham até você chegar. Só com o seu consentimento.')}
+            onPress={c.goToTrips}
+          />
+        ) : null}
         {c.shortcutAvailability !== 'available' ? (
           <SettingsRow
             icon="alarm-light-outline"
@@ -262,12 +270,27 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           value={c.notificationPrefs?.followedUpdates ?? false}
           onChange={c.toggleFollowedUpdates}
         />
-        <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
+        {c.tripSharingEnabled ? (
+          <RemoteNotificationRow
+            controller={c}
+            icon="map-marker-path"
+            label={t('Trajetos compartilhados')}
+            description={t('"Você chegou?", atrasos e Sinal de Alerta dos trajetos que você compartilha ou acompanha.')}
+            value={c.notificationPrefs?.tripSharing ?? false}
+            onChange={c.toggleTripSharing}
+          />
+        ) : (
+          <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
+        )}
       </SettingsGroup>
 
       <SettingsGroup
         title={t('Privacidade e localização')}
-        footer={t('O app usa sua localização só enquanto está aberto, para mostrar casos próximos, marcar avistamentos e, quando você pede, mandar sua localização a um contato.')}
+        footer={
+          c.tripSharingEnabled
+            ? t('O app usa sua localização com ele aberto, para mostrar casos próximos, marcar avistamentos e, quando você pede, mandar sua localização a um contato. Só quando você compartilha um trajeto ela é enviada aos contatos escolhidos, até você encerrar; com a tela desligada, apenas se você permitir.')
+            : t('O app usa sua localização só enquanto está aberto, para mostrar casos próximos, marcar avistamentos e, quando você pede, mandar sua localização a um contato.')
+        }
       >
         <SettingsRow
           icon="crosshairs-gps"

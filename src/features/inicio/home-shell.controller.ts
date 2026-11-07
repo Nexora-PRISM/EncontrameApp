@@ -123,6 +123,7 @@ export function useHomeShellController() {
     goToSupportCenter: () => goTo(() => router.push('/central-de-apoio' as Href)),
     /** Chegada segura: lembrete local no horário combinado, sem rastreamento. */
     goToSafeArrival: () => goTo(() => router.push('/chegada-segura' as Href)),
+    goToTrips: () => goTo(() => router.push('/trajeto' as Href)),
     /** Ficha de identificação (só neste aparelho). */
     goToIdSheets: () => goTo(() => router.push('/ficha' as Href)),
     /** Nossos apoiadores (EXPO_PUBLIC_ENABLE_SUPPORTERS). */

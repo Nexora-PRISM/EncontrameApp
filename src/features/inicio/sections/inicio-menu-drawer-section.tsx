@@ -213,6 +213,17 @@ export function InicioMenuDrawerSection({ controller }: InicioMenuDrawerSectionP
           color: brand.categoryAdult,
           onPress: controller.goToSafeArrival,
         },
+        ...(env.tripSharingEnabled
+          ? [
+              {
+                key: 'trip-sharing',
+                label: t('Trajeto compartilhado'),
+                icon: 'map-marker-path' as const,
+                color: brand.categoryChild,
+                onPress: controller.goToTrips,
+              },
+            ]
+          : []),
         {
           key: 'chat',
           label: t('Chat com a Sofia (IA)'),

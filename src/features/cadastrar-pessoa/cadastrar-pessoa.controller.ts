@@ -38,6 +38,7 @@ import {
   useSubmitLocalDraftMutation,
 } from '@/services/people/people.service';
 import type { CreatePersonPayload } from '@/services/people/people.types';
+import { useTripActions, useTripQuery } from '@/services/trips/trips.service';
 
 export { RELATIONSHIP_OPTIONS };
 
@@ -69,12 +70,19 @@ const API_FIELD_MAP = {
 export function useCadastrarPessoaController() {
   const t = useT();
   const router = useRouter();
-  const params = useLocalSearchParams<{ rascunho?: string | string[]; ficha?: string | string[] }>();
+  const params = useLocalSearchParams<{ rascunho?: string | string[]; ficha?: string | string[]; trajeto?: string | string[] }>();
   const rawDraftId = Array.isArray(params.rascunho) ? params.rascunho[0] : params.rascunho;
   const draftId = rawDraftId && isLocalPersonId(rawDraftId) ? rawDraftId : null;
   // `?ficha=<id local>`: começa com os dados da ficha de identificação guardada neste aparelho.
   const rawSheetId = Array.isArray(params.ficha) ? params.ficha[0] : params.ficha;
   const sheetId = !draftId && rawSheetId ? rawSheetId : null;
+  // `?trajeto=<id>`: contato de confiança comunicando o desaparecimento depois de um Sinal de Alerta. Só o id vai na
+  // rota; nome e último ponto vêm da API (que só responde a quem foi escolhido para acompanhar o trajeto).
+  const rawTripId = Array.isArray(params.trajeto) ? params.trajeto[0] : params.trajeto;
+  const tripId = !draftId && !sheetId && rawTripId && /^[A-Za-z0-9_-]{1,64}$/.test(rawTripId) ? rawTripId : null;
+  const tripQuery = useTripQuery(tripId);
+  const tripActions = useTripActions();
+  const [appliedTripId, setAppliedTripId] = useState<string | null>(null);
   const createMutation = useCreatePersonMutation();
   const submitDraftMutation = useSubmitLocalDraftMutation();
   const { errors, setErrors, setFieldCode, markDirty, isDirty, fieldError } = useFieldErrors();
@@ -111,6 +119,7 @@ export function useCadastrarPessoaController() {
   /** Ficha de identificação já aplicada ao formulário. */
   const appliedSheetRef = useRef<string | null>(null);
   const [fromSheet, setFromSheet] = useState(false);
+  const fromTrip = tripId != null && appliedTripId === tripId;
   const isMinor = isMinorAge(age);
   /** True quando o botão "Cadastrar" do formulário entra na área visível. */
   const [nearFormEnd, setNearFormEnd] = useState(false);
@@ -212,6 +221,19 @@ export function useCadastrarPessoaController() {
       cancelled = true;
     };
   }, [sheetId]);
+
+  // Trajeto: preenche uma vez, durante a renderização (sem efeito), com o nome da conta, a data e o último ponto.
+  const tripData = tripQuery.data;
+  if (tripId && tripData && tripData.role === 'watcher' && appliedTripId !== tripId) {
+    setAppliedTripId(tripId);
+    if (!fullName.trim()) setFullName(tripData.ownerName);
+    const seenAt = new Date(tripData.lastPoint?.recordedAt ?? tripData.startedAt);
+    if (!lastSeen && !Number.isNaN(seenAt.getTime())) {
+      const pad = (value: number) => String(value).padStart(2, '0');
+      setLastSeen(`${pad(seenAt.getDate())}/${pad(seenAt.getMonth() + 1)}/${seenAt.getFullYear()}`);
+    }
+    if (tripData.lastPoint) restoreCasePoint(tripData.lastPoint);
+  }
 
   const changeFullName = (value: string) => {
     setFullName(value);
@@ -528,11 +550,23 @@ export function useCadastrarPessoaController() {
       }
 
       const loggedIn = getSessionUser() != null;
-      await createMutation.mutateAsync(payload);
+      const created = await createMutation.mutateAsync(payload);
+      // Veio de um Sinal de Alerta: liga o cadastro ao alerta (a equipe vê os dois juntos).
+      let linkedToTrip = false;
+      if (tripId && loggedIn && created?.id) {
+        try {
+          await tripActions.linkCase.mutateAsync({ id: tripId, missingPersonId: created.id });
+          linkedToTrip = true;
+        } catch {
+          linkedToTrip = false;
+        }
+      }
       showAlert(
         t('Cadastro concluído'),
         loggedIn
-          ? t('A pessoa foi cadastrada com sucesso.')
+          ? linkedToTrip
+            ? t('A pessoa foi cadastrada e o cadastro foi ligado ao Sinal de Alerta do trajeto.')
+            : t('A pessoa foi cadastrada com sucesso.')
           : t('Cadastro salvo só neste aparelho. Para enviá-lo, entre na sua conta e toque em "Revisar e enviar" no próprio cadastro ou em Meu perfil.'),
       );
       router.replace('/inicio');
@@ -610,6 +644,8 @@ export function useCadastrarPessoaController() {
     reviewingDraft: draftId != null,
     /** Formulário começou com os dados de uma ficha de identificação (`?ficha=`). */
     fromSheet,
+    /** Formulário começou com os dados de um trajeto compartilhado (`?trajeto=`). */
+    fromTrip,
     draftLoading,
     nearFormEnd,
     updateSubmitVisibility,

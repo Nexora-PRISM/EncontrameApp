@@ -26,11 +26,30 @@ export type NotificationType =
   | 'followed-update'
   | 'pending-reminder'
   /** Chegada segura: lembrete local no horário combinado (nada vai ao servidor). */
-  | 'arrival-check';
+  | 'arrival-check'
+  /** Trajeto compartilhado (servidor): `data` leva só `{ type, tripId }`. */
+  | TripNotificationType;
+
+const TRIP_NOTIFICATION_TYPES = [
+  'trip-started',
+  'trip-updated',
+  'trip-arrived',
+  'trip-ended',
+  'trip-arrival-check',
+  'trip-overdue',
+  'trip-signal-lost',
+  'trip-alert-raised',
+  'trip-alert-owner',
+  'trip-alert-staff',
+  'trip-alert-closed',
+] as const;
+
+export type TripNotificationType = (typeof TRIP_NOTIFICATION_TYPES)[number];
 
 export interface NotificationData {
   type?: NotificationType;
   personId?: string;
+  tripId?: string;
 }
 
 let cachedModule: NotificationsModule | null | undefined;
@@ -143,11 +162,13 @@ const PERSON_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 /** Lê `data` da notificação sem confiar no formato (pode vir de qualquer envio). */
 export function parseNotificationData(raw: unknown): NotificationData {
   if (!raw || typeof raw !== 'object') return {};
-  const { type, personId } = raw as Record<string, unknown>;
+  const { type, personId, tripId } = raw as Record<string, unknown>;
   const id = typeof personId === 'number' ? String(personId) : personId;
+  const trip = typeof tripId === 'number' ? String(tripId) : tripId;
   return {
     type: isNotificationType(type) ? type : undefined,
     personId: typeof id === 'string' && PERSON_ID_PATTERN.test(id) ? id : undefined,
+    tripId: typeof trip === 'string' && PERSON_ID_PATTERN.test(trip) ? trip : undefined,
   };
 }
 
@@ -156,6 +177,8 @@ export function routeFromNotification(raw: unknown): Href | null {
   const data = parseNotificationData(raw);
   if (data.type === 'pending-reminder') return '/perfil' as Href;
   if (data.type === 'arrival-check') return '/chegada-segura' as Href;
+  if (data.type === 'trip-alert-staff') return '/equipe/trajetos' as Href;
+  if (data.type?.startsWith('trip-')) return (data.tripId ? `/trajeto/${data.tripId}` : '/trajeto') as Href;
   if (data.personId) return `/pessoa/${data.personId}` as Href;
   return null;
 }
@@ -166,6 +189,7 @@ function isNotificationType(value: unknown): value is NotificationType {
     value === 'region-new-case' ||
     value === 'followed-update' ||
     value === 'pending-reminder' ||
-    value === 'arrival-check'
+    value === 'arrival-check' ||
+    (TRIP_NOTIFICATION_TYPES as readonly unknown[]).includes(value)
   );
 }

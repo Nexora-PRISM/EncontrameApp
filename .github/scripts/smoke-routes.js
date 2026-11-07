@@ -207,6 +207,48 @@ async function check(page, errors, label, route, expect) {
       results.push({ label: 'chegada segura', ok: false, detail: error.message });
     }
 
+    // Trajeto compartilhado (dados fictícios): quem acompanha aciona o Sinal de Alerta; quem compartilha começa,
+    // pede mais tempo e confirma a chegada. Cada page.goto recarrega o app (o modo de demonstração volta ao início).
+    try {
+      await check(page, errors, 'chegada segura › compartilhar', '/chegada-segura', 'não acompanha você pelo mapa');
+      await tap(page, 'Compartilhar com contatos');
+      await check(page, errors, 'chegada segura › modo compartilhar', null, 'cada contato aceita um convite antes');
+
+      await check(page, errors, '/trajeto', '/trajeto', 'Pessoas compartilhando comigo');
+      await check(page, errors, 'trajeto › alerta de não chegada', null, 'Júlia (exemplo)');
+      await check(page, errors, '/trajeto/contatos', '/trajeto/contatos', 'Ana (exemplo)');
+      await check(page, errors, '/trajeto/convite', '/trajeto/convite/DEMQ2TRAJETX', 'Pessoa de exemplo quer que você acompanhe');
+      await check(page, errors, '/equipe/trajetos', '/equipe/trajetos', 'Nenhum alerta aberto.');
+
+      await check(page, errors, 'trajeto › quem acompanha', '/trajeto/1', 'Trajeto de Júlia (exemplo) para Casa');
+      // Atraso aparece como "ainda não confirmou a chegada", nunca como desaparecimento.
+      await check(page, errors, 'trajeto › atraso sem dizer "desapareceu"', null, 'Ainda não confirmou a chegada');
+      await tap(page, 'Acionar sinal de alerta');
+      await check(page, errors, 'trajeto › sinal de alerta', null, 'Acionar o Sinal de Alerta sobre Júlia (exemplo)');
+      await page.getByRole('checkbox', { name: 'Tentei falar com a pessoa e não consegui' }).click();
+      await page.getByLabel('Como e quando você tentou falar com ela?').fill('Liguei 3 vezes às 22h10 e mandei mensagem, sem resposta.');
+      await tap(page, 'Acionar sinal de alerta');
+      await check(page, errors, 'trajeto › alerta recebido (número e horário)', null, 'Sinal de Alerta nº 101 recebido às');
+      await tap(page, 'Voltar ao trajeto');
+      await check(page, errors, 'trajeto › alerta aberto', null, 'Sinal de Alerta aberto: com a equipe do Encontra-me');
+
+      await check(page, errors, 'cadastro a partir do trajeto', '/cadastrar-pessoa?trajeto=1', 'Dados do trajeto compartilhado');
+
+      await check(page, errors, '/trajeto/novo', '/trajeto/novo', 'De onde você sai?');
+      await page.getByLabel('De onde você sai?').fill('Trabalho Fumaça');
+      await page.getByLabel('Para onde você vai?').fill('Casa Fumaça');
+      await page.getByRole('checkbox', { name: 'Compartilhar com Ana (exemplo)' }).click();
+      await page.getByRole('checkbox', { name: 'Entendi e quero compartilhar este trajeto' }).click();
+      await tap(page, 'Começar a compartilhar');
+      await check(page, errors, 'trajeto › compartilhando', null, 'Seu trajeto para Casa Fumaça');
+      await check(page, errors, 'trajeto › quem acompanha (dono)', null, 'Acompanhando: Ana (exemplo).');
+      await tap(page, 'Ainda estou em deslocamento (+15 min)');
+      await tap(page, 'Sim, cheguei em segurança');
+      await check(page, errors, 'trajeto › chegada confirmada', null, 'Chegada confirmada às');
+    } catch (error) {
+      results.push({ label: 'trajeto compartilhado', ok: false, detail: error.message });
+    }
+
     // Central de Apoio: boletim pela internet por estado (link oficial) e direitos.
     try {
       await check(page, errors, 'central › direitos', '/central-de-apoio', 'Lei 13.812/2019, art. 3º');

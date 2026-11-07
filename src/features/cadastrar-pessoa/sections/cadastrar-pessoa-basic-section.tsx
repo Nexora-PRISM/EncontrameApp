@@ -39,6 +39,17 @@ export function CadastrarPessoaBasicSection({ controller }: CadastrarPessoaBasic
           </View>
         </View>
       ) : null}
+      {controller.fromTrip ? (
+        <View style={styles.notice} accessible accessibilityRole="summary">
+          <MaterialCommunityIcons name="map-marker-path" size={24} color={brand.blue} />
+          <View style={styles.noticeTexts}>
+            <Text style={styles.noticeTitle}>{t('Dados do trajeto compartilhado')}</Text>
+            <Text style={styles.noticeBody}>
+              {t('O nome da conta, a data e o último ponto registrado (arredondado) já estão no formulário. Confira e complete tudo. O cadastro passa pela análise da equipe antes de aparecer no app.')}
+            </Text>
+          </View>
+        </View>
+      ) : null}
       {controller.fromSheet ? (
         <View style={styles.notice} accessible accessibilityRole="summary">
           <MaterialCommunityIcons name="card-account-details-outline" size={24} color={brand.blue} />

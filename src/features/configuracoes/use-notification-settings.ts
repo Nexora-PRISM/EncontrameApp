@@ -101,7 +101,7 @@ export function useNotificationSettings(loggedIn: boolean) {
     })();
   };
 
-  const toggleRemote = (key: RemoteNotificationPref, next: boolean) => {
+  const toggleRemote = (key: RemoteNotificationPref | 'tripSharing', next: boolean) => {
     if (!prefs || availability !== 'available' || !env.pushEnabled || !loggedIn) return;
     void (async () => {
       setBusy(true);
@@ -157,7 +157,7 @@ export function useNotificationSettings(loggedIn: boolean) {
   };
 
   const anyOn = prefs
-    ? prefs.pendingReminder || prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates
+    ? prefs.pendingReminder || prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates || prefs.tripSharing
     : false;
 
   return {
@@ -171,6 +171,9 @@ export function useNotificationSettings(loggedIn: boolean) {
     toggleNearbyCases: (next: boolean) => toggleRemote('nearbyCases', next),
     toggleRegionNewCases: (next: boolean) => toggleRemote('regionNewCases', next),
     toggleFollowedUpdates: (next: boolean) => toggleRemote('followedUpdates', next),
+    /** Avisos dos trajetos compartilhados (só com EXPO_PUBLIC_ENABLE_TRIP_SHARING). */
+    tripSharingEnabled: env.tripSharingEnabled,
+    toggleTripSharing: (next: boolean) => toggleRemote('tripSharing', next),
     /** A escolha da distância só aparece com a rede de busca ligada (EXPO_PUBLIC_ENABLE_SEARCH_NETWORK). */
     nearbyRadiusEnabled: env.searchNetworkEnabled,
     setNearbyRadius,

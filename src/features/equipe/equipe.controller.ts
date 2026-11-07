@@ -41,6 +41,9 @@ export function useEquipeController() {
     /** Nossos apoiadores: cadastro, publicação e ordem das marcas (EXPO_PUBLIC_ENABLE_SUPPORTERS). */
     supportersEnabled: env.supportersEnabled,
     goToSupporters: () => router.push('/equipe/apoiadores' as Href),
+    /** Sinais de Alerta de trajeto compartilhado (EXPO_PUBLIC_ENABLE_TRIP_SHARING). */
+    tripSharingEnabled: env.tripSharingEnabled,
+    goToTripAlerts: () => router.push('/equipe/trajetos' as Href),
     retry: () => {
       void staffQuery.refetch();
     },

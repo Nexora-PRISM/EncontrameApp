@@ -15,13 +15,19 @@ export interface NotificationPrefs {
   followedUpdates: boolean;
   /** Distância máxima (km) dos "Casos perto de mim" — rede de busca (evolução). */
   nearbyRadiusKm: number;
+  /**
+   * Avisos dos trajetos compartilhados (evolução): "Você chegou?", atraso e Sinal de Alerta. Liga sozinho ao
+   * começar a compartilhar ou aceitar um convite (com a permissão do sistema); dá para desligar em Configurações.
+   */
+  tripSharing: boolean;
 }
 
 /** Distâncias que a pessoa pode escolher para os alertas de casos perto. */
 export const NEARBY_RADIUS_OPTIONS = [5, 10, 25, 50] as const;
 export const DEFAULT_NEARBY_RADIUS_KM = 10;
 
-export type RemoteNotificationPref = Exclude<keyof NotificationPrefs, 'pendingReminder' | 'nearbyRadiusKm'>;
+/** Preferências enviadas à API no registro do aparelho. */
+export type RemoteNotificationPref = 'nearbyCases' | 'regionNewCases' | 'followedUpdates';
 
 export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
   pendingReminder: false,
@@ -29,6 +35,7 @@ export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
   regionNewCases: false,
   followedUpdates: false,
   nearbyRadiusKm: DEFAULT_NEARBY_RADIUS_KM,
+  tripSharing: false,
 };
 
 const STORAGE_KEY = 'encontrame.notificationPrefs';
@@ -47,6 +54,7 @@ export function parseNotificationPrefs(raw: string | null): NotificationPrefs {
       nearbyRadiusKm: (NEARBY_RADIUS_OPTIONS as readonly unknown[]).includes(value.nearbyRadiusKm)
         ? (value.nearbyRadiusKm as number)
         : DEFAULT_NEARBY_RADIUS_KM,
+      tripSharing: value.tripSharing === true,
     };
   } catch {
     return { ...DEFAULT_NOTIFICATION_PREFS };
@@ -63,5 +71,5 @@ export async function saveNotificationPrefs(prefs: NotificationPrefs): Promise<v
 
 /** Alguma opção depende do servidor — o aparelho precisa estar registrado na API. */
 export function wantsRemoteNotifications(prefs: NotificationPrefs): boolean {
-  return prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates;
+  return prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates || prefs.tripSharing;
 }

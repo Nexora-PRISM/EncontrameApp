@@ -23,16 +23,42 @@ export function ChegadaSeguraSection({ controller: c }: Props) {
 
   return (
     <View style={styles.wrap}>
-      <View style={styles.notice} accessible accessibilityRole="summary">
-        <MaterialCommunityIcons name="shield-check-outline" size={24} color={brand.blue} />
-        <Text style={styles.noticeText}>
-          {t('O Encontra-me não acompanha você pelo mapa e não avisa ninguém sozinho. No horário, o app pergunta se você chegou. Se não chegou, você escolhe mandar a sua localização daquele momento.')}
-        </Text>
-      </View>
+      {c.tripSharingEnabled && c.phase === 'none' ? (
+        <SettingsSegmented label={t('Como você quer usar a chegada segura?')} options={c.modeOptions} value={c.mode} onChange={c.setMode} />
+      ) : null}
 
-      {c.phase === 'none' ? <StartBlock controller={c} styles={styles} /> : null}
+      {c.mode === 'share' && c.phase === 'none' ? (
+        <ShareBlock controller={c} styles={styles} />
+      ) : (
+        <View style={styles.notice} accessible accessibilityRole="summary">
+          <MaterialCommunityIcons name="shield-check-outline" size={24} color={brand.blue} />
+          <Text style={styles.noticeText}>
+            {t('O Encontra-me não acompanha você pelo mapa e não avisa ninguém sozinho. No horário, o app pergunta se você chegou. Se não chegou, você escolhe mandar a sua localização daquele momento.')}
+          </Text>
+        </View>
+      )}
+
+      {c.phase === 'none' && c.mode === 'remind' ? <StartBlock controller={c} styles={styles} /> : null}
       {c.phase === 'running' ? <RunningBlock controller={c} styles={styles} /> : null}
       {c.phase === 'overdue' ? <OverdueBlock controller={c} styles={styles} /> : null}
+    </View>
+  );
+}
+
+/** Compartilhar com contatos: outra tela, com conta, convite aceito e consentimento. */
+function ShareBlock({ controller: c, styles }: { controller: ChegadaSeguraController; styles: ReturnType<typeof makeStyles> }) {
+  const t = useT();
+  const brand = useBrand();
+  return (
+    <View style={styles.block}>
+      <View style={styles.notice} accessible accessibilityRole="summary">
+        <MaterialCommunityIcons name="map-marker-path" size={24} color={brand.blue} />
+        <Text style={styles.noticeText}>
+          {t('Os contatos que você escolher acompanham sua localização até você chegar. Se você não confirmar a chegada a tempo, eles são avisados e podem acionar o Sinal de Alerta. Exige conta, e cada contato aceita um convite antes.')}
+        </Text>
+      </View>
+      <BrandButton label={t('Compartilhar trajeto')} variant="blue" trailingIcon="map-marker-path" onPress={c.goToTripSharing} />
+      <BrandButton label={t('Meus trajetos e quem compartilha comigo')} variant="outline" onPress={c.goToTrips} />
     </View>
   );
 }

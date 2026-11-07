@@ -42,6 +42,14 @@ export default function EquipePage() {
                 value={c.openReports == null ? undefined : String(c.openReports)}
                 onPress={c.goToReports}
               />
+              {c.tripSharingEnabled ? (
+                <SettingsRow
+                  icon="bell-alert-outline"
+                  label={t('Sinais de Alerta de trajeto')}
+                  description={t('Contatos que não conseguiram falar com quem compartilhava um trajeto.')}
+                  onPress={c.goToTripAlerts}
+                />
+              ) : null}
             </SettingsGroup>
             {c.supportersEnabled ? (
               <SettingsGroup title={t('Institucional')}>

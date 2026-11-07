@@ -21,6 +21,8 @@ const PROTECTED_PREFIXES = [
   // verificação de integridade continuam abertas, sem conta.
   '/institucional',
   '/central-tecnica',
+  // Evolução: compartilhar trajeto (inclusive o convite, que só se aceita com conta).
+  '/trajeto',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */

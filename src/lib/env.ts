@@ -99,10 +99,6 @@ export const env = {
     process.env.EXPO_PUBLIC_ENABLE_CENTRAL === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CENTRAL !== 'false'),
   /**
-   * Envio de pista confidencial (POST /ConfidentialTip), com a identidade separada da pista. Em desenvolvimento fica
-   * ligado com mock; em produção só com EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS=true.
-   */
-  /**
    * Nossos Apoiadores: seção no fim da lista do Início, no Sobre e no menu, página /apoiadores e administração no
    * Painel da equipe (GET/POST/PUT/DELETE /Supporter). Em desenvolvimento fica ligado com empresas fictícias; em
    * produção só com EXPO_PUBLIC_ENABLE_SUPPORTERS=true, depois da API e de haver apoiador com marca autorizada.
@@ -110,9 +106,23 @@ export const env = {
   supportersEnabled:
     process.env.EXPO_PUBLIC_ENABLE_SUPPORTERS === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_SUPPORTERS !== 'false'),
+  /**
+   * Envio de pista confidencial (POST /ConfidentialTip), com a identidade separada da pista. Em desenvolvimento fica
+   * ligado com mock; em produção só com EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS=true.
+   */
   confidentialTipsEnabled:
     process.env.EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS === 'true' ||
     (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS !== 'false'),
+  /**
+   * Compartilhar meu trajeto com contatos de confiança e Sinal de Alerta (/trajeto*, Painel da equipe › Sinais de
+   * Alerta). Depende de /TripContact e /Trip (backend Node.js, branch api-node-trajeto; docs/evolucao/TRAJETO.md).
+   * Em desenvolvimento fica ligado com dados de demonstração; em produção só com EXPO_PUBLIC_ENABLE_TRIP_SHARING=true,
+   * depois da API, da revisão jurídica do consentimento e dos testes em aparelho. Desligado, a Chegada segura continua
+   * só com o lembrete local.
+   */
+  tripSharingEnabled:
+    process.env.EXPO_PUBLIC_ENABLE_TRIP_SHARING === 'true' ||
+    (__DEV__ && process.env.EXPO_PUBLIC_ENABLE_TRIP_SHARING !== 'false'),
   /**
    * Endereço público do app web (ex.: https://encontrame.nexoraprism.com.br), sem barra no fim.
    * Quando preenchido, o texto de divulgação de um caso inclui o link da página dele.

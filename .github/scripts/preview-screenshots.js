@@ -88,6 +88,13 @@ async function run(scheme) {
       ['/ficha/nova', '24-ficha-nova'],
       ['/chegada-segura', '25-chegada-segura'],
       ['/cadastrar-pessoa', '26-cadastro-ponto-no-mapa'],
+      ['/trajeto', '27-trajeto'],
+      ['/trajeto/novo', '28-trajeto-novo'],
+      ['/trajeto/1', '29-trajeto-quem-acompanha'],
+      ['/trajeto/1/alerta', '30-trajeto-sinal-de-alerta'],
+      ['/trajeto/contatos', '31-trajeto-contatos'],
+      ['/trajeto/convite/DEMQ2TRAJETX', '32-trajeto-convite'],
+      ['/equipe/trajetos', '33-equipe-trajetos'],
     ]) {
       await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
       await shot(page, `${scheme}-${name}`, 2000);

@@ -6,8 +6,13 @@ import { Platform } from 'react-native';
 import { env } from '@/lib/env';
 import { getActiveLanguage } from '@/lib/i18n';
 import { getLocalItem, setLocalItem } from '@/lib/local-store';
-import { loadNotificationPrefs, wantsRemoteNotifications } from '@/lib/notification-prefs';
-import { getNotificationPermission, getPushToken, pushNotificationsSupported } from '@/lib/notifications';
+import { loadNotificationPrefs, saveNotificationPrefs, wantsRemoteNotifications } from '@/lib/notification-prefs';
+import {
+  ensureNotificationPermission,
+  getNotificationPermission,
+  getPushToken,
+  pushNotificationsSupported,
+} from '@/lib/notifications';
 import { getSessionUser } from '@/lib/session';
 import { useSessionUser } from '@/lib/use-session-user';
 import { getNotificationsRepository } from '@/services/notifications/notifications.repository';
@@ -59,6 +64,24 @@ export async function syncPushRegistration(): Promise<PushSyncResult> {
   });
   await setLocalItem(REGISTERED_TOKEN_KEY, token);
   return 'registered';
+}
+
+/**
+ * Trajeto compartilhado: liga os avisos ("Você chegou?", atraso, Sinal de Alerta) ao começar a compartilhar ou
+ * aceitar um convite. Pede a permissão do sistema aqui (é a hora em que faz sentido) e registra o aparelho.
+ * Nunca lança erro: o trajeto funciona sem push (a tela mostra a situação ao abrir).
+ */
+export async function enableTripNotifications(): Promise<PushSyncResult> {
+  try {
+    if (!env.pushEnabled || Platform.OS === 'web' || getSessionUser() == null) return 'skipped';
+    if (!pushNotificationsSupported()) return 'unsupported';
+    if ((await ensureNotificationPermission()) !== 'granted') return 'no-permission';
+    const prefs = await loadNotificationPrefs();
+    if (!prefs.tripSharing) await saveNotificationPrefs({ ...prefs, tripSharing: true });
+    return await syncPushRegistration();
+  } catch {
+    return 'skipped';
+  }
 }
 
 /** Tira este aparelho da API. Chamar com a sessão ainda ativa (antes de apagar os tokens). */

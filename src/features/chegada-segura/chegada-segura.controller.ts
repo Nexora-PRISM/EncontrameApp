@@ -21,6 +21,7 @@ import {
   startArrivalCheck,
 } from '@/lib/arrival-check-rules';
 import { confirmAction, showAlert } from '@/lib/dialog';
+import { env } from '@/lib/env';
 import { useI18n, useT } from '@/lib/i18n';
 import { useSafeBack } from '@/lib/safe-back';
 import { type TrustedContact, loadTrustedContacts } from '@/lib/trusted-contacts';
@@ -42,6 +43,8 @@ export function useChegadaSeguraController() {
   const [reminder, setReminder] = useState<ArrivalReminderStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [contacts, setContacts] = useState<TrustedContact[]>([]);
+  /** Só me lembrar (neste aparelho) ou compartilhar o trajeto com contatos (com conta e consentimento). */
+  const [mode, setMode] = useState<'remind' | 'share'>('remind');
 
   useEffect(() => {
     let cancelled = false;
@@ -140,6 +143,15 @@ export function useChegadaSeguraController() {
         if (ok) run(() => finish(t('Chegada segura encerrada.')));
       })();
     },
+    tripSharingEnabled: env.tripSharingEnabled,
+    mode: env.tripSharingEnabled ? mode : 'remind',
+    setMode: (value: string) => setMode(value === 'share' ? 'share' : 'remind'),
+    modeOptions: [
+      { value: 'remind', label: t('Só me lembrar') },
+      { value: 'share', label: t('Compartilhar com contatos') },
+    ],
+    goToTripSharing: () => router.push('/trajeto/novo' as Href),
+    goToTrips: () => router.push('/trajeto' as Href),
     goToContacts: () => router.push('/contatos-confianca' as Href),
     goToHelp: () => router.push('/pedir-ajuda' as Href),
     call190: () => {

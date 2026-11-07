@@ -19,6 +19,8 @@ import { queryClient } from '@/lib/query-client';
 import { getSessionUser, hydrateSession } from '@/lib/session';
 import { markSplashDone, useSplashDone } from '@/lib/splash-state';
 import { useNotificationsBootstrap } from '@/lib/use-notifications-bootstrap';
+// Também define a tarefa de localização do trajeto compartilhado ao carregar o app (exigência do sistema).
+import { useTripTrackingBootstrap } from '@/lib/use-trip-tracking-bootstrap';
 
 // Só no popup do OAuth (tem opener). Completa e deixa o app pai fechar a janela
 // antes do Expo Router redirecionar `/` → `/inicio` → `/login`.
@@ -67,6 +69,7 @@ function RootLayoutInner() {
   const showStack = sessionReady && languageReady && !blocked;
 
   useNotificationsBootstrap(showStack);
+  useTripTrackingBootstrap(showStack);
 
   return (
     <>

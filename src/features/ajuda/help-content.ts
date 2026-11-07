@@ -34,7 +34,9 @@ export type HelpArticle = {
   /** Palavras extras para a busca (sinônimos). */
   keywords?: string;
   /** Só aparece quando o recurso está ligado neste aplicativo (ver lib/env.ts). */
-  requires?: 'sightingReports' | 'volunteers' | 'vision' | 'confidentialTips' | 'supporters';
+  requires?: 'sightingReports' | 'volunteers' | 'vision' | 'confidentialTips' | 'supporters' | 'tripSharing';
+  /** Some quando o recurso está ligado (a resposta antiga dizia que ele ainda não existia). */
+  hiddenWhen?: 'tripSharing';
 };
 
 /** Recursos que dependem de variável de ambiente: a ajuda só fala deles quando estão ligados. */
@@ -44,6 +46,7 @@ const FEATURE_ENABLED: Record<NonNullable<HelpArticle['requires']>, boolean> = {
   vision: env.visionEnabled,
   confidentialTips: env.confidentialTipsEnabled,
   supporters: env.supportersEnabled,
+  tripSharing: env.tripSharingEnabled,
 };
 
 export const HELP_CATEGORIES: HelpCategory[] = [
@@ -392,6 +395,43 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
     answer:
       msg('O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.'),
     keywords: msg('rota trajeto acompanhar caminho'),
+    hiddenWhen: 'tripSharing',
+  },
+  {
+    id: 'trajeto-compartilhar',
+    category: 'rotas',
+    question: msg('Como compartilho meu trajeto com alguém de confiança?'),
+    answer:
+      msg('No menu, "Trajeto compartilhado" (ou em Chegada segura › Compartilhar com contatos). Primeiro, convide as pessoas em "Contatos e convites": cada uma aceita no app, com a conta dela. Depois, toque em "Compartilhar trajeto", diga de onde sai, para onde vai, em quanto tempo espera chegar e a tolerância, escolha até 5 contatos e confirme que entendeu como funciona. No horário previsto, o app pergunta se você chegou. "Sim, cheguei em segurança" encerra na hora; "Ainda estou em deslocamento" dá mais 15 minutos. Você também pode mudar o destino ou encerrar quando quiser.'),
+    keywords: msg('trajeto compartilhar localização tempo real contatos acompanhar caminho casa'),
+    requires: 'tripSharing',
+  },
+  {
+    id: 'trajeto-acompanhar',
+    category: 'rotas',
+    question: msg('Como acompanho o trajeto de alguém?'),
+    answer:
+      msg('Você só acompanha quem enviou um convite e foi aceito por você, e só os trajetos em que essa pessoa escolheu você. Ninguém começa a acompanhar outra pessoa sozinho. Em "Trajeto compartilhado", veja a última localização com o horário, o destino e a previsão. Se a localização parar de atualizar, pode ser bateria, internet ou o celular desligado: tente falar com a pessoa. Quando ela confirma a chegada ou encerra, a localização some.'),
+    keywords: msg('acompanhar trajeto filho filha amiga convite contato de confiança'),
+    requires: 'tripSharing',
+  },
+  {
+    id: 'trajeto-sinal-alerta',
+    category: 'rotas',
+    question: msg('O que é o Sinal de Alerta?'),
+    answer:
+      msg('Se a pessoa não confirmar a chegada até o fim da tolerância, ou se a localização parar de atualizar, quem acompanha recebe um aviso. Se não conseguir falar com ela, pode acionar o Sinal de Alerta, contando como tentou contato. O alerta vai para a equipe do Encontra-me com a última localização, o horário e o trajeto. Ele não é publicado no app, não diz que a pessoa desapareceu e não chama a polícia: se houver risco, ligue 190. A própria pessoa pode tocar em "Estou bem" para encerrar. Se a família decidir, o cadastro de desaparecimento é feito normalmente e passa pela análise da equipe.'),
+    keywords: msg('sinal de alerta não chegou atraso sem sinal sumiu equipe'),
+    requires: 'tripSharing',
+  },
+  {
+    id: 'trajeto-privacidade',
+    category: 'rotas',
+    question: msg('Quem vê minha localização quando compartilho um trajeto?'),
+    answer:
+      msg('Só os contatos que você escolheu para aquele trajeto, enquanto ele está ativo (no máximo 12 horas). Sua localização nunca aparece para o público nem no mapa do app. Com a tela desligada, ela só é enviada se você permitir, e o celular mostra um aviso fixo. As posições são apagadas 24 horas depois do fim; se houver Sinal de Alerta, ficam guardadas por até 90 dias para a análise da equipe. Você pode desfazer um vínculo de confiança a qualquer momento.'),
+    keywords: msg('privacidade localização quem vê apagar dados lgpd'),
+    requires: 'tripSharing',
   },
   {
     id: 'circulo',
@@ -508,7 +548,7 @@ const ALL_HELP_ARTICLES: HelpArticle[] = [
 ];
 
 export const HELP_ARTICLES: HelpArticle[] = ALL_HELP_ARTICLES.filter(
-  (article) => !article.requires || FEATURE_ENABLED[article.requires],
+  (article) => (!article.requires || FEATURE_ENABLED[article.requires]) && !(article.hiddenWhen && FEATURE_ENABLED[article.hiddenWhen]),
 );
 
 /** Normaliza para busca sem acento e sem maiúsculas. */

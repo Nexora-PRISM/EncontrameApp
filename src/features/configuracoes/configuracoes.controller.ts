@@ -274,6 +274,7 @@ export function useConfiguracoesController() {
     goToTrustedContacts: () => router.push('/contatos-confianca' as Href),
     goToShareLocation: () => router.push('/compartilhar-localizacao' as Href),
     goToSafeArrival: () => router.push('/chegada-segura' as Href),
+    goToTrips: () => router.push('/trajeto' as Href),
     deleteLocalPeople,
     replayTutorial,
     logout,
