@@ -1,5 +1,5 @@
-# Temporário (branch evolucao-trajeto): lê os metadados do expo-task-manager no registro npm para montar o
-# package-lock.json fora daqui. Removido no commit seguinte.
+# Temporário (branch evolucao-trajeto): instala o expo-task-manager na versão do SDK e mostra as entradas que o npm
+# gerou no package-lock.json, para serem copiadas. Removido no commit seguinte.
 name: Consulta de pacotes
 on:
   push:
@@ -8,19 +8,17 @@ jobs:
   consulta:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Metadados
+      - run: npm ci --ignore-scripts
+      - run: npx expo install expo-task-manager -- --ignore-scripts
+      - name: Entradas do lock
         run: |
-          for spec in "expo-task-manager@~57.0.0"; do
-            npm view "$spec" version dist.tarball dist.integrity --json > meta.json || true
-            echo "::notice title=$spec::$(tr -d '\n' < meta.json | tr -s ' ')"
-            npm view "$spec" dependencies peerDependencies --json > deps.json || true
-            echo "::notice title=$spec deps::$(tr -d '\n' < deps.json | tr -s ' ')"
-          done
-          DEP=$(npm view "expo-task-manager@~57.0.0" dependencies --json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);const o=Array.isArray(j)?j[j.length-1]:j;console.log(Object.entries(o||{}).map(([k,v])=>k+'@'+v).join(' '))})")
-          for spec in $DEP; do
-            npm view "$spec" version dist.tarball dist.integrity dependencies peerDependencies --json > d.json || true
-            echo "::notice title=$spec::$(node -e "const j=require('./d.json');const o=Array.isArray(j)?j[j.length-1]:j;console.log(JSON.stringify(o))")"
-          done
+          node -e "
+          const lock=require('./package-lock.json');const pkg=require('./package.json');
+          console.log('::notice title=package.json::'+JSON.stringify({dep:pkg.dependencies['expo-task-manager'],root:lock.packages[''].dependencies['expo-task-manager']}));
+          for (const k of Object.keys(lock.packages).filter(k=>/expo-task-manager|unimodules-app-loader/.test(k))) console.log('::notice title='+k+'::'+JSON.stringify(lock.packages[k]));
+          "
+          git diff --stat
