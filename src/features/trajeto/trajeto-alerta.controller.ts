@@ -107,9 +107,8 @@ export function useTrajetoAlertaController() {
       : receipt
         ? t('Nenhuma localização foi registrada neste trajeto.')
         : '',
-    backToTrip: () => {
-      if (id) router.replace(`/trajeto/${id}` as Href);
-    },
+    /** Volta à tela do trajeto que abriu o alerta (sem empilhar outra cópia dela). */
+    backToTrip: goBack,
     registerCase: () => {
       if (id) router.push({ pathname: '/cadastrar-pessoa', params: { trajeto: id } } as Href);
     },
