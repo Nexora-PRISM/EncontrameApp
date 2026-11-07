@@ -35,6 +35,7 @@ para criar as novas funcionalidades sem tocar no aplicativo que já está no ar.
 | `versao-original` | Cópia congelada de 15/10/2026. **Não é tocada.** |
 | `evolucao` | Onde as etapas são desenvolvidas, uma por vez, cada uma em commits identificáveis. |
 | `evolucao-central` | Central de Inteligência (criada a partir da `evolucao`, como pedido: branch exclusiva para essa revisão). Contém tudo da `evolucao` + a Central. |
+| `evolucao-trajeto` | Compartilhar meu trajeto e Sinal de Alerta (a partir da `evolucao-novidades`). Backend na branch `api-node-trajeto` da API. |
 
 Para ver tudo o que mudou em relação à base: `git diff 7cc8304..evolucao --stat`.
 Para desfazer uma etapa: `git revert` dos commits dela (listados em `REGISTRO.md`).
@@ -64,6 +65,7 @@ Para desfazer uma etapa: `git revert` dos commits dela (listados em `REGISTRO.md
 | `PROBLEMAS-CONHECIDOS.md` | Bloqueios, riscos e itens experimentais |
 | `CENTRAL.md` | Central de Inteligência: ambientes, o que foi feito, o que depende de API e de autorização, revisão |
 | `VISION.md` | Encontra-me Vision: o que foi feito, arquitetura, riscos, infraestrutura, ativação e integração |
+| `TRAJETO.md` | Compartilhar meu trajeto e Sinal de Alerta: como funciona, permissões, custos, o que depende de autorização |
 
 ## Quando o dono do app decidir atualizar o app oficial
 

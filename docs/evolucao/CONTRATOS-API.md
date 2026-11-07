@@ -402,3 +402,30 @@ dois juntos, ou nenhum). A API .NET e a Node já aceitam esses campos e gravam o
 ponto já arredondado para 3 casas decimais (~110 m).
 
 Ficha de identificação, chegada segura e B.O. pela internet não usam a API.
+
+## Trajeto compartilhado e Sinal de Alerta (branch `evolucao-trajeto`)
+
+Implementado no backend Node.js (branch `api-node-trajeto`); a API .NET não tem estas rotas. Todas exigem login. Quem
+não participa de um trajeto recebe 404 (nem fica sabendo que ele existe). Regras e prazos em `TRAJETO.md`.
+
+| Método e rota | Corpo | Resposta |
+|---|---|---|
+| `POST /TripContact/invite` | — | 201 `{ code, expiresAt }` (o código só aparece aqui) |
+| `GET /TripContact/invite/{code}` | — | `{ ownerName, expiresAt, ownInvite, alreadyConnected }` ou 404 |
+| `POST /TripContact/invite/{code}/accept` | — | `{ tripContactId, name, since }` |
+| `GET /TripContact` | — | `{ watchers: [...], sharingWithMe: [...] }` |
+| `DELETE /TripContact/{id}` | — | 204 (qualquer um dos dois lados) |
+| `POST /Trip` | `originLabel`, `originLatitude?`, `originLongitude?`, `destinationLabel`, `destinationLatitude?`, `destinationLongitude?`, `expectedArrivalAt`, `toleranceMinutes` (5, 10, 15, 30 ou 60), `contactIds` (1 a 5 ids de vínculo), `consentAcceptedAt` | 201 com o trajeto (abaixo); 400 `trip/already_active` |
+| `GET /Trip/mine` · `GET /Trip/watching` | — | Listas resumidas |
+| `GET /Trip/{id}` | — | Trajeto: `tripId`, `role` (`owner`/`watcher`), `status`, `phase` (`active`, `overdue`, `arrived`, `cancelled`, `expired`), origem, destino, `expectedArrivalAt`, `toleranceMinutes`, `overdueAt`, `shareUntil`, `startedAt`, `endedAt`, `locationVisible`, `signal` (`ok`/`stale`/`none`), `lastPoint`, `path`, `watchers` (só o dono), `otherWatchersCount` (só o contato), `canRaiseAlert`, `alertReason`, `alert`, `alertEvents` |
+| `PUT /Trip/{id}` | `destinationLabel?` (+ coordenadas), `expectedArrivalAt?` | Trajeto |
+| `POST /Trip/{id}/points` | `{ points: [{ latitude, longitude, accuracyMeters?, recordedAt }] }` (até 50) | `{ accepted, lastPointAt }` |
+| `POST /Trip/{id}/arrived` · `/cancel` | — | Trajeto |
+| `POST /Trip/{id}/alert` | `{ contactAttempt (10 a 500), triedToContact: true }` | 201 `{ tripAlertId, receivedAt, status, reason, alreadyOpen, lastPoint }` (200 se já havia alerta aberto); 400 `trip/too_early` ou `alert/limit_reached` |
+| `POST /Trip/{id}/alert/owner-ok` · `/found` · `/case` | — · `{ note? }` · `{ missingPersonId }` | Trajeto |
+| `GET /Moderation/trip-alerts?closed=` | — | Fila da equipe (403 para os outros) |
+| `POST /Moderation/trip-alerts/{id}/status` | `{ status: monitoring\|found\|unfounded, justification (≥ 10) }` | `{ tripAlertId, status }` |
+
+Notificações (`POST /Notification/device`, já existente): tipos `trip-started`, `trip-updated`, `trip-arrived`,
+`trip-ended`, `trip-arrival-check`, `trip-overdue`, `trip-signal-lost`, `trip-alert-raised`, `trip-alert-owner`,
+`trip-alert-staff` e `trip-alert-closed`, com `data: { type, tripId }` e texto genérico.

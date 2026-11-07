@@ -8,7 +8,7 @@
 Esta branch é uma linha de desenvolvimento separada, criada em 30/10/2026 a partir do commit `7cc8304` da `main`.
 Antes de qualquer coisa, leia `docs/evolucao/README.md`.
 
-- Commits **só** nas branches `evolucao`, `evolucao-central` (Central de Inteligência), `evolucao-revisao-auditoria` (revisão e consolidação, `docs/evolucao/REVISAO-AUDITORIA.md`) e `evolucao-novidades` (Nossos apoiadores e novidades, `docs/evolucao/NOVIDADES.md`). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
+- Commits **só** nas branches `evolucao`, `evolucao-central` (Central de Inteligência), `evolucao-revisao-auditoria` (revisão e consolidação, `docs/evolucao/REVISAO-AUDITORIA.md`), `evolucao-novidades` (Nossos apoiadores e novidades, `docs/evolucao/NOVIDADES.md`) e `evolucao-trajeto` (Compartilhar meu trajeto e Sinal de Alerta, `docs/evolucao/TRAJETO.md`). Nunca em `main`, `versao-original`, `desenvolvimento` ou outras branches.
 - Sem pull request, merge, rebase ou deploy: integrar e publicar ficam com o dono do app.
 - O repositório é público: não coloque segredos nem detalhes internos da API (privada) nesta branch.
 - **Nada é publicado daqui**: sem Google Play, App Store, EAS Update, deploy do site, backend ou notificações reais.
@@ -244,9 +244,18 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Ficha de identificação** (branch `evolucao-novidades`; `/ficha*`, `lib/id-sheet-rules.ts`, `lib/id-sheet-store*`):
   só no aparelho, nada vai à API. "Saúde e comunicação" nunca entra no cadastro público (`sheetToCaseValues`). Foto do
   dia apagada depois de 24 h. A rota do cadastro leva só o id local (`?ficha=`).
-- **Chegada segura** (branch `evolucao-novidades`; `/chegada-segura`, `lib/arrival-check*`): não é rastreamento. Nenhuma
-  posição durante o trajeto; só depois do horário vencido, com a tela aberta, e a mensagem só sai quando a pessoa envia.
-  Notificação local com texto genérico; permissão pedida só ao tocar em "Começar".
+- **Compartilhar meu trajeto** (branch `evolucao-trajeto`; `/trajeto*`, `/equipe/trajetos`, `lib/trip-*`,
+  `services/trips/`, `docs/evolucao/TRAJETO.md`): única exceção, **com consentimento**, à regra de não acompanhar pelo
+  mapa. Só a própria pessoa inicia, escolhe até 5 contatos e encerra quando quiser; contato só existe por convite
+  aceito por ele, não inicia nada e perde o acesso na hora se o vínculo for desfeito. Localização nunca para o público
+  nem no mapa do app. Segundo plano só em build com `TRIP_BACKGROUND_LOCATION=true` e com a permissão dada depois de a
+  tela explicar. Nenhum texto diz que a pessoa desapareceu (atraso e falta de sinal aparecem como são). O Sinal de
+  Alerta exige motivo e tentativa de contato, vai para a equipe e só diz "recebido" com número + horário; o caso
+  público só nasce do cadastro normal, com moderação. Notificações genéricas, `data` só `{ type, tripId }`.
+- **Chegada segura** (branch `evolucao-novidades`; `/chegada-segura`, `lib/arrival-check*`): no modo "Só me lembrar",
+  não é rastreamento. Nenhuma posição durante o trajeto; só depois do horário vencido, com a tela aberta, e a mensagem
+  só sai quando a pessoa envia. Notificação local com texto genérico; permissão pedida só ao tocar em "Começar". O modo
+  "Compartilhar com contatos" leva ao trajeto compartilhado (regra acima).
 - **Ponto no mapa do cadastro** (`lib/case-location-rules.ts`): sempre arredondado (~110 m) e com o aviso de não marcar
   o endereço de casa.
 - **B.O. pela internet** (`lib/police-report-states.ts`): só link oficial conferido (https, gov.br), com a data da
@@ -307,6 +316,8 @@ Precedência: **env da máquina (Windows / Netlify) > `.env.local` > `.env.produ
 - `EXPO_PUBLIC_ENABLE_VOLUNTEERS` — (evolução) cadastro de voluntário em "Quero ajudar". Vazio: ligado em dev (mock), desligado em produção.
 - `EXPO_PUBLIC_ENABLE_CENTRAL` — (evolução, branch `evolucao-central`) Central de Inteligência e Central técnica. Vazio: ligada em dev (dados fictícios), desligada em produção.
 - `EXPO_PUBLIC_ENABLE_CONFIDENTIAL_TIPS` — (evolução, branch `evolucao-central`) envio de informação confidencial. Vazio: ligado em dev (mock), desligado em produção.
+- `EXPO_PUBLIC_ENABLE_TRIP_SHARING` — (evolução, branch `evolucao-trajeto`) compartilhar meu trajeto, Sinal de Alerta e a fila da equipe. Vazio: ligado em dev (dados fictícios), desligado em produção. Só ligar com a API `/Trip` e `/TripContact` (backend Node.js) e a aprovação jurídica do consentimento.
+- `TRIP_BACKGROUND_LOCATION` — (evolução, só build nativo, lida no `app.config.js`) `true` declara a localização em segundo plano para o trajeto compartilhado. Vazio: o build fica com as permissões de hoje. Exige declaração no Google Play antes de publicar.
 - `EXPO_PUBLIC_ENABLE_SUPPORTERS` — (evolução, branch `evolucao-novidades`) Nossos apoiadores: seção no fim da lista do Início e no Sobre, página `/apoiadores`, item no menu e cadastro no Painel da equipe. Vazio: ligado em dev (empresas fictícias), desligado em produção. Só ligar com a API `/Supporter` e ao menos uma marca autorizada.
 - `EXPO_PUBLIC_ENABLE_VISION` — (evolução) Encontra-me Vision (rede de câmeras participantes). Vazio: ligado em dev (dados fictícios), desligado em produção. Só ligar com a API `/Vision/*`, convênios e avaliação jurídica.
 - `EXPO_PUBLIC_ENABLE_CASE_TIMELINE` — (evolução) linha do tempo completa vinda da API. Vazio: ligada em dev (mock), desligada em produção; desligada, a linha do tempo é montada com o cadastro e o histórico de avistamentos.

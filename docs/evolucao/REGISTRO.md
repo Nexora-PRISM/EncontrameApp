@@ -5,6 +5,20 @@ Cada etapa tem commits próprios na branch `evolucao`. Para ver os commits de um
 
 ---
 
+## Compartilhar meu trajeto e Sinal de Alerta (06/11/2026, branch `evolucao-trajeto`)
+
+- Contatos de confiança por convite aceito pela outra pessoa; trajeto iniciado só pela própria pessoa, com até 5
+  contatos, previsão, tolerância e consentimento; localização para os escolhidos até chegar, encerrar ou 12 h.
+- Contato vê a última localização com o horário real, recebe aviso de atraso e de falta de sinal, e pode acionar o
+  Sinal de Alerta (com tentativa de contato obrigatória), que vai para a equipe, nunca para o público.
+- Painel da equipe › Sinais de Alerta de trajeto; cadastro de caso a partir do alerta, ligado a ele.
+- Chegada segura com os dois modos ("Só me lembrar" continua igual).
+- Segundo plano só em build com `TRIP_BACKGROUND_LOCATION=true` (commit próprio, `af4adf9`).
+- Backend: branch `api-node-trajeto` (19 rotas, migração só com tabelas novas).
+
+Commits: `0c8682c` (dependência), `af4adf9` (build), `30ab5a6` (funcionalidade) e os de documentação. Para desfazer:
+`git revert` desses commits. Detalhes em `docs/evolucao/TRAJETO.md`.
+
 ## Novidades — ponto no mapa, ficha de identificação, chegada segura e B.O. pela internet (31/10/2026, branch `evolucao-novidades`)
 
 - Cadastro de caso com ponto opcional no mapa (arredondado para ~110 m), enviado como `latitude`/`longitude`.
