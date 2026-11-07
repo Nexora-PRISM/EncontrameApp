@@ -1,5 +1,21 @@
 # Relatório de testes
 
+## Compartilhar meu trajeto e Sinal de Alerta — branch `evolucao-trajeto` (06/11/2026)
+
+Checagem automática do GitHub no commit `1977b87`: **job verde**, todos os passos (o de formatação continua só
+informativo).
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Tipos, lint (com as regras do React Compiler), build web e build de demonstração | Checagem do GitHub | Passou |
+| Traduções | `npm run i18n:check` na checagem; `--strict` no ambiente da IA | Passou: 2513 textos em inglês e espanhol (278 novos), nenhum faltando |
+| Regras de negócio | `npm test` | **143 de 143** (11 novos: fase, sinal, motivo do alerta, quem vê a localização, +15 min e limite de 12 h, convite, formulário com consentimento, tentativa de contato, fila sem internet, trajeto guardado no aparelho) |
+| Telas no navegador (Chromium, 412 px, dados fictícios) | `.github/scripts/smoke-routes.js` | **71 de 71**. Novos: Chegada segura no modo "Compartilhar com contatos"; `/trajeto` com o alerta de não chegada; contatos; convite; fila da equipe; quem acompanha vê "Ainda não confirmou a chegada" (sem "desapareceu"), aciona o Sinal de Alerta com a tentativa de contato e recebe **nº 101 com horário**; o alerta aparece aberto ao voltar; cadastro de caso preenchido a partir do trajeto; quem compartilha começa (origem, destino, contato, consentimento), vê quem acompanha, pede +15 min e confirma a chegada |
+| Prints (claro e escuro) das 7 telas novas | `.github/scripts/preview-screenshots.js` | Gerados no artefato `prints-das-telas`. **Não revisados aqui**: o download de artefatos é bloqueado neste ambiente |
+| Configuração do build | `node -e "require('./app.config.js')"` com e sem `TRIP_BACKGROUND_LOCATION=true` | Sem a variável, as permissões ficam como hoje; com ela, entram "o tempo todo", o serviço em primeiro plano e os textos do iOS nos 3 idiomas |
+| API Node.js (branch `api-node-trajeto`) | `npm test` com Postgres 16 local | **122 de 122** (7 unitários de regras + 12 de integração do trajeto, entre eles os 15 cenários pedidos que dependem do servidor) |
+| Celular físico: permissões, aviso fixo, tela desligada, sem internet, bateria, push real, leitor de tela | Manual | **Pendente. Nada foi testado em aparelho real.** |
+
 ## Novidades — branch `evolucao-novidades` (31/10/2026)
 
 Checagem automática do GitHub no commit `33e6859`: **job verde**. O passo de formatação (Biome) continua só informativo,
