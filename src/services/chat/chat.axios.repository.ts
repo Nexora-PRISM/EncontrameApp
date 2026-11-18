@@ -17,23 +17,79 @@ export const chatAxiosRepository: ChatRepository = {
     return data.map(mapMessage);
   },
 
-  async send(payload: SendMessagePayload) {
-    const { data } = await api.post<ApiChatMessage[]>(
+  async send(payload: SendMessagePayload, onChunk?: (chunk: string) => void) {
+    let responseTextRead = 0;
+    let pendingLine = '';
+    let eventData: string[] = [];
+    let streamError: string | null = null;
+    let receivedDone = false;
+    let streamedText = '';
+
+    const dispatchEvent = () => {
+      if (eventData.length === 0 || receivedDone) return;
+      const event = eventData.join('\n');
+      eventData = [];
+      if (event === '[DONE]') {
+        receivedDone = true;
+        return;
+      }
+      try {
+        const parsed = JSON.parse(event) as { response?: unknown; error?: unknown };
+        if (typeof parsed.error === 'string') {
+          streamError = parsed.error;
+        } else if (typeof parsed.response === 'string') {
+          streamedText += parsed.response;
+          onChunk?.(parsed.response);
+        }
+      } catch {
+        streamError = 'llm_unavailable';
+      }
+    };
+
+    const consumeText = (text: string) => {
+      if (text.length < responseTextRead) responseTextRead = 0;
+      pendingLine += text.slice(responseTextRead);
+      responseTextRead = text.length;
+      const lines = pendingLine.split('\n');
+      pendingLine = lines.pop() ?? '';
+      for (const rawLine of lines) {
+        const line = rawLine.endsWith('\r') ? rawLine.slice(0, -1) : rawLine;
+        if (line.length === 0) dispatchEvent();
+        else if (line.startsWith('data:')) eventData.push(line.slice(5).trimStart());
+      }
+    };
+
+    const { data } = await api.post<string>(
       '/IAChat/messages',
       {
         message: payload.text,
       },
-      { timeout: 45000 },
+      {
+        timeout: 120000,
+        responseType: 'text',
+        onDownloadProgress: (progress) => {
+          const event = progress.event as { target?: { responseText?: string } } | undefined;
+          const text = event?.target?.responseText;
+          if (typeof text === 'string') consumeText(text);
+        },
+      },
     );
 
-    const assistant =
-      [...data].reverse().find((item) => normalizeRole(item.sentBy) === 'assistant') ?? data.at(-1);
-
-    if (!assistant) {
-      throw new Error('A API não retornou resposta da assistente.');
+    consumeText(data);
+    if (pendingLine.length > 0) {
+      if (pendingLine.startsWith('data:')) eventData.push(pendingLine.slice(5).trimStart());
+      pendingLine = '';
     }
+    dispatchEvent();
+    if (streamError) throw new Error(streamError);
+    if (!receivedDone) throw new Error('llm_unavailable');
 
-    return mapMessage(assistant);
+    return {
+      id: `sofia-${Date.now()}`,
+      role: 'assistant',
+      text: streamedText,
+      time: formatTime(new Date().toISOString()),
+    } satisfies ChatMessage;
   },
 
   async clearHistory() {

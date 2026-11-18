@@ -26,14 +26,14 @@ const cannedReplies = [
 
 let store: ChatMessage[] = [introMessage];
 
-/** Implementação mockada: respostas acolhedoras enquanto a IA real não é integrada. */
+/** Implementação mockada para desenvolvimento e demonstrações sem a API. */
 export const chatMockRepository: ChatRepository = {
   async history() {
     await delay(300);
     return [...store];
   },
 
-  async send(payload: SendMessagePayload) {
+  async send(payload: SendMessagePayload, onChunk?: (chunk: string) => void) {
     await delay(900);
     store = [
       ...store,
@@ -52,6 +52,7 @@ export const chatMockRepository: ChatRepository = {
       time: nowTime(),
     } satisfies ChatMessage;
     store = [...store, reply];
+    onChunk?.(reply.text);
     return reply;
   },
 

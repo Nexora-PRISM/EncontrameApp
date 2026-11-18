@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Animated, FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { BrandEnter, useSkipInitialEnter } from '@/components/brand-enter';
 import { ChatTypingDots } from '@/components/chat-typing-dots';
@@ -21,12 +21,17 @@ export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
   const styles = useMemo(() => makeStyles(brand), [brand]);
   const lastMessageId = controller.messages.at(-1)?.id;
   const skipEnter = useSkipInitialEnter(controller.messages.map((message) => message.id));
+  const visibleMessages = controller.messages.filter(
+    (message) => message.role === 'user' || message.text.length > 0,
+  );
   const { listRef, scrollToEnd, onListLayout, onListScroll } = useScrollListToEnd<ChatMessage>(
     `${lastMessageId ?? ''}:${controller.sending ? '1' : '0'}`,
   );
 
   const renderItem = ({ item }: { item: ChatMessage }) => {
     const isUser = item.role === 'user';
+    const isStreaming =
+      controller.streamAnimationActive && item.id === controller.streamingAssistantId;
     return (
       <BrandEnter
         from="up"
@@ -34,7 +39,10 @@ export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
         style={[styles.row, isUser ? styles.rowUser : styles.rowAI]}
       >
         <View style={[styles.bubble, isUser ? styles.bubbleUser : styles.bubbleAI]}>
-          <Text style={[styles.text, isUser ? styles.textUser : styles.textAI]}>{item.text}</Text>
+          <Text style={[styles.text, isUser ? styles.textUser : styles.textAI]}>
+            {item.text}
+            {isStreaming && item.text.length > 0 ? <FadingEllipsis /> : null}
+          </Text>
         </View>
         <Text style={styles.time}>{item.time}</Text>
       </BrandEnter>
@@ -53,7 +61,7 @@ export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
   return (
     <FlatList
       ref={listRef}
-      data={controller.messages}
+      data={visibleMessages}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       style={styles.list}
@@ -67,7 +75,7 @@ export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
       onContentSizeChange={() => scrollToEnd()}
       ListHeaderComponent={<Text style={styles.dateLabel}>{controller.today}</Text>}
       ListFooterComponent={
-        controller.sending ? (
+        controller.sending && !controller.streamStarted ? (
           <BrandEnter from="up" style={[styles.row, styles.rowAI, styles.typingFooter]}>
             <View style={[styles.bubble, styles.bubbleAI, styles.typingBubble]} onLayout={() => scrollToEnd()}>
               <ChatTypingDots />
@@ -79,6 +87,23 @@ export function ChatMessagesSection({ controller }: ChatMessagesSectionProps) {
       }
     />
   );
+}
+
+function FadingEllipsis() {
+  const [opacity] = useState(() => new Animated.Value(0.25));
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, { toValue: 1, duration: 350, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 0.25, duration: 350, useNativeDriver: true }),
+      ]),
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [opacity]);
+
+  return <Animated.Text style={{ opacity }}> …</Animated.Text>;
 }
 
 function makeStyles(brand: BrandColors) {

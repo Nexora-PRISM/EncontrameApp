@@ -20,7 +20,8 @@ export function useChatHistoryQuery() {
 
 export function useSendMessageMutation() {
   return useMutation({
-    mutationFn: (payload: SendMessagePayload) => getChatRepository().send(payload),
+    mutationFn: ({ payload, onChunk }: { payload: SendMessagePayload; onChunk?: (chunk: string) => void }) =>
+      getChatRepository().send(payload, onChunk),
   });
 }
 

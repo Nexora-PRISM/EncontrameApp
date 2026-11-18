@@ -6,7 +6,7 @@ import type { ChatMessage, SendMessagePayload } from '@/services/chat/chat.types
 /** Contrato comum aos repositórios do chat (axios e mock). */
 export interface ChatRepository {
   history(): Promise<ChatMessage[]>;
-  send(payload: SendMessagePayload): Promise<ChatMessage>;
+  send(payload: SendMessagePayload, onChunk?: (chunk: string) => void): Promise<ChatMessage>;
   clearHistory(): Promise<void>;
 }
 
