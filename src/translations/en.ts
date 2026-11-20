@@ -1365,4 +1365,24 @@ export const en: Readonly<Record<string, string>> = {
     'Reason (false, offensive, prejudiced, mentions people, no longer true, other):',
   'Novo aviso de segurança': 'New safety note',
   '{name}: voltar ao início': '{name}: back to home',
+  'Padrões de segurança infantil': 'Child safety standards',
+  'Última atualização: 19 de novembro de 2026': 'Last updated: November 19, 2026',
+  'Compromisso com a segurança infantil': 'Commitment to child safety',
+  'O Encontra-me, produto da Nexora Prism, não tolera abuso ou exploração sexual infantil (CSAE) nem material de abuso sexual infantil (CSAM). Esta regra vale para qualquer pessoa que use o app e para todo conteúdo ou interação nele.':
+    'Encontra-me, a Nexora Prism product, does not tolerate child sexual abuse and exploitation (CSAE) or child sexual abuse material (CSAM). This rule applies to everyone using the app and to all content and interactions in it.',
+  'Condutas proibidas': 'Prohibited conduct',
+  'É proibido usar o Encontra-me para aliciar ou preparar crianças para exploração sexual (grooming), praticar extorsão sexual, facilitar tráfico ou exploração sexual de crianças, solicitar ou compartilhar CSAM, ou de qualquer outra forma sexualizar, abusar ou colocar uma criança em risco. Não publique, envie, peça, armazene nem compartilhe esse material.':
+    'You may not use Encontra-me to groom children for sexual exploitation, sextort them, facilitate child sex trafficking or exploitation, request or share CSAM, or otherwise sexualize, abuse, or endanger a child. Do not post, send, request, store, or share this material.',
+  'Como denunciar': 'How to report',
+  'Denuncie conteúdo ou comportamento preocupante no app em Ajuda e suporte › Denunciar conteúdo ou golpe. Você também pode escrever para {email}. A denúncia só chega à equipe quando você envia o e-mail. Se uma criança estiver em perigo imediato, procure os serviços de emergência e as autoridades locais.':
+    'Report concerning content or behavior in the app under Help and support › Report content or a scam. You can also email {email}. The report reaches our team only after you send the email. If a child is in immediate danger, contact emergency services and local authorities.',
+  'Tratamento de denúncias e medidas': 'Handling reports and taking action',
+  'A Nexora Prism analisará as denúncias recebidas e tomará as medidas cabíveis conforme as leis aplicáveis. Quando tivermos conhecimento de CSAM ou de exploração sexual infantil, poderemos restringir conteúdo ou contas e comunicar as autoridades competentes, conforme exigido por lei. Não use nem reenvie o material para comprovar uma denúncia; informe o contexto e onde ele aparece no app.':
+    'Nexora Prism will review reports it receives and take appropriate action under applicable law. When we become aware of CSAM or child sexual exploitation, we may restrict content or accounts and notify the relevant authorities as required by law. Do not use or resend the material to support a report; describe the context and where it appears in the app.',
+  'Leis e cooperação': 'Laws and cooperation',
+  'Cumprimos as leis aplicáveis de proteção infantil e cooperamos com autoridades competentes quando exigido por lei. Esta política complementa as Regras de uso do Encontra-me.':
+    'We comply with applicable child protection laws and cooperate with competent authorities when required by law. This policy supplements Encontra-me’s Rules of Use.',
+  'Contato de segurança infantil': 'Child safety contact',
+  'O ponto de contato de segurança infantil da Nexora Prism é {name}. Para questões sobre prevenção de CSAM e conformidade com os padrões de segurança infantil do Google Play, contate {email}.':
+    'Nexora Prism’s child safety point of contact is {name}. For questions about CSAM prevention and compliance with Google Play’s child safety standards, contact {email}.',
 };

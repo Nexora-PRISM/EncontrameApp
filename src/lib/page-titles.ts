@@ -26,6 +26,7 @@ const PAGE_TITLES: Readonly<Record<string, string>> = {
   sobre: msg('Sobre o app'),
   'pedir-ajuda': msg('Pedir ajuda'),
   regras: msg('Regras de uso e privacidade'),
+  'seguranca-infantil': msg('Padrões de segurança infantil'),
   'alerta-emergencia': msg('Alerta de emergência'),
   'compartilhar-localizacao': msg('Compartilhar localização'),
   'contatos-confianca': msg('Contatos de confiança'),

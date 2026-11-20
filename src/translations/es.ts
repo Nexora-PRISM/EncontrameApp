@@ -1379,4 +1379,24 @@ export const es: Readonly<Record<string, string>> = {
     'Motivo (aviso falso, ofensivo, con prejuicios, menciona a personas, ya no es verdad, otro):',
   'Novo aviso de segurança': 'Nuevo aviso de seguridad',
   '{name}: voltar ao início': '{name}: volver al inicio',
+  'Padrões de segurança infantil': 'Normas de seguridad infantil',
+  'Última atualização: 19 de novembro de 2026': 'Última actualización: 19 de noviembre de 2026',
+  'Compromisso com a segurança infantil': 'Compromiso con la seguridad infantil',
+  'O Encontra-me, produto da Nexora Prism, não tolera abuso ou exploração sexual infantil (CSAE) nem material de abuso sexual infantil (CSAM). Esta regra vale para qualquer pessoa que use o app e para todo conteúdo ou interação nele.':
+    'Encontra-me, un producto de Nexora Prism, no tolera el abuso ni la explotación sexual infantil (CSAE), ni el material de abuso sexual infantil (CSAM). Esta regla se aplica a todas las personas que usan la app y a todo el contenido y las interacciones que ocurren en ella.',
+  'Condutas proibidas': 'Conductas prohibidas',
+  'É proibido usar o Encontra-me para aliciar ou preparar crianças para exploração sexual (grooming), praticar extorsão sexual, facilitar tráfico ou exploração sexual de crianças, solicitar ou compartilhar CSAM, ou de qualquer outra forma sexualizar, abusar ou colocar uma criança em risco. Não publique, envie, peça, armazene nem compartilhe esse material.':
+    'Está prohibido usar Encontra-me para captar o preparar a menores para la explotación sexual (grooming), extorsionarlos sexualmente, facilitar la trata o explotación sexual de menores, solicitar o compartir CSAM, o sexualizar, abusar o poner en riesgo a un menor de cualquier otra forma. No publiques, envíes, solicites, almacenes ni compartas este material.',
+  'Como denunciar': 'Cómo denunciar',
+  'Denuncie conteúdo ou comportamento preocupante no app em Ajuda e suporte › Denunciar conteúdo ou golpe. Você também pode escrever para {email}. A denúncia só chega à equipe quando você envia o e-mail. Se uma criança estiver em perigo imediato, procure os serviços de emergência e as autoridades locais.':
+    'Denuncia contenido o comportamiento preocupante desde la app en Ayuda y soporte › Denunciar contenido o estafa. También puedes escribir a {email}. El equipo recibe la denuncia solo cuando envías el correo. Si un menor está en peligro inmediato, contacta con los servicios de emergencia y las autoridades locales.',
+  'Tratamento de denúncias e medidas': 'Gestión de denuncias y medidas',
+  'A Nexora Prism analisará as denúncias recebidas e tomará as medidas cabíveis conforme as leis aplicáveis. Quando tivermos conhecimento de CSAM ou de exploração sexual infantil, poderemos restringir conteúdo ou contas e comunicar as autoridades competentes, conforme exigido por lei. Não use nem reenvie o material para comprovar uma denúncia; informe o contexto e onde ele aparece no app.':
+    'Nexora Prism revisará las denuncias recibidas y tomará las medidas adecuadas conforme a las leyes aplicables. Cuando tengamos conocimiento de CSAM o explotación sexual infantil, podremos restringir contenido o cuentas y comunicarlo a las autoridades competentes cuando la ley lo exija. No uses ni reenvíes el material para respaldar una denuncia; describe el contexto y dónde aparece en la app.',
+  'Leis e cooperação': 'Leyes y cooperación',
+  'Cumprimos as leis aplicáveis de proteção infantil e cooperamos com autoridades competentes quando exigido por lei. Esta política complementa as Regras de uso do Encontra-me.':
+    'Cumplimos las leyes aplicables de protección infantil y cooperamos con las autoridades competentes cuando la ley lo exige. Esta política complementa las Normas de uso de Encontra-me.',
+  'Contato de segurança infantil': 'Contacto de seguridad infantil',
+  'O ponto de contato de segurança infantil da Nexora Prism é {name}. Para questões sobre prevenção de CSAM e conformidade com os padrões de segurança infantil do Google Play, contate {email}.':
+    'La persona de contacto de seguridad infantil de Nexora Prism es {name}. Para consultas sobre la prevención del CSAM y el cumplimiento de las normas de seguridad infantil de Google Play, contacta con {email}.',
 };

@@ -106,6 +106,7 @@ function RootLayoutInner() {
             <Stack.Screen name="sobre" />
             <Stack.Screen name="pedir-ajuda" />
             <Stack.Screen name="regras" />
+            <Stack.Screen name="seguranca-infantil" />
             <Stack.Screen name="alerta-emergencia" />
             <Stack.Screen name="compartilhar-localizacao" />
             <Stack.Screen name="contatos-confianca" />
