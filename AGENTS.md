@@ -202,8 +202,8 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   tempo real de pessoas nem mostre o histórico completo ao público.
 - **Cadastro feito sem conta nunca é enviado sozinho.** Só pelo "Revisar e enviar"
   (`/cadastrar-pessoa?rascunho=<id local>`), com a pessoa logada aceitando a declaração de novo.
-- Correção e denúncia de caso ("Algo errado neste cadastro?") vão por e-mail ao suporte com o id do caso,
-  sem login. Não há API de moderação: nunca diga que o pedido "foi registrado".
+- "Algo errado neste cadastro?": a correção vai por e-mail ao suporte com o id do caso (sem login; nunca diga que
+  "foi registrada"); a denúncia usa `POST /Moderation/reports` (com conta) e só diz "registrada" com a resposta da API.
 - Avisos/confirmações: use `showAlert` / `confirmAction` de `@/lib/dialog` (o `Alert` do RN não aparece no web).
 - **Alerta de emergência** (`/alerta-emergencia`): contagem de 10 s com "Cancelar" sempre visível (pausa enquanto o
   sistema pergunta da localização); ao fim abre o discador com o 190 — o app não liga sozinho. O envio ao servidor
