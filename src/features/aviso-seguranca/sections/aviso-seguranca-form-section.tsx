@@ -60,6 +60,8 @@ export function AvisoSegurancaFormSection({ controller: c }: Props) {
           pins={pins}
           showLocationFab={false}
           rounded
+          focus={c.mapFocus}
+          userLocation={c.userLocation}
           onMapPress={c.choosePoint}
           onPinDragEnd={(_, latitude, longitude) => c.choosePoint(latitude, longitude)}
           style={styles.map}

@@ -1,6 +1,8 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { BrandButton } from '@/components/brand-button';
 import { BrandCheckbox } from '@/components/brand-checkbox';
 import { BrandField } from '@/components/brand-field';
 import { BrandSelect } from '@/components/brand-select';
@@ -17,8 +19,8 @@ interface Props {
 }
 
 /**
- * "Sobre quem cadastra": vínculo com a pessoa, boletim de ocorrência (obrigatório para menores)
- * e declaração de veracidade. Ajuda a evitar falsos alertas e o uso do app para perseguir alguém.
+ * "Sobre quem cadastra": vínculo com a pessoa, boletim de ocorrência (obrigatório para menores e
+ * para quem não é da família) e declaração de veracidade. Ajuda a evitar falsos alertas e o uso do app para perseguir alguém.
  */
 export function CadastrarPessoaResponsibilitySection({ controller: c }: Props) {
   const t = useT();
@@ -43,19 +45,57 @@ export function CadastrarPessoaResponsibilitySection({ controller: c }: Props) {
         {relationshipError ? <Text style={styles.error}>{relationshipError}</Text> : null}
       </View>
 
+      {c.relationshipKind ? (
+        <View style={styles.policy} accessibilityLiveRegion="polite">
+          <MaterialCommunityIcons
+            name={
+              c.relationshipKind === 'family'
+                ? 'account-check-outline'
+                : c.relationshipKind === 'institution'
+                  ? 'domain'
+                  : 'file-document-outline'
+            }
+            size={20}
+            color={brand.blue}
+          />
+          <Text style={styles.policyText}>
+            {c.relationshipKind === 'family'
+              ? t('A equipe confere cada cadastro antes de publicar e pode pedir documentos que comprovem o vínculo.')
+              : c.relationshipKind === 'acquaintance'
+                ? t('Para quem não é da família, o boletim de ocorrência é obrigatório. Ele vai só para a equipe, nunca aparece no caso, e sozinho não garante a publicação.')
+                : c.relationshipKind === 'institution'
+                  ? t('Instituições e autoridades informam o boletim de ocorrência e passam por comprovação: a equipe entra em contato antes de publicar. Não se declare representante sem ser.')
+                  : t('Quem não conhece a pessoa só pode cadastrar com boletim de ocorrência. Encontrou alguém perdido agora, como uma criança ou um idoso desorientado? Use o alerta de possível desaparecimento.')}
+          </Text>
+        </View>
+      ) : null}
+      {c.relationshipKind === 'stranger' ? (
+        <BrandButton
+          label={t('Encontrei alguém perdido')}
+          variant="outline"
+          trailingIcon="human-child"
+          onPress={c.goToPossibleMissing}
+        />
+      ) : null}
+
       <BrandField
         label={t('Número do boletim de ocorrência')}
         value={c.policeReport}
         onChangeText={c.setPoliceReport}
         onBlur={c.blurPoliceReport}
         placeholder={t('Ex.: 2026-123456')}
-        required={c.isMinor}
+        required={c.policeReportRequired}
         error={c.fieldError('policeReport')}
       />
       <Text style={styles.hint}>
         {c.isMinor
           ? t('Para crianças e adolescentes, o número do boletim de ocorrência é obrigatório. Registre na delegacia mais próxima ou, se o seu estado permitir, na delegacia on-line — não é preciso esperar 24 horas.')
-          : t('Recomendado. Com o boletim de ocorrência, o caso fica mais confiável para a comunidade.')}
+          : c.policeReportRequired
+            ? t('Obrigatório para quem não é da família. Registre na delegacia mais próxima ou na delegacia on-line do seu estado — não é preciso esperar 24 horas.')
+            : t('Recomendado. Com o boletim de ocorrência, o caso fica mais confiável para a comunidade.')}
+      </Text>
+      <Text style={styles.hint}>
+        {t('Todo cadastro passa pela equipe antes de aparecer para o público. O boletim de ocorrência nunca é publicado.')}
       </Text>
 
       <BrandCheckbox
@@ -94,6 +134,22 @@ function makeStyles(brand: BrandColors) {
     error: {
       fontSize: 13,
       color: brand.error,
+    },
+    policy: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 8,
+      padding: 12,
+      borderRadius: Radius.md,
+      backgroundColor: brand.white,
+      borderWidth: 1,
+      borderColor: brand.divider,
+    },
+    policyText: {
+      flex: 1,
+      fontSize: 14,
+      lineHeight: 20,
+      color: brand.textDark,
     },
     hint: {
       marginTop: -6,

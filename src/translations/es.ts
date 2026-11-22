@@ -154,8 +154,6 @@ export const es: Readonly<Record<string, string>> = {
   'offline visitante pendente revisar enviar': 'sin conexión visitante pendiente revisar enviar',
   'Por que o app pede meu vínculo e o boletim de ocorrência?':
     '¿Por qué la app pide mi vínculo y la denuncia policial?',
-  'Para proteger quem está desaparecido e evitar cadastros falsos ou feitos para perseguir alguém — por exemplo, uma mulher que se afastou para se proteger. Você informa seu vínculo com a pessoa e confirma que as informações são verdadeiras. Para crianças e adolescentes (menos de 18 anos), o número do boletim de ocorrência é obrigatório; para adultos, é recomendado. Não é preciso esperar 24 horas para registrar o boletim.':
-    'Para proteger a quien está desaparecido y evitar registros falsos o hechos para perseguir a alguien — por ejemplo, una mujer que se alejó para protegerse. Indicas tu vínculo con la persona y confirmas que la información es verdadera. Para niños y adolescentes (menores de 18 años), el número de la denuncia policial (boletim de ocorrência) es obligatorio; para adultos, se recomienda. No hace falta esperar 24 horas para hacer la denuncia.',
   'boletim ocorrência bo vínculo declaração menor criança adolescente':
     'denuncia policial bo vínculo declaración menor niño adolescente',
   'O que significam as situações de cada caso?': '¿Qué significan las situaciones de cada caso?',
@@ -178,8 +176,6 @@ export const es: Readonly<Record<string, string>> = {
     'No. Un avistamiento es una información enviada por alguien de la comunidad y no es una confirmación. En una situación urgente, llama a la policía (190).',
   'confirmado verdade verificado': 'confirmado verdad verificado',
   'O que é o histórico no mapa de um caso?': '¿Qué es el historial en el mapa de un caso?',
-  'São os locais informados para aquela pessoa, em ordem de data. O ponto mais recente aparece destacado.':
-    'Son los lugares informados para esa persona, en orden de fecha. El punto más reciente aparece destacado.',
   'histórico trajeto rastro': 'historial trayecto rastro',
   'O que faz o botão vermelho "Pedir ajuda"?': '¿Qué hace el botón rojo "Pedir ayuda"?',
   'No celular ele fica no centro da barra inferior; no computador, no alto da tela, ao lado da busca. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.':
@@ -401,8 +397,6 @@ export const es: Readonly<Record<string, string>> = {
   'Galeria': 'Galería',
   'Cancelar': 'Cancelar',
   'Falta pouco': 'Falta poco',
-  'No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes) e confirme a declaração.':
-    'Al final del formulario, indica tu vínculo con la persona, la denuncia policial (obligatoria para niños y adolescentes) y confirma la declaración.',
   'Sua sessão terminou. Entre de novo para enviar este cadastro.':
     'Tu sesión terminó. Entra de nuevo para enviar este registro.',
   'Cadastro enviado': 'Registro enviado',
@@ -412,13 +406,9 @@ export const es: Readonly<Record<string, string>> = {
   'A pessoa foi cadastrada com sucesso.': 'La persona fue registrada con éxito.',
   'Cadastro salvo só neste aparelho. Para enviá-lo, entre na sua conta e toque em "Revisar e enviar" no próprio cadastro ou em Meu perfil.':
     'Registro guardado solo en este dispositivo. Para enviarlo, entra en tu cuenta y toca "Revisar y enviar" en el propio registro o en Mi perfil.',
-  // features/cadastrar-pessoa/legitimacy.ts
-  'Mãe ou pai': 'Madre o padre',
   'Responsável legal': 'Tutor legal',
   'Outro familiar': 'Otro familiar',
   'Cônjuge ou companheiro(a)': 'Cónyuge o pareja',
-  'Amigo(a)': 'Amigo(a)',
-  'Outro': 'Otro',
   // features/cadastrar-pessoa/sections/cadastrar-pessoa-basic-section.tsx
   'Cadastro feito neste aparelho': 'Registro hecho en este dispositivo',
   'Carregando o cadastro…': 'Cargando el registro…',
@@ -1145,8 +1135,6 @@ export const es: Readonly<Record<string, string>> = {
     'Usa el formato dd/mm/aaaa, con una fecha que ya pasó.',
   'Para criar a conta, aceite as regras de uso.': 'Para crear la cuenta, acepta las reglas de uso.',
   'Informe seu vínculo com a pessoa.': 'Indica tu vínculo con la persona.',
-  'Para crianças e adolescentes, informe o número do boletim de ocorrência.':
-    'Para niños y adolescentes, indica el número de la denuncia policial.',
   'Confira o número do boletim de ocorrência.': 'Revisa el número de la denuncia policial.',
   'Confirme a declaração para continuar.': 'Confirma la declaración para continuar.',
   'Este número já está na sua lista.': 'Este número ya está en tu lista.',
@@ -1281,8 +1269,6 @@ export const es: Readonly<Record<string, string>> = {
   'Adulto': 'Adulto',
   // Rodada 4 — Avisos de segurança no mapa e cartão flutuante
   'Posso avisar sobre uma rua perigosa?': '¿Puedo avisar sobre una calle peligrosa?',
-  'O mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".':
-    'El mapa de Inicio muestra rombos amarillos con avisos de la comunidad, como "robos frecuentes" o "calle desierta de noche". Toca un aviso para ver el horario y la referencia del lugar y marcar "Sigue así" o "Ya no está así". Para avisar, inicia sesión y toca "Agregar aviso". Habla del lugar, nunca de personas: sin nombres, matrículas ni teléfonos. El aviso desaparece en 30 días si nadie lo confirma. Son relatos de la comunidad, no verificados, y no reemplazan a la policía: en peligro, usa "Pedir ayuda".',
   'aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa':
     'aviso calle peligrosa robo desierta oscura iluminación horario seguridad comunidad mapa',
   'Localização indisponível': 'Ubicación no disponible',
@@ -1333,13 +1319,10 @@ export const es: Readonly<Record<string, string>> = {
   'Ver detalhes': 'Ver detalles',
   'Na página da pessoa você pode avisar que a viu por perto.':
     'En la página de la persona puedes avisar que la viste cerca.',
-  'Aviso da comunidade': 'Aviso de la comunidad',
   '{count} confirmação': '{count} confirmación',
   '{count} confirmações': '{count} confirmaciones',
   'Continua assim': 'Sigue así',
   'Não está mais assim': 'Ya no está así',
-  'Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".':
-    'Relato de la comunidad, no verificado. En peligro, usa "Pedir ayuda".',
   'Denunciar este aviso': 'Denunciar este aviso',
   'Denunciar': 'Denunciar',
   'Esconder avisos de segurança': 'Ocultar avisos de seguridad',
@@ -1399,4 +1382,234 @@ export const es: Readonly<Record<string, string>> = {
   'Contato de segurança infantil': 'Contacto de seguridad infantil',
   'O ponto de contato de segurança infantil da Nexora Prism é {name}. Para questões sobre prevenção de CSAM e conformidade com os padrões de segurança infantil do Google Play, contate {email}.':
     'La persona de contacto de seguridad infantil de Nexora Prism es {name}. Para consultas sobre la prevención del CSAM y el cumplimiento de las normas de seguridad infantil de Google Play, contacta con {email}.',
+
+  // proteção de identidade, avisos de segurança, publicação responsável (22/11/2026)
+  'Encontrei alguém perdido': 'Encontré a alguien perdido',
+  'Criança perdida, idoso desorientado ou alguém que não sabe dizer quem é. Sem precisar de boletim.':
+    'Un niño perdido, una persona mayor desorientada o alguien que no sabe decir quién es. Sin necesidad de denuncia policial.',
+  'O mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite", da área que você está vendo no mapa. Toque num aviso para ver o horário, a distância até você e se ele já foi confirmado por outras pessoas ("Ainda não confirmado", "Confirmado por" ou "Informações divergentes"), e marque "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso": se já existir um aviso igual no mesmo ponto, o app sugere confirmar o que existe. Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não informação oficial, e não substituem a polícia: em perigo, use "Pedir ajuda".':
+    'El mapa de Inicio muestra rombos amarillos con avisos de la comunidad, como "asaltos frecuentes" o "calle desierta de noche", del área que estás viendo en el mapa. Toca un aviso para ver el horario, la distancia hasta ti y si otras personas ya lo confirmaron ("Aún no confirmado", "Confirmado por" o "Información contradictoria"), y marca "Sigue así" o "Ya no está así". Para avisar, entra en tu cuenta y toca "Agregar aviso": si ya existe un aviso igual en el mismo punto, la app sugiere confirmar el que existe. Habla del lugar, nunca de personas: sin nombres, placas ni teléfonos. El aviso desaparece en 30 días si nadie lo confirma. Son relatos de la comunidad, no información oficial, y no reemplazan a la policía: si estás en peligro, usa "Pedir ayuda".',
+  'Para proteger quem está desaparecido e evitar cadastros falsos ou feitos para perseguir alguém — por exemplo, uma mulher que se afastou para se proteger. Você informa seu vínculo com a pessoa e confirma que as informações são verdadeiras. O número do boletim de ocorrência é obrigatório para crianças e adolescentes (menos de 18 anos) e para quem não é da família: amigos, conhecidos, vizinhos, desconhecidos e instituições. Para familiares adultos, é recomendado. O boletim vai só para a equipe e nunca aparece no caso. Todo cadastro passa pela equipe antes de ficar público, e ela pode pedir documentos. Não é preciso esperar 24 horas para registrar o boletim.':
+    'Para proteger a quien está desaparecido y evitar registros falsos o hechos para perseguir a alguien — por ejemplo, una mujer que se alejó para protegerse. Indicas tu vínculo con la persona y confirmas que la información es verdadera. El número de la denuncia policial es obligatorio para niños y adolescentes (menores de 18 años) y para quien no es de la familia: amigos, conocidos, vecinos, desconocidos e instituciones. Para familiares adultos, se recomienda. La denuncia va solo al equipo y nunca aparece en el caso. Todo registro pasa por el equipo antes de hacerse público, y el equipo puede pedir documentos. No hace falta esperar 24 horas para hacer la denuncia.',
+  'São as regiões onde a pessoa foi vista por último, em ordem de data. A mais recente aparece destacada. Para que ninguém use o histórico para chegar até alguém, cada ponto mostra só uma região de cerca de 10 km e a cidade, nunca a rua ou o local exato, e só os avistamentos mais recentes aparecem.':
+    'Son las regiones donde la persona fue vista por última vez, en orden de fecha. La más reciente aparece destacada. Para que nadie use el historial para llegar a alguien, cada punto muestra solo una región de unos 10 km y la ciudad, nunca la calle ni el lugar exacto, y solo aparecen los avistamientos más recientes.',
+  'Por segurança, cada ponto mostra só a região aproximada (cerca de 10 km) e a cidade, nunca o local exato.':
+    'Por seguridad, cada punto muestra solo la región aproximada (unos 10 km) y la ciudad, nunca el lugar exacto.',
+  'Há um alerta sobre mim, mas eu não estou desaparecido(a). O que faço?':
+    'Hay una alerta sobre mí, pero no estoy desaparecido(a). ¿Qué hago?',
+  'Abra o alerta e toque em "Sou a pessoa procurada". Marque o que está acontecendo (por exemplo, que você está bem ou que quer a retirada do alerta) e envie o pedido à equipe. Não pedimos sua localização e quem criou o alerta não recebe seus dados. Com a conta conectada, o pedido também entra na fila da equipe pelo app; sem conta, ele vai por e-mail e só chega quando você envia. A equipe analisa antes de encerrar o alerta e, em caso de risco, pode suspender a divulgação enquanto isso. Se precisar confirmar que é você, a equipe pede uma foto atual por e-mail, usada só nessa verificação.':
+    'Abre la alerta y toca "Soy la persona buscada". Marca lo que está pasando (por ejemplo, que estás bien o que quieres que retiren la alerta) y envía la solicitud al equipo. No pedimos tu ubicación y quien creó la alerta no recibe tus datos. Con la cuenta conectada, la solicitud también entra en la cola del equipo por la app; sin cuenta, va por correo y solo llega cuando lo envías. El equipo la analiza antes de cerrar la alerta y, si hay riesgo, puede suspender la difusión mientras tanto. Si necesita confirmar que eres tú, el equipo te pide una foto actual por correo, usada solo para esa verificación.',
+  'sou eu contestar retirar alerta falso não desaparecido minha foto verificação':
+    'soy yo impugnar retirar alerta falsa no desaparecido mi foto verificación',
+  'Alguém está usando o app para me encontrar ou me ameaçar. Como peço ajuda?':
+    'Alguien está usando la app para encontrarme o amenazarme. ¿Cómo pido ayuda?',
+  'Se você está em perigo agora, ligue 190 (ou 180, em caso de violência contra a mulher). Depois, abra o alerta e toque em "Estou sofrendo perseguição", ou procure por esse pedido aqui na Central de Ajuda. Marque o que está acontecendo e envie à equipe: esses pedidos são tratados com urgência. Não escreva onde você está. Quem publicou o alerta não fica sabendo do seu pedido nem recebe seus dados.':
+    'Si estás en peligro ahora, llama al 190 (o al 180, en caso de violencia contra la mujer). Después, abre la alerta y toca "Estoy sufriendo acoso", o busca esa solicitud aquí en el Centro de Ayuda. Marca lo que está pasando y envíalo al equipo: estas solicitudes se tratan con urgencia. No escribas dónde estás. Quien publicó la alerta no se entera de tu solicitud ni recibe tus datos.',
+  'perseguição ameaça stalker me localizar violência proteção':
+    'acoso amenaza acosador localizarme violencia protección',
+  'Encontrei uma criança perdida ou um idoso desorientado. O que faço?':
+    'Encontré a un niño perdido o a una persona mayor desorientada. ¿Qué hago?',
+  'Ligue para a polícia (190) — ou para o SAMU (192), se a pessoa estiver passando mal — e fique com ela num lugar movimentado. Em "Pedir ajuda", toque em "Encontrei alguém perdido": o app mostra o que fazer, ajuda a ver se a pessoa já está cadastrada e prepara um aviso para a equipe, sem exigir boletim de ocorrência. Nada é publicado no mapa a partir daí sem análise da equipe. Não publique a foto da pessoa em redes sociais.':
+    'Llama a la policía (190) — o al SAMU (192), si la persona se siente mal — y quédate con ella en un lugar concurrido. En "Pedir ayuda", toca "Encontré a alguien perdido": la app muestra qué hacer, ayuda a ver si la persona ya está registrada y prepara un aviso para el equipo, sin exigir denuncia policial. Nada se publica en el mapa desde ahí sin el análisis del equipo. No publiques la foto de la persona en redes sociales.',
+  'criança perdida idoso desorientado encontrei achei sem documento sem boletim':
+    'niño perdido persona mayor desorientada encontré sin documento sin denuncia',
+  'Sou a pessoa procurada ou sofro perseguição': 'Soy la persona buscada o sufro acoso',
+  'O local está longe de você': 'El lugar está lejos de ti',
+  'O ponto marcado fica a {distance} de onde você está. Confira no mapa se é o lugar certo.':
+    'El punto marcado está a {distance} de donde estás. Revisa en el mapa si es el lugar correcto.',
+  'O local está certo': 'El lugar es correcto',
+  'Voltar e conferir': 'Volver y revisar',
+  'Você já avisou sobre este lugar': 'Ya avisaste sobre este lugar',
+  'Já existe um aviso seu deste tipo aqui. Ele continua no mapa enquanto outras pessoas confirmarem.':
+    'Ya tienes un aviso de este tipo aquí. Sigue en el mapa mientras otras personas lo confirmen.',
+  'Já existe um aviso igual aqui': 'Ya existe un aviso igual aquí',
+  'Há um aviso de "{label}" a poucos metros deste ponto. Para não repetir, confirme o aviso que já existe.':
+    'Hay un aviso de "{label}" a pocos metros de este punto. Para no repetir, confirma el aviso que ya existe.',
+  'Confirmar o aviso existente': 'Confirmar el aviso existente',
+  'Aviso confirmado': 'Aviso confirmado',
+  'Obrigado. Sua confirmação renova o prazo do aviso no mapa.':
+    'Gracias. Tu confirmación renueva el plazo del aviso en el mapa.',
+  'Não foi possível confirmar': 'No se pudo confirmar',
+  'No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes e para quem não é da família) e confirme a declaração.':
+    'Al final del formulario, indica tu vínculo con la persona, la denuncia policial (obligatoria para niños y adolescentes y para quien no es de la familia) y confirma la declaración.',
+  'A equipe confere cada cadastro antes de publicar e pode pedir documentos que comprovem o vínculo.':
+    'El equipo revisa cada registro antes de publicarlo y puede pedir documentos que comprueben el vínculo.',
+  'Para quem não é da família, o boletim de ocorrência é obrigatório. Ele vai só para a equipe, nunca aparece no caso, e sozinho não garante a publicação.':
+    'Para quien no es de la familia, la denuncia policial es obligatoria. Va solo al equipo, nunca aparece en el caso y, por sí sola, no garantiza la publicación.',
+  'Instituições e autoridades informam o boletim de ocorrência e passam por comprovação: a equipe entra em contato antes de publicar. Não se declare representante sem ser.':
+    'Instituciones y autoridades indican la denuncia policial y pasan por verificación: el equipo se pone en contacto antes de publicar. No te declares representante si no lo eres.',
+  'Quem não conhece a pessoa só pode cadastrar com boletim de ocorrência. Encontrou alguém perdido agora, como uma criança ou um idoso desorientado? Use o alerta de possível desaparecimento.':
+    'Si no conoces a la persona, solo puedes registrarla con denuncia policial. ¿Acabas de encontrar a alguien perdido, como un niño o una persona mayor desorientada? Usa la alerta de posible desaparición.',
+  'Obrigatório para quem não é da família. Registre na delegacia mais próxima ou na delegacia on-line do seu estado — não é preciso esperar 24 horas.':
+    'Obligatoria para quien no es de la familia. Hazla en la comisaría más cercana o en la comisaría en línea de tu estado — no hace falta esperar 24 horas.',
+  'Todo cadastro passa pela equipe antes de aparecer para o público. O boletim de ocorrência nunca é publicado.':
+    'Todo registro pasa por el equipo antes de aparecer para el público. La denuncia policial nunca se publica.',
+  'Relato: {label}': 'Relato: {label}',
+  'Confirmado por {count} pessoas': 'Confirmado por {count} personas',
+  'Informações divergentes': 'Información contradictoria',
+  'Ainda não confirmado': 'Aún no confirmado',
+  'Confirmado por pessoas da comunidade, mas não é informação oficial. Em perigo, use "Pedir ajuda".':
+    'Confirmado por personas de la comunidad, pero no es información oficial. Si estás en peligro, usa "Pedir ayuda".',
+  'Há quem diga que não está mais assim. Confira antes de mudar o caminho. Em perigo, use "Pedir ajuda".':
+    'Hay quien dice que ya no está así. Revisa antes de cambiar el camino. Si estás en peligro, usa "Pedir ayuda".',
+  'Relato de uma pessoa, ainda sem confirmação de outras. Não é informação oficial. Em perigo, use "Pedir ajuda".':
+    'Relato de una persona, aún sin confirmación de otras. No es información oficial. Si estás en peligro, usa "Pedir ayuda".',
+  'Relato da comunidade': 'Relato de la comunidad',
+  'agora': 'ahora',
+  'a {distance} de você': 'a {distance} de ti',
+  '{count} diz que mudou': '{count} dice que cambió',
+  '{count} dizem que mudou': '{count} dicen que cambió',
+  'Os avisos de segurança não carregaram. Tocar para tentar de novo.':
+    'Los avisos de seguridad no cargaron. Toca para intentar de nuevo.',
+  'Avisos de segurança não carregaram. Tentar de novo':
+    'Los avisos de seguridad no cargaron. Intentar de nuevo',
+  'Sem localização: os avisos são os da área vista no mapa. Tocar para tentar o GPS de novo.':
+    'Sin ubicación: los avisos son los del área vista en el mapa. Toca para intentar el GPS de nuevo.',
+  'Sem localização: avisos da área vista no mapa':
+    'Sin ubicación: avisos del área vista en el mapa',
+  'É você neste alerta?': '¿Eres tú en esta alerta?',
+  'Se você está bem e não está desaparecido(a), ou se alguém usa este alerta para tentar te encontrar, peça a verificação. Não pedimos sua localização e quem publicou não recebe seus dados.':
+    'Si estás bien y no estás desaparecido(a), o si alguien usa esta alerta para intentar encontrarte, pide la verificación. No pedimos tu ubicación y quien publicó no recibe tus datos.',
+  'Sou a pessoa procurada': 'Soy la persona buscada',
+  'Estou sofrendo perseguição': 'Estoy sufriendo acoso',
+  'Encontrei uma criança que parece perdida': 'Encontré a un niño que parece perdido',
+  'Encontrei um idoso desorientado': 'Encontré a una persona mayor desorientada',
+  'Encontrei alguém que não consegue dizer quem é ou achar a família':
+    'Encontré a alguien que no puede decir quién es ni encontrar a su familia',
+  'Acho que alguém desapareceu, mas ainda não há boletim de ocorrência':
+    'Creo que alguien desapareció, pero aún no hay denuncia policial',
+  'Ligue para a polícia (190). Se a pessoa estiver passando mal, ligue para o SAMU (192).':
+    'Llama a la policía (190). Si la persona se siente mal, llama al SAMU (192).',
+  'Fique com a pessoa num lugar movimentado e visível. Não a leve para a sua casa nem para o seu carro.':
+    'Quédate con la persona en un lugar concurrido y visible. No la lleves a tu casa ni a tu auto.',
+  'Peça ajuda a um segurança, funcionário ou policial por perto.':
+    'Pide ayuda a un guardia de seguridad, empleado o policía cercano.',
+  'Pergunte com calma o nome, o nome de um familiar ou um telefone.':
+    'Pregunta con calma el nombre, el nombre de un familiar o un teléfono.',
+  'Não publique a foto da pessoa em redes sociais: isso pode expô-la a quem quer fazer mal.':
+    'No publiques la foto de la persona en redes sociales: puede exponerla a quien quiere hacerle daño.',
+  'URGENTE': 'URGENTE',
+  'Alerta de possível desaparecimento': 'Alerta de posible desaparición',
+  'Situação: {situation}': 'Situación: {situation}',
+  'Onde: {place}': 'Dónde: {place}',
+  'não informado': 'no informado',
+  'Já liguei para os serviços de emergência pelo app.':
+    'Ya llamé a los servicios de emergencia desde la app.',
+  'Ainda não liguei para os serviços de emergência.':
+    'Aún no llamé a los servicios de emergencia.',
+  'Detalhes (como a pessoa está, roupas, o que ela conseguiu dizer):':
+    'Detalles (cómo está la persona, ropa, lo que pudo decir):',
+  '(sem detalhes)': '(sin detalles)',
+  'Não publiquei fotos da pessoa. Se precisarem de mais informações, respondam a este e-mail.':
+    'No publiqué fotos de la persona. Si necesitan más información, respondan a este correo.',
+  'Ligue manualmente para {number}.': 'Llama manualmente al {number}.',
+  'Escolha a situação.': 'Elige la situación.',
+  'Ligue agora': 'Llama ahora',
+  'Não espere o app: a polícia e o SAMU chegam mais rápido. A ligação é feita pelo seu celular.':
+    'No esperes a la app: la policía y el SAMU llegan más rápido. La llamada se hace desde tu celular.',
+  'Qual é a situação?': '¿Cuál es la situación?',
+  'O que fazer agora': 'Qué hacer ahora',
+  'Veja se a pessoa já está cadastrada': 'Mira si la persona ya está registrada',
+  'A família pode já estar procurando. Se achar o caso, informe o avistamento nele.':
+    'La familia puede estar buscándola. Si encuentras el caso, informa el avistamiento en él.',
+  'Avisar a equipe do Encontra-me': 'Avisar al equipo de Encontra-me',
+  'Onde a pessoa está (referência, opcional)': 'Dónde está la persona (referencia, opcional)',
+  'Ex.: Praça da Estação, perto do ponto de ônibus':
+    'Ej.: Praça da Estação, cerca de la parada de autobús',
+  'Como a pessoa está, o que está vestindo e o que conseguiu dizer.':
+    'Cómo está la persona, qué lleva puesto y qué pudo decir.',
+  'Detalhes (opcional)': 'Detalles (opcional)',
+  'Nada é publicado no mapa a partir daqui. A equipe analisa com prioridade e só divulga depois de validar a situação — sem expor fotos ou dados da pessoa antes disso.':
+    'Nada se publica en el mapa desde aquí. El equipo lo analiza con prioridad y solo lo difunde después de validar la situación — sin exponer fotos ni datos de la persona antes de eso.',
+  'Avisar a equipe': 'Avisar al equipo',
+  'Seu app de e-mail abriu com a mensagem pronta. Toque em enviar: só então ela chega à equipe.':
+    'Tu app de correo se abrió con el mensaje listo. Toca enviar: solo entonces llega al equipo.',
+  'O app de e-mail não abriu. Escreva para {email} com o assunto "Alerta de possível desaparecimento".':
+    'La app de correo no se abrió. Escribe a {email} con el asunto "Alerta de posible desaparición".',
+  'O aviso à equipe não substitui a polícia. O Encontra-me não aciona as autoridades sozinho.':
+    'El aviso al equipo no reemplaza a la policía. Encontra-me no avisa a las autoridades por su cuenta.',
+  'Estou bem e não estou desaparecido(a)': 'Estoy bien y no estoy desaparecido(a)',
+  'Meus dados ou minha imagem estão sendo usados sem autorização':
+    'Mis datos o mi imagen se están usando sin autorización',
+  'Quero que o alerta seja retirado ou suspenso': 'Quiero que retiren o suspendan la alerta',
+  'Existe perseguição, ameaça ou risco para mim': 'Hay acoso, amenaza o riesgo para mí',
+  'Alguém está usando o app para tentar me localizar':
+    'Alguien está usando la app para intentar localizarme',
+  'Alguém publicou um alerta falso com a minha foto':
+    'Alguien publicó una alerta falsa con mi foto',
+  'Estou recebendo ameaças': 'Estoy recibiendo amenazas',
+  'Estão usando meus dados sem autorização': 'Están usando mis datos sin autorización',
+  'Outro motivo': 'Otro motivo',
+  'PRIORITÁRIO': 'PRIORITARIO',
+  'O que está acontecendo:': 'Lo que está pasando:',
+  'Não informado': 'No informado',
+  'Também registrei este pedido pelo app.': 'También registré esta solicitud por la app.',
+  'Pedido enviado só por e-mail (sem registro pelo app).':
+    'Solicitud enviada solo por correo (sin registro por la app).',
+  'Não informei minha localização. Por favor, não compartilhem meus dados com quem criou o alerta.':
+    'No informé mi ubicación. Por favor, no compartan mis datos con quien creó la alerta.',
+  'Se precisarem confirmar que sou eu, respondam a este e-mail. Posso enviar uma foto atual só para essa verificação.':
+    'Si necesitan confirmar que soy yo, respondan a este correo. Puedo enviar una foto actual solo para esa verificación.',
+  'Escolha pelo menos uma opção.': 'Elige al menos una opción.',
+  'Você escreveu um endereço?': '¿Escribiste una dirección?',
+  'Não precisamos saber onde você está para analisar o pedido. Se quiser, apague o endereço antes de enviar.':
+    'No necesitamos saber dónde estás para analizar la solicitud. Si quieres, borra la dirección antes de enviar.',
+  'Enviar assim mesmo': 'Enviar de todos modos',
+  'Voltar e apagar': 'Volver y borrar',
+  'Escreva para {email} com o assunto "{subject}".':
+    'Escribe a {email} con el asunto "{subject}".',
+  'Você está vendo um alerta sobre o seu próprio desaparecimento e não está desaparecido(a)?':
+    '¿Estás viendo una alerta sobre tu propia desaparición y no estás desaparecido(a)?',
+  'Alguém está usando o Encontra-me contra você?':
+    '¿Alguien está usando Encontra-me en tu contra?',
+  'Marque o que está acontecendo (pode marcar mais de uma opção).':
+    'Marca lo que está pasando (puedes marcar más de una opción).',
+  'Quer contar mais? (opcional)': '¿Quieres contar más? (opcional)',
+  'Conte o que for importante para a análise. Não escreva onde você está.':
+    'Cuenta lo que sea importante para el análisis. No escribas dónde estás.',
+  'Detalhes do pedido (opcional)': 'Detalles de la solicitud (opcional)',
+  'Não pedimos sua localização e não precisamos saber onde você está.':
+    'No pedimos tu ubicación ni necesitamos saber dónde estás.',
+  'Quem criou o alerta não recebe seus dados, sua foto nem este pedido.':
+    'Quien creó la alerta no recibe tus datos, tu foto ni esta solicitud.',
+  'Se a equipe precisar confirmar que é você, ela responde por e-mail. Uma foto atual, se pedida, serve só para essa verificação: nunca é publicada.':
+    'Si el equipo necesita confirmar que eres tú, responde por correo. Una foto actual, si se pide, sirve solo para esa verificación: nunca se publica.',
+  'O pedido não encerra o alerta sozinho: a equipe analisa. Em caso de risco, a divulgação pode ser suspensa enquanto isso.':
+    'La solicitud no cierra la alerta por sí sola: el equipo la analiza. Si hay riesgo, la difusión puede suspenderse mientras tanto.',
+  'Sem conta, o pedido vai por e-mail. Com a conta conectada, ele também entra na fila da equipe pelo app.':
+    'Sin cuenta, la solicitud va por correo. Con la cuenta conectada, también entra en la cola del equipo por la app.',
+  'Enviar pedido à equipe': 'Enviar solicitud al equipo',
+  'Seu app de e-mail abre com a mensagem pronta. O pedido só chega à equipe quando você tocar em enviar.':
+    'Tu app de correo se abre con el mensaje listo. La solicitud solo llega al equipo cuando tocas enviar.',
+  'Sua segurança vem primeiro': 'Tu seguridad es lo primero',
+  'Se você está em perigo agora, ligue antes de preencher qualquer coisa. O Encontra-me não avisa a polícia sozinho.':
+    'Si estás en peligro ahora, llama antes de completar cualquier cosa. Encontra-me no avisa a la policía por su cuenta.',
+  'Ver todas as opções de "Pedir ajuda"': 'Ver todas las opciones de "Pedir ayuda"',
+  'Pedido registrado no app. A equipe vê a denúncia sobre este alerta e pode suspender a divulgação enquanto analisa.':
+    'Solicitud registrada en la app. El equipo ve la denuncia sobre esta alerta y puede suspender la difusión mientras la analiza.',
+  'Não foi possível registrar pelo app agora (verifique a internet). O e-mail continua valendo.':
+    'No se pudo registrar por la app ahora (revisa internet). El correo sigue valiendo.',
+  'Seu app de e-mail abriu com a mensagem pronta. Confira e toque em enviar: só então ela chega à equipe.':
+    'Tu app de correo se abrió con el mensaje listo. Revísalo y toca enviar: solo entonces llega al equipo.',
+  'O app de e-mail não abriu. Escreva para {email} contando o que marcou aqui.':
+    'La app de correo no se abrió. Escribe a {email} contando lo que marcaste aquí.',
+  'Quem criou o alerta não recebe sua localização, sua foto nem seus dados.':
+    'Quien creó la alerta no recibe tu ubicación, tu foto ni tus datos.',
+  'Pedido urgente preparado': 'Solicitud urgente lista',
+  'Pedido preparado': 'Solicitud lista',
+  'Se você corre perigo agora, ligue 190. Violência contra a mulher: 180.':
+    'Si corres peligro ahora, llama al 190. Violencia contra la mujer: 180.',
+  'Fazer outro pedido': 'Hacer otra solicitud',
+  'Voltar para o alerta': 'Volver a la alerta',
+  'Pai ou mãe': 'Padre o madre',
+  'Filho ou filha': 'Hijo o hija',
+  'Irmão ou irmã': 'Hermano o hermana',
+  'Amigo ou conhecido': 'Amigo o conocido',
+  'Vizinho': 'Vecino',
+  'Pessoa desconhecida': 'Persona desconocida',
+  'Instituição ou autoridade': 'Institución o autoridad',
+  'Informe o número do boletim de ocorrência: é obrigatório para crianças e adolescentes e para quem não é da família.':
+    'Indica el número de la denuncia policial: es obligatorio para niños y adolescentes y para quien no es de la familia.',
+  'Proteção e contestação': 'Protección e impugnación',
+  'Proteção de identidade e perseguição': 'Protección de identidad y acoso',
 };

@@ -3,7 +3,7 @@ import * as Location from 'expo-location';
 import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import type { MapPin, MapPolyline } from '@/components/brand-map';
+import type { MapFocus, MapPin, MapPolyline } from '@/components/brand-map';
 import { buildCaseFeedbackMessage } from '@/features/pessoa-detalhe/case-feedback';
 import { buildPersonShareMessage } from '@/features/pessoa-detalhe/person-share';
 import { AppInfo } from '@/lib/app-info';
@@ -23,6 +23,7 @@ import { ensureNotificationPermission, localNotificationsSupported } from '@/lib
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { shareText } from '@/lib/share';
+import { publicSightings } from '@/lib/sighting-privacy';
 import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
@@ -118,6 +119,12 @@ export function usePessoaDetalheController() {
         showAlert(t('Não foi possível registrar'), t('Tente de novo em alguns instantes.'));
       }
     })();
+  };
+
+  /** "Sou a pessoa procurada" / "Estou sofrendo perseguição" — sem login e sem localização. */
+  const goToProtection = (mode: 'sou-eu' | 'perseguicao') => {
+    if (!person || isLocalPerson) return;
+    router.push({ pathname: '/protecao', params: { caso: person.id, modo: mode } } as Href);
   };
 
   /** Liga ou desliga o "Acompanhar". Ao ligar, pede a permissão de notificação e ativa o tipo de aviso. */
@@ -341,11 +348,9 @@ export function usePessoaDetalheController() {
       ];
     }
 
-    return [...(historyQuery.data ?? [])].sort((left, right) => {
-      const leftTime = new Date(left.dtRegistration).getTime();
-      const rightTime = new Date(right.dtRegistration).getTime();
-      return leftTime - rightTime;
-    });
+    // Público: só os avistamentos recentes, numa região de ~10 km e só com cidade/estado —
+    // o histórico não pode servir para acompanhar alguém de perto.
+    return publicSightings(historyQuery.data ?? []);
   }, [historyQuery.data, isLocalPerson, person]);
 
   const mappedSightings = useMemo(
@@ -375,6 +380,13 @@ export function usePessoaDetalheController() {
       },
     }));
   }, [mappedSightings, person?.photoUri, t]);
+
+  /** Mapa do histórico abre mostrando a região inteira (~30 km), não um ponto "exato" que não é. */
+  const historyFocus = useMemo<MapFocus | null>(() => {
+    const last = mappedSightings[mappedSightings.length - 1];
+    if (!last || isLocalPerson) return null;
+    return { key: `historico-${last.id}`, latitude: last.latitude, longitude: last.longitude, zoom: 'region' };
+  }, [isLocalPerson, mappedSightings]);
 
   const historyPolylines: MapPolyline[] = useMemo(() => {
     if (mappedSightings.length < 2) {
@@ -484,6 +496,7 @@ export function usePessoaDetalheController() {
       void shareText(buildPersonShareMessage(person, env.webUrl, t), t('Pessoa desaparecida'));
     },
     reportCase,
+    goToProtection,
     canFollow,
     following,
     followBusy: followMutation.isPending || (canFollow && sessionUser != null && followQuery.isLoading),
@@ -496,6 +509,8 @@ export function usePessoaDetalheController() {
     sightingPins,
     historyPins,
     historyPolylines,
+    historyFocus,
+    historyApproximate: !isLocalPerson,
     userLocation,
     placeSightingOnMap,
     handlePinDragEnd,

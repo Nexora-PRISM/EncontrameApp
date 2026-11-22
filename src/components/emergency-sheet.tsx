@@ -74,7 +74,7 @@ export function EmergencySheet({ visible, onClose }: Props) {
 
 /**
  * Opções de ajuda, separadas: alerta com contagem × pedir socorro (ligação) × avisar contatos ×
- * comunicar desaparecimento × informar avistamento.
+ * comunicar desaparecimento × encontrei alguém perdido × informar avistamento.
  * O app NÃO avisa autoridades automaticamente: a ligação é feita pelo telefone da pessoa.
  */
 export function EmergencyOptions({ onNavigate }: { onNavigate: (href: Href) => void }) {
@@ -195,6 +195,20 @@ export function EmergencyOptions({ onNavigate }: { onNavigate: (href: Href) => v
           <Text style={styles.actionTitle}>{t('Comunicar um desaparecimento')}</Text>
           <Text style={styles.callWhen}>
             {t('Cadastre a pessoa no app. Faça também o boletim de ocorrência — não é preciso esperar 24 horas.')}
+          </Text>
+        </View>
+        <MaterialCommunityIcons name="chevron-right" size={22} color={brand.label} />
+      </Pressable>
+      <Pressable
+        onPress={() => onNavigate('/possivel-desaparecimento' as Href)}
+        style={({ pressed }) => [styles.actionCard, pressed && styles.pressed]}
+        accessibilityRole="button"
+      >
+        <MaterialCommunityIcons name="human-child" size={26} color={brand.blue} />
+        <View style={styles.callTexts}>
+          <Text style={styles.actionTitle}>{t('Encontrei alguém perdido')}</Text>
+          <Text style={styles.callWhen}>
+            {t('Criança perdida, idoso desorientado ou alguém que não sabe dizer quem é. Sem precisar de boletim.')}
           </Text>
         </View>
         <MaterialCommunityIcons name="chevron-right" size={22} color={brand.label} />

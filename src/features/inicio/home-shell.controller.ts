@@ -32,7 +32,11 @@ export function useHomeShellController() {
   const sessionUser = useSessionUser();
   const { appearance, setAppearance } = useBrandTheme();
   const { preference: languagePreference, setPreference: setLanguagePreference } = useI18n();
-  const { location: userLocation, denied: locationDenied } = useUserLocation();
+  const {
+    location: userLocation,
+    denied: locationDenied,
+    unavailable: locationUnavailable,
+  } = useUserLocation();
   const { search, query, categoryFilter, menuOpen } = useHomeSharedState();
   const peopleQuery = useNearbyPeopleQuery({
     query,
@@ -43,7 +47,7 @@ export function useHomeShellController() {
   const loggedIn = sessionUser != null;
   const onHome = pathname === '/inicio';
 
-  const waitingLocation = !locationDenied && userLocation == null;
+  const waitingLocation = !locationDenied && !locationUnavailable && userLocation == null;
   const showPeopleSkeleton =
     waitingLocation ||
     peopleQuery.isLoading ||
@@ -81,6 +85,7 @@ export function useHomeShellController() {
     query,
     userLocation,
     locationDenied,
+    locationUnavailable,
     search,
     setSearch: (value: string) => updateHomeState({ search: value }),
     handleSearch: () => updateHomeState({ query: search.trim() }),

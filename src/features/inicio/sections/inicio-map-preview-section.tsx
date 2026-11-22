@@ -150,6 +150,28 @@ function NotePreview({ note, ...props }: PreviewProps & { note: SafetyNote }) {
   const period = safetyNotePeriodInfo(note.period);
   const confirmed = note.myVote === 'confirm';
   const outdated = note.myVote === 'outdated';
+  const verification = controller.selectedNoteVerification ?? 'unverified';
+  // Nunca apresentar o aviso como certeza: o selo diz o quanto a comunidade confirmou.
+  const verificationLabel =
+    verification === 'confirmed'
+      ? t('Confirmado por {count} pessoas', { count: note.confirmations })
+      : verification === 'disputed'
+        ? t('Informações divergentes')
+        : t('Ainda não confirmado');
+  const verificationIcon: keyof typeof MaterialCommunityIcons.glyphMap =
+    verification === 'confirmed'
+      ? 'account-multiple-check-outline'
+      : verification === 'disputed'
+        ? 'scale-balance'
+        : 'account-question-outline';
+  const verificationStyle =
+    verification === 'confirmed' ? styles.confirmedTag : styles.unverifiedTag;
+  const footnote =
+    verification === 'confirmed'
+      ? t('Confirmado por pessoas da comunidade, mas não é informação oficial. Em perigo, use "Pedir ajuda".')
+      : verification === 'disputed'
+        ? t('Há quem diga que não está mais assim. Confira antes de mudar o caminho. Em perigo, use "Pedir ajuda".')
+        : t('Relato de uma pessoa, ainda sem confirmação de outras. Não é informação oficial. Em perigo, use "Pedir ajuda".');
 
   return (
     <>
@@ -158,17 +180,30 @@ function NotePreview({ note, ...props }: PreviewProps & { note: SafetyNote }) {
           <MaterialCommunityIcons name={info.icon} size={28} color={brand.onSafetyNote} />
         </View>
         <View style={styles.info}>
-          <Text style={styles.kicker}>{t('Aviso da comunidade')}</Text>
+          <Text style={styles.kicker}>{t('Relato da comunidade')}</Text>
           <Text style={styles.title} numberOfLines={2}>
             {t(info.label)}
           </Text>
           <View style={styles.tags}>
-            <View style={[styles.tag, styles.periodTag]}>
+            <View style={[styles.tag, verificationStyle]}>
+              <MaterialCommunityIcons name={verificationIcon} size={13} color={brand.textDark} />
+              <Text style={[styles.tagText, { color: brand.textDark }]}>{verificationLabel}</Text>
+            </View>
+            <View style={[styles.tag, controller.selectedNotePeriodNow ? styles.nowTag : styles.periodTag]}>
               <MaterialCommunityIcons name="clock-outline" size={13} color={brand.textDark} />
               <Text style={[styles.tagText, { color: brand.textDark }]}>
                 {period.hint ? `${t(period.label)} · ${period.hint}` : t(period.label)}
+                {controller.selectedNotePeriodNow ? ` · ${t('agora')}` : ''}
               </Text>
             </View>
+            {controller.selectedNoteDistance ? (
+              <View style={[styles.tag, styles.periodTag]}>
+                <MaterialCommunityIcons name="map-marker-distance" size={13} color={brand.textDark} />
+                <Text style={[styles.tagText, { color: brand.textDark }]}>
+                  {t('a {distance} de você', { distance: controller.selectedNoteDistance })}
+                </Text>
+              </View>
+            ) : null}
           </View>
         </View>
         <CloseButton {...props} />
@@ -184,6 +219,9 @@ function NotePreview({ note, ...props }: PreviewProps & { note: SafetyNote }) {
         {t(note.confirmations === 1 ? '{count} confirmação' : '{count} confirmações', {
           count: note.confirmations,
         })}
+        {note.outdatedReports > 0
+          ? ` · ${t(note.outdatedReports === 1 ? '{count} diz que mudou' : '{count} dizem que mudou', { count: note.outdatedReports })}`
+          : ''}
       </Text>
 
       <View style={styles.actions}>
@@ -208,7 +246,7 @@ function NotePreview({ note, ...props }: PreviewProps & { note: SafetyNote }) {
       </View>
       <View style={styles.footerRow}>
         <Text style={[styles.footnote, styles.footnoteFlex]}>
-          {t('Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".')}
+          {footnote}
         </Text>
         <Pressable
           onPress={controller.reportSafetyNote}
@@ -332,6 +370,18 @@ function makeStyles(brand: BrandColors) {
     },
     periodTag: {
       backgroundColor: brand.divider,
+    },
+    nowTag: {
+      backgroundColor: hexToRgba(brand.safetyNote, 0.35),
+    },
+    confirmedTag: {
+      backgroundColor: hexToRgba(brand.safetyNote, 0.28),
+    },
+    unverifiedTag: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderStyle: 'dashed',
+      borderColor: brand.textMuted,
     },
     tagText: {
       fontSize: 12,

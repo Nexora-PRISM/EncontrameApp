@@ -37,7 +37,7 @@ const byField: Record<string, string> = {
   'lastSeen.invalid_format': msg('Use o formato dd/mm/aaaa, com uma data que já passou.'),
   'rules.required': msg('Para criar a conta, aceite as regras de uso.'),
   'reporterRelationship.required': msg('Informe seu vínculo com a pessoa.'),
-  'policeReport.required': msg('Para crianças e adolescentes, informe o número do boletim de ocorrência.'),
+  'policeReport.required': msg('Informe o número do boletim de ocorrência: é obrigatório para crianças e adolescentes e para quem não é da família.'),
   'policeReport.too_short': msg('Confira o número do boletim de ocorrência.'),
   'declaration.required': msg('Confirme a declaração para continuar.'),
   'contactPhone.invalid_format': msg('Informe DDD e número, como (31) 99999-9999.'),

@@ -75,6 +75,8 @@ function MapOverlay({
         ref={mapRef}
         pins={controller.pins}
         userLocation={controller.userLocation}
+        focus={controller.mapFocus}
+        onRegionChange={controller.onMapRegionChange}
         mapPadding={mapPadding}
         showLocationFab={false}
         satellite={controller.satellite}
@@ -120,6 +122,8 @@ function MapCard({
           ref={mapRef}
           pins={controller.pins}
           userLocation={controller.userLocation}
+          focus={controller.mapFocus}
+          onRegionChange={controller.onMapRegionChange}
           showLocationFab={false}
           satellite={controller.satellite}
           onMapPress={controller.clearSelection}
@@ -266,6 +270,36 @@ function MapTools({
               ? t('Nenhuma pessoa no mapa por aqui.')
               : t('Nenhuma pessoa desta faixa de idade no mapa.')}
           </Text>
+        </View>
+      ) : null}
+
+      {controller.safetyNotesStatus === 'error' && !controller.hasSelection ? (
+        <View style={[styles.emptyPill, styles.notesPill, { top: top + (showEmpty ? 48 : 4) }]}>
+          <Pressable
+            onPress={controller.retrySafetyNotes}
+            style={({ pressed }) => [styles.notesStatus, pressed && styles.pressed]}
+            accessibilityRole="button"
+            accessibilityLabel={t('Os avisos de segurança não carregaram. Tocar para tentar de novo.')}
+          >
+            <MaterialCommunityIcons name="wifi-off" size={16} color={brand.safetyNoteText} />
+            <Text style={styles.notesStatusText}>
+              {t('Avisos de segurança não carregaram. Tentar de novo')}
+            </Text>
+          </Pressable>
+        </View>
+      ) : controller.safetyNotesWithoutGps && !controller.hasSelection ? (
+        <View style={[styles.emptyPill, styles.notesPill, { top: top + (showEmpty ? 48 : 4) }]}>
+          <Pressable
+            onPress={controller.retryLocation}
+            style={({ pressed }) => [styles.notesStatus, pressed && styles.pressed]}
+            accessibilityRole="button"
+            accessibilityLabel={t('Sem localização: os avisos são os da área vista no mapa. Tocar para tentar o GPS de novo.')}
+          >
+            <MaterialCommunityIcons name="crosshairs-off" size={16} color={brand.textMuted} />
+            <Text style={styles.notesStatusText}>
+              {t('Sem localização: avisos da área vista no mapa')}
+            </Text>
+          </Pressable>
         </View>
       ) : null}
 
@@ -420,6 +454,26 @@ function makeCardStyles(brand: BrandColors) {
       right: 72,
       alignItems: 'flex-start',
       zIndex: 3,
+    },
+    notesPill: {
+      zIndex: 4,
+    },
+    notesStatus: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: Radius.md,
+      backgroundColor: brand.surface,
+      borderWidth: 1,
+      borderColor: brand.divider,
+    },
+    notesStatusText: {
+      flexShrink: 1,
+      fontSize: 13,
+      fontWeight: '700',
+      color: brand.textDark,
     },
     emptyText: {
       overflow: 'hidden',

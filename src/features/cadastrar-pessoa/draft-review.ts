@@ -1,4 +1,4 @@
-import { RELATIONSHIP_OPTIONS } from '@/features/cadastrar-pessoa/legitimacy';
+import { normalizeRelationship } from '@/features/cadastrar-pessoa/legitimacy';
 import type { CreatePersonPayload } from '@/services/people/people.types';
 
 /** Valores do formulário montados a partir de um cadastro salvo neste aparelho (feito sem conta). */
@@ -62,9 +62,8 @@ export function draftToFormValues(payload: CreatePersonPayload): DraftFormValues
     lastSeen: payload.lastSeen ?? '',
     phone: payload.phone ?? '',
     // Só aceita um vínculo da lista; rascunhos antigos (sem o campo) pedem a escolha na revisão.
-    reporterRelationship: (RELATIONSHIP_OPTIONS as readonly string[]).includes(relationship)
-      ? relationship
-      : '',
+    // Rótulos antigos com equivalente exato são convertidos; o antigo "Outro" pede nova escolha.
+    reporterRelationship: normalizeRelationship(relationship),
     policeReport: payload.policeReportNumber ?? '',
   };
 }

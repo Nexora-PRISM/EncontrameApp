@@ -10,6 +10,11 @@ export type UserLocation = {
 export type UserLocationState = {
   location: UserLocation | null;
   denied: boolean;
+  /**
+   * Permissão dada, mas o GPS não respondeu (serviço de localização desligado, sem sinal ou erro
+   * do aparelho/navegador). A última posição boa, se houver, continua em `location`.
+   */
+  unavailable: boolean;
 };
 
 /**
@@ -17,7 +22,7 @@ export type UserLocationState = {
  * posição (com duas, a lista lateral e o mapa buscavam pessoas em pontos um pouco diferentes).
  * O acompanhamento começa com o primeiro componente que usa e para quando o último sai.
  */
-let state: UserLocationState = { location: null, denied: false };
+let state: UserLocationState = { location: null, denied: false, unavailable: false };
 const listeners = new Set<() => void>();
 let stopWatching: (() => void) | null = null;
 
@@ -26,12 +31,25 @@ function emit(next: UserLocationState) {
   listeners.forEach((listener) => listener());
 }
 
+/** Leitura válida do GPS (alguns aparelhos devolvem 0,0 ou NaN logo que o sinal volta). */
+function isUsable(coords: Location.LocationObjectCoords | undefined | null): coords is Location.LocationObjectCoords {
+  if (!coords) return false;
+  const { latitude, longitude } = coords;
+  return (
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    Math.abs(latitude) <= 90 &&
+    Math.abs(longitude) <= 180 &&
+    !(latitude === 0 && longitude === 0)
+  );
+}
+
 function startWatching(): () => void {
   let cancelled = false;
   let subscription: Location.LocationSubscription | null = null;
 
   const applyPosition = (coords: Location.LocationObjectCoords) => {
-    if (cancelled) {
+    if (cancelled || !isUsable(coords)) {
       return;
     }
 
@@ -42,37 +60,64 @@ function startWatching(): () => void {
         accuracy: coords.accuracy,
       },
       denied: false,
+      unavailable: false,
     });
   };
 
+  /** Falha do GPS não derruba o app: mantém a última posição boa e marca como indisponível. */
+  const markUnavailable = () => {
+    if (!cancelled) emit({ location: state.location, denied: false, unavailable: true });
+  };
+
   void (async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (cancelled) {
-      return;
-    }
-    if (status !== 'granted') {
-      emit({ location: null, denied: true });
-      return;
-    }
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (cancelled) {
+        return;
+      }
+      if (status !== 'granted') {
+        emit({ location: null, denied: true, unavailable: false });
+        return;
+      }
 
-    const current = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    });
-    applyPosition(current.coords);
+      // Primeiro a última posição conhecida (instantânea), para o mapa não esperar o GPS "esquentar".
+      try {
+        const last = await Location.getLastKnownPositionAsync({ maxAge: 5 * 60_000 });
+        if (last && !state.location) applyPosition(last.coords);
+      } catch {
+        // Sem posição em cache: segue para a leitura atual.
+      }
 
-    const watcher = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.Balanced,
-        distanceInterval: 8,
-        timeInterval: 4000,
-      },
-      (update) => applyPosition(update.coords),
-    );
-    if (cancelled) {
-      watcher.remove();
-      return;
+      try {
+        const current = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        applyPosition(current.coords);
+      } catch {
+        // GPS desligado ou sem sinal: o acompanhamento abaixo tenta de novo sozinho.
+        markUnavailable();
+      }
+      if (cancelled) {
+        return;
+      }
+
+      const watcher = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Balanced,
+          distanceInterval: 8,
+          timeInterval: 4000,
+        },
+        (update) => applyPosition(update.coords),
+        () => markUnavailable(),
+      );
+      if (cancelled) {
+        watcher.remove();
+        return;
+      }
+      subscription = watcher;
+    } catch {
+      markUnavailable();
     }
-    subscription = watcher;
   })();
 
   return () => {
@@ -104,6 +149,17 @@ function snapshot(): UserLocationState {
  */
 export function useUserLocation(): UserLocationState {
   return useSyncExternalStore(subscribe, snapshot, snapshot);
+}
+
+/**
+ * Tenta de novo depois de um "GPS indisponível" ou permissão negada (a pessoa ligou a localização
+ * ou mudou a permissão nos ajustes). Só reinicia se alguém estiver usando a posição.
+ */
+export function retryUserLocation(): void {
+  if (listeners.size === 0) return;
+  stopWatching?.();
+  emit({ location: state.location, denied: false, unavailable: false });
+  stopWatching = startWatching();
 }
 
 /** Raio do círculo de precisão, limitado para não cobrir a cidade inteira. */

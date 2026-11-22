@@ -6,6 +6,7 @@ import MapView, { Callout, Circle, Marker, Polyline, type Region } from 'react-n
 import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
+import { isValidCoordinate } from '@/lib/geo';
 import { useT } from '@/lib/i18n';
 import { brandMapStyle, hexToRgba } from '@/lib/map-style';
 import { type UserLocation, userAccuracyRadius } from '@/lib/use-user-location';
@@ -55,6 +56,20 @@ export type BrandMapHandle = {
   recenterOnUser: () => void;
 };
 
+/**
+ * Leva a câmera a um ponto quando `key` muda (ex.: a primeira posição do GPS, o local marcado
+ * num formulário). Mudar só a coordenada, com a mesma `key`, não move o mapa.
+ */
+export type MapFocus = {
+  key: string;
+  latitude: number;
+  longitude: number;
+  /** Zoom aproximado: "street" (~1 km na tela), "district" (~3 km) ou "region" (~30 km). Padrão: "street". */
+  zoom?: 'street' | 'district' | 'region';
+};
+
+export type MapCenter = { latitude: number; longitude: number };
+
 type Props = {
   pins?: MapPin[];
   polylines?: MapPolyline[];
@@ -67,6 +82,10 @@ type Props = {
   showLocationFab?: boolean;
   /** Imagem de satélite com nomes de ruas (Google "hybrid"). */
   satellite?: boolean;
+  /** Move a câmera quando `focus.key` muda. */
+  focus?: MapFocus | null;
+  /** Centro da área visível quando o mapa para de se mexer (arrastar, zoom ou foco). */
+  onRegionChange?: (center: MapCenter) => void;
   style?: ViewStyle;
 };
 
@@ -101,6 +120,17 @@ function regionFromPins(pins: MapPin[]): Region {
   };
 }
 
+function regionFromFocus(focus: MapFocus): Region {
+  const delta =
+    focus.zoom === 'region' ? 0.35 : focus.zoom === 'district' ? 0.05 : USER_FOCUS_DELTA * 1.5;
+  return {
+    latitude: focus.latitude,
+    longitude: focus.longitude,
+    latitudeDelta: delta,
+    longitudeDelta: delta,
+  };
+}
+
 function regionFromUser(user: UserLocation): Region {
   return {
     latitude: user.latitude,
@@ -126,6 +156,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     mapPadding,
     showLocationFab = true,
     satellite = false,
+    focus = null,
+    onRegionChange,
     style,
   },
   ref,
@@ -138,7 +170,12 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   const mapRef = useRef<MapView>(null);
   const [activePinId, setActivePinId] = useState<string | null>(null);
   const isPreview = Boolean(onPress);
-  const region = regionFromPins(pins);
+  const region = focus && isValidCoordinate(focus.latitude, focus.longitude)
+    ? regionFromFocus(focus)
+    : regionFromPins(pins);
+  const [mapReady, setMapReady] = useState(false);
+  const focusRef = useRef(focus);
+  const focusKey = focus?.key ?? null;
   const mapStyleName = [styles.map, rounded && styles.rounded, style];
   const flattened = StyleSheet.flatten(mapStyleName) as ViewStyle;
   const fillsParent = flattened.height == null && flattened.minHeight == null;
@@ -151,6 +188,19 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   };
 
   useImperativeHandle(ref, () => ({ recenterOnUser }));
+
+  useEffect(() => {
+    focusRef.current = focus;
+  }, [focus]);
+
+  // Só move a câmera quando a chave do foco muda (e o mapa já está pronto para animar).
+  useEffect(() => {
+    const target = focusRef.current;
+    if (!mapReady || !focusKey || !target || !isValidCoordinate(target.latitude, target.longitude)) {
+      return;
+    }
+    mapRef.current?.animateToRegion(regionFromFocus(target), 450);
+  }, [focusKey, mapReady]);
 
   return (
     <View
@@ -175,6 +225,12 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
         mapType={satellite ? 'hybrid' : 'standard'}
         initialRegion={region}
         userInterfaceStyle={colorScheme}
+        onMapReady={() => setMapReady(true)}
+        onRegionChangeComplete={(next) => {
+          if (isValidCoordinate(next.latitude, next.longitude)) {
+            onRegionChange?.({ latitude: next.latitude, longitude: next.longitude });
+          }
+        }}
         onPress={(event) => {
           if (isPreview) {
             onPress?.();

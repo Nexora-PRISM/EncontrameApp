@@ -133,7 +133,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'relatos',
     question: msg('Posso avisar sobre uma rua perigosa?'),
     answer:
-      msg('O mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".'),
+      msg('O mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite", da área que você está vendo no mapa. Toque num aviso para ver o horário, a distância até você e se ele já foi confirmado por outras pessoas ("Ainda não confirmado", "Confirmado por" ou "Informações divergentes"), e marque "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso": se já existir um aviso igual no mesmo ponto, o app sugere confirmar o que existe. Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não informação oficial, e não substituem a polícia: em perigo, use "Pedir ajuda".'),
     keywords: msg('aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa'),
   },
   {
@@ -189,7 +189,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'alertas',
     question: msg('Por que o app pede meu vínculo e o boletim de ocorrência?'),
     answer:
-      msg('Para proteger quem está desaparecido e evitar cadastros falsos ou feitos para perseguir alguém — por exemplo, uma mulher que se afastou para se proteger. Você informa seu vínculo com a pessoa e confirma que as informações são verdadeiras. Para crianças e adolescentes (menos de 18 anos), o número do boletim de ocorrência é obrigatório; para adultos, é recomendado. Não é preciso esperar 24 horas para registrar o boletim.'),
+      msg('Para proteger quem está desaparecido e evitar cadastros falsos ou feitos para perseguir alguém — por exemplo, uma mulher que se afastou para se proteger. Você informa seu vínculo com a pessoa e confirma que as informações são verdadeiras. O número do boletim de ocorrência é obrigatório para crianças e adolescentes (menos de 18 anos) e para quem não é da família: amigos, conhecidos, vizinhos, desconhecidos e instituições. Para familiares adultos, é recomendado. O boletim vai só para a equipe e nunca aparece no caso. Todo cadastro passa pela equipe antes de ficar público, e ela pode pedir documentos. Não é preciso esperar 24 horas para registrar o boletim.'),
     keywords: msg('boletim ocorrência bo vínculo declaração menor criança adolescente'),
   },
   {
@@ -229,8 +229,32 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'relatos',
     question: msg('O que é o histórico no mapa de um caso?'),
     answer:
-      msg('São os locais informados para aquela pessoa, em ordem de data. O ponto mais recente aparece destacado.'),
+      msg('São as regiões onde a pessoa foi vista por último, em ordem de data. A mais recente aparece destacada. Para que ninguém use o histórico para chegar até alguém, cada ponto mostra só uma região de cerca de 10 km e a cidade, nunca a rua ou o local exato, e só os avistamentos mais recentes aparecem.'),
     keywords: msg('histórico trajeto rastro'),
+  },
+  {
+    id: 'sou-a-pessoa',
+    category: 'privacidade',
+    question: msg('Há um alerta sobre mim, mas eu não estou desaparecido(a). O que faço?'),
+    answer:
+      msg('Abra o alerta e toque em "Sou a pessoa procurada". Marque o que está acontecendo (por exemplo, que você está bem ou que quer a retirada do alerta) e envie o pedido à equipe. Não pedimos sua localização e quem criou o alerta não recebe seus dados. Com a conta conectada, o pedido também entra na fila da equipe pelo app; sem conta, ele vai por e-mail e só chega quando você envia. A equipe analisa antes de encerrar o alerta e, em caso de risco, pode suspender a divulgação enquanto isso. Se precisar confirmar que é você, a equipe pede uma foto atual por e-mail, usada só nessa verificação.'),
+    keywords: msg('sou eu contestar retirar alerta falso não desaparecido minha foto verificação'),
+  },
+  {
+    id: 'perseguicao',
+    category: 'privacidade',
+    question: msg('Alguém está usando o app para me encontrar ou me ameaçar. Como peço ajuda?'),
+    answer:
+      msg('Se você está em perigo agora, ligue 190 (ou 180, em caso de violência contra a mulher). Depois, abra o alerta e toque em "Estou sofrendo perseguição", ou procure por esse pedido aqui na Central de Ajuda. Marque o que está acontecendo e envie à equipe: esses pedidos são tratados com urgência. Não escreva onde você está. Quem publicou o alerta não fica sabendo do seu pedido nem recebe seus dados.'),
+    keywords: msg('perseguição ameaça stalker me localizar violência proteção'),
+  },
+  {
+    id: 'encontrei-perdido',
+    category: 'emergencia',
+    question: msg('Encontrei uma criança perdida ou um idoso desorientado. O que faço?'),
+    answer:
+      msg('Ligue para a polícia (190) — ou para o SAMU (192), se a pessoa estiver passando mal — e fique com ela num lugar movimentado. Em "Pedir ajuda", toque em "Encontrei alguém perdido": o app mostra o que fazer, ajuda a ver se a pessoa já está cadastrada e prepara um aviso para a equipe, sem exigir boletim de ocorrência. Nada é publicado no mapa a partir daí sem análise da equipe. Não publique a foto da pessoa em redes sociais.'),
+    keywords: msg('criança perdida idoso desorientado encontrei achei sem documento sem boletim'),
   },
   {
     id: 'botao-telefone',

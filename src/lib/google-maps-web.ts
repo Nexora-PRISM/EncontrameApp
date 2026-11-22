@@ -9,6 +9,9 @@ export type GoogleMap = {
   setCenter: (latLng: LatLngLiteral) => void;
   setZoom: (zoom: number) => void;
   setOptions: (options: Record<string, unknown>) => void;
+  panTo: (latLng: LatLngLiteral) => void;
+  getCenter: () => GoogleLatLng | undefined;
+  getZoom: () => number | undefined;
 };
 
 export type GoogleMarker = {

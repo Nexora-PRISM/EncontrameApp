@@ -1,5 +1,6 @@
 import type { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { haversineKm, isValidCoordinate } from '@/lib/geo';
 import { type Translate, ptTranslate } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
 import type {
@@ -90,6 +91,108 @@ export function safetyNotePeriodInfo(period: SafetyNotePeriod) {
 /** Aviso derrubado pela comunidade ("não está mais assim" bem acima das confirmações). */
 export function isSafetyNoteHidden(note: Pick<SafetyNote, 'confirmations' | 'outdatedReports'>) {
   return note.outdatedReports >= note.confirmations + SAFETY_NOTE_HIDE_MARGIN;
+}
+
+/** Confirmações de outras pessoas a partir das quais o aviso deixa de ser "relato não confirmado". */
+export const SAFETY_NOTE_CONFIRMED_MIN = 2;
+/** Mesmo tipo de aviso a até esta distância (metros) é tratado como o mesmo lugar. */
+export const SAFETY_NOTE_DUPLICATE_RADIUS_M = 60;
+
+/**
+ * Quanto a comunidade já confirmou o aviso. Todo aviso continua sendo um relato de usuários — nunca
+ * uma informação oficial:
+ * - `unverified`: só quem publicou (ou uma pessoa) confirmou;
+ * - `confirmed`: ao menos {@link SAFETY_NOTE_CONFIRMED_MIN} pessoas confirmaram e são maioria;
+ * - `disputed`: há quem diga que "não está mais assim" na mesma medida (ou mais) que as confirmações.
+ */
+export type SafetyNoteVerification = 'unverified' | 'confirmed' | 'disputed';
+
+export function safetyNoteVerification(
+  note: Pick<SafetyNote, 'confirmations' | 'outdatedReports'>,
+): SafetyNoteVerification {
+  const confirmations = Math.max(0, note.confirmations || 0);
+  const outdated = Math.max(0, note.outdatedReports || 0);
+  if (outdated > 0 && outdated >= confirmations) return 'disputed';
+  if (confirmations >= SAFETY_NOTE_CONFIRMED_MIN) return 'confirmed';
+  return 'unverified';
+}
+
+/** Ainda vale: dentro do prazo (data válida) e não derrubado pela comunidade. */
+export function isSafetyNoteActive(
+  note: Pick<SafetyNote, 'expiresAt' | 'confirmations' | 'outdatedReports'>,
+  now = Date.now(),
+): boolean {
+  const expires = new Date(note.expiresAt).getTime();
+  return Number.isFinite(expires) && expires > now && !isSafetyNoteHidden(note);
+}
+
+/**
+ * Limpa a lista que veio da API (ou do cache) antes de ir para o mapa:
+ * - descarta aviso sem coordenada válida (nunca "chuta" um lugar);
+ * - descarta vencido ou derrubado (o cache pode guardar um aviso que venceu depois da consulta);
+ * - remove repetidos pelo id;
+ * - junta avisos do mesmo tipo praticamente no mesmo ponto, ficando o mais confirmado.
+ */
+export function sanitizeSafetyNotes(notes: readonly SafetyNote[], now = Date.now()): SafetyNote[] {
+  const byId = new Map<string, SafetyNote>();
+  for (const note of notes) {
+    if (!note || !note.id) continue;
+    if (!isValidCoordinate(note.latitude, note.longitude)) continue;
+    if (!isSafetyNoteActive(note, now)) continue;
+    const current = byId.get(note.id);
+    if (!current || new Date(note.expiresAt).getTime() > new Date(current.expiresAt).getTime()) {
+      byId.set(note.id, note);
+    }
+  }
+
+  const ranked = [...byId.values()].sort(
+    (left, right) =>
+      right.confirmations - left.confirmations ||
+      new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
+  );
+  const kept: SafetyNote[] = [];
+  for (const note of ranked) {
+    const duplicate = kept.some(
+      (other) =>
+        other.category === note.category &&
+        haversineKm(other.latitude, other.longitude, note.latitude, note.longitude) * 1000 <=
+          SAFETY_NOTE_DUPLICATE_RADIUS_M / 2,
+    );
+    if (!duplicate) kept.push(note);
+  }
+  return kept;
+}
+
+/** Aviso ativo do mesmo tipo perto do ponto marcado — para confirmar em vez de repetir. */
+export function findSimilarSafetyNote(
+  notes: readonly SafetyNote[],
+  point: { latitude: number; longitude: number },
+  category: SafetyNoteCategory,
+  radiusMeters = SAFETY_NOTE_DUPLICATE_RADIUS_M,
+): SafetyNote | null {
+  let best: { note: SafetyNote; meters: number } | null = null;
+  for (const note of notes) {
+    if (note.category !== category) continue;
+    const meters = haversineKm(point.latitude, point.longitude, note.latitude, note.longitude) * 1000;
+    if (meters <= radiusMeters && (!best || meters < best.meters)) best = { note, meters };
+  }
+  return best?.note ?? null;
+}
+
+/** O horário informado no aviso inclui esta hora do dia (0–23)? */
+export function periodIncludesHour(period: SafetyNotePeriod, hour: number): boolean {
+  switch (period) {
+    case 'dawn':
+      return hour >= 0 && hour < 6;
+    case 'morning':
+      return hour >= 6 && hour < 12;
+    case 'afternoon':
+      return hour >= 12 && hour < 18;
+    case 'night':
+      return hour >= 18 && hour < 24;
+    default:
+      return true;
+  }
 }
 
 /**

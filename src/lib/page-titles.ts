@@ -31,6 +31,8 @@ const PAGE_TITLES: Readonly<Record<string, string>> = {
   'compartilhar-localizacao': msg('Compartilhar localização'),
   'contatos-confianca': msg('Contatos de confiança'),
   'aviso-seguranca': msg('Novo aviso de segurança'),
+  protecao: msg('Proteção e contestação'),
+  'possivel-desaparecimento': msg('Encontrei alguém perdido'),
 };
 
 /** Título da página em português (chave de tradução), ou `null` na abertura e em rotas sem título. */

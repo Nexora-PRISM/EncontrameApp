@@ -46,6 +46,8 @@ src/
     alerta-emergencia/index.tsx        # "/alerta-emergencia"        — contagem de 10 s; depois abre o 190
     compartilhar-localizacao/index.tsx # "/compartilhar-localizacao" — localização por WhatsApp, SMS ou outro app
     contatos-confianca/index.tsx       # "/contatos-confianca"       — até 5 contatos, salvos só no aparelho
+    protecao/index.tsx                 # "/protecao"                 — "Sou a pessoa procurada" / "Estou sofrendo perseguição" (?caso=&modo=)
+    possivel-desaparecimento/index.tsx # "/possivel-desaparecimento" — encontrei alguém perdido (sem login, sem boletim)
     +html.tsx                  # HTML da versão web (lang="pt-BR"); não é rota
   features/                    # lógica de UI por página (FORA do diretório de rotas)
     <pagina>/
@@ -81,7 +83,9 @@ src/
     person-category.ts         # faixas de idade (crianças e adolescentes, adultos, idosos): filtros, rótulos, cores
     splash-state.ts            # se a abertura já saiu (o passo a passo só abre depois)
     page-titles.ts             # título da aba por rota (1º segmento da URL); rota nova entra aqui, nunca com dados da pessoa
-    safety-notes.ts            # avisos de segurança: tipos, horários, validade, bloqueio de dados pessoais, denúncia
+    safety-notes.ts            # avisos de segurança: tipos, horários, validade, verificação, limpeza da lista, duplicados
+    case-relationship.ts       # vínculos de quem publica (4 grupos) e o valor aceito pela API
+    sighting-privacy.ts        # avistamentos públicos: 5 recentes, região de ~10 km, só cidade/estado
     notifications.ts           # expo-notifications (só se o módulo nativo existir): permissão, token, canal, rota do toque
     notification-prefs.ts      # o que a pessoa escolheu receber (neste aparelho; tudo desligado por padrão)
     pending-reminder.ts        # lembrete diário local (19h) dos cadastros salvos no aparelho
@@ -90,6 +94,8 @@ src/
 assets/images/                 # imagens (logo.png é a logo oficial)
 locales/                       # textos das permissões do iOS por idioma (app.json → "locales")
 scripts/check-i18n.js          # confere as traduções (npm run i18n:check)
+scripts/test-regras.js         # testes das regras puras (npm run test:regras; cenários em scripts/regras.test.js)
+atualizacao-futura/            # planejamento do que depende de API nova (não é compilado nem publicado)
 modules/                       # módulos nativos LOCAIS do Expo (autolinking automático)
   emergency-shortcut/          # atalho "Pedir ajuda" na tela inicial do Android (Kotlin, ShortcutManager)
 ```
@@ -162,8 +168,14 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   abrindo o detalhe direto.
 - **Avisos de segurança** (`lib/safety-notes.ts`, `services/safety-notes/`): falam do lugar, nunca de pessoas
   (telefone/CPF/e-mail/@perfil bloqueados); publicar e votar exigem conta; validade de 30 dias renovada por
-  confirmação; denúncia por e-mail. Cor âmbar `safetyNote`. Sempre visíveis no mapa
+  confirmação; denúncia na fila da equipe. Cor âmbar `safetyNote`. Sempre visíveis no mapa
   (contrato em `safety-notes.axios.repository.ts`).
+  - São buscados em volta da área vista no mapa (`onRegionChange`) ou do GPS; a lista passa por
+    `sanitizeSafetyNotes` (coordenada válida, no prazo, sem repetidos). Nunca mostre "0 avisos" quando a busca falhou.
+  - Todo aviso é relato: o selo diz "Ainda não confirmado", "Confirmado por N pessoas" ou "Informações divergentes"
+    (`safetyNoteVerification`). Não escreva texto que apresente o aviso como certeza.
+  - Antes de publicar, aviso igual a até 60 m vira confirmação do existente; ponto a mais de 30 km do GPS pede confirmação.
+  - Mapa que precisa mostrar um ponto (GPS, local marcado) usa `focus` do `BrandMap` — sem isso ele fica no centro padrão.
 
 ## Regras de produto (honestidade da interface)
 
@@ -178,12 +190,20 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Nunca prometa anonimato.** O uso não é anônimo (dados de identificação podem ir às autoridades com ordem judicial).
 - **Dados pessoais nunca em parâmetro de rota** (no web a URL fica no histórico). O cadastro de conta usa
   `lib/signup-draft.ts` (memória) entre as etapas. O CPF não aparece em nenhuma tela.
-- **Cadastro de pessoa** (`features/cadastrar-pessoa/legitimacy.ts`): idade, vínculo com a pessoa e declaração de
-  veracidade obrigatórios; boletim de ocorrência obrigatório para menores de 18. Não afrouxe sem decisão dos sócios.
+- **Cadastro de pessoa** (`features/cadastrar-pessoa/legitimacy.ts`, `lib/case-relationship.ts`): idade, vínculo com a
+  pessoa e declaração de veracidade obrigatórios; boletim de ocorrência obrigatório para menores de 18 **e** para quem não
+  é da família (amigo, conhecido, vizinho, desconhecido, instituição). A API aceita só 6 vínculos: envie o campo `api`
+  até ela aceitar os novos. O boletim nunca aparece no caso. Não afrouxe sem decisão dos sócios.
+- **Proteção de identidade** (`/protecao`): sem login e **nunca** pede localização; com conta e caso publicado, registra
+  denúncia (`POST /Moderation/reports`); sempre prepara o e-mail. Nada do pedido é mostrado a quem criou o alerta.
+  "Registrado" só com resposta da API. Estados, foto de verificação e painel: `atualizacao-futura/`.
+- **Encontrei alguém perdido** (`/possivel-desaparecimento`): ligar vem primeiro; nada é publicado daqui.
+- **Avistamentos públicos** passam por `publicSightings` (5 recentes, região de ~10 km, só cidade/estado).
+  Não crie rastreamento em tempo real de pessoas nem mostre o histórico completo ao público.
 - **Cadastro feito sem conta nunca é enviado sozinho.** Só pelo "Revisar e enviar"
   (`/cadastrar-pessoa?rascunho=<id local>`), com a pessoa logada aceitando a declaração de novo.
-- Correção e denúncia de caso ("Algo errado neste cadastro?") vão por e-mail ao suporte com o id do caso,
-  sem login. Não há API de moderação: nunca diga que o pedido "foi registrado".
+- "Algo errado neste cadastro?": a correção vai por e-mail ao suporte com o id do caso (sem login; nunca diga que
+  "foi registrada"); a denúncia usa `POST /Moderation/reports` (com conta) e só diz "registrada" com a resposta da API.
 - Avisos/confirmações: use `showAlert` / `confirmAction` de `@/lib/dialog` (o `Alert` do RN não aparece no web).
 - **Alerta de emergência** (`/alerta-emergencia`): contagem de 10 s com "Cancelar" sempre visível (pausa enquanto o
   sistema pergunta da localização); ao fim abre o discador com o 190 — o app não liga sozinho. O envio ao servidor
@@ -206,8 +226,9 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 ## Comandos
 
 ```bash
-npm run check       # typecheck + lint + traduções — RODAR ANTES DE FINALIZAR QUALQUER TAREFA
+npm run check       # typecheck + lint + traduções + testes de regras — RODAR ANTES DE FINALIZAR QUALQUER TAREFA
 npm run i18n:check  # só as traduções (textos sem tradução, variáveis {nome} trocadas)
+npm run test:regras # testes das regras puras (avisos, vínculo/boletim, proteção, avistamentos)
 npm run typecheck   # só tipos (tsc --noEmit)
 npm run lint        # só ESLint
 npm run lint:fix    # ESLint com correção automática

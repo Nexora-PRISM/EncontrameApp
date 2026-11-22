@@ -1,7 +1,7 @@
 import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 
-import type { MapPin } from '@/components/brand-map';
+import type { MapCenter, MapFocus, MapPin } from '@/components/brand-map';
 import { buildCarouselPeople } from '@/features/inicio/carousel-people';
 import { updateHomeState, useHomeSharedState } from '@/features/inicio/home-shared-state';
 import { useHomeShellController } from '@/features/inicio/home-shell.controller';
@@ -12,7 +12,13 @@ import { showAlert } from '@/lib/dialog';
 import { useT } from '@/lib/i18n';
 import { categoryAgeRange, matchesCategory } from '@/lib/person-category';
 import { isPersonSearchingStatus, resolvePersonStatusColor } from '@/lib/person-status';
-import { safetyNoteCategoryInfo } from '@/lib/safety-notes';
+import { formatDistanceKm, haversineKm } from '@/lib/geo';
+import {
+  periodIncludesHour,
+  safetyNoteCategoryInfo,
+  safetyNoteVerification,
+} from '@/lib/safety-notes';
+import { retryUserLocation } from '@/lib/use-user-location';
 import { useSplashDone } from '@/lib/splash-state';
 import { usePeopleSearchQuery, useRecentPeopleQuery } from '@/services/people/people.service';
 import type { Person } from '@/services/people/people.types';
@@ -32,7 +38,8 @@ export function useInicioController() {
   const t = useT();
   const brand = useBrand();
   const shell = useHomeShellController();
-  const { people, query, userLocation, categoryFilter, loggedIn } = shell;
+  const { people, query, userLocation, categoryFilter, loggedIn, locationDenied, locationUnavailable } =
+    shell;
   // Passo a passo no estado compartilhado: o menu da web (fora desta tela) também abre.
   const { onboardingVisible, onboardingStep } = useHomeSharedState();
   /** Mapa com imagem de satélite (com nomes de ruas por cima). */
@@ -103,14 +110,40 @@ export function useInicioController() {
       void alertsPages.fetchNextPage();
     }
   };
-  const notesQuery = useNearbySafetyNotesQuery(
-    userLocation ? { latitude: userLocation.latitude, longitude: userLocation.longitude } : null,
-    showSafetyNotes,
-  );
+  /**
+   * Centro da área que a pessoa está vendo no mapa. Os avisos são buscados em volta dele — antes
+   * só em volta do GPS: sem localização (negada ou GPS desligado) a camada ficava vazia e o contador
+   * mostrava 0, como se não houvesse nenhum aviso na região.
+   */
+  const [mapCenter, setMapCenter] = useState<MapCenter | null>(null);
+  const gpsPoint = userLocation
+    ? { latitude: userLocation.latitude, longitude: userLocation.longitude }
+    : null;
+  const notesQuery = useNearbySafetyNotesQuery(mapCenter ?? gpsPoint, showSafetyNotes);
   const safetyNotes = useMemo<SafetyNote[]>(
     () => (showSafetyNotes ? (notesQuery.data ?? []) : []),
     [notesQuery.data, showSafetyNotes],
   );
+  /** Primeira posição do GPS: o mapa vai até ela uma vez (antes ficava parado no centro padrão). */
+  const [firstFix, setFirstFix] = useState<MapCenter | null>(null);
+  if (gpsPoint && !firstFix) {
+    setFirstFix(gpsPoint);
+  }
+  const mapFocus = useMemo<MapFocus | null>(
+    () =>
+      firstFix
+        ? { key: 'primeira-posicao', latitude: firstFix.latitude, longitude: firstFix.longitude, zoom: 'district' }
+        : null,
+    [firstFix],
+  );
+  /** Estado da camada de avisos para a tela mostrar (nunca "0 avisos" quando a busca falhou). */
+  const safetyNotesStatus: 'off' | 'loading' | 'error' | 'ready' = !showSafetyNotes
+    ? 'off'
+    : notesQuery.isError && !notesQuery.data
+      ? 'error'
+      : notesQuery.data
+        ? 'ready'
+        : 'loading';
   const voteMutation = useVoteSafetyNoteMutation();
   const reportMutation = useReportContentMutation();
 
@@ -145,15 +178,18 @@ export function useInicioController() {
       safetyNotes.map((note) => {
         const info = safetyNoteCategoryInfo(note.category);
         const selected = selection?.kind === 'note' && selection.id === note.id;
+        // Relato ainda sem confirmação aparece mais claro: não tem o mesmo peso de um confirmado.
+        const verified = safetyNoteVerification(note) === 'confirmed';
         return {
           id: `aviso-${note.id}`,
           latitude: note.latitude,
           longitude: note.longitude,
           variant: 'note' as const,
           icon: info.icon,
-          label: t(info.label),
+          label: verified ? t(info.label) : t('Relato: {label}', { label: t(info.label) }),
+          opacity: selected || verified ? 1 : 0.72,
           emphasized: selected,
-          zIndex: selected ? 20 : 1,
+          zIndex: selected ? 20 : verified ? 2 : 1,
           onPress: () => setSelection({ kind: 'note', id: note.id }),
         };
       }),
@@ -170,6 +206,17 @@ export function useInicioController() {
     selection?.kind === 'note'
       ? (safetyNotes.find((note) => note.id === selection.id) ?? null)
       : null;
+  /** Distância real (sem arredondar) entre a pessoa e o aviso aberto; vazio sem GPS. */
+  const selectedNoteDistance =
+    selectedNote && gpsPoint
+      ? formatDistanceKm(
+          haversineKm(gpsPoint.latitude, gpsPoint.longitude, selectedNote.latitude, selectedNote.longitude),
+        )
+      : '';
+  const selectedNoteVerification = selectedNote ? safetyNoteVerification(selectedNote) : null;
+  const selectedNotePeriodNow = selectedNote
+    ? selectedNote.period !== 'any' && periodIncludesHour(selectedNote.period, new Date().getHours())
+    : false;
 
   const clearSelection = () => setSelection(null);
 
@@ -272,6 +319,18 @@ export function useInicioController() {
       setSelection(null);
     },
     safetyNotesCount: safetyNotes.length,
+    safetyNotesStatus,
+    retrySafetyNotes: () => {
+      void notesQuery.refetch();
+    },
+    /** Sem GPS: os avisos são os da área vista no mapa (a tela avisa). */
+    safetyNotesWithoutGps: showSafetyNotes && gpsPoint == null && (locationDenied || locationUnavailable),
+    retryLocation: retryUserLocation,
+    mapFocus,
+    onMapRegionChange: setMapCenter,
+    selectedNoteDistance,
+    selectedNoteVerification,
+    selectedNotePeriodNow,
     /** Cartão flutuante do item tocado no mapa. */
     selectedPerson,
     selectedNote,

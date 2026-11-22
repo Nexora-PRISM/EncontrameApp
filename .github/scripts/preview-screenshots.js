@@ -16,9 +16,9 @@ const BH = { latitude: -19.9245, longitude: -43.9352 };
 
 fs.mkdirSync(out, { recursive: true });
 
-async function shot(page, name, wait = 900) {
+async function shot(page, name, wait = 900, fullPage = false) {
   await page.waitForTimeout(wait);
-  await page.screenshot({ path: path.join(out, `${name}.png`) });
+  await page.screenshot({ path: path.join(out, `${name}.png`), fullPage });
   console.log(`print: ${name}`);
 }
 
@@ -80,6 +80,19 @@ async function run(scheme) {
 
     if (await tap(page, ['Pedir ajuda'])) {
       await shot(page, `${scheme}-13-pedir-ajuda`);
+    }
+
+    // Proteção de identidade, "Encontrei alguém perdido" e o caso com "É você neste alerta?".
+    const pages = [
+      ['20-protecao-sou-eu', '/protecao?caso=p1&modo=sou-eu'],
+      ['21-protecao-perseguicao', '/protecao?modo=perseguicao'],
+      ['22-encontrei-alguem-perdido', '/possivel-desaparecimento'],
+      ['23-caso', '/pessoa/p1'],
+    ];
+    for (const [name, route] of pages) {
+      await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle').catch(() => undefined);
+      await shot(page, `${scheme}-${name}`, 1800, true);
     }
   } catch (error) {
     console.log(`[${scheme}] parou: ${error.message}`);

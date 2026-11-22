@@ -153,8 +153,6 @@ export const en: Readonly<Record<string, string>> = {
   'offline visitante pendente revisar enviar': 'offline visitor pending review send',
   'Por que o app pede meu vínculo e o boletim de ocorrência?':
     'Why does the app ask for my relationship and the police report?',
-  'Para proteger quem está desaparecido e evitar cadastros falsos ou feitos para perseguir alguém — por exemplo, uma mulher que se afastou para se proteger. Você informa seu vínculo com a pessoa e confirma que as informações são verdadeiras. Para crianças e adolescentes (menos de 18 anos), o número do boletim de ocorrência é obrigatório; para adultos, é recomendado. Não é preciso esperar 24 horas para registrar o boletim.':
-    'To protect the person who is missing and to prevent false registrations or ones made to stalk someone — for example, a woman who left to protect herself. You state your relationship to the person and confirm that the information is true. For children and teenagers (under 18), the police report number (boletim de ocorrência) is required; for adults, it is recommended. There is no need to wait 24 hours to file the report.',
   'boletim ocorrência bo vínculo declaração menor criança adolescente':
     'police report bo relationship statement minor child teenager',
   'O que significam as situações de cada caso?': 'What does each case status mean?',
@@ -175,8 +173,6 @@ export const en: Readonly<Record<string, string>> = {
     'No. A sighting is information sent by someone in the community and is not a confirmation. In an urgent situation, call the police (190).',
   'confirmado verdade verificado': 'confirmed true verified',
   'O que é o histórico no mapa de um caso?': 'What is the map history of a case?',
-  'São os locais informados para aquela pessoa, em ordem de data. O ponto mais recente aparece destacado.':
-    'These are the places reported for that person, in date order. The most recent point is highlighted.',
   'histórico trajeto rastro': 'history route trail',
   'O que faz o botão vermelho "Pedir ajuda"?': 'What does the red "Get help" button do?',
   'No celular ele fica no centro da barra inferior; no computador, no alto da tela, ao lado da busca. Ao tocar, você pode acionar o alerta de emergência (com contagem de 10 segundos), escolher para quem ligar (190, 180, 100, 192 ou 193), mandar sua localização a alguém de confiança ou comunicar um desaparecimento. A ligação é feita pelo seu celular, como uma chamada comum: o aplicativo não avisa a polícia sozinho.':
@@ -396,8 +392,6 @@ export const en: Readonly<Record<string, string>> = {
   'Galeria': 'Gallery',
   'Cancelar': 'Cancel',
   'Falta pouco': 'Almost there',
-  'No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes) e confirme a declaração.':
-    'At the end of the form, state your relationship to the person, the police report number (required for children and teenagers) and confirm the statement.',
   'Sua sessão terminou. Entre de novo para enviar este cadastro.':
     'Your session has ended. Sign in again to send this registration.',
   'Cadastro enviado': 'Registration sent',
@@ -407,13 +401,9 @@ export const en: Readonly<Record<string, string>> = {
   'A pessoa foi cadastrada com sucesso.': 'The person was registered successfully.',
   'Cadastro salvo só neste aparelho. Para enviá-lo, entre na sua conta e toque em "Revisar e enviar" no próprio cadastro ou em Meu perfil.':
     'Registration saved only on this device. To send it, sign in to your account and tap "Review and send" on the registration itself or in My profile.',
-  // features/cadastrar-pessoa/legitimacy.ts
-  'Mãe ou pai': 'Mother or father',
   'Responsável legal': 'Legal guardian',
   'Outro familiar': 'Other relative',
   'Cônjuge ou companheiro(a)': 'Spouse or partner',
-  'Amigo(a)': 'Friend',
-  'Outro': 'Other',
   // features/cadastrar-pessoa/sections/cadastrar-pessoa-basic-section.tsx
   'Cadastro feito neste aparelho': 'Registration made on this device',
   'Carregando o cadastro…': 'Loading the registration…',
@@ -1134,8 +1124,6 @@ export const en: Readonly<Record<string, string>> = {
     'Use the dd/mm/yyyy format, with a date in the past.',
   'Para criar a conta, aceite as regras de uso.': 'To create the account, accept the terms of use.',
   'Informe seu vínculo com a pessoa.': 'State your relationship to the person.',
-  'Para crianças e adolescentes, informe o número do boletim de ocorrência.':
-    'For children and teenagers, provide the police report number.',
   'Confira o número do boletim de ocorrência.': 'Check the police report number.',
   'Confirme a declaração para continuar.': 'Confirm the statement to continue.',
   'Este número já está na sua lista.': 'This number is already on your list.',
@@ -1268,8 +1256,6 @@ export const en: Readonly<Record<string, string>> = {
   'Adulto': 'Adult',
   // Rodada 4 — Avisos de segurança no mapa e cartão flutuante
   'Posso avisar sobre uma rua perigosa?': 'Can I warn about a dangerous street?',
-  'O mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite". Toque num aviso para ver o horário e a referência do lugar e marcar "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso". Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não verificados, e não substituem a polícia: em perigo, use "Pedir ajuda".':
-    'The Home map shows yellow diamonds with community notes, such as "frequent robberies" or "deserted street at night". Tap a note to see the time and the place reference and mark "Still like this" or "No longer like this". To add one, sign in and tap "Add note". Talk about the place, never about people: no names, license plates or phone numbers. A note disappears after 30 days if nobody confirms it. They are unverified community reports and do not replace the police: if you are in danger, use "Get help".',
   'aviso rua perigosa assalto deserta escura iluminação horário segurança comunidade mapa':
     'note dangerous street robbery deserted dark lighting time safety community map',
   'Localização indisponível': 'Location unavailable',
@@ -1319,13 +1305,10 @@ export const en: Readonly<Record<string, string>> = {
   'Ver detalhes': 'See details',
   'Na página da pessoa você pode avisar que a viu por perto.':
     'On the person\'s page you can report that you saw them nearby.',
-  'Aviso da comunidade': 'Community note',
   '{count} confirmação': '{count} confirmation',
   '{count} confirmações': '{count} confirmations',
   'Continua assim': 'Still like this',
   'Não está mais assim': 'No longer like this',
-  'Relato da comunidade, não verificado. Em perigo, use "Pedir ajuda".':
-    'Unverified community report. If you are in danger, use "Get help".',
   'Denunciar este aviso': 'Report this note',
   'Denunciar': 'Report',
   'Esconder avisos de segurança': 'Hide safety notes',
@@ -1385,4 +1368,229 @@ export const en: Readonly<Record<string, string>> = {
   'Contato de segurança infantil': 'Child safety contact',
   'O ponto de contato de segurança infantil da Nexora Prism é {name}. Para questões sobre prevenção de CSAM e conformidade com os padrões de segurança infantil do Google Play, contate {email}.':
     'Nexora Prism’s child safety point of contact is {name}. For questions about CSAM prevention and compliance with Google Play’s child safety standards, contact {email}.',
+
+  // proteção de identidade, avisos de segurança, publicação responsável (22/11/2026)
+  'Encontrei alguém perdido': 'I found someone lost',
+  'Criança perdida, idoso desorientado ou alguém que não sabe dizer quem é. Sem precisar de boletim.':
+    'A lost child, a disoriented older person or someone who can\'t say who they are. No police report needed.',
+  'O mapa do Início mostra losangos amarelos com avisos da comunidade, como "assaltos frequentes" ou "rua deserta à noite", da área que você está vendo no mapa. Toque num aviso para ver o horário, a distância até você e se ele já foi confirmado por outras pessoas ("Ainda não confirmado", "Confirmado por" ou "Informações divergentes"), e marque "Continua assim" ou "Não está mais assim". Para avisar, entre na sua conta e toque em "Adicionar aviso": se já existir um aviso igual no mesmo ponto, o app sugere confirmar o que existe. Fale do lugar, nunca de pessoas: sem nomes, placas ou telefones. O aviso some em 30 dias se ninguém confirmar. São relatos da comunidade, não informação oficial, e não substituem a polícia: em perigo, use "Pedir ajuda".':
+    'The Home map shows yellow diamonds with community notes, such as "frequent robberies" or "deserted street at night", for the area you are looking at on the map. Tap a note to see the time, how far it is from you and whether other people have confirmed it ("Not confirmed yet", "Confirmed by" or "Conflicting reports"), and mark "Still like this" or "No longer like this". To post one, sign in and tap "Add note": if the same note already exists at that spot, the app suggests confirming it instead. Talk about the place, never about people: no names, license plates or phone numbers. A note disappears after 30 days if nobody confirms it. These are community reports, not official information, and they don\'t replace the police: if you\'re in danger, use "Get help".',
+  'Para proteger quem está desaparecido e evitar cadastros falsos ou feitos para perseguir alguém — por exemplo, uma mulher que se afastou para se proteger. Você informa seu vínculo com a pessoa e confirma que as informações são verdadeiras. O número do boletim de ocorrência é obrigatório para crianças e adolescentes (menos de 18 anos) e para quem não é da família: amigos, conhecidos, vizinhos, desconhecidos e instituições. Para familiares adultos, é recomendado. O boletim vai só para a equipe e nunca aparece no caso. Todo cadastro passa pela equipe antes de ficar público, e ela pode pedir documentos. Não é preciso esperar 24 horas para registrar o boletim.':
+    'To protect missing people and prevent fake reports or reports made to stalk someone — for example, a woman who left to protect herself. You state your relationship with the person and confirm the information is true. The police report number is required for children and teenagers (under 18) and for anyone who is not family: friends, acquaintances, neighbors, strangers and institutions. For adult family members it is recommended. The report goes only to the team and never appears on the case. Every report is reviewed by the team before it becomes public, and the team may ask for documents. You don\'t need to wait 24 hours to file a police report.',
+  'São as regiões onde a pessoa foi vista por último, em ordem de data. A mais recente aparece destacada. Para que ninguém use o histórico para chegar até alguém, cada ponto mostra só uma região de cerca de 10 km e a cidade, nunca a rua ou o local exato, e só os avistamentos mais recentes aparecem.':
+    'These are the areas where the person was last seen, in date order. The most recent one is highlighted. So that nobody can use the history to reach someone, each point shows only an area of about 10 km and the city, never the street or the exact place, and only the most recent sightings appear.',
+  'Por segurança, cada ponto mostra só a região aproximada (cerca de 10 km) e a cidade, nunca o local exato.':
+    'For safety, each point shows only the approximate area (about 10 km) and the city, never the exact place.',
+  'Há um alerta sobre mim, mas eu não estou desaparecido(a). O que faço?':
+    'There is an alert about me, but I\'m not missing. What do I do?',
+  'Abra o alerta e toque em "Sou a pessoa procurada". Marque o que está acontecendo (por exemplo, que você está bem ou que quer a retirada do alerta) e envie o pedido à equipe. Não pedimos sua localização e quem criou o alerta não recebe seus dados. Com a conta conectada, o pedido também entra na fila da equipe pelo app; sem conta, ele vai por e-mail e só chega quando você envia. A equipe analisa antes de encerrar o alerta e, em caso de risco, pode suspender a divulgação enquanto isso. Se precisar confirmar que é você, a equipe pede uma foto atual por e-mail, usada só nessa verificação.':
+    'Open the alert and tap "I am the person being searched for". Mark what is happening (for example, that you are fine or that you want the alert removed) and send the request to the team. We don\'t ask for your location, and whoever created the alert doesn\'t receive your data. If you\'re signed in, the request also enters the team\'s queue through the app; without an account, it goes by email and only arrives when you send it. The team reviews it before closing the alert and, if there is a risk, may suspend the alert while it reviews. If the team needs to confirm it\'s you, it will ask for a current photo by email, used only for that check.',
+  'sou eu contestar retirar alerta falso não desaparecido minha foto verificação':
+    'it\'s me dispute remove alert fake not missing my photo verification',
+  'Alguém está usando o app para me encontrar ou me ameaçar. Como peço ajuda?':
+    'Someone is using the app to find or threaten me. How do I get help?',
+  'Se você está em perigo agora, ligue 190 (ou 180, em caso de violência contra a mulher). Depois, abra o alerta e toque em "Estou sofrendo perseguição", ou procure por esse pedido aqui na Central de Ajuda. Marque o que está acontecendo e envie à equipe: esses pedidos são tratados com urgência. Não escreva onde você está. Quem publicou o alerta não fica sabendo do seu pedido nem recebe seus dados.':
+    'If you\'re in danger now, call 190 (or 180 for violence against women). Then open the alert and tap "I\'m being stalked", or find this request here in the Help Center. Mark what is happening and send it to the team: these requests are handled urgently. Don\'t write where you are. Whoever posted the alert won\'t know about your request or receive your data.',
+  'perseguição ameaça stalker me localizar violência proteção':
+    'stalking threat stalker locate me violence protection',
+  'Encontrei uma criança perdida ou um idoso desorientado. O que faço?':
+    'I found a lost child or a disoriented older person. What do I do?',
+  'Ligue para a polícia (190) — ou para o SAMU (192), se a pessoa estiver passando mal — e fique com ela num lugar movimentado. Em "Pedir ajuda", toque em "Encontrei alguém perdido": o app mostra o que fazer, ajuda a ver se a pessoa já está cadastrada e prepara um aviso para a equipe, sem exigir boletim de ocorrência. Nada é publicado no mapa a partir daí sem análise da equipe. Não publique a foto da pessoa em redes sociais.':
+    'Call the police (190) — or SAMU (192) if the person is unwell — and stay with them in a busy place. In "Get help", tap "I found someone lost": the app shows what to do, helps you check whether the person is already registered and prepares a message for the team, without requiring a police report. Nothing is posted on the map from there without the team\'s review. Don\'t post the person\'s photo on social media.',
+  'criança perdida idoso desorientado encontrei achei sem documento sem boletim':
+    'lost child disoriented older person found no documents no police report',
+  'Sou a pessoa procurada ou sofro perseguição':
+    'I\'m the person being searched for or I\'m being stalked',
+  'O local está longe de você': 'The place is far from you',
+  'O ponto marcado fica a {distance} de onde você está. Confira no mapa se é o lugar certo.':
+    'The point you marked is {distance} from where you are. Check on the map that it\'s the right place.',
+  'O local está certo': 'The place is correct',
+  'Voltar e conferir': 'Go back and check',
+  'Você já avisou sobre este lugar': 'You already posted a note about this place',
+  'Já existe um aviso seu deste tipo aqui. Ele continua no mapa enquanto outras pessoas confirmarem.':
+    'You already have a note of this type here. It stays on the map as long as other people confirm it.',
+  'Já existe um aviso igual aqui': 'The same note already exists here',
+  'Há um aviso de "{label}" a poucos metros deste ponto. Para não repetir, confirme o aviso que já existe.':
+    'There is a "{label}" note a few meters from this point. To avoid duplicates, confirm the existing note.',
+  'Confirmar o aviso existente': 'Confirm the existing note',
+  'Aviso confirmado': 'Note confirmed',
+  'Obrigado. Sua confirmação renova o prazo do aviso no mapa.':
+    'Thank you. Your confirmation renews how long the note stays on the map.',
+  'Não foi possível confirmar': 'Could not confirm',
+  'No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes e para quem não é da família) e confirme a declaração.':
+    'At the end of the form, enter your relationship with the person, the police report number (required for children and teenagers and for anyone who is not family) and confirm the declaration.',
+  'A equipe confere cada cadastro antes de publicar e pode pedir documentos que comprovem o vínculo.':
+    'The team checks every report before publishing it and may ask for documents that prove the relationship.',
+  'Para quem não é da família, o boletim de ocorrência é obrigatório. Ele vai só para a equipe, nunca aparece no caso, e sozinho não garante a publicação.':
+    'For anyone who is not family, the police report is required. It goes only to the team, never appears on the case, and on its own doesn\'t guarantee publication.',
+  'Instituições e autoridades informam o boletim de ocorrência e passam por comprovação: a equipe entra em contato antes de publicar. Não se declare representante sem ser.':
+    'Institutions and authorities enter the police report number and go through verification: the team gets in touch before publishing. Don\'t claim to be a representative if you aren\'t.',
+  'Quem não conhece a pessoa só pode cadastrar com boletim de ocorrência. Encontrou alguém perdido agora, como uma criança ou um idoso desorientado? Use o alerta de possível desaparecimento.':
+    'If you don\'t know the person, you can only register them with a police report. Did you just find someone lost, like a child or a disoriented older person? Use the possible missing person alert.',
+  'Obrigatório para quem não é da família. Registre na delegacia mais próxima ou na delegacia on-line do seu estado — não é preciso esperar 24 horas.':
+    'Required for anyone who is not family. File it at the nearest police station or online with your state\'s police — no need to wait 24 hours.',
+  'Todo cadastro passa pela equipe antes de aparecer para o público. O boletim de ocorrência nunca é publicado.':
+    'Every report is reviewed by the team before it becomes public. The police report is never published.',
+  'Relato: {label}': 'Report: {label}',
+  'Confirmado por {count} pessoas': 'Confirmed by {count} people',
+  'Informações divergentes': 'Conflicting reports',
+  'Ainda não confirmado': 'Not confirmed yet',
+  'Confirmado por pessoas da comunidade, mas não é informação oficial. Em perigo, use "Pedir ajuda".':
+    'Confirmed by people in the community, but it\'s not official information. If you\'re in danger, use "Get help".',
+  'Há quem diga que não está mais assim. Confira antes de mudar o caminho. Em perigo, use "Pedir ajuda".':
+    'Some people say it\'s no longer like this. Check before changing your route. If you\'re in danger, use "Get help".',
+  'Relato de uma pessoa, ainda sem confirmação de outras. Não é informação oficial. Em perigo, use "Pedir ajuda".':
+    'Reported by one person, not yet confirmed by others. It\'s not official information. If you\'re in danger, use "Get help".',
+  'Relato da comunidade': 'Community report',
+  'agora': 'now',
+  'a {distance} de você': '{distance} from you',
+  '{count} diz que mudou': '{count} says it changed',
+  '{count} dizem que mudou': '{count} say it changed',
+  'Os avisos de segurança não carregaram. Tocar para tentar de novo.':
+    'Safety notes didn\'t load. Tap to try again.',
+  'Avisos de segurança não carregaram. Tentar de novo': 'Safety notes didn\'t load. Try again',
+  'Sem localização: os avisos são os da área vista no mapa. Tocar para tentar o GPS de novo.':
+    'No location: notes are from the area shown on the map. Tap to try GPS again.',
+  'Sem localização: avisos da área vista no mapa': 'No location: notes for the area on the map',
+  'É você neste alerta?': 'Is this alert about you?',
+  'Se você está bem e não está desaparecido(a), ou se alguém usa este alerta para tentar te encontrar, peça a verificação. Não pedimos sua localização e quem publicou não recebe seus dados.':
+    'If you\'re fine and not missing, or if someone is using this alert to try to find you, ask for a review. We don\'t ask for your location and whoever posted it doesn\'t receive your data.',
+  'Sou a pessoa procurada': 'I am the person being searched for',
+  'Estou sofrendo perseguição': 'I\'m being stalked',
+  'Encontrei uma criança que parece perdida': 'I found a child who seems to be lost',
+  'Encontrei um idoso desorientado': 'I found a disoriented older person',
+  'Encontrei alguém que não consegue dizer quem é ou achar a família':
+    'I found someone who can\'t say who they are or find their family',
+  'Acho que alguém desapareceu, mas ainda não há boletim de ocorrência':
+    'I think someone has gone missing, but there is no police report yet',
+  'Ligue para a polícia (190). Se a pessoa estiver passando mal, ligue para o SAMU (192).':
+    'Call the police (190). If the person is unwell, call SAMU (192).',
+  'Fique com a pessoa num lugar movimentado e visível. Não a leve para a sua casa nem para o seu carro.':
+    'Stay with the person in a busy, visible place. Don\'t take them to your home or your car.',
+  'Peça ajuda a um segurança, funcionário ou policial por perto.':
+    'Ask a security guard, staff member or police officer nearby for help.',
+  'Pergunte com calma o nome, o nome de um familiar ou um telefone.':
+    'Calmly ask for their name, a family member\'s name or a phone number.',
+  'Não publique a foto da pessoa em redes sociais: isso pode expô-la a quem quer fazer mal.':
+    'Don\'t post the person\'s photo on social media: it could expose them to people who want to harm them.',
+  'URGENTE': 'URGENT',
+  'Alerta de possível desaparecimento': 'Possible missing person alert',
+  'Situação: {situation}': 'Situation: {situation}',
+  'Onde: {place}': 'Where: {place}',
+  'não informado': 'not provided',
+  'Já liguei para os serviços de emergência pelo app.':
+    'I already called emergency services through the app.',
+  'Ainda não liguei para os serviços de emergência.': 'I haven\'t called emergency services yet.',
+  'Detalhes (como a pessoa está, roupas, o que ela conseguiu dizer):':
+    'Details (how the person is, clothes, what they were able to say):',
+  '(sem detalhes)': '(no details)',
+  'Não publiquei fotos da pessoa. Se precisarem de mais informações, respondam a este e-mail.':
+    'I didn\'t post any photos of the person. If you need more information, reply to this email.',
+  'Ligue manualmente para {number}.': 'Dial {number} manually.',
+  'Escolha a situação.': 'Choose the situation.',
+  'Ligue agora': 'Call now',
+  'Não espere o app: a polícia e o SAMU chegam mais rápido. A ligação é feita pelo seu celular.':
+    'Don\'t wait for the app: the police and SAMU get there faster. The call is made from your phone.',
+  'Qual é a situação?': 'What is the situation?',
+  'O que fazer agora': 'What to do now',
+  'Veja se a pessoa já está cadastrada': 'Check whether the person is already registered',
+  'A família pode já estar procurando. Se achar o caso, informe o avistamento nele.':
+    'The family may already be searching. If you find the case, report the sighting there.',
+  'Avisar a equipe do Encontra-me': 'Tell the Encontra-me team',
+  'Onde a pessoa está (referência, opcional)': 'Where the person is (landmark, optional)',
+  'Ex.: Praça da Estação, perto do ponto de ônibus': 'E.g.: Praça da Estação, near the bus stop',
+  'Como a pessoa está, o que está vestindo e o que conseguiu dizer.':
+    'How the person is, what they are wearing and what they were able to say.',
+  'Detalhes (opcional)': 'Details (optional)',
+  'Nada é publicado no mapa a partir daqui. A equipe analisa com prioridade e só divulga depois de validar a situação — sem expor fotos ou dados da pessoa antes disso.':
+    'Nothing is posted on the map from here. The team reviews it as a priority and only shares it after validating the situation — without exposing the person\'s photos or data before that.',
+  'Avisar a equipe': 'Tell the team',
+  'Seu app de e-mail abriu com a mensagem pronta. Toque em enviar: só então ela chega à equipe.':
+    'Your email app opened with the message ready. Tap send: only then does it reach the team.',
+  'O app de e-mail não abriu. Escreva para {email} com o assunto "Alerta de possível desaparecimento".':
+    'The email app didn\'t open. Write to {email} with the subject "Possible missing person alert".',
+  'O aviso à equipe não substitui a polícia. O Encontra-me não aciona as autoridades sozinho.':
+    'Telling the team doesn\'t replace the police. Encontra-me doesn\'t contact the authorities on its own.',
+  'Estou bem e não estou desaparecido(a)': 'I\'m fine and I\'m not missing',
+  'Meus dados ou minha imagem estão sendo usados sem autorização':
+    'My data or my image is being used without permission',
+  'Quero que o alerta seja retirado ou suspenso': 'I want the alert removed or suspended',
+  'Existe perseguição, ameaça ou risco para mim': 'There is stalking, a threat or a risk to me',
+  'Alguém está usando o app para tentar me localizar':
+    'Someone is using the app to try to locate me',
+  'Alguém publicou um alerta falso com a minha foto': 'Someone posted a fake alert with my photo',
+  'Estou recebendo ameaças': 'I\'m receiving threats',
+  'Estão usando meus dados sem autorização': 'My data is being used without permission',
+  'Outro motivo': 'Other reason',
+  'PRIORITÁRIO': 'PRIORITY',
+  'O que está acontecendo:': 'What is happening:',
+  'Não informado': 'Not provided',
+  'Também registrei este pedido pelo app.': 'I also filed this request through the app.',
+  'Pedido enviado só por e-mail (sem registro pelo app).':
+    'Request sent by email only (not filed through the app).',
+  'Não informei minha localização. Por favor, não compartilhem meus dados com quem criou o alerta.':
+    'I didn\'t share my location. Please don\'t share my data with whoever created the alert.',
+  'Se precisarem confirmar que sou eu, respondam a este e-mail. Posso enviar uma foto atual só para essa verificação.':
+    'If you need to confirm it\'s me, reply to this email. I can send a current photo only for that check.',
+  'Escolha pelo menos uma opção.': 'Choose at least one option.',
+  'Você escreveu um endereço?': 'Did you write an address?',
+  'Não precisamos saber onde você está para analisar o pedido. Se quiser, apague o endereço antes de enviar.':
+    'We don\'t need to know where you are to review the request. If you want, delete the address before sending.',
+  'Enviar assim mesmo': 'Send anyway',
+  'Voltar e apagar': 'Go back and delete',
+  'Escreva para {email} com o assunto "{subject}".':
+    'Write to {email} with the subject "{subject}".',
+  'Você está vendo um alerta sobre o seu próprio desaparecimento e não está desaparecido(a)?':
+    'Are you seeing an alert about your own disappearance, but you\'re not missing?',
+  'Alguém está usando o Encontra-me contra você?': 'Is someone using Encontra-me against you?',
+  'Marque o que está acontecendo (pode marcar mais de uma opção).':
+    'Mark what is happening (you can mark more than one option).',
+  'Quer contar mais? (opcional)': 'Want to tell us more? (optional)',
+  'Conte o que for importante para a análise. Não escreva onde você está.':
+    'Tell us what matters for the review. Don\'t write where you are.',
+  'Detalhes do pedido (opcional)': 'Request details (optional)',
+  'Não pedimos sua localização e não precisamos saber onde você está.':
+    'We don\'t ask for your location and don\'t need to know where you are.',
+  'Quem criou o alerta não recebe seus dados, sua foto nem este pedido.':
+    'Whoever created the alert doesn\'t receive your data, your photo or this request.',
+  'Se a equipe precisar confirmar que é você, ela responde por e-mail. Uma foto atual, se pedida, serve só para essa verificação: nunca é publicada.':
+    'If the team needs to confirm it\'s you, it will reply by email. A current photo, if requested, is used only for that check: it\'s never published.',
+  'O pedido não encerra o alerta sozinho: a equipe analisa. Em caso de risco, a divulgação pode ser suspensa enquanto isso.':
+    'The request doesn\'t close the alert on its own: the team reviews it. If there is a risk, the alert may be suspended in the meantime.',
+  'Sem conta, o pedido vai por e-mail. Com a conta conectada, ele também entra na fila da equipe pelo app.':
+    'Without an account, the request goes by email. When you\'re signed in, it also enters the team\'s queue through the app.',
+  'Enviar pedido à equipe': 'Send request to the team',
+  'Seu app de e-mail abre com a mensagem pronta. O pedido só chega à equipe quando você tocar em enviar.':
+    'Your email app opens with the message ready. The request only reaches the team when you tap send.',
+  'Sua segurança vem primeiro': 'Your safety comes first',
+  'Se você está em perigo agora, ligue antes de preencher qualquer coisa. O Encontra-me não avisa a polícia sozinho.':
+    'If you\'re in danger now, call before filling anything in. Encontra-me doesn\'t alert the police on its own.',
+  'Ver todas as opções de "Pedir ajuda"': 'See all "Get help" options',
+  'Pedido registrado no app. A equipe vê a denúncia sobre este alerta e pode suspender a divulgação enquanto analisa.':
+    'Request filed in the app. The team sees the report about this alert and may suspend it while reviewing.',
+  'Não foi possível registrar pelo app agora (verifique a internet). O e-mail continua valendo.':
+    'Couldn\'t file it through the app right now (check your internet). The email still counts.',
+  'Seu app de e-mail abriu com a mensagem pronta. Confira e toque em enviar: só então ela chega à equipe.':
+    'Your email app opened with the message ready. Check it and tap send: only then does it reach the team.',
+  'O app de e-mail não abriu. Escreva para {email} contando o que marcou aqui.':
+    'The email app didn\'t open. Write to {email} describing what you marked here.',
+  'Quem criou o alerta não recebe sua localização, sua foto nem seus dados.':
+    'Whoever created the alert doesn\'t receive your location, your photo or your data.',
+  'Pedido urgente preparado': 'Urgent request ready',
+  'Pedido preparado': 'Request ready',
+  'Se você corre perigo agora, ligue 190. Violência contra a mulher: 180.':
+    'If you\'re in danger now, call 190. Violence against women: 180.',
+  'Fazer outro pedido': 'Make another request',
+  'Voltar para o alerta': 'Back to the alert',
+  'Pai ou mãe': 'Father or mother',
+  'Filho ou filha': 'Son or daughter',
+  'Irmão ou irmã': 'Brother or sister',
+  'Amigo ou conhecido': 'Friend or acquaintance',
+  'Vizinho': 'Neighbor',
+  'Pessoa desconhecida': 'Stranger',
+  'Instituição ou autoridade': 'Institution or authority',
+  'Informe o número do boletim de ocorrência: é obrigatório para crianças e adolescentes e para quem não é da família.':
+    'Enter the police report number: it\'s required for children and teenagers and for anyone who is not family.',
+  'Proteção e contestação': 'Protection and disputes',
+  'Proteção de identidade e perseguição': 'Identity protection and stalking',
 };

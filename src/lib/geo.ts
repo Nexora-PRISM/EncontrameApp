@@ -21,3 +21,25 @@ export function haversineKm(
 export function snapNearbyCoord(value: number): number {
   return Math.round(value * 100) / 100;
 }
+
+/**
+ * Coordenada utilizável no mapa: números finitos, dentro da faixa e diferente de (0, 0) — um
+ * "0, 0" quase sempre é campo vazio que virou número e colocaria o marcador no meio do Atlântico.
+ */
+export function isValidCoordinate(latitude: unknown, longitude: unknown): boolean {
+  if (typeof latitude !== 'number' || typeof longitude !== 'number') return false;
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return false;
+  if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) return false;
+  return !(latitude === 0 && longitude === 0);
+}
+
+/** Distância curta para leitura: "350 m", "1,2 km", "18 km". */
+export function formatDistanceKm(km: number): string {
+  if (!Number.isFinite(km) || km < 0) return '';
+  if (km < 1) {
+    const meters = Math.max(10, Math.round((km * 1000) / 10) * 10);
+    return `${meters} m`;
+  }
+  if (km < 10) return `${km.toFixed(1).replace('.', ',')} km`;
+  return `${Math.round(km)} km`;
+}
