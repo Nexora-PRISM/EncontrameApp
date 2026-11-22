@@ -26,6 +26,34 @@ export function PessoaDetalheFeedbackSection({ controller }: Props) {
   if (!controller.person || controller.isLocalPerson) return null;
 
   return (
+    <>
+    <View style={styles.block}>
+      <View style={styles.titleRow}>
+        <MaterialCommunityIcons name="shield-account-outline" size={22} color={brand.orangeText} />
+        <Text style={styles.title} accessibilityRole="header">
+          {t('É você neste alerta?')}
+        </Text>
+      </View>
+      <Text style={styles.body}>
+        {t('Se você está bem e não está desaparecido(a), ou se alguém usa este alerta para tentar te encontrar, peça a verificação. Não pedimos sua localização e quem publicou não recebe seus dados.')}
+      </Text>
+      <View style={styles.actions}>
+        <BrandButton
+          label={t('Sou a pessoa procurada')}
+          variant="outline"
+          onPress={() => controller.goToProtection('sou-eu')}
+          containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+          style={isWide ? styles.ghost : [styles.ghost, styles.actionFull]}
+        />
+        <BrandButton
+          label={t('Estou sofrendo perseguição')}
+          variant="outline"
+          onPress={() => controller.goToProtection('perseguicao')}
+          containerStyle={isWide ? styles.actionSlot : styles.actionFull}
+          style={isWide ? styles.ghost : [styles.ghost, styles.actionFull]}
+        />
+      </View>
+    </View>
     <View style={styles.block}>
       <View style={styles.titleRow}>
         <MaterialCommunityIcons name="flag-outline" size={22} color={brand.orangeText} />
@@ -65,6 +93,7 @@ export function PessoaDetalheFeedbackSection({ controller }: Props) {
         {t('A correção abre o seu app de e-mail. A denúncia fica registrada no app para a equipe analisar.')}
       </Text>
     </View>
+    </>
   );
 }
 

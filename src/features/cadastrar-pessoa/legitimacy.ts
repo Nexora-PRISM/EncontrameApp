@@ -1,18 +1,27 @@
-import { msg } from '@/lib/i18n-msg';
+import { relationshipGroup } from '@/lib/case-relationship';
 import { type ErrorCode, optionalRangeError } from '@/lib/validation';
 
 /**
  * Regras de legitimidade do cadastro de pessoa desaparecida.
  * Objetivo: reduzir falsos alertas e o uso do app para localizar quem se afastou por segurança.
  */
-export const RELATIONSHIP_OPTIONS = [
-  msg('Mãe ou pai'),
-  msg('Responsável legal'),
-  msg('Outro familiar'),
-  msg('Cônjuge ou companheiro(a)'),
-  msg('Amigo(a)'),
-  msg('Outro'),
-] as const;
+export {
+  normalizeRelationship,
+  RELATIONSHIP_OPTIONS,
+  RELATIONSHIPS,
+  relationshipApiValue,
+  relationshipGroup,
+  type RelationshipGroup,
+} from '@/lib/case-relationship';
+
+/**
+ * O boletim de ocorrência é obrigatório para crianças e adolescentes e para quem não é da família
+ * (amigos, vizinhos, desconhecidos e instituições).
+ */
+export function requiresPoliceReport(age: string, relationship: string): boolean {
+  const group = relationshipGroup(relationship);
+  return isMinorAge(age) || (group != null && group !== 'family');
+}
 
 /** Idade abaixo da qual o cadastro exige número de boletim de ocorrência (ECA: até 17 anos). */
 export const ADULT_AGE = 18;

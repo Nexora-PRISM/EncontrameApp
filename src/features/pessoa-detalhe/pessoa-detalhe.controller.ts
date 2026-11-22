@@ -23,6 +23,7 @@ import { ensureNotificationPermission, localNotificationsSupported } from '@/lib
 import { isLocalPersonId } from '@/lib/person-status';
 import { getSessionUser } from '@/lib/session';
 import { shareText } from '@/lib/share';
+import { publicSightings } from '@/lib/sighting-privacy';
 import { openSupportEmail } from '@/lib/support';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
@@ -118,6 +119,12 @@ export function usePessoaDetalheController() {
         showAlert(t('Não foi possível registrar'), t('Tente de novo em alguns instantes.'));
       }
     })();
+  };
+
+  /** "Sou a pessoa procurada" / "Estou sofrendo perseguição" — sem login e sem localização. */
+  const goToProtection = (mode: 'sou-eu' | 'perseguicao') => {
+    if (!person || isLocalPerson) return;
+    router.push({ pathname: '/protecao', params: { caso: person.id, modo: mode } } as Href);
   };
 
   /** Liga ou desliga o "Acompanhar". Ao ligar, pede a permissão de notificação e ativa o tipo de aviso. */
@@ -341,11 +348,9 @@ export function usePessoaDetalheController() {
       ];
     }
 
-    return [...(historyQuery.data ?? [])].sort((left, right) => {
-      const leftTime = new Date(left.dtRegistration).getTime();
-      const rightTime = new Date(right.dtRegistration).getTime();
-      return leftTime - rightTime;
-    });
+    // Público: só os avistamentos recentes, com ponto aproximado e sem número da casa —
+    // o histórico não pode servir para acompanhar alguém de perto.
+    return publicSightings(historyQuery.data ?? []);
   }, [historyQuery.data, isLocalPerson, person]);
 
   const mappedSightings = useMemo(
@@ -484,6 +489,7 @@ export function usePessoaDetalheController() {
       void shareText(buildPersonShareMessage(person, env.webUrl, t), t('Pessoa desaparecida'));
     },
     reportCase,
+    goToProtection,
     canFollow,
     following,
     followBusy: followMutation.isPending || (canFollow && sessionUser != null && followQuery.isLoading),

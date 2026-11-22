@@ -1,6 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { DEFAULT_NEARBY_RADIUS_KM, snapNearbyCoord } from '@/lib/geo';
+import { DEFAULT_NEARBY_RADIUS_KM, isValidCoordinate, snapNearbyCoord } from '@/lib/geo';
+import { sanitizeSafetyNotes } from '@/lib/safety-notes';
 import { getSafetyNotesRepository } from '@/services/safety-notes/safety-notes.repository';
 import type {
   CreateSafetyNotePayload,
@@ -13,24 +14,40 @@ const safetyNotesKeys = {
     ['safety-notes', 'nearby', latitude, longitude] as const,
 };
 
-/** Avisos de segurança perto de um ponto. Desligado sem localização ou com a camada escondida. */
+/**
+ * Avisos de segurança perto de um ponto (a posição da pessoa ou o centro da área vista no mapa).
+ * Desligado sem ponto válido ou com a camada escondida.
+ *
+ * - O ponto é arredondado (~1 km) só para a chave do cache; a lista volta limpa
+ *   (`sanitizeSafetyNotes`): sem coordenada inválida, vencido, derrubado ou repetido.
+ * - Ao trocar de região, os avisos anteriores ficam no mapa até os novos chegarem (sem piscar).
+ * - Sem internet, tenta de novo poucas vezes e volta a buscar quando a conexão voltar; a tela
+ *   mostra o estado (o modal geral de erro não aparece para esta consulta de fundo).
+ */
 export function useNearbySafetyNotesQuery(
   point: { latitude: number; longitude: number } | null,
   enabled: boolean,
 ) {
-  const latitude = point ? snapNearbyCoord(point.latitude) : 0;
-  const longitude = point ? snapNearbyCoord(point.longitude) : 0;
+  const valid = point != null && isValidCoordinate(point.latitude, point.longitude);
+  const latitude = valid ? snapNearbyCoord(point.latitude) : 0;
+  const longitude = valid ? snapNearbyCoord(point.longitude) : 0;
 
   return useQuery({
     queryKey: safetyNotesKeys.nearby(latitude, longitude),
-    enabled: enabled && point != null,
+    enabled: enabled && valid,
     staleTime: 60_000,
-    queryFn: () =>
-      getSafetyNotesRepository().listNearby({
-        latitude,
-        longitude,
-        radiusKm: DEFAULT_NEARBY_RADIUS_KM,
-      }),
+    refetchInterval: enabled && valid ? 5 * 60_000 : false,
+    refetchOnReconnect: true,
+    retry: 2,
+    placeholderData: keepPreviousData,
+    queryFn: async () =>
+      sanitizeSafetyNotes(
+        await getSafetyNotesRepository().listNearby({
+          latitude,
+          longitude,
+          radiusKm: DEFAULT_NEARBY_RADIUS_KM,
+        }),
+      ),
   });
 }
 

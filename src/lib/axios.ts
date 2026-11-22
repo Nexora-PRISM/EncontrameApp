@@ -106,12 +106,15 @@ api.interceptors.response.use(
 /**
  * Falhas que a própria tela trata, sem o modal global de erro. O alerta de emergência mostra o
  * resultado na tela dele ("não foi possível confirmar — ligue 190"): um modal por cima atrapalharia.
+ * Os avisos de segurança perto do mapa são buscados em segundo plano (e de novo a cada mudança de
+ * lugar): sem internet, o modal abria várias vezes seguidas. O mapa mostra o estado no lugar dele.
  */
 function isQuietErrorPath(url: string) {
   return (
     url.includes('/Auth/refresh') ||
     url.includes('/Auth/logout') ||
-    url.includes('/EmergencyAlert')
+    url.includes('/EmergencyAlert') ||
+    url.includes('/SafetyNote/nearby')
   );
 }
 

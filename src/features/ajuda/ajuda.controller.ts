@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 
 import {
@@ -54,6 +54,10 @@ export function useAjudaController() {
   }, [category, query, searching, t]);
 
   const selectedCategory = HELP_CATEGORIES.find((item) => item.id === category) ?? null;
+
+  const router = useRouter();
+  /** Pedido de proteção tem tela própria (sem login, sem localização, com urgência). */
+  const goToProtection = () => router.push({ pathname: '/protecao', params: { modo: 'perseguicao' } } as Href);
 
   const openContact = (nextTopic: SupportTopic) => {
     setTopic(nextTopic);
@@ -114,6 +118,7 @@ export function useAjudaController() {
     toggleArticle: (id: string) => setOpenId((current) => (current === id ? null : id)),
     contactOpen,
     openContact,
+    goToProtection,
     closeContact: () => setContactOpen(false),
     topic,
     setTopic,

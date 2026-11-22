@@ -9,8 +9,8 @@ import type {
 } from '@/services/safety-notes/safety-notes.types';
 
 /**
- * Contrato PROPOSTO para a API (.NET) — os endpoints /SafetyNote ainda precisam ser criados.
- * Documentado em docs/atualizacoes/2026-10-15-avisos-de-seguranca.md.
+ * Contrato da API (.NET, SafetyNoteController). Documentado em
+ * docs/atualizacoes/2026-10-15-avisos-de-seguranca.md.
  *
  *   GET  /SafetyNote/nearby?latitude=&longitude=&radiusKm=   → ApiSafetyNote[]  (sem login)
  *   POST /SafetyNote                      { category, period, reference, note?, latitude,
@@ -27,12 +27,12 @@ interface ApiSafetyNote {
   period: string;
   reference: string;
   note?: string | null;
-  latitude: number;
-  longitude: number;
+  latitude: number | string;
+  longitude: number | string;
   dtCreated: string;
   dtExpires: string;
-  confirmations?: number | null;
-  outdatedReports?: number | null;
+  confirmations?: number | string | null;
+  outdatedReports?: number | string | null;
   myVote?: string | null;
   mine?: boolean | null;
 }
@@ -66,12 +66,14 @@ function mapNote(item: ApiSafetyNote): SafetyNote {
     period: asPeriod(item.period),
     reference: item.reference,
     note: item.note ?? undefined,
-    latitude: item.latitude,
-    longitude: item.longitude,
+    // Number(): uma API que serialize como texto não pode deslocar o marcador nem virar NaN
+    // silencioso; coordenada inválida é descartada depois (sanitizeSafetyNotes).
+    latitude: Number(item.latitude),
+    longitude: Number(item.longitude),
     createdAt: item.dtCreated,
     expiresAt: item.dtExpires,
-    confirmations: item.confirmations ?? 0,
-    outdatedReports: item.outdatedReports ?? 0,
+    confirmations: Math.max(0, Number(item.confirmations ?? 0) || 0),
+    outdatedReports: Math.max(0, Number(item.outdatedReports ?? 0) || 0),
     myVote: asVote(item.myVote),
     mine: item.mine ?? false,
   };

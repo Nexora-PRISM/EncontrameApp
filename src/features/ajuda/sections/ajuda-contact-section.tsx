@@ -50,6 +50,13 @@ export function AjudaContactSection({ controller }: Props) {
             styles={styles}
             color={brand.blue}
           />
+          <ContactShortcut
+            icon="shield-account-outline"
+            label={t('Sou a pessoa procurada ou sofro perseguição')}
+            onPress={controller.goToProtection}
+            styles={styles}
+            color={brand.blue}
+          />
         </View>
       </View>
     );

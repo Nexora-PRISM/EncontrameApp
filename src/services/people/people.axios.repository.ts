@@ -1,4 +1,5 @@
 import { api } from '@/lib/axios';
+import { relationshipApiValue } from '@/lib/case-relationship';
 import { dateToIso } from '@/lib/masks';
 import type { PeopleRepository } from '@/services/people/people.repository';
 import type {
@@ -118,7 +119,10 @@ export const peopleAxiosRepository: PeopleRepository = {
       // Telefone de contato do caso (só dígitos). A API ainda não tem este campo — ver docs/AUDITORIA §11.
       contactPhone: payload.phone ? payload.phone.replace(/\D/g, '') : null,
       // Legitimidade e responsabilização — a API precisa gravar estes campos (ver docs/AUDITORIA).
-      reporterRelationship: payload.reporterRelationship || null,
+      // A API aceita uma lista fechada de vínculos: o rótulo novo vai no valor equivalente.
+      reporterRelationship: payload.reporterRelationship
+        ? relationshipApiValue(payload.reporterRelationship)
+        : null,
       policeReportNumber: payload.policeReportNumber?.trim() || null,
       truthDeclarationAt: payload.declarationAcceptedAt || null,
     });

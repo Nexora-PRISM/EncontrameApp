@@ -9,6 +9,8 @@ import {
   ageError,
   isMinorAge,
   policeReportError,
+  relationshipGroup,
+  requiresPoliceReport,
 } from '@/features/cadastrar-pessoa/legitimacy';
 import { parseApiError } from '@/lib/api-errors';
 import { showAlert } from '@/lib/dialog';
@@ -99,6 +101,9 @@ export function useCadastrarPessoaController() {
   /** Rascunho já aplicado ao formulário — evita sobrescrever o que a pessoa editou. */
   const appliedDraftRef = useRef<string | null>(null);
   const isMinor = isMinorAge(age);
+  /** Boletim obrigatório: menor de idade ou quem não é da família (amigo, vizinho, desconhecido, instituição). */
+  const policeReportRequired = requiresPoliceReport(age, reporterRelationship);
+  const relationshipKind = relationshipGroup(reporterRelationship);
   /** True quando o botão "Cadastrar" do formulário entra na área visível. */
   const [nearFormEnd, setNearFormEnd] = useState(false);
 
@@ -216,7 +221,10 @@ export function useCadastrarPessoaController() {
     if (isDirty('age')) setFieldCode('age', ageError(next));
     // Se a idade passa a ser de menor, o boletim de ocorrência vira obrigatório.
     if (isDirty('policeReport')) {
-      setFieldCode('policeReport', policeReportError(policeReport, isMinorAge(next)));
+      setFieldCode(
+        'policeReport',
+        policeReportError(policeReport, requiresPoliceReport(next, reporterRelationship)),
+      );
     }
   };
 
@@ -224,16 +232,22 @@ export function useCadastrarPessoaController() {
     setReporterRelationshipState(value);
     markDirty('reporterRelationship');
     setFieldCode('reporterRelationship', textError(value));
+    // Quem não é da família precisa do boletim: revalida o campo se ele já foi tocado.
+    if (isDirty('policeReport')) {
+      setFieldCode('policeReport', policeReportError(policeReport, requiresPoliceReport(age, value)));
+    }
   };
 
   const changePoliceReport = (value: string) => {
     setPoliceReport(value);
-    if (isDirty('policeReport')) setFieldCode('policeReport', policeReportError(value, isMinor));
+    if (isDirty('policeReport')) {
+      setFieldCode('policeReport', policeReportError(value, policeReportRequired));
+    }
   };
 
   const blurPoliceReport = () => {
     markDirty('policeReport');
-    setFieldCode('policeReport', policeReportError(policeReport, isMinor));
+    setFieldCode('policeReport', policeReportError(policeReport, policeReportRequired));
   };
 
   const toggleDeclaration = () => {
@@ -269,7 +283,7 @@ export function useCadastrarPessoaController() {
       heightCm: optionalRangeError(heightCm, HEIGHT_MIN_CM, HEIGHT_MAX_CM),
       lastSeen: optionalFormatError(lastSeen, isPastDate),
       reporterRelationship: textError(reporterRelationship),
-      policeReport: policeReportError(policeReport, isMinor),
+      policeReport: policeReportError(policeReport, policeReportRequired),
       declaration: declarationAccepted ? undefined : 'required',
     });
 
@@ -409,7 +423,7 @@ export function useCadastrarPessoaController() {
       if (found.reporterRelationship || found.policeReport || found.declaration) {
         showAlert(
           t('Falta pouco'),
-          t('No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes) e confirme a declaração.'),
+          t('No fim do formulário, informe seu vínculo com a pessoa, o boletim de ocorrência (obrigatório para crianças e adolescentes e para quem não é da família) e confirme a declaração.'),
         );
       }
       return;
@@ -521,6 +535,9 @@ export function useCadastrarPessoaController() {
     lastSeen,
     setLastSeen: changeLastSeen,
     isMinor,
+    policeReportRequired,
+    relationshipKind,
+    goToPossibleMissing: () => router.push('/possivel-desaparecimento' as Href),
     reporterRelationship,
     setReporterRelationship,
     policeReport,

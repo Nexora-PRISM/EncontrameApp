@@ -6,6 +6,7 @@ import { MapMyLocationFab } from '@/components/map-my-location-fab';
 import { Radius, type BrandColors } from '@/constants/brand';
 import { useBrand, useBrandColorScheme } from '@/lib/brand-theme';
 import { env } from '@/lib/env';
+import { isValidCoordinate } from '@/lib/geo';
 import {
   loadGoogleMapsJs,
   type GoogleCircle,
@@ -65,6 +66,20 @@ export type BrandMapHandle = {
   recenterOnUser: () => void;
 };
 
+/**
+ * Leva a câmera a um ponto quando `key` muda (ex.: a primeira posição do GPS, o local marcado
+ * num formulário). Mudar só a coordenada, com a mesma `key`, não move o mapa.
+ */
+export type MapFocus = {
+  key: string;
+  latitude: number;
+  longitude: number;
+  /** Zoom aproximado: "street" (~1 km na tela) ou "district" (~3 km). Padrão: "street". */
+  zoom?: 'street' | 'district';
+};
+
+export type MapCenter = { latitude: number; longitude: number };
+
 type Props = {
   pins?: MapPin[];
   polylines?: MapPolyline[];
@@ -77,11 +92,19 @@ type Props = {
   showLocationFab?: boolean;
   /** Imagem de satélite com nomes de ruas (Google "hybrid"). */
   satellite?: boolean;
+  /** Move a câmera quando `focus.key` muda. */
+  focus?: MapFocus | null;
+  /** Centro da área visível quando o mapa para de se mexer (arrastar, zoom ou foco). */
+  onRegionChange?: (center: MapCenter) => void;
   style?: ViewStyle;
 };
 
 const DEFAULT_CENTER = { lat: -19.9167, lng: -43.9345 };
 const DEFAULT_ZOOM = 12;
+
+function focusZoom(focus: MapFocus): number {
+  return focus.zoom === 'district' ? 14 : 16;
+}
 
 function asHtmlElement(node: unknown): HTMLElement | null {
   if (typeof HTMLElement !== 'undefined' && node instanceof HTMLElement) {
@@ -318,6 +341,8 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
     mapPadding,
     showLocationFab = true,
     satellite = false,
+    focus = null,
+    onRegionChange,
     style,
   },
   ref,
@@ -346,6 +371,9 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   const onMapPressRef = useRef(onMapPress);
   const onPinDragEndRef = useRef(onPinDragEnd);
   const mapPaddingRef = useRef(mapPadding);
+  const onRegionChangeRef = useRef(onRegionChange);
+  const focusRef = useRef(focus);
+  const focusKey = focus?.key ?? null;
   const sessionKey = `${Boolean(apiKey)}:${isPreview}:${host ? 'ready' : 'wait'}`;
   const [session, setSession] = useState<{ key: string; ok: boolean } | null>(null);
 
@@ -368,6 +396,14 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   useEffect(() => {
     onPinDragEndRef.current = onPinDragEnd;
   }, [onPinDragEnd]);
+
+  useEffect(() => {
+    onRegionChangeRef.current = onRegionChange;
+  }, [onRegionChange]);
+
+  useEffect(() => {
+    focusRef.current = focus;
+  }, [focus]);
 
   useEffect(() => {
     userLocationRef.current = userLocation;
@@ -401,9 +437,14 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
           return;
         }
 
+        const candidate = focusRef.current;
+        const initialFocus =
+          candidate && isValidCoordinate(candidate.latitude, candidate.longitude) ? candidate : null;
         const map = new gmaps.Map(host, {
-          center: DEFAULT_CENTER,
-          zoom: DEFAULT_ZOOM,
+          center: initialFocus
+            ? { lat: initialFocus.latitude, lng: initialFocus.longitude }
+            : DEFAULT_CENTER,
+          zoom: initialFocus ? focusZoom(initialFocus) : DEFAULT_ZOOM,
           disableDefaultUI: true,
           zoomControl: false,
           gestureHandling: isPreview ? 'none' : 'greedy',
@@ -435,6 +476,20 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
             const latLng = event?.latLng;
             if (latLng) {
               onMapPressRef.current?.(latLng.lat(), latLng.lng());
+            }
+          }),
+        );
+
+        // Centro da área visível quando o mapa para (arrastar, zoom, foco): quem usa o mapa busca
+        // os avisos da região que a pessoa está vendo, não só em volta do GPS.
+        listeners.push(
+          gmaps.event.addListener(map, 'idle', () => {
+            const center = map.getCenter();
+            if (!center) return;
+            const latitude = center.lat();
+            const longitude = center.lng();
+            if (isValidCoordinate(latitude, longitude)) {
+              onRegionChangeRef.current?.({ latitude, longitude });
             }
           }),
         );
@@ -719,6 +774,20 @@ export const BrandMap = forwardRef<BrandMapHandle, Props>(function BrandMap(
   const flattened = StyleSheet.flatten(mapBoxStyle) as ViewStyle;
   const fillsParent = flattened.height == null && flattened.minHeight == null;
   const explicitHeight = typeof flattened.height === 'number' ? flattened.height : undefined;
+
+  // Só move a câmera quando a chave do foco muda (e o mapa já carregou).
+  useEffect(() => {
+    const map = mapRef.current;
+    const target = focusRef.current;
+    if (status !== 'ready' || !map || !focusKey || !target) {
+      return;
+    }
+    if (!isValidCoordinate(target.latitude, target.longitude)) {
+      return;
+    }
+    map.panTo({ lat: target.latitude, lng: target.longitude });
+    map.setZoom(focusZoom(target));
+  }, [focusKey, status]);
 
   const recenterOnUser = () => {
     const map = mapRef.current;

@@ -11,7 +11,8 @@ export type SupportTopic =
   | 'correcao'
   | 'privacidade'
   | 'exclusao'
-  | 'denuncia';
+  | 'denuncia'
+  | 'protecao';
 
 export const SUPPORT_TOPIC_LABELS: Record<SupportTopic, string> = {
   duvida: msg('Dúvida sobre o app'),
@@ -21,6 +22,7 @@ export const SUPPORT_TOPIC_LABELS: Record<SupportTopic, string> = {
   privacidade: msg('Privacidade e meus dados'),
   exclusao: msg('Excluir minha conta'),
   denuncia: msg('Denunciar conteúdo ou golpe'),
+  protecao: msg('Proteção de identidade e perseguição'),
 };
 
 export type SupportDraft = {
@@ -28,6 +30,8 @@ export type SupportDraft = {
   message: string;
   /** E-mail da conta, quando houver sessão — ajuda o suporte a localizar o cadastro. */
   accountEmail?: string;
+  /** Assunto completo, no lugar do nome do tópico (ex.: pedidos urgentes de proteção). */
+  subject?: string;
 };
 
 /**
@@ -35,7 +39,7 @@ export type SupportDraft = {
  * chega à equipe quando a pessoa envia o e-mail no próprio app de e-mail.
  */
 export function buildSupportMailto(draft: SupportDraft): string {
-  const subject = `[${AppInfo.name}] ${SUPPORT_TOPIC_LABELS[draft.topic]}`;
+  const subject = `[${AppInfo.name}] ${draft.subject?.trim() || SUPPORT_TOPIC_LABELS[draft.topic]}`;
   const lines = [
     draft.message.trim(),
     '',
