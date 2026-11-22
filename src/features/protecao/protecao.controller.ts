@@ -43,7 +43,7 @@ export function useProtecaoController() {
 
   const caseId = typeof params.caso === 'string' && params.caso.trim() ? params.caso.trim() : undefined;
   /** Só um caso publicado (id da API) pode ser denunciado na fila; rascunho local não. */
-  const publishedCaseId = caseId && !isLocalPersonId(caseId) && /^\d+$/.test(caseId) ? caseId : undefined;
+  const publishedCaseId = caseId && !isLocalPersonId(caseId) ? caseId : undefined;
 
   const [mode, setModeState] = useState<ProtectionMode>(parseProtectionMode(params.modo));
   const [situations, setSituations] = useState<ProtectionSituation[]>([]);
