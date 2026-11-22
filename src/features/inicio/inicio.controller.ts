@@ -124,15 +124,17 @@ export function useInicioController() {
     () => (showSafetyNotes ? (notesQuery.data ?? []) : []),
     [notesQuery.data, showSafetyNotes],
   );
-  /** Leva o mapa para a pessoa na primeira posição do GPS (antes ficava parado no centro padrão). */
+  /** Primeira posição do GPS: o mapa vai até ela uma vez (antes ficava parado no centro padrão). */
+  const [firstFix, setFirstFix] = useState<MapCenter | null>(null);
+  if (gpsPoint && !firstFix) {
+    setFirstFix(gpsPoint);
+  }
   const mapFocus = useMemo<MapFocus | null>(
     () =>
-      gpsPoint
-        ? { key: 'primeira-posicao', latitude: gpsPoint.latitude, longitude: gpsPoint.longitude, zoom: 'district' }
+      firstFix
+        ? { key: 'primeira-posicao', latitude: firstFix.latitude, longitude: firstFix.longitude, zoom: 'district' }
         : null,
-    // Só a chave importa para mover a câmera; a coordenada acompanha o GPS sem mover o mapa.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [gpsPoint != null],
+    [firstFix],
   );
   /** Estado da camada de avisos para a tela mostrar (nunca "0 avisos" quando a busca falhou). */
   const safetyNotesStatus: 'off' | 'loading' | 'error' | 'ready' = !showSafetyNotes
