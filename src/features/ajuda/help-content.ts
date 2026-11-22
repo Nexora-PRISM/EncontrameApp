@@ -229,7 +229,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'relatos',
     question: msg('O que é o histórico no mapa de um caso?'),
     answer:
-      msg('São os últimos locais informados para aquela pessoa, em ordem de data. O ponto mais recente aparece destacado. Para que ninguém use o histórico para acompanhar alguém de perto, o mapa mostra só os avistamentos mais recentes, com o ponto aproximado e sem número de casa.'),
+      msg('São as regiões onde a pessoa foi vista por último, em ordem de data. A mais recente aparece destacada. Para que ninguém use o histórico para chegar até alguém, cada ponto mostra só uma região de cerca de 10 km e a cidade, nunca a rua ou o local exato, e só os avistamentos mais recentes aparecem.'),
     keywords: msg('histórico trajeto rastro'),
   },
   {

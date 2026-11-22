@@ -3,18 +3,22 @@ import type { PersonLastSeen } from '@/services/people/people.types';
 /**
  * Avistamentos mostrados ao público sem virar ferramenta de rastreamento:
  * - só os mais recentes ({@link PUBLIC_SIGHTINGS_LIMIT}), não o histórico inteiro de lugares;
- * - ponto arredondado para ~100 m ({@link PUBLIC_COORD_DECIMALS} casas decimais);
- * - sem número da casa nem CEP no texto do local.
+ * - ponto trocado pelo centro de uma região de ~10 km ({@link PUBLIC_GRID_DEGREES} grau, ~11 km):
+ *   o ponto real pode estar em qualquer lugar dessa região;
+ * - avistamentos na mesma região viram um só (fica o mais recente);
+ * - sem rua, número, CEP nem bairro: só cidade e estado.
  *
  * Isso reduz o que a TELA mostra. A restrição de verdade (quem pode ver o histórico completo) é
- * da API — proposta em `atualizacao-futura/`.
+ * da API — proposta em `atualizacao-futura/05-avistamentos-privacidade-api.md`.
  */
 export const PUBLIC_SIGHTINGS_LIMIT = 5;
-export const PUBLIC_COORD_DECIMALS = 3;
+/** Tamanho da região, em graus (0,1° ≈ 11 km de latitude). */
+export const PUBLIC_GRID_DEGREES = 0.1;
 
-export function blurCoordinate(value: number, decimals = PUBLIC_COORD_DECIMALS): number {
-  const factor = 10 ** decimals;
-  return Math.round(value * factor) / factor;
+/** Centro da região de ~10 km que contém o valor (sempre o mesmo para pontos da mesma região). */
+export function blurCoordinate(value: number, step = PUBLIC_GRID_DEGREES): number {
+  const center = (Math.floor(value / step) + 0.5) * step;
+  return Math.round(center * 1000) / 1000;
 }
 
 /** Tira CEP e número de casa/prédio ("Rua X, 123", "nº 45", "Av. Y 1200 - apto 3"). */
@@ -30,15 +34,27 @@ export function stripHouseNumber(text: string | undefined): string | undefined {
   return cleaned || undefined;
 }
 
-/** Versão pública do histórico: ordem por data, os últimos N, ponto aproximado, sem número. */
+/** Versão pública do histórico: regiões de ~10 km, só cidade/estado, as últimas N regiões. */
 export function publicSightings(items: readonly PersonLastSeen[]): PersonLastSeen[] {
   const sorted = [...items].sort(
     (left, right) => new Date(left.dtRegistration).getTime() - new Date(right.dtRegistration).getTime(),
   );
-  return sorted.slice(-PUBLIC_SIGHTINGS_LIMIT).map((item) => ({
-    ...item,
-    location: stripHouseNumber(item.location),
-    latitude: typeof item.latitude === 'number' ? blurCoordinate(item.latitude) : item.latitude,
-    longitude: typeof item.longitude === 'number' ? blurCoordinate(item.longitude) : item.longitude,
-  }));
+  const byRegion = new Map<string, PersonLastSeen>();
+  sorted.forEach((item, index) => {
+    const hasPoint = typeof item.latitude === 'number' && typeof item.longitude === 'number';
+    const latitude = hasPoint ? blurCoordinate(item.latitude as number) : undefined;
+    const longitude = hasPoint ? blurCoordinate(item.longitude as number) : undefined;
+    const key = hasPoint ? `${latitude},${longitude}` : `sem-ponto-${index}`;
+    // Mesma região: fica só o avistamento mais recente (a lista já está em ordem de data).
+    byRegion.delete(key);
+    byRegion.set(key, {
+      id: item.id,
+      dtRegistration: item.dtRegistration,
+      city: item.city,
+      state: item.state,
+      latitude,
+      longitude,
+    });
+  });
+  return [...byRegion.values()].slice(-PUBLIC_SIGHTINGS_LIMIT);
 }

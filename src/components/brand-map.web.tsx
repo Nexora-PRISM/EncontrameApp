@@ -74,8 +74,8 @@ export type MapFocus = {
   key: string;
   latitude: number;
   longitude: number;
-  /** Zoom aproximado: "street" (~1 km na tela) ou "district" (~3 km). Padrão: "street". */
-  zoom?: 'street' | 'district';
+  /** Zoom aproximado: "street" (~1 km na tela), "district" (~3 km) ou "region" (~30 km). Padrão: "street". */
+  zoom?: 'street' | 'district' | 'region';
 };
 
 export type MapCenter = { latitude: number; longitude: number };
@@ -103,7 +103,7 @@ const DEFAULT_CENTER = { lat: -19.9167, lng: -43.9345 };
 const DEFAULT_ZOOM = 12;
 
 function focusZoom(focus: MapFocus): number {
-  return focus.zoom === 'district' ? 14 : 16;
+  return focus.zoom === 'region' ? 10 : focus.zoom === 'district' ? 14 : 16;
 }
 
 function asHtmlElement(node: unknown): HTMLElement | null {

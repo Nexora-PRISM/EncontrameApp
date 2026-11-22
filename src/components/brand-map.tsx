@@ -64,8 +64,8 @@ export type MapFocus = {
   key: string;
   latitude: number;
   longitude: number;
-  /** Zoom aproximado: "street" (~1 km na tela) ou "district" (~3 km). Padrão: "street". */
-  zoom?: 'street' | 'district';
+  /** Zoom aproximado: "street" (~1 km na tela), "district" (~3 km) ou "region" (~30 km). Padrão: "street". */
+  zoom?: 'street' | 'district' | 'region';
 };
 
 export type MapCenter = { latitude: number; longitude: number };
@@ -121,7 +121,8 @@ function regionFromPins(pins: MapPin[]): Region {
 }
 
 function regionFromFocus(focus: MapFocus): Region {
-  const delta = focus.zoom === 'district' ? 0.05 : USER_FOCUS_DELTA * 1.5;
+  const delta =
+    focus.zoom === 'region' ? 0.35 : focus.zoom === 'district' ? 0.05 : USER_FOCUS_DELTA * 1.5;
   return {
     latitude: focus.latitude,
     longitude: focus.longitude,

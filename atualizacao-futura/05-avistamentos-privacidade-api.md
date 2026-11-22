@@ -4,14 +4,14 @@
 
 - `GET /MissingPerson/{id}/last-seen` (histórico) devolve **todos** os avistamentos com coordenada exata para
   qualquer um.
-- O app já reduz o que **mostra** (`src/lib/sighting-privacy.ts`): 5 mais recentes, ponto aproximado (~100 m), sem
-  número de casa/CEP. Mas a resposta da API ainda traz tudo — quem inspecionar a rede vê.
+- O app já reduz o que **mostra** (`src/lib/sighting-privacy.ts`): 5 regiões mais recentes, cada ponto trocado pelo
+  centro de uma região de ~10 km (grade de 0,1°), só cidade e estado. Mas a resposta da API ainda traz tudo — quem inspecionar a rede vê.
 
 ## Proposta
 
 | Quem pede | Recebe |
 |---|---|
-| Público (sem conta ou conta comum) | Até 5 avistamentos mais recentes, coordenada arredondada a 3 casas, sem `location` com número; nada mais antigo que 30 dias. |
+| Público (sem conta ou conta comum) | Até 5 avistamentos mais recentes, coordenada trocada pelo centro da grade de 0,1° (~10 km), só `city`/`state` (sem `location` nem `neighborhood`); nada mais antigo que 30 dias. |
 | Criador do caso | Mesma coisa do público + data/hora exatas. **Sem** acompanhamento contínuo: no máximo 1 consulta por minuto. |
 | Equipe (`moderator`/`security`) | Histórico completo e exato, com registro de acesso. |
 
@@ -25,5 +25,5 @@ Regras:
 
 ## Testes
 
-Integração: público recebe ≤ 5 e coordenadas arredondadas; equipe recebe tudo; caso suspenso → lista vazia para o
+Integração: público recebe ≤ 5, coordenadas no centro da grade de ~10 km e sem rua/bairro; equipe recebe tudo; caso suspenso → lista vazia para o
 público; limite de avistamentos → 429.

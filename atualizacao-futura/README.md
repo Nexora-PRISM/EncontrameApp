@@ -27,7 +27,7 @@ armazenamento que a hospedagem atual já oferecer, sempre fora de pasta pública
 | Pedido | Como funciona hoje |
 |---|---|
 | "Sou a pessoa procurada" / "Estou sofrendo perseguição" | Tela `/protecao`, sem login e sem pedir localização. Com conta e caso publicado, registra denúncia na fila da equipe (API atual). Sempre prepara o e-mail para a equipe. Nunca mostra nada a quem criou o alerta. |
-| Proteção contra localização indevida | Avistamentos públicos: só os 5 mais recentes, ponto aproximado (~100 m), sem número de casa nem CEP. O app não tem rastreamento em tempo real de pessoas. |
+| Proteção contra localização indevida | Avistamentos públicos: só as 5 regiões mais recentes, cada uma com ~10 km e só cidade e estado (sem rua, bairro, número nem CEP). O app não tem rastreamento em tempo real de pessoas. |
 | Vínculo e boletim de ocorrência | 10 vínculos em 4 grupos; boletim obrigatório para menores e para quem não é da família; textos de política por grupo. |
 | Alerta de possível desaparecimento | Tela `/possivel-desaparecimento`: ligar primeiro, o que fazer, procurar casos existentes e avisar a equipe por e-mail; nada é publicado. |
 | Bug dos avisos de segurança | Corrigido (ver registro em `docs/atualizacoes/`). |

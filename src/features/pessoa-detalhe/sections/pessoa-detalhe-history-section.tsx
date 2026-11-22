@@ -69,13 +69,24 @@ export function PessoaDetalheHistorySection({ controller }: PessoaDetalheHistory
                 <Text style={styles.empty}>{t('Ainda não há avistamentos com localização.')}</Text>
               </View>
             ) : (
-              <BrandMap
-                pins={controller.historyPins}
-                polylines={controller.historyPolylines}
-                userLocation={controller.userLocation}
-                rounded
-                style={styles.map}
-              />
+              <>
+                {controller.historyApproximate ? (
+                  <View style={styles.privacy}>
+                    <MaterialCommunityIcons name="shield-lock-outline" size={18} color={brand.blue} />
+                    <Text style={styles.privacyText}>
+                      {t('Por segurança, cada ponto mostra só a região aproximada (cerca de 10 km) e a cidade, nunca o local exato.')}
+                    </Text>
+                  </View>
+                ) : null}
+                <BrandMap
+                  pins={controller.historyPins}
+                  polylines={controller.historyPolylines}
+                  userLocation={controller.userLocation}
+                  focus={controller.historyFocus}
+                  rounded
+                  style={styles.map}
+                />
+              </>
             )}
           </View>
         </SafeAreaView>
@@ -102,6 +113,23 @@ function makeStyles(brand: BrandColors, isWide: boolean) {
       borderRadius: isWide ? Radius.lg : 0,
       overflow: Platform.OS === 'android' ? 'visible' : 'hidden',
       zIndex: 1,
+    },
+    privacy: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 8,
+      marginBottom: 10,
+      padding: 10,
+      borderRadius: Radius.md,
+      backgroundColor: brand.surface,
+      borderWidth: 1,
+      borderColor: brand.divider,
+    },
+    privacyText: {
+      flex: 1,
+      fontSize: 13,
+      lineHeight: 18,
+      color: brand.textDark,
     },
     header: {
       flexDirection: 'row',

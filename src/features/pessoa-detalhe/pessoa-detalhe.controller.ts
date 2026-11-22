@@ -3,7 +3,7 @@ import * as Location from 'expo-location';
 import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import type { MapPin, MapPolyline } from '@/components/brand-map';
+import type { MapFocus, MapPin, MapPolyline } from '@/components/brand-map';
 import { buildCaseFeedbackMessage } from '@/features/pessoa-detalhe/case-feedback';
 import { buildPersonShareMessage } from '@/features/pessoa-detalhe/person-share';
 import { AppInfo } from '@/lib/app-info';
@@ -348,7 +348,7 @@ export function usePessoaDetalheController() {
       ];
     }
 
-    // Público: só os avistamentos recentes, com ponto aproximado e sem número da casa —
+    // Público: só os avistamentos recentes, numa região de ~10 km e só com cidade/estado —
     // o histórico não pode servir para acompanhar alguém de perto.
     return publicSightings(historyQuery.data ?? []);
   }, [historyQuery.data, isLocalPerson, person]);
@@ -380,6 +380,13 @@ export function usePessoaDetalheController() {
       },
     }));
   }, [mappedSightings, person?.photoUri, t]);
+
+  /** Mapa do histórico abre mostrando a região inteira (~30 km), não um ponto "exato" que não é. */
+  const historyFocus = useMemo<MapFocus | null>(() => {
+    const last = mappedSightings[mappedSightings.length - 1];
+    if (!last || isLocalPerson) return null;
+    return { key: `historico-${last.id}`, latitude: last.latitude, longitude: last.longitude, zoom: 'region' };
+  }, [isLocalPerson, mappedSightings]);
 
   const historyPolylines: MapPolyline[] = useMemo(() => {
     if (mappedSightings.length < 2) {
@@ -502,6 +509,8 @@ export function usePessoaDetalheController() {
     sightingPins,
     historyPins,
     historyPolylines,
+    historyFocus,
+    historyApproximate: !isLocalPerson,
     userLocation,
     placeSightingOnMap,
     handlePinDragEnd,

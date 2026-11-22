@@ -85,7 +85,7 @@ src/
     page-titles.ts             # título da aba por rota (1º segmento da URL); rota nova entra aqui, nunca com dados da pessoa
     safety-notes.ts            # avisos de segurança: tipos, horários, validade, verificação, limpeza da lista, duplicados
     case-relationship.ts       # vínculos de quem publica (4 grupos) e o valor aceito pela API
-    sighting-privacy.ts        # avistamentos públicos: 5 recentes, ponto aproximado, sem número de casa
+    sighting-privacy.ts        # avistamentos públicos: 5 recentes, região de ~10 km, só cidade/estado
     notifications.ts           # expo-notifications (só se o módulo nativo existir): permissão, token, canal, rota do toque
     notification-prefs.ts      # o que a pessoa escolheu receber (neste aparelho; tudo desligado por padrão)
     pending-reminder.ts        # lembrete diário local (19h) dos cadastros salvos no aparelho
@@ -198,8 +198,8 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
   denúncia (`POST /Moderation/reports`); sempre prepara o e-mail. Nada do pedido é mostrado a quem criou o alerta.
   "Registrado" só com resposta da API. Estados, foto de verificação e painel: `atualizacao-futura/`.
 - **Encontrei alguém perdido** (`/possivel-desaparecimento`): ligar vem primeiro; nada é publicado daqui.
-- **Avistamentos públicos** passam por `publicSightings` (5 recentes, ~100 m, sem número). Não crie rastreamento em
-  tempo real de pessoas nem mostre o histórico completo ao público.
+- **Avistamentos públicos** passam por `publicSightings` (5 recentes, região de ~10 km, só cidade/estado).
+  Não crie rastreamento em tempo real de pessoas nem mostre o histórico completo ao público.
 - **Cadastro feito sem conta nunca é enviado sozinho.** Só pelo "Revisar e enviar"
   (`/cadastrar-pessoa?rascunho=<id local>`), com a pessoa logada aceitando a declaração de novo.
 - "Algo errado neste cadastro?": a correção vai por e-mail ao suporte com o id do caso (sem login; nunca diga que

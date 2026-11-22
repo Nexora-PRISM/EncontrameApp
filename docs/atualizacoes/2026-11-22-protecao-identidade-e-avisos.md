@@ -47,8 +47,9 @@ O recurso não foi escondido nem desligado.
   (`URGENTE`/`PRIORITÁRIO` no assunto). Avisa se a pessoa escreveu um endereço. Resultado honesto: "registrado" só
   com resposta da API; o e-mail só chega quando enviado.
 - Entradas: página do caso ("É você neste alerta?") e Central de Ajuda (atalho e 3 perguntas novas).
-- **Avistamentos públicos**: só os 5 mais recentes, ponto aproximado (~100 m), sem número de casa/CEP
-  (`lib/sighting-privacy.ts`). O app não tem rastreamento em tempo real de pessoas.
+- **Avistamentos públicos**: só as 5 regiões mais recentes; cada ponto vira o centro de uma região de ~10 km
+  (grade de 0,1°) e mostra só cidade e estado — sem rua, bairro, número nem CEP (`lib/sighting-privacy.ts`).
+  Avistamentos na mesma região viram um só. O app não tem rastreamento em tempo real de pessoas.
 
 ## 12 — Publicação responsável
 
@@ -59,11 +60,12 @@ O recurso não foi escondido nem desligado.
 
 ## Testes realizados
 
-- `npm run test:regras` (novo, dentro do `npm run check`): **27 cenários** — coordenadas válidas/inválidas;
+- `npm run test:regras` (novo, dentro do `npm run check`): **29 cenários** — coordenadas válidas/inválidas;
   distâncias de 500 m e BH–SP; formatação; relato x confirmado x divergente; horários nas bordas; aviso vencido,
   derrubado, sem data, 0,0 e NaN; duplicados por id e no mesmo ponto; aviso igual a 40 m (achado) e 90 m (não);
   busca por região em BH, em São Paulo (sem registros) e com raios de 1 e 50 km; cenários 1, 2, 3, 4, 5, 6 e 8 do
-  pedido 12; endereço digitado; histórico de avistamentos.
+  pedido 12; endereço digitado; histórico de avistamentos (região de ~10 km, centros vizinhos a ≥ 10 km, pontos da
+  mesma região viram um, no máximo 5 regiões).
 - `npm run check` completo (tipos, lint, traduções, testes) e build web no GitHub Actions.
 - Traduções: inglês e espanhol completos (`--strict` sem pendências).
 

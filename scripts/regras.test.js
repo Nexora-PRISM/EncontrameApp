@@ -68,7 +68,6 @@ describe('avisos de segurança — coordenadas e distância', () => {
     assert.equal(geo.formatDistanceKm(18.4), '18 km');
     assert.equal(geo.formatDistanceKm(Number.NaN), '');
   });
-});
 
 describe('avisos de segurança — relato x confirmado', () => {
   it('só vira "confirmado" com pelo menos 2 confirmações e maioria', () => {
@@ -261,20 +260,54 @@ describe('avistamentos — o histórico não serve para rastrear', () => {
     assert.equal(sightings.stripHouseNumber('Praça Sete'), 'Praça Sete');
   });
 
-  it('mostra só os 5 mais recentes, com ponto aproximado (~100 m)', () => {
+  it('troca o ponto pelo centro de uma região de ~10 km e mostra só cidade e estado', () => {
+    const [item] = sightings.publicSightings([
+      {
+        id: 'x',
+        location: 'Rua da Bahia, 1148',
+        neighborhood: 'Centro',
+        city: 'Belo Horizonte',
+        state: 'MG',
+        latitude: PRACA_SETE.latitude,
+        longitude: PRACA_SETE.longitude,
+        dtRegistration: iso(-1),
+      },
+    ]);
+    assert.equal(item.location, undefined);
+    assert.equal(item.neighborhood, undefined);
+    assert.equal(item.city, 'Belo Horizonte');
+    const km = geo.haversineKm(PRACA_SETE.latitude, PRACA_SETE.longitude, item.latitude, item.longitude);
+    assert.ok(km < 8, `o centro da região fica a no máximo ~8 km do ponto real (veio ${km})`);
+    // Qualquer ponto da mesma região de ~10 km cai no mesmo centro: o ponto real não aparece.
+    assert.equal(sightings.blurCoordinate(-19.92), sightings.blurCoordinate(-19.98));
+  });
+
+  it('regiões têm pelo menos 10 km e pontos próximos viram um só', () => {
+    const a = sightings.blurCoordinate(-19.95);
+    const b = sightings.blurCoordinate(-20.05);
+    const kmBetween = geo.haversineKm(a, -43.9, b, -43.9);
+    assert.ok(kmBetween >= 10, `centros vizinhos a ${kmBetween} km`);
+
     const items = Array.from({ length: 8 }, (_, index) => ({
       id: String(index),
-      location: `Rua A, ${100 + index}`,
-      latitude: -19.919123 + index * 0.001,
-      longitude: -43.938654,
+      latitude: -19.92 + index * 0.001,
+      longitude: -43.94,
+      city: 'Belo Horizonte',
       dtRegistration: iso(index - 10),
     }));
     const result = sightings.publicSightings(items);
-    assert.equal(result.length, 5);
-    assert.deepEqual(result.map((item) => item.id), ['3', '4', '5', '6', '7']);
-    for (const item of result) {
-      assert.equal(item.location, 'Rua A');
-      assert.equal(Number(item.longitude.toFixed(3)), item.longitude);
-    }
+    assert.equal(result.length, 1);
+    assert.equal(result[0].id, '7');
   });
+
+  it('mostra no máximo as 5 regiões mais recentes', () => {
+    const items = Array.from({ length: 8 }, (_, index) => ({
+      id: String(index),
+      latitude: -19.95 + index * 0.2,
+      longitude: -43.94,
+      dtRegistration: iso(index - 10),
+    }));
+    assert.deepEqual(sightings.publicSightings(items).map((item) => item.id), ['3', '4', '5', '6', '7']);
+  });
+});
 });
