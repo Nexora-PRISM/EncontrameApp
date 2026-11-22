@@ -12,6 +12,7 @@ const relationship = require('@/lib/case-relationship');
 const protecao = require('@/features/protecao/protecao-request');
 const possible = require('@/features/possivel-desaparecimento/possible-missing');
 const sightings = require('@/lib/sighting-privacy');
+const account = require('@/lib/account-rules');
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = Date.UTC(2026, 10, 22, 15, 0, 0);
@@ -310,4 +311,47 @@ describe('avistamentos — o histórico não serve para rastrear', () => {
     assert.deepEqual(sightings.publicSightings(items).map((item) => item.id), ['3', '4', '5', '6', '7']);
   });
 });
+});
+
+describe('conta — perfil, senha nova, código e aparelhos', () => {
+  it('perfil: nome, celular obrigatórios; CEP só se preenchido', () => {
+    assert.deepEqual(account.profileErrors({ name: 'Ana Maria', cellPhone: '(31) 99999-8888', cep: '' }), {});
+    assert.deepEqual(account.profileErrors({ name: 'An', cellPhone: '9999-8888', cep: '301' }), {
+      name: 'too_short',
+      cellPhone: 'invalid_format',
+      cep: 'invalid_format',
+    });
+    assert.deepEqual(account.profileErrors({ name: ' ', cellPhone: '', cep: '30130-010' }), {
+      name: 'required',
+      cellPhone: 'required',
+    });
+  });
+
+  it('senha nova: mesma regra do cadastro (8+, letra e número) e confirmação igual', () => {
+    assert.deepEqual(account.newPasswordErrors('Senha123', 'Senha123'), {});
+    assert.deepEqual(account.newPasswordErrors('abc12', 'abc12'), { newPassword: 'too_short' });
+    assert.deepEqual(account.newPasswordErrors('somenteletras', 'somenteletras'), { newPassword: 'invalid_format' });
+    assert.deepEqual(account.newPasswordErrors('Senha123', 'Senha124'), { confirmPassword: 'invalid_format' });
+    assert.deepEqual(account.newPasswordErrors('Senha123', ''), { confirmPassword: 'required' });
+  });
+
+  it('código: aceita minúsculas e hífen, descarta letras ambíguas e corta em 8', () => {
+    assert.equal(account.normalizeResetCode('abcd-2345'), 'ABCD2345');
+    assert.equal(account.normalizeResetCode('O0I1L abcd'), 'ABCD');
+    assert.equal(account.formatResetCode('abcd2345xyz'), 'ABCD-2345');
+    assert.equal(account.formatResetCode('ab'), 'AB');
+    assert.equal(account.resetCodeError(''), 'required');
+    assert.equal(account.resetCodeError('ABCD-23'), 'too_short');
+    assert.equal(account.resetCodeError('ABCD-2345'), undefined);
+  });
+
+  it('aparelhos: este primeiro, depois do mais recente para o mais antigo', () => {
+    const list = account.sortSessions([
+      { id: 'velho', lastActiveAt: iso(-5), current: false },
+      { id: 'este', lastActiveAt: iso(-3), current: true },
+      { id: 'novo', lastActiveAt: iso(-1), current: false },
+    ]);
+    assert.deepEqual(list.map((item) => item.id), ['este', 'novo', 'velho']);
+    assert.equal(account.otherSessionsCount(list), 2);
+  });
 });

@@ -349,8 +349,24 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'conta',
     question: msg('Esqueci minha senha. E agora?'),
     answer:
-      msg('A recuperação de senha pelo próprio app ainda não está disponível. Use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha para ninguém, nem para o suporte.'),
+      msg('Na tela de entrada, toque em "Esqueci minha senha". Quando a recuperação pelo app estiver ligada, você digita o e-mail da conta, recebe um código de 8 caracteres e cria uma senha nova; depois disso, todos os aparelhos são desconectados. Se a tela disser que ainda não está disponível, use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha nem o código para ninguém, nem para o suporte.'),
     keywords: msg('senha esqueci recuperar acesso'),
+  },
+  {
+    id: 'alterar-dados',
+    category: 'conta',
+    question: msg('Como mudo meu nome, celular, CEP ou senha?'),
+    answer:
+      msg('Em Configurações > Minha conta: "Editar perfil" muda nome, celular e CEP; "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.'),
+    keywords: msg('editar perfil nome celular telefone cep trocar senha'),
+  },
+  {
+    id: 'aparelhos-conectados',
+    category: 'conta',
+    question: msg('Como vejo em quais aparelhos minha conta está aberta?'),
+    answer:
+      msg('Em Configurações > Segurança > "Aparelhos conectados". A lista mostra este aparelho e os outros, com a última atividade aproximada. Você pode desconectar um ou todos os outros. Por privacidade, o app não guarda o modelo do aparelho nem o lugar de cada acesso. Se não reconhecer um acesso, desconecte e troque sua senha.'),
+    keywords: msg('sessões aparelhos conectados desconectar acesso'),
   },
   {
     id: 'biometria',

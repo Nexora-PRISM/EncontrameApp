@@ -225,8 +225,6 @@ export const es: Readonly<Record<string, string>> = {
   'regras termos uso política privacidade responsabilidade':
     'reglas términos uso política privacidad responsabilidad',
   'Esqueci minha senha. E agora?': 'Olvidé mi contraseña. ¿Y ahora?',
-  'A recuperação de senha pelo próprio app ainda não está disponível. Use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha para ninguém, nem para o suporte.':
-    'La recuperación de contraseña desde la propia app todavía no está disponible. Usa "Hablar con soporte", elige "Registro, inicio de sesión o contraseña" y escribe el correo de tu cuenta. Nunca envíes tu contraseña a nadie, ni siquiera a soporte.',
   'senha esqueci recuperar acesso': 'contraseña olvidé recuperar acceso',
   'Posso entrar com a digital ou o rosto?': '¿Puedo entrar con la huella o el rostro?',
   'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, o app pede a biometria assim que abre e, ao sair, só trava a conta; para sair de vez, desligue a biometria antes.':
@@ -602,7 +600,6 @@ export const es: Readonly<Record<string, string>> = {
   'Atualize o Encontra-me para usar este recurso.': 'Actualiza Encontra-me para usar esta función.',
   'Requer Android 7.1 ou mais recente.': 'Requiere Android 7.1 o más reciente.',
   'Minha conta': 'Mi cuenta',
-  'Editar perfil e foto': 'Editar perfil y foto',
   'Depende de atualização da API.': 'Depende de una actualización de la API.',
   'Alterar ou recuperar senha': 'Cambiar o recuperar contraseña',
   'Enquanto não está no app, peça pela Central de Ajuda.':
@@ -1612,4 +1609,164 @@ export const es: Readonly<Record<string, string>> = {
     'Indica el número de la denuncia policial: es obligatorio para niños y adolescentes y para quien no es de la familia.',
   'Proteção e contestação': 'Protección e impugnación',
   'Proteção de identidade e perseguição': 'Protección de identidad y acoso',
+  'Na tela de entrada, toque em "Esqueci minha senha". Quando a recuperação pelo app estiver ligada, você digita o e-mail da conta, recebe um código de 8 caracteres e cria uma senha nova; depois disso, todos os aparelhos são desconectados. Se a tela disser que ainda não está disponível, use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha nem o código para ninguém, nem para o suporte.':
+    'En la pantalla de entrada, toca "Olvidé mi contraseña". Cuando la recuperación por la app esté activa, escribes el correo de la cuenta, recibes un código de 8 caracteres y creas una contraseña nueva; después, todos los dispositivos se desconectan. Si la pantalla dice que aún no está disponible, usa "Hablar con soporte", elige "Registro, inicio de sesión o contraseña" y escribe el correo de tu cuenta. Nunca envíes tu contraseña ni el código a nadie, ni siquiera a soporte.',
+  'Como mudo meu nome, celular, CEP ou senha?':
+    '¿Cómo cambio mi nombre, celular, código postal o contraseña?',
+  'Em Configurações > Minha conta: "Editar perfil" muda nome, celular e CEP; "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.':
+    'En Configuración > Mi cuenta: "Editar perfil" cambia nombre, celular y código postal; "Cambiar contraseña" pide la contraseña actual y desconecta los otros dispositivos. El correo y el CPF no se cambian en la app; para el correo, habla con el equipo. Si estas opciones aparecen como "Próximamente", la versión del servidor aún no tiene la función.',
+  'editar perfil nome celular telefone cep trocar senha':
+    'editar perfil nombre celular teléfono código postal cambiar contraseña',
+  'Como vejo em quais aparelhos minha conta está aberta?':
+    '¿Cómo veo en qué dispositivos está abierta mi cuenta?',
+  'Em Configurações > Segurança > "Aparelhos conectados". A lista mostra este aparelho e os outros, com a última atividade aproximada. Você pode desconectar um ou todos os outros. Por privacidade, o app não guarda o modelo do aparelho nem o lugar de cada acesso. Se não reconhecer um acesso, desconecte e troque sua senha.':
+    'En Configuración > Seguridad > "Dispositivos conectados". La lista muestra este dispositivo y los demás, con la última actividad aproximada. Puedes desconectar uno o todos los demás. Por privacidad, la app no guarda el modelo del dispositivo ni el lugar de cada acceso. Si no reconoces un acceso, desconéctalo y cambia tu contraseña.',
+  'sessões aparelhos conectados desconectar acesso':
+    'sesiones dispositivos conectados desconectar acceso',
+  'Senha alterada':
+    'Contraseña cambiada',
+  'Os outros aparelhos conectados à sua conta foram desconectados. Neste aparelho você continua conectado.':
+    'Los otros dispositivos conectados a tu cuenta se desconectaron. En este dispositivo sigues conectado.',
+  'Alterar a senha pelo app ainda não está disponível. Tente de novo mais tarde.':
+    'Cambiar la contraseña en la app aún no está disponible. Inténtalo más tarde.',
+  'Sua conta entra com o Google e não tem senha. Continue entrando com o botão do Google.':
+    'Tu cuenta entra con Google y no tiene contraseña. Sigue entrando con el botón de Google.',
+  'Criar uma senha pelo e-mail':
+    'Crear una contraseña por correo',
+  'Senha atual':
+    'Contraseña actual',
+  'Senha nova':
+    'Contraseña nueva',
+  'Repita a senha nova':
+    'Repite la contraseña nueva',
+  'Pelo menos 8 caracteres, com letras e números.':
+    'Al menos 8 caracteres, con letras y números.',
+  'Ao trocar a senha, os outros aparelhos conectados à sua conta são desconectados.':
+    'Al cambiar la contraseña, los otros dispositivos conectados a tu cuenta se desconectan.',
+  'Alterar senha':
+    'Cambiar contraseña',
+  'Editar perfil':
+    'Editar perfil',
+  'Nome, celular e CEP.':
+    'Nombre, celular y código postal.',
+  'Foto do perfil':
+    'Foto de perfil',
+  'Os outros aparelhos são desconectados ao trocar.':
+    'Los otros dispositivos se desconectan al cambiarla.',
+  'Aparelhos conectados':
+    'Dispositivos conectados',
+  'Veja onde sua conta está aberta e desconecte.':
+    'Mira dónde está abierta tu cuenta y desconéctala.',
+  'Entre na sua conta para ver.':
+    'Entra en tu cuenta para verlo.',
+  'Dados salvos':
+    'Datos guardados',
+  'Seu perfil foi atualizado.':
+    'Tu perfil se actualizó.',
+  'Editar o perfil ainda não está disponível. Tente de novo mais tarde.':
+    'Editar el perfil aún no está disponible. Inténtalo más tarde.',
+  'Não foi possível carregar seus dados.':
+    'No se pudieron cargar tus datos.',
+  'Tentar de novo':
+    'Intentar de nuevo',
+  'Celular':
+    'Celular',
+  'Sua conta entra com o Google. Para trocar o e-mail, fale com a equipe pela Central de Ajuda.':
+    'Tu cuenta entra con Google. Para cambiar el correo, habla con el equipo en el Centro de Ayuda.',
+  'Para trocar o e-mail, fale com a equipe pela Central de Ajuda. Seu CPF não aparece no app e não muda.':
+    'Para cambiar el correo, habla con el equipo en el Centro de Ayuda. Tu CPF no aparece en la app y no cambia.',
+  'Salvar':
+    'Guardar',
+  'Esqueci minha senha':
+    'Olvidé mi contraseña',
+  'Recuperar a senha pelo app ainda não está disponível. A Central de Ajuda explica como pedir à equipe.':
+    'Recuperar la contraseña en la app aún no está disponible. El Centro de Ayuda explica cómo pedirlo al equipo.',
+  'Abrir a Central de Ajuda':
+    'Abrir el Centro de Ayuda',
+  'Senha nova criada':
+    'Contraseña nueva creada',
+  'Por segurança, todos os aparelhos foram desconectados. Entre de novo com a senha nova.':
+    'Por seguridad, todos los dispositivos se desconectaron. Entra de nuevo con la contraseña nueva.',
+  'Digite o e-mail da sua conta. Se ele estiver cadastrado, mandamos um código para criar uma senha nova.':
+    'Escribe el correo de tu cuenta. Si está registrado, enviamos un código para crear una contraseña nueva.',
+  'Mandar código':
+    'Enviar código',
+  'Se existir uma conta com {email}, o código chega em alguns minutos. Confira também a caixa de spam. Ele vale por 15 minutos.':
+    'Si existe una cuenta con {email}, el código llega en unos minutos. Revisa también la carpeta de spam. Vale por 15 minutos.',
+  'Pedimos outro código. Use o mais recente.':
+    'Pedimos otro código. Usa el más reciente.',
+  'Código do e-mail':
+    'Código del correo',
+  'Criar senha nova':
+    'Crear contraseña nueva',
+  'Enviando…':
+    'Enviando…',
+  'Mandar outro código':
+    'Enviar otro código',
+  'Trocar o e-mail':
+    'Cambiar el correo',
+  'A lista de aparelhos conectados ainda não está disponível. Tente de novo mais tarde.':
+    'La lista de dispositivos conectados aún no está disponible. Inténtalo más tarde.',
+  'Não foi possível carregar a lista.':
+    'No se pudo cargar la lista.',
+  'Cada item é um aparelho ou navegador em que sua conta está conectada. Por privacidade, o Encontra-me não guarda o modelo do aparelho nem o lugar de cada acesso.':
+    'Cada elemento es un dispositivo o navegador donde tu cuenta está conectada. Por privacidad, Encontra-me no guarda el modelo del dispositivo ni el lugar de cada acceso.',
+  'Desconectar':
+    'Desconectar',
+  'Desconectar todos os outros':
+    'Desconectar todos los demás',
+  'Sua conta só está conectada neste aparelho.':
+    'Tu cuenta solo está conectada en este dispositivo.',
+  'Não reconhece algum acesso? Desconecte e troque sua senha.':
+    '¿No reconoces algún acceso? Desconéctalo y cambia tu contraseña.',
+  'Este aparelho':
+    'Este dispositivo',
+  'Outro aparelho ou navegador':
+    'Otro dispositivo o navegador',
+  'Você está usando agora.':
+    'Lo estás usando ahora.',
+  'Última atividade por volta de {when}':
+    'Última actividad alrededor de {when}',
+  'Desconectar este acesso?':
+    '¿Desconectar este acceso?',
+  'Quem estiver usando a conta nesse aparelho vai precisar entrar de novo.':
+    'Quien esté usando la cuenta en ese dispositivo tendrá que entrar de nuevo.',
+  'Acesso desconectado':
+    'Acceso desconectado',
+  'Se você não reconhece esse acesso, troque também a sua senha.':
+    'Si no reconoces ese acceso, cambia también tu contraseña.',
+  'Não foi possível desconectar':
+    'No se pudo desconectar',
+  'Desconectar os outros aparelhos?':
+    '¿Desconectar los otros dispositivos?',
+  'Só este aparelho continua conectado.':
+    'Solo este dispositivo sigue conectado.',
+  '1 aparelho foi desconectado.':
+    'Se desconectó 1 dispositivo.',
+  '{count} aparelhos foram desconectados.':
+    'Se desconectaron {count} dispositivos.',
+  'Muitas tentativas. Espere alguns minutos e tente de novo.':
+    'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.',
+  'Não confere.':
+    'No coincide.',
+  'Precisa ser diferente do atual.':
+    'Debe ser diferente del actual.',
+  'Errado ou vencido.':
+    'Incorrecto o vencido.',
+  'Não disponível para esta conta.':
+    'No disponible para esta cuenta.',
+  'A senha atual não confere.':
+    'La contraseña actual no coincide.',
+  'Sua conta entra com o Google e não tem senha para trocar.':
+    'Tu cuenta entra con Google y no tiene contraseña para cambiar.',
+  'A senha nova precisa ser diferente da atual.':
+    'La contraseña nueva debe ser diferente de la actual.',
+  'A confirmação não corresponde à senha nova.':
+    'La confirmación no coincide con la contraseña nueva.',
+  'Código errado ou vencido. Confira o e-mail ou peça um novo.':
+    'Código incorrecto o vencido. Revisa el correo o pide uno nuevo.',
+  'O código tem 8 caracteres.':
+    'El código tiene 8 caracteres.',
+  'Recuperar senha':
+    'Recuperar contraseña',
 };

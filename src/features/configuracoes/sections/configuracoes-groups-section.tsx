@@ -87,18 +87,42 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
               description={c.user.email}
               onPress={c.goToProfile}
             />
+            {c.canEditProfile ? (
+              <SettingsRow
+                icon="account-edit-outline"
+                label={t('Editar perfil')}
+                description={t('Nome, celular e CEP.')}
+                onPress={c.goToEditProfile}
+              />
+            ) : (
+              <SettingsRow
+                icon="account-edit-outline"
+                label={t('Editar perfil')}
+                description={t('Depende de atualização da API.')}
+                unavailable
+              />
+            )}
             <SettingsRow
-              icon="account-edit-outline"
-              label={t('Editar perfil e foto')}
+              icon="camera-account"
+              label={t('Foto do perfil')}
               description={t('Depende de atualização da API.')}
               unavailable
             />
-            <SettingsRow
-              icon="lock-reset"
-              label={t('Alterar ou recuperar senha')}
-              description={t('Enquanto não está no app, peça pela Central de Ajuda.')}
-              unavailable
-            />
+            {c.canChangePassword ? (
+              <SettingsRow
+                icon="lock-reset"
+                label={t('Alterar senha')}
+                description={t('Os outros aparelhos são desconectados ao trocar.')}
+                onPress={c.goToChangePassword}
+              />
+            ) : (
+              <SettingsRow
+                icon="lock-reset"
+                label={t('Alterar ou recuperar senha')}
+                description={t('Enquanto não está no app, peça pela Central de Ajuda.')}
+                unavailable
+              />
+            )}
             <SettingsRow
               icon="logout"
               label={c.signingOut ? t('Saindo…') : t('Sair da conta')}
@@ -324,7 +348,23 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           label={t('Dicas contra golpes')}
           onPress={c.goToScamTips}
         />
-        <SettingsRow icon="devices" label={t('Sessões ativas')} unavailable />
+        {!c.canListSessions ? (
+          <SettingsRow icon="devices" label={t('Sessões ativas')} unavailable />
+        ) : c.loggedIn ? (
+          <SettingsRow
+            icon="devices"
+            label={t('Aparelhos conectados')}
+            description={t('Veja onde sua conta está aberta e desconecte.')}
+            onPress={c.goToSessions}
+          />
+        ) : (
+          <SettingsRow
+            icon="devices"
+            label={t('Aparelhos conectados')}
+            description={t('Entre na sua conta para ver.')}
+            onPress={c.goToLoginForSessions}
+          />
+        )}
       </SettingsGroup>
 
       <SettingsGroup

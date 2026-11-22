@@ -33,6 +33,7 @@ import { signOut } from '@/lib/sign-out';
 import { clearSession } from '@/lib/session';
 import { loadTrustedContacts } from '@/lib/trusted-contacts';
 import { useSessionUser } from '@/lib/use-session-user';
+import { useAccountCapabilitiesQuery } from '@/services/account/account.service';
 import { getAuthRepository } from '@/services/auth/auth.repository';
 import { unregisterPushDevice } from '@/services/notifications/notifications.service';
 import { deleteLocalPending, listLocalPending } from '@/services/people/people.local.store';
@@ -68,6 +69,7 @@ export function useConfiguracoesController() {
   const [localPendingCount, setLocalPendingCount] = useState<number | null>(null);
   const [trustedContactsCount, setTrustedContactsCount] = useState<number | null>(null);
   const [signingOut, setSigningOut] = useState(false);
+  const accountCapabilities = useAccountCapabilitiesQuery();
   const emergencyShortcut = useEmergencyShortcutSettings(sessionUser != null);
   const notifications = useNotificationSettings(sessionUser != null);
 
@@ -282,6 +284,15 @@ export function useConfiguracoesController() {
     companyLine: AppInfo.companyLine,
     goToLogin: () => router.push({ pathname: '/login', params: { returnTo: '/configuracoes' } } as Href),
     goToProfile: () => router.push('/perfil' as Href),
+    /** O que a API em uso oferece; o que faltar continua "Em breve". */
+    canEditProfile: accountCapabilities.data?.profile === true,
+    canChangePassword: accountCapabilities.data?.changePassword === true,
+    canListSessions: accountCapabilities.data?.sessions === true,
+    goToEditProfile: () => router.push('/editar-perfil' as Href),
+    goToChangePassword: () => router.push('/alterar-senha' as Href),
+    goToSessions: () => router.push('/sessoes' as Href),
+    goToLoginForSessions: () =>
+      router.push({ pathname: '/login', params: { returnTo: '/sessoes' } } as Href),
     goToHelp: () => router.push('/ajuda' as Href),
     goToScamTips: () => router.push({ pathname: '/ajuda', params: { categoria: 'golpes' } } as Href),
     goToSobre: () => router.push('/sobre' as Href),

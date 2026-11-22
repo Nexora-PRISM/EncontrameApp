@@ -14,6 +14,10 @@ const byCode: Record<string, string> = {
   photo_invalid: msg('Imagem inválida.'),
   photo_empty: msg('Imagem vazia.'),
   photo_too_large: msg('A imagem deve ter no máximo 2 MB.'),
+  incorrect: msg('Não confere.'),
+  same_as_current: msg('Precisa ser diferente do atual.'),
+  invalid_or_expired: msg('Errado ou vencido.'),
+  not_available: msg('Não disponível para esta conta.'),
 };
 
 /** Mensagens específicas, na chave `campo.codigo`. */
@@ -32,6 +36,14 @@ const byField: Record<string, string> = {
   'password.too_short': msg('A senha deve ter ao menos 8 caracteres.'),
   'password.invalid_format': msg('Use letras e números na senha.'),
   'confirm.invalid_format': msg('A confirmação não corresponde à senha.'),
+  'currentPassword.incorrect': msg('A senha atual não confere.'),
+  'currentPassword.not_available': msg('Sua conta entra com o Google e não tem senha para trocar.'),
+  'newPassword.too_short': msg('A senha deve ter ao menos 8 caracteres.'),
+  'newPassword.invalid_format': msg('Use letras e números na senha.'),
+  'newPassword.same_as_current': msg('A senha nova precisa ser diferente da atual.'),
+  'confirmPassword.invalid_format': msg('A confirmação não corresponde à senha nova.'),
+  'code.invalid_or_expired': msg('Código errado ou vencido. Confira o e-mail ou peça um novo.'),
+  'code.too_short': msg('O código tem 8 caracteres.'),
   'age.out_of_range': msg('Idade inválida.'),
   'age.required': msg('Informe a idade (pode ser aproximada).'),
   'lastSeen.invalid_format': msg('Use o formato dd/mm/aaaa, com uma data que já passou.'),

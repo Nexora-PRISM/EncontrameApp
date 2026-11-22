@@ -8,6 +8,9 @@ const PROTECTED_PREFIXES = [
   '/sofia-perfil',
   '/perfil',
   '/aviso-seguranca',
+  '/editar-perfil',
+  '/alterar-senha',
+  '/sessoes',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */

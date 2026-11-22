@@ -220,8 +220,6 @@ export const en: Readonly<Record<string, string>> = {
   'regras termos uso política privacidade responsabilidade':
     'rules terms use policy privacy responsibility',
   'Esqueci minha senha. E agora?': 'I forgot my password. What now?',
-  'A recuperação de senha pelo próprio app ainda não está disponível. Use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha para ninguém, nem para o suporte.':
-    'Password recovery in the app itself is not available yet. Use "Contact support", choose "Registration, sign-in or password" and write your account\'s email. Never send your password to anyone, not even to support.',
   'senha esqueci recuperar acesso': 'password forgot recover access',
   'Posso entrar com a digital ou o rosto?': 'Can I sign in with my fingerprint or face?',
   'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, o app pede a biometria assim que abre e, ao sair, só trava a conta; para sair de vez, desligue a biometria antes.':
@@ -595,7 +593,6 @@ export const en: Readonly<Record<string, string>> = {
   'Atualize o Encontra-me para usar este recurso.': 'Update Encontra-me to use this feature.',
   'Requer Android 7.1 ou mais recente.': 'Requires Android 7.1 or later.',
   'Minha conta': 'My account',
-  'Editar perfil e foto': 'Edit profile and photo',
   'Depende de atualização da API.': 'Depends on an API update.',
   'Alterar ou recuperar senha': 'Change or recover password',
   'Enquanto não está no app, peça pela Central de Ajuda.':
@@ -1593,4 +1590,164 @@ export const en: Readonly<Record<string, string>> = {
     'Enter the police report number: it\'s required for children and teenagers and for anyone who is not family.',
   'Proteção e contestação': 'Protection and disputes',
   'Proteção de identidade e perseguição': 'Identity protection and stalking',
+  'Na tela de entrada, toque em "Esqueci minha senha". Quando a recuperação pelo app estiver ligada, você digita o e-mail da conta, recebe um código de 8 caracteres e cria uma senha nova; depois disso, todos os aparelhos são desconectados. Se a tela disser que ainda não está disponível, use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha nem o código para ninguém, nem para o suporte.':
+    'On the sign-in screen, tap "I forgot my password". When recovery in the app is turned on, you type your account e-mail, get an 8-character code and create a new password; after that, every device is signed out. If the screen says it is not available yet, use "Contact support", choose "Registration, sign-in or password" and write your account e-mail. Never send your password or the code to anyone, not even to support.',
+  'Como mudo meu nome, celular, CEP ou senha?':
+    'How do I change my name, mobile number, postal code or password?',
+  'Em Configurações > Minha conta: "Editar perfil" muda nome, celular e CEP; "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.':
+    'In Settings > My account: "Edit profile" changes your name, mobile number and postal code; "Change password" asks for your current password and signs out your other devices. Your e-mail and CPF cannot be changed in the app — for the e-mail, contact the team. If these options show "Coming soon", the server version does not have the feature yet.',
+  'editar perfil nome celular telefone cep trocar senha':
+    'edit profile name mobile phone postal code change password',
+  'Como vejo em quais aparelhos minha conta está aberta?':
+    'How do I see which devices my account is signed in on?',
+  'Em Configurações > Segurança > "Aparelhos conectados". A lista mostra este aparelho e os outros, com a última atividade aproximada. Você pode desconectar um ou todos os outros. Por privacidade, o app não guarda o modelo do aparelho nem o lugar de cada acesso. Se não reconhecer um acesso, desconecte e troque sua senha.':
+    'In Settings > Security > "Connected devices". The list shows this device and the others, with their approximate last activity. You can sign out one or all of the others. For privacy, the app does not store the device model or where each sign-in happened. If you do not recognize a sign-in, sign it out and change your password.',
+  'sessões aparelhos conectados desconectar acesso':
+    'sessions connected devices sign out access',
+  'Senha alterada':
+    'Password changed',
+  'Os outros aparelhos conectados à sua conta foram desconectados. Neste aparelho você continua conectado.':
+    'The other devices signed in to your account were signed out. You stay signed in on this device.',
+  'Alterar a senha pelo app ainda não está disponível. Tente de novo mais tarde.':
+    'Changing your password in the app is not available yet. Try again later.',
+  'Sua conta entra com o Google e não tem senha. Continue entrando com o botão do Google.':
+    'Your account signs in with Google and has no password. Keep signing in with the Google button.',
+  'Criar uma senha pelo e-mail':
+    'Create a password by e-mail',
+  'Senha atual':
+    'Current password',
+  'Senha nova':
+    'New password',
+  'Repita a senha nova':
+    'Repeat the new password',
+  'Pelo menos 8 caracteres, com letras e números.':
+    'At least 8 characters, with letters and numbers.',
+  'Ao trocar a senha, os outros aparelhos conectados à sua conta são desconectados.':
+    'When you change your password, the other devices signed in to your account are signed out.',
+  'Alterar senha':
+    'Change password',
+  'Editar perfil':
+    'Edit profile',
+  'Nome, celular e CEP.':
+    'Name, mobile number and postal code.',
+  'Foto do perfil':
+    'Profile photo',
+  'Os outros aparelhos são desconectados ao trocar.':
+    'Your other devices are signed out when you change it.',
+  'Aparelhos conectados':
+    'Connected devices',
+  'Veja onde sua conta está aberta e desconecte.':
+    'See where your account is signed in and sign it out.',
+  'Entre na sua conta para ver.':
+    'Sign in to your account to see it.',
+  'Dados salvos':
+    'Details saved',
+  'Seu perfil foi atualizado.':
+    'Your profile was updated.',
+  'Editar o perfil ainda não está disponível. Tente de novo mais tarde.':
+    'Editing your profile is not available yet. Try again later.',
+  'Não foi possível carregar seus dados.':
+    'Could not load your details.',
+  'Tentar de novo':
+    'Try again',
+  'Celular':
+    'Mobile number',
+  'Sua conta entra com o Google. Para trocar o e-mail, fale com a equipe pela Central de Ajuda.':
+    'Your account signs in with Google. To change the e-mail, contact the team through the Help Center.',
+  'Para trocar o e-mail, fale com a equipe pela Central de Ajuda. Seu CPF não aparece no app e não muda.':
+    'To change the e-mail, contact the team through the Help Center. Your CPF is not shown in the app and does not change.',
+  'Salvar':
+    'Save',
+  'Esqueci minha senha':
+    'I forgot my password',
+  'Recuperar a senha pelo app ainda não está disponível. A Central de Ajuda explica como pedir à equipe.':
+    'Recovering your password in the app is not available yet. The Help Center explains how to ask the team.',
+  'Abrir a Central de Ajuda':
+    'Open the Help Center',
+  'Senha nova criada':
+    'New password created',
+  'Por segurança, todos os aparelhos foram desconectados. Entre de novo com a senha nova.':
+    'For safety, every device was signed out. Sign in again with the new password.',
+  'Digite o e-mail da sua conta. Se ele estiver cadastrado, mandamos um código para criar uma senha nova.':
+    'Type your account e-mail. If it is registered, we send a code to create a new password.',
+  'Mandar código':
+    'Send code',
+  'Se existir uma conta com {email}, o código chega em alguns minutos. Confira também a caixa de spam. Ele vale por 15 minutos.':
+    'If there is an account with {email}, the code arrives in a few minutes. Check your spam folder too. It is valid for 15 minutes.',
+  'Pedimos outro código. Use o mais recente.':
+    'We asked for another code. Use the most recent one.',
+  'Código do e-mail':
+    'Code from the e-mail',
+  'Criar senha nova':
+    'Create new password',
+  'Enviando…':
+    'Sending…',
+  'Mandar outro código':
+    'Send another code',
+  'Trocar o e-mail':
+    'Change the e-mail',
+  'A lista de aparelhos conectados ainda não está disponível. Tente de novo mais tarde.':
+    'The list of connected devices is not available yet. Try again later.',
+  'Não foi possível carregar a lista.':
+    'Could not load the list.',
+  'Cada item é um aparelho ou navegador em que sua conta está conectada. Por privacidade, o Encontra-me não guarda o modelo do aparelho nem o lugar de cada acesso.':
+    'Each item is a device or browser where your account is signed in. For privacy, Encontra-me does not store the device model or where each sign-in happened.',
+  'Desconectar':
+    'Sign out',
+  'Desconectar todos os outros':
+    'Sign out all the others',
+  'Sua conta só está conectada neste aparelho.':
+    'Your account is only signed in on this device.',
+  'Não reconhece algum acesso? Desconecte e troque sua senha.':
+    'Don\'t recognize a sign-in? Sign it out and change your password.',
+  'Este aparelho':
+    'This device',
+  'Outro aparelho ou navegador':
+    'Another device or browser',
+  'Você está usando agora.':
+    'You are using it now.',
+  'Última atividade por volta de {when}':
+    'Last activity around {when}',
+  'Desconectar este acesso?':
+    'Sign out this access?',
+  'Quem estiver usando a conta nesse aparelho vai precisar entrar de novo.':
+    'Whoever is using the account on that device will need to sign in again.',
+  'Acesso desconectado':
+    'Access signed out',
+  'Se você não reconhece esse acesso, troque também a sua senha.':
+    'If you do not recognize this access, change your password too.',
+  'Não foi possível desconectar':
+    'Could not sign out',
+  'Desconectar os outros aparelhos?':
+    'Sign out the other devices?',
+  'Só este aparelho continua conectado.':
+    'Only this device stays signed in.',
+  '1 aparelho foi desconectado.':
+    '1 device was signed out.',
+  '{count} aparelhos foram desconectados.':
+    '{count} devices were signed out.',
+  'Muitas tentativas. Espere alguns minutos e tente de novo.':
+    'Too many attempts. Wait a few minutes and try again.',
+  'Não confere.':
+    'Does not match.',
+  'Precisa ser diferente do atual.':
+    'Must be different from the current one.',
+  'Errado ou vencido.':
+    'Wrong or expired.',
+  'Não disponível para esta conta.':
+    'Not available for this account.',
+  'A senha atual não confere.':
+    'The current password does not match.',
+  'Sua conta entra com o Google e não tem senha para trocar.':
+    'Your account signs in with Google and has no password to change.',
+  'A senha nova precisa ser diferente da atual.':
+    'The new password must be different from the current one.',
+  'A confirmação não corresponde à senha nova.':
+    'The confirmation does not match the new password.',
+  'Código errado ou vencido. Confira o e-mail ou peça um novo.':
+    'Wrong or expired code. Check the e-mail or ask for a new one.',
+  'O código tem 8 caracteres.':
+    'The code has 8 characters.',
+  'Recuperar senha':
+    'Recover password',
 };
