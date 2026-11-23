@@ -145,7 +145,7 @@ function makeStyles(brand: BrandColors) {
       height: '100%',
     },
     avatarBusy: {
-      ...StyleSheet.absoluteFillObject,
+      ...StyleSheet.absoluteFill,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: brand.overlay,

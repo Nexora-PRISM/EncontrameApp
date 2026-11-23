@@ -58,13 +58,12 @@ export function mapTrip(data: ApiTrip): Trip {
     lastLatitude: toNumber(data.lastLatitude),
     lastLongitude: toNumber(data.lastLongitude),
     lastPointAt: data.lastPointAt ?? null,
-    route: (data.route ?? [])
-      .map((point) => ({
-        latitude: toNumber(point.latitude),
-        longitude: toNumber(point.longitude),
-        recordedAt: point.recordedAt ?? undefined,
-      }))
-      .filter((point): point is TripPoint => point.latitude != null && point.longitude != null),
+    route: (data.route ?? []).flatMap((point): TripPoint[] => {
+      const latitude = toNumber(point.latitude);
+      const longitude = toNumber(point.longitude);
+      if (latitude == null || longitude == null) return [];
+      return [{ latitude, longitude, recordedAt: point.recordedAt ?? undefined }];
+    }),
     mine: Boolean(data.mine),
   };
 }
