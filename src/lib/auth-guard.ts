@@ -11,6 +11,8 @@ const PROTECTED_PREFIXES = [
   '/editar-perfil',
   '/alterar-senha',
   '/sessoes',
+  '/circulo',
+  '/trajeto',
 ] as const;
 
 /** Destinos internos permitidos após o login (protegidas + início). */

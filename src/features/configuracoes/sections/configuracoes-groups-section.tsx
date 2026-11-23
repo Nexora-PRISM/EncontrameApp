@@ -102,12 +102,21 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
                 unavailable
               />
             )}
-            <SettingsRow
-              icon="camera-account"
-              label={t('Foto do perfil')}
-              description={t('Depende de atualização da API.')}
-              unavailable
-            />
+            {c.canEditPhoto ? (
+              <SettingsRow
+                icon="camera-account"
+                label={t('Foto do perfil')}
+                description={t('Adicionar, trocar ou remover.')}
+                onPress={c.goToEditProfile}
+              />
+            ) : (
+              <SettingsRow
+                icon="camera-account"
+                label={t('Foto do perfil')}
+                description={t('Depende de atualização da API.')}
+                unavailable
+              />
+            )}
             {c.canChangePassword ? (
               <SettingsRow
                 icon="lock-reset"
@@ -269,7 +278,18 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           value={c.notificationPrefs?.followedUpdates ?? false}
           onChange={c.toggleFollowedUpdates}
         />
-        <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
+        {c.canUseCircle ? (
+          <RemoteNotificationRow
+            controller={c}
+            icon="map-marker-path"
+            label={t('Trajetos do círculo familiar')}
+            description={t('Quando alguém do seu círculo começa a compartilhar um trajeto, chega ou passa do horário.')}
+            value={c.notificationPrefs?.circleTrips ?? false}
+            onChange={c.toggleCircleTrips}
+          />
+        ) : (
+          <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
+        )}
       </SettingsGroup>
 
       <SettingsGroup

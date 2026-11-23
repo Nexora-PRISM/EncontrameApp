@@ -12,7 +12,11 @@ const ALLOWED_WEB_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg']);
  * Escolha de foto (câmera/galeria no celular, arquivo no web), com limite de tamanho.
  * Mesmas regras do cadastro de pessoa: PNG/JPG, até 2 MB, enviada em base64.
  */
-export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
+export function usePhotoPicker(
+  maxBytes = DEFAULT_MAX_BYTES,
+  /** Chamado assim que uma foto válida é escolhida (ex.: enviar a foto do perfil na hora). */
+  onPicked?: (base64: string, uri: string) => void,
+) {
   const t = useT();
   const [photoUri, setPhotoUri] = useState('');
   const [photoBase64, setPhotoBase64] = useState('');
@@ -31,6 +35,7 @@ export function usePhotoPicker(maxBytes = DEFAULT_MAX_BYTES) {
     }
     setPhotoUri(uri);
     setPhotoBase64(normalized);
+    onPicked?.(normalized, uri);
   };
 
   const pickFromLibrary = async () => {

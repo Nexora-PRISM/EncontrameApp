@@ -18,6 +18,8 @@ const byCode: Record<string, string> = {
   same_as_current: msg('Precisa ser diferente do atual.'),
   invalid_or_expired: msg('Errado ou vencido.'),
   not_available: msg('Não disponível para esta conta.'),
+  too_long: msg('Muito longo.'),
+  limit_reached: msg('Limite atingido.'),
 };
 
 /** Mensagens específicas, na chave `campo.codigo`. */
@@ -44,6 +46,15 @@ const byField: Record<string, string> = {
   'confirmPassword.invalid_format': msg('A confirmação não corresponde à senha nova.'),
   'code.invalid_or_expired': msg('Código errado ou vencido. Confira o e-mail ou peça um novo.'),
   'code.too_short': msg('O código tem 8 caracteres.'),
+  'code.already_registered': msg('Vocês já estão no mesmo círculo.'),
+  'code.not_available': msg('Esse é o seu próprio convite. Mande para a outra pessoa digitar.'),
+  'circle.limit_reached': msg('O círculo chegou ao limite de 10 pessoas.'),
+  'circle.not_available': msg('Chame alguém para o seu círculo familiar antes de compartilhar um trajeto.'),
+  'destination.too_long': msg('Use até 120 caracteres.'),
+  'destination.out_of_range': msg('Use até 120 caracteres.'),
+  'durationMinutes.out_of_range': msg('Escolha entre 5 minutos e 12 horas.'),
+  'photo.photo_too_large': msg('A foto deve ter no máximo 2 MB.'),
+  'photo.photo_invalid': msg('Use uma foto JPEG ou PNG.'),
   'age.out_of_range': msg('Idade inválida.'),
   'age.required': msg('Informe a idade (pode ser aproximada).'),
   'lastSeen.invalid_format': msg('Use o formato dd/mm/aaaa, com uma data que já passou.'),

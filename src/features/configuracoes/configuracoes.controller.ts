@@ -286,8 +286,10 @@ export function useConfiguracoesController() {
     goToProfile: () => router.push('/perfil' as Href),
     /** O que a API em uso oferece; o que faltar continua "Em breve". */
     canEditProfile: accountCapabilities.data?.profile === true,
+    canEditPhoto: accountCapabilities.data?.profilePhoto === true,
     canChangePassword: accountCapabilities.data?.changePassword === true,
     canListSessions: accountCapabilities.data?.sessions === true,
+    canUseCircle: accountCapabilities.data?.familyCircle === true && accountCapabilities.data?.trips === true,
     goToEditProfile: () => router.push('/editar-perfil' as Href),
     goToChangePassword: () => router.push('/alterar-senha' as Href),
     goToSessions: () => router.push('/sessoes' as Href),

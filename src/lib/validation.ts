@@ -17,7 +17,9 @@ export type ErrorCode =
   | 'incorrect'
   | 'same_as_current'
   | 'invalid_or_expired'
-  | 'not_available';
+  | 'not_available'
+  | 'too_long'
+  | 'limit_reached';
 
 /** Código de erro por campo do formulário. */
 export type FieldErrors = Record<string, ErrorCode>;

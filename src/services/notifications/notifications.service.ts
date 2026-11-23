@@ -54,6 +54,7 @@ export async function syncPushRegistration(): Promise<PushSyncResult> {
       nearbyCases: prefs.nearbyCases,
       regionNewCases: prefs.regionNewCases,
       followedUpdates: prefs.followedUpdates,
+      circleTrips: prefs.circleTrips,
     },
   });
   await setLocalItem(REGISTERED_TOKEN_KEY, token);

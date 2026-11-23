@@ -10,6 +10,8 @@ import { signOut } from '@/lib/sign-out';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSessionUser } from '@/lib/use-session-user';
 import { useUserLocation } from '@/lib/use-user-location';
+import { photoDataUri } from '@/lib/account-rules';
+import { useAccountCapabilitiesQuery, useProfileQuery } from '@/services/account/account.service';
 import { useNearbyPeopleQuery } from '@/services/people/people.service';
 import type { Person } from '@/services/people/people.types';
 
@@ -30,6 +32,9 @@ export function useHomeShellController() {
   const router = useRouter();
   const pathname = usePathname();
   const sessionUser = useSessionUser();
+  const accountCapabilities = useAccountCapabilitiesQuery();
+  // Foto do perfil no avatar (só quando a API tem o recurso e há conta conectada).
+  const profileQuery = useProfileQuery(sessionUser != null && accountCapabilities.data?.profilePhoto === true);
   const { appearance, setAppearance } = useBrandTheme();
   const { preference: languagePreference, setPreference: setLanguagePreference } = useI18n();
   const {
@@ -98,6 +103,7 @@ export function useHomeShellController() {
     loggedIn,
     /** Iniciais do avatar no canto do Início. */
     userInitials: initialsOf(sessionUser?.name),
+    userPhotoUri: sessionUser ? photoDataUri(profileQuery.data?.photo) : null,
     /** Tema do app (Automático / Claro / Escuro) — atalho no menu; também em Configurações. */
     appearance,
     setAppearance,

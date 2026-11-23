@@ -33,6 +33,7 @@ function currentProfile(): UserProfile {
       cep: '30130010',
       hasPassword: true,
       googleLinked: false,
+      photo: null,
     };
   }
   return profile;
@@ -62,7 +63,15 @@ function currentSessions(): AccountSession[] {
 export const accountMockRepository: AccountRepository = {
   async capabilities() {
     await delay(100);
-    return { profile: true, changePassword: true, sessions: true, passwordReset: true };
+    return {
+      profile: true,
+      changePassword: true,
+      sessions: true,
+      passwordReset: true,
+      profilePhoto: true,
+      familyCircle: true,
+      trips: true,
+    };
   },
 
   async getProfile() {
@@ -78,6 +87,18 @@ export const accountMockRepository: AccountRepository = {
       cellPhone: onlyDigits(payload.cellPhone),
       cep: onlyDigits(payload.cep),
     };
+    return { ...profile };
+  },
+
+  async setPhoto(base64) {
+    await delay(300);
+    profile = { ...currentProfile(), photo: base64 };
+    return { ...profile };
+  },
+
+  async removePhoto() {
+    await delay(200);
+    profile = { ...currentProfile(), photo: null };
     return { ...profile };
   },
 

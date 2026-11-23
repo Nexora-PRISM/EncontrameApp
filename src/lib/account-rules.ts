@@ -70,3 +70,12 @@ export function sortSessions<T extends SessionLike>(sessions: readonly T[]): T[]
 export function otherSessionsCount(sessions: readonly SessionLike[]): number {
   return sessions.filter((session) => !session.current).length;
 }
+
+/** Foto em base64 da API → endereço que o <Image> mostra (JPEG começa com "/9j/", PNG com "iVBOR"). */
+export function photoDataUri(base64: string | null | undefined): string | null {
+  const value = (base64 ?? '').trim();
+  if (!value) return null;
+  if (value.startsWith('data:')) return value;
+  const mime = value.startsWith('iVBOR') ? 'image/png' : 'image/jpeg';
+  return `data:${mime};base64,${value}`;
+}

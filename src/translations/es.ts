@@ -1196,10 +1196,6 @@ export const es: Readonly<Record<string, string>> = {
   'O servidor não confirmou o recebimento do alerta.':
     'El servidor no confirmó la recepción de la alerta.',
   // features/ajuda/help-content.ts — rotas e círculo familiar
-  'O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
-    'El monitoreo ampliado de trayectos es una función futura y todavía no está disponible. Cuando se lance, solo funcionará con tu permiso y terminará en cuanto llegues a tu destino. Enviar tu ubicación actual a un contacto ya funciona y es gratis.',
-  'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
-    'Es una función futura para compartir tu seguridad con personas de confianza, siempre con invitación y aceptación de cada una. Todavía no está disponible y nunca permitirá seguir a alguien sin que esa persona lo sepa y esté de acuerdo.',
   // Rodada 3 — Início novo, passo a passo e filtros por idade
   'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação. No celular, o botão Filtros fica acima dos atalhos de idade. Na lista, os botões ao lado do total trocam entre os cartões horizontais e fotos quadradas só com o nome embaixo. O número abaixo dos filtros é o total dessa busca.':
     'En la pantalla Inicio, permite el acceso a la ubicación. Las fotos de "Alertas recientes" y el mapa muestran casos cercanos. Arrastra el mapa hacia abajo para abrir la lista y desplázate para ver más. Los botones junto a "Alertas recientes" cambian entre foto, con el nombre debajo, y tarjeta. Los botones en la parte superior del mapa filtran por edad: el borde usa el color del tema y el botón elegido se rellena. El botón de satélite cambia la imagen del mapa. Para buscar por nombre o ver la lista completa, toca la lupa en la parte superior de la pantalla o "Ver todos": allí puedes filtrar por ciudad, estado, barrio, edad y situación. En el celular, el botón Filtros queda arriba de los atajos de edad. En la lista, los botones junto al total cambian entre las tarjetas horizontales y fotos cuadradas solo con el nombre debajo. El número bajo los filtros es el total de esa búsqueda.',
@@ -1613,8 +1609,6 @@ export const es: Readonly<Record<string, string>> = {
     'En la pantalla de entrada, toca "Olvidé mi contraseña". Cuando la recuperación por la app esté activa, escribes el correo de la cuenta, recibes un código de 8 caracteres y creas una contraseña nueva; después, todos los dispositivos se desconectan. Si la pantalla dice que aún no está disponible, usa "Hablar con soporte", elige "Registro, inicio de sesión o contraseña" y escribe el correo de tu cuenta. Nunca envíes tu contraseña ni el código a nadie, ni siquiera a soporte.',
   'Como mudo meu nome, celular, CEP ou senha?':
     '¿Cómo cambio mi nombre, celular, código postal o contraseña?',
-  'Em Configurações > Minha conta: "Editar perfil" muda nome, celular e CEP; "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.':
-    'En Configuración > Mi cuenta: "Editar perfil" cambia nombre, celular y código postal; "Cambiar contraseña" pide la contraseña actual y desconecta los otros dispositivos. El correo y el CPF no se cambian en la app; para el correo, habla con el equipo. Si estas opciones aparecen como "Próximamente", la versión del servidor aún no tiene la función.',
   'editar perfil nome celular telefone cep trocar senha':
     'editar perfil nombre celular teléfono código postal cambiar contraseña',
   'Como vejo em quais aparelhos minha conta está aberta?':
@@ -1769,4 +1763,190 @@ export const es: Readonly<Record<string, string>> = {
     'El código tiene 8 caracteres.',
   'Recuperar senha':
     'Recuperar contraseña',
+  'Sim, com o círculo familiar. Em Perfil > "Compartilhar um trajeto", diga para onde vai (opcional) e em quanto tempo chega. Seu círculo acompanha o caminho enquanto o trajeto está ligado; toque em "Cheguei" ou "Parar de compartilhar" para encerrar — o caminho é apagado. A posição só é enviada com a tela do trajeto aberta. Se passar do horário previsto, o círculo recebe um aviso (para quem ligou "Trajetos do círculo familiar" nas notificações). O app não avisa a polícia. Se a opção aparecer como "Em breve", a versão do servidor ainda não tem o recurso.':
+    'Sí, con el círculo familiar. En Perfil > "Compartir un trayecto", di adónde vas (opcional) y en cuánto tiempo llegas. Tu círculo sigue el camino mientras el trayecto está activo; toca "Llegué" o "Dejar de compartir" para terminar — el camino se borra. La posición solo se envía con la pantalla del trayecto abierta. Si pasas de la hora prevista, el círculo recibe un aviso (quien activó "Trayectos del círculo familiar" en las notificaciones). La app no avisa a la policía. Si la opción aparece como "Próximamente", la versión del servidor aún no tiene la función.',
+  'São até 10 pessoas de confiança que podem acompanhar os trajetos que você decidir compartilhar — e você os delas. Para entrar, uma pessoa gera um código de convite (vale 24 horas e uma vez só) e a outra digita no app dela. Qualquer um pode sair quando quiser. Ninguém vê sua localização o tempo todo: só durante um trajeto que você liga. Fica em Perfil > "Círculo familiar".':
+    'Son hasta 10 personas de confianza que pueden seguir los trayectos que decidas compartir — y tú los de ellas. Para entrar, una persona genera un código de invitación (vale 24 horas y una sola vez) y la otra lo escribe en su app. Cualquiera puede salir cuando quiera. Nadie ve tu ubicación todo el tiempo: solo durante un trayecto que actives. Está en Perfil > "Círculo familiar".',
+  'Em Configurações > Minha conta: "Editar perfil" muda nome, celular, CEP e a foto (só você vê a foto); "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.':
+    'En Configuración > Mi cuenta: "Editar perfil" cambia nombre, celular, código postal y la foto (solo tú ves la foto); "Cambiar contraseña" pide la contraseña actual y desconecta los otros dispositivos. El correo y el CPF no se cambian en la app; para el correo, habla con el equipo. Si estas opciones aparecen como "Próximamente", la versión del servidor aún no tiene la función.',
+  'Entre no meu círculo familiar do Encontra-me com o código {code}. Ele vale até {until} e serve uma vez só. No app: Perfil > Círculo familiar > Entrar com um código.':
+    'Entra en mi círculo familiar de Encontra-me con el código {code}. Vale hasta {until} y sirve una sola vez. En la app: Perfil > Círculo familiar > Entrar con un código.',
+  'O círculo chegou ao limite de 10 pessoas.':
+    'El círculo llegó al límite de 10 personas.',
+  'Digite o código que você recebeu.':
+    'Escribe el código que recibiste.',
+  'Você e {name} agora estão no mesmo círculo familiar.':
+    'Tú y {name} ahora están en el mismo círculo familiar.',
+  'Código errado, vencido ou já usado. Peça um novo.':
+    'Código incorrecto, vencido o ya usado. Pide uno nuevo.',
+  'Vocês já estão no mesmo círculo.':
+    'Ya están en el mismo círculo.',
+  'Esse é o seu próprio convite. Mande para a outra pessoa digitar.':
+    'Esta es tu propia invitación. Envíala a la otra persona para que la escriba.',
+  'Um dos círculos chegou ao limite de 10 pessoas.':
+    'Uno de los círculos llegó al límite de 10 personas.',
+  'Tirar {name} do círculo?':
+    '¿Quitar a {name} del círculo?',
+  'Vocês deixam de ver os trajetos um do outro. Para voltar, é preciso um convite novo.':
+    'Dejan de ver los trayectos del otro. Para volver, hace falta una invitación nueva.',
+  'Tirar do círculo':
+    'Quitar del círculo',
+  'Não foi possível tirar do círculo':
+    'No se pudo quitar del círculo',
+  'No círculo desde {date}':
+    'En el círculo desde {date}',
+  'O círculo familiar ainda não está disponível. Tente de novo mais tarde.':
+    'El círculo familiar aún no está disponible. Inténtalo más tarde.',
+  'Não foi possível carregar o seu círculo.':
+    'No se pudo cargar tu círculo.',
+  'Pessoas de confiança que podem acompanhar os trajetos que você decidir compartilhar — e você os delas. Ninguém vê sua localização o tempo todo: só durante um trajeto que você liga, e os pontos são apagados quando ele termina.':
+    'Personas de confianza que pueden seguir los trayectos que decidas compartir — y tú los de ellas. Nadie ve tu ubicación todo el tiempo: solo durante un trayecto que actives, y los puntos se borran cuando termina.',
+  'No seu círculo ({count} de {max})':
+    'En tu círculo ({count} de {max})',
+  'Ninguém ainda. Convide alguém com um código.':
+    'Nadie todavía. Invita a alguien con un código.',
+  'Compartilhar um trajeto':
+    'Compartir un trayecto',
+  'Convidar alguém':
+    'Invitar a alguien',
+  'Mande este código para a pessoa digitar no app dela:':
+    'Envía este código para que la persona lo escriba en su app:',
+  'Vale até {until} e serve uma vez só.':
+    'Vale hasta {until} y sirve una sola vez.',
+  'Compartilhar o código':
+    'Compartir el código',
+  'Gerar outro código':
+    'Generar otro código',
+  'Gerar código de convite':
+    'Generar código de invitación',
+  'Entrar com um código':
+    'Entrar con un código',
+  'Código que você recebeu':
+    'Código que recibiste',
+  'Entrar no círculo':
+    'Entrar en el círculo',
+  'Adicionar, trocar ou remover.':
+    'Agregar, cambiar o quitar.',
+  'Trajetos do círculo familiar':
+    'Trayectos del círculo familiar',
+  'Quando alguém do seu círculo começa a compartilhar um trajeto, chega ou passa do horário.':
+    'Cuando alguien de tu círculo empieza a compartir un trayecto, llega o pasa de la hora.',
+  'A foto não foi aceita. Use JPEG ou PNG de até 2 MB.':
+    'La foto no fue aceptada. Usa JPEG o PNG de hasta 2 MB.',
+  'Remover a foto?':
+    '¿Quitar la foto?',
+  'Sua conta fica sem foto.':
+    'Tu cuenta queda sin foto.',
+  'Trocar foto':
+    'Cambiar foto',
+  'Só você vê esta foto. JPEG ou PNG, até 2 MB.':
+    'Solo tú ves esta foto. JPEG o PNG, hasta 2 MB.',
+  'Pessoas de confiança que acompanham seus trajetos.':
+    'Personas de confianza que siguen tus trayectos.',
+  'Seu círculo acompanha até você chegar.':
+    'Tu círculo te sigue hasta que llegues.',
+  'Compartilhar trajetos ainda não está disponível. Tente de novo mais tarde.':
+    'Compartir trayectos aún no está disponible. Inténtalo más tarde.',
+  'Este trajeto não está mais disponível: ele terminou ou vocês não estão mais no mesmo círculo.':
+    'Este trayecto ya no está disponible: terminó o ya no están en el mismo círculo.',
+  'Não foi possível carregar.':
+    'No se pudo cargar.',
+  '{name} → {destination}':
+    '{name} → {destination}',
+  'Passou do horário previsto. Tente falar com a pessoa. Se achar que ela corre perigo, ligue 190 — o app não avisa a polícia.':
+    'Pasó la hora prevista. Intenta hablar con la persona. Si crees que corre peligro, llama al 190 — la app no avisa a la policía.',
+  'A tela atualiza sozinha a cada 30 segundos.':
+    'La pantalla se actualiza sola cada 30 segundos.',
+  '{name} avisou que chegou às {time}.':
+    '{name} avisó que llegó a las {time}.',
+  'Este trajeto terminou. O caminho foi apagado.':
+    'Este trayecto terminó. El camino se borró.',
+  'Última posição recebida às {time}':
+    'Última posición recibida a las {time}',
+  'Ainda sem posição: o círculo vê só o horário previsto.':
+    'Aún sin posición: el círculo solo ve la hora prevista.',
+  'Compartilhando com o seu círculo':
+    'Compartiendo con tu círculo',
+  'Indo para {destination}':
+    'Yendo a {destination}',
+  'Sem permissão de localização: o círculo vê só o horário previsto. Libere a localização nos ajustes do aparelho.':
+    'Sin permiso de ubicación: el círculo solo ve la hora prevista. Permite la ubicación en los ajustes del dispositivo.',
+  'O GPS não respondeu. Tocar para tentar de novo.':
+    'El GPS no respondió. Toca para intentar de nuevo.',
+  'Sem conexão: os pontos vão quando a internet voltar.':
+    'Sin conexión: los puntos se envían cuando vuelva internet.',
+  'Mantenha esta tela aberta: com o app fechado ou em segundo plano a posição para de ser enviada. Se passar do horário previsto, o círculo recebe um aviso.':
+    'Mantén esta pantalla abierta: con la app cerrada o en segundo plano, la posición deja de enviarse. Si pasas de la hora prevista, el círculo recibe un aviso.',
+  'Cheguei':
+    'Llegué',
+  'Parar de compartilhar':
+    'Dejar de compartir',
+  'Para compartilhar um trajeto, primeiro chame alguém de confiança para o seu círculo familiar.':
+    'Para compartir un trayecto, primero invita a alguien de confianza a tu círculo familiar.',
+  'Abrir o círculo familiar':
+    'Abrir el círculo familiar',
+  'Seu círculo acompanha o caminho até você chegar. Você liga e desliga; quando termina, o caminho é apagado.':
+    'Tu círculo sigue el camino hasta que llegues. Tú lo activas y desactivas; cuando termina, el camino se borra.',
+  'Para onde você vai? (opcional)':
+    '¿Adónde vas? (opcional)',
+  'Ex.: casa, escola, trabalho':
+    'Ej.: casa, escuela, trabajo',
+  'Em quanto tempo você chega?':
+    '¿En cuánto tiempo llegas?',
+  'Começar a compartilhar':
+    'Empezar a compartir',
+  'Trajetos do seu círculo':
+    'Trayectos de tu círculo',
+  'Ninguém do seu círculo está compartilhando um trajeto agora.':
+    'Nadie de tu círculo está compartiendo un trayecto ahora.',
+  'Passou do horário previsto ({time})':
+    'Pasó la hora prevista ({time})',
+  'Previsto para chegar em {minutes} min':
+    'Llegada prevista en {minutes} min',
+  'Previsto para chegar às {time}':
+    'Llegada prevista a las {time}',
+  'Você':
+    'Tú',
+  'Confira o destino (até {max} caracteres).':
+    'Revisa el destino (hasta {max} caracteres).',
+  'Chame alguém para o seu círculo familiar antes de compartilhar um trajeto.':
+    'Invita a alguien a tu círculo familiar antes de compartir un trayecto.',
+  'Não foi possível começar. Tente de novo.':
+    'No se pudo empezar. Inténtalo de nuevo.',
+  'Parar de compartilhar?':
+    '¿Dejar de compartir?',
+  'O círculo deixa de ver este trajeto e o caminho é apagado.':
+    'El círculo deja de ver este trayecto y el camino se borra.',
+  'Parar':
+    'Parar',
+  'Que bom que chegou':
+    'Qué bueno que llegaste',
+  'Trajeto encerrado':
+    'Trayecto terminado',
+  'Avisamos o seu círculo. O caminho foi apagado.':
+    'Avisamos a tu círculo. El camino se borró.',
+  'O círculo não vê mais este trajeto. O caminho foi apagado.':
+    'El círculo ya no ve este trayecto. El camino se borró.',
+  'Não foi possível encerrar':
+    'No se pudo terminar',
+  '{minutes} min':
+    '{minutes} min',
+  '{hours} h':
+    '{hours} h',
+  'Posição enviada às {time}':
+    'Posición enviada a las {time}',
+  'Muito longo.':
+    'Demasiado largo.',
+  'Limite atingido.':
+    'Límite alcanzado.',
+  'Use até 120 caracteres.':
+    'Usa hasta 120 caracteres.',
+  'Escolha entre 5 minutos e 12 horas.':
+    'Elige entre 5 minutos y 12 horas.',
+  'Use uma foto JPEG ou PNG.':
+    'Usa una foto JPEG o PNG.',
+  'Trajeto compartilhado':
+    'Trayecto compartido',
+  'Trajeto do círculo':
+    'Trayecto del círculo',
 };

@@ -13,6 +13,7 @@ const protecao = require('@/features/protecao/protecao-request');
 const possible = require('@/features/possivel-desaparecimento/possible-missing');
 const sightings = require('@/lib/sighting-privacy');
 const account = require('@/lib/account-rules');
+const trip = require('@/lib/trip-rules');
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = Date.UTC(2026, 10, 22, 15, 0, 0);
@@ -353,5 +354,48 @@ describe('conta — perfil, senha nova, código e aparelhos', () => {
     ]);
     assert.deepEqual(list.map((item) => item.id), ['este', 'novo', 'velho']);
     assert.equal(account.otherSessionsCount(list), 2);
+  });
+});
+
+describe('trajeto compartilhado e foto do perfil', () => {
+  const at = (minutes) => NOW + minutes * 60 * 1000;
+  const base = { latitude: PRACA_SETE.latitude, longitude: PRACA_SETE.longitude, at: at(0) };
+
+  it('manda o primeiro ponto, depois só se andou 40 m (com 15 s) ou passou 2 min', () => {
+    assert.equal(trip.shouldSendPoint(null, base), true);
+    const near = { ...north(PRACA_SETE, 20), at: at(1) };
+    assert.equal(trip.shouldSendPoint(base, near), false, 'andou pouco');
+    const moved = { ...north(PRACA_SETE, 60), at: base.at + 20 * 1000 };
+    assert.equal(trip.shouldSendPoint(base, moved), true, 'andou 60 m');
+    const tooSoon = { ...north(PRACA_SETE, 60), at: base.at + 5 * 1000 };
+    assert.equal(trip.shouldSendPoint(base, tooSoon), false, 'menos de 15 s');
+    const still = { ...base, at: at(2) };
+    assert.equal(trip.shouldSendPoint(base, still), true, 'parado há 2 min');
+  });
+
+  it('duração de 5 min a 12 h e destino até 120 caracteres', () => {
+    assert.equal(trip.tripDurationError(30), undefined);
+    assert.equal(trip.tripDurationError(4), 'out_of_range');
+    assert.equal(trip.tripDurationError(721), 'out_of_range');
+    assert.equal(trip.tripDestinationError('Casa'), undefined);
+    assert.equal(trip.tripDestinationError('x'.repeat(121)), 'too_long');
+  });
+
+  it('minutos até chegar: arredonda para cima e fica negativo quando passa', () => {
+    assert.equal(trip.minutesUntil(new Date(at(10) - 30 * 1000).toISOString(), NOW), 10);
+    assert.equal(trip.minutesUntil(new Date(at(-3)).toISOString(), NOW), -3);
+    assert.equal(trip.minutesUntil('sem data', NOW), null);
+  });
+
+  it('pontos guardados sem internet vão em lotes de até 100', () => {
+    const points = Array.from({ length: 250 }, (_, index) => index);
+    assert.deepEqual(trip.chunkPoints(points).map((chunk) => chunk.length), [100, 100, 50]);
+  });
+
+  it('foto: base64 da API vira endereço da imagem com o tipo certo', () => {
+    assert.equal(account.photoDataUri(null), null);
+    assert.equal(account.photoDataUri('/9j/4AAQ'), 'data:image/jpeg;base64,/9j/4AAQ');
+    assert.equal(account.photoDataUri('iVBORw0K'), 'data:image/png;base64,iVBORw0K');
+    assert.equal(account.photoDataUri('data:image/png;base64,iVBOR'), 'data:image/png;base64,iVBOR');
   });
 });

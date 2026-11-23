@@ -112,7 +112,9 @@ export function InicioTopBarSection({
               accessibilityLabel={controller.loggedIn ? t('Meu perfil') : t('Entrar')}
             >
               <View style={styles.avatar}>
-                {controller.loggedIn ? (
+                {controller.loggedIn && controller.userPhotoUri ? (
+                  <Image source={{ uri: controller.userPhotoUri }} style={styles.avatarPhoto} />
+                ) : controller.loggedIn ? (
                   <Text style={styles.avatarText}>{controller.userInitials}</Text>
                 ) : (
                   <MaterialCommunityIcons name="account" size={22} color={brand.navy} />
@@ -328,6 +330,11 @@ function makeStyles(
       backgroundColor: brand.cream,
       borderWidth: 2,
       borderColor: brand.orange,
+      overflow: 'hidden',
+    },
+    avatarPhoto: {
+      width: '100%',
+      height: '100%',
     },
     avatarText: {
       fontSize: 13,

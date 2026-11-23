@@ -16,6 +16,8 @@ export interface AccountRepository {
   capabilities(): Promise<AccountCapabilities>;
   getProfile(): Promise<UserProfile>;
   updateProfile(payload: UpdateProfilePayload): Promise<UserProfile>;
+  setPhoto(base64: string): Promise<UserProfile>;
+  removePhoto(): Promise<UserProfile>;
   changePassword(payload: ChangePasswordPayload): Promise<void>;
   forgotPassword(payload: ForgotPasswordPayload): Promise<void>;
   resetPassword(payload: ResetPasswordPayload): Promise<void>;

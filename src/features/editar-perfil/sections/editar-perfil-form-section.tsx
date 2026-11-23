@@ -1,5 +1,6 @@
+import { Image } from 'expo-image';
 import { useMemo } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BrandButton } from '@/components/brand-button';
 import { BrandField } from '@/components/brand-field';
@@ -44,6 +45,34 @@ export function EditarPerfilFormSection({ controller: c }: Props) {
 
   return (
     <View style={styles.form}>
+      {c.photoAvailable ? (
+        <View style={styles.photoRow}>
+          <View style={styles.avatar}>
+            {c.photoUri ? (
+              <Image source={{ uri: c.photoUri }} style={styles.avatarImage} contentFit="cover" />
+            ) : (
+              <Text style={styles.initials}>{c.initials}</Text>
+            )}
+            {c.photoBusy ? (
+              <View style={styles.avatarBusy}>
+                <ActivityIndicator color={brand.onPrimary} />
+              </View>
+            ) : null}
+          </View>
+          <View style={styles.photoActions}>
+            <Pressable onPress={c.pickPhoto} disabled={c.photoBusy} hitSlop={8} accessibilityRole="button">
+              <Text style={styles.link}>{c.photoUri ? t('Trocar foto') : t('Adicionar foto')}</Text>
+            </Pressable>
+            {c.photoUri ? (
+              <Pressable onPress={c.removePhoto} disabled={c.photoBusy} hitSlop={8} accessibilityRole="button">
+                <Text style={styles.link}>{t('Remover foto')}</Text>
+              </Pressable>
+            ) : null}
+            <Text style={styles.hint}>{t('Só você vê esta foto. JPEG ou PNG, até 2 MB.')}</Text>
+          </View>
+        </View>
+      ) : null}
+      {c.photoError ? <Text style={styles.error}>{c.photoError}</Text> : null}
       <BrandField
         label={t('Nome completo')}
         value={c.name}
@@ -96,6 +125,48 @@ function makeStyles(brand: BrandColors) {
     },
     form: {
       gap: 18,
+    },
+    photoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 16,
+    },
+    avatar: {
+      width: 84,
+      height: 84,
+      borderRadius: 42,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: brand.navy,
+    },
+    avatarImage: {
+      width: '100%',
+      height: '100%',
+    },
+    avatarBusy: {
+      ...StyleSheet.absoluteFillObject,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: brand.overlay,
+    },
+    initials: {
+      fontSize: 32,
+      fontWeight: '700',
+      color: brand.onPrimary,
+    },
+    photoActions: {
+      flex: 1,
+      gap: 8,
+    },
+    link: {
+      fontSize: 15,
+      fontWeight: '700',
+      color: brand.blue,
+    },
+    hint: {
+      fontSize: 13,
+      color: brand.textMuted,
     },
     box: {
       padding: 12,

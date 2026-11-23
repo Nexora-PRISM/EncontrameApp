@@ -5,6 +5,10 @@ export interface AccountCapabilities {
   sessions: boolean;
   /** "Esqueci minha senha": só quando a API consegue mandar e-mail. */
   passwordReset: boolean;
+  profilePhoto: boolean;
+  /** Círculo familiar (convite por código) e trajetos compartilhados com ele. */
+  familyCircle: boolean;
+  trips: boolean;
 }
 
 export const NO_ACCOUNT_CAPABILITIES: AccountCapabilities = {
@@ -12,6 +16,9 @@ export const NO_ACCOUNT_CAPABILITIES: AccountCapabilities = {
   changePassword: false,
   sessions: false,
   passwordReset: false,
+  profilePhoto: false,
+  familyCircle: false,
+  trips: false,
 };
 
 /** Dados da conta. O CPF não vem da API e não aparece no app. */
@@ -23,6 +30,8 @@ export interface UserProfile {
   cep: string;
   hasPassword: boolean;
   googleLinked: boolean;
+  /** Foto do perfil em base64 (sem o prefixo data:), ou null. */
+  photo: string | null;
 }
 
 export interface UpdateProfilePayload {

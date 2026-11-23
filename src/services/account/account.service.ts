@@ -45,6 +45,22 @@ export function useUpdateProfileMutation() {
   });
 }
 
+export function useSetProfilePhotoMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (base64: string) => getAccountRepository().setPhoto(base64),
+    onSuccess: (profile) => queryClient.setQueryData(accountKeys.profile, profile),
+  });
+}
+
+export function useRemoveProfilePhotoMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => getAccountRepository().removePhoto(),
+    onSuccess: (profile) => queryClient.setQueryData(accountKeys.profile, profile),
+  });
+}
+
 export function useChangePasswordMutation() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -119,7 +119,10 @@ function isQuietErrorPath(url: string) {
     url.includes('/Auth/capabilities') ||
     url.includes('/Auth/me') ||
     url.includes('/Auth/password') ||
-    url.includes('/Auth/sessions')
+    url.includes('/Auth/sessions') ||
+    // Círculo familiar e trajetos: as telas mostram o erro e tentam de novo sozinhas.
+    url.includes('/Circle') ||
+    url.includes('/Trip')
   );
 }
 

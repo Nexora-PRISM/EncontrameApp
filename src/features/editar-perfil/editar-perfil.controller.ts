@@ -1,16 +1,19 @@
 import { useState } from 'react';
 
 import { accountFormError } from '@/lib/account-errors';
-import { profileErrors } from '@/lib/account-rules';
-import { showAlert } from '@/lib/dialog';
+import { photoDataUri, profileErrors } from '@/lib/account-rules';
+import { confirmAction, showAlert } from '@/lib/dialog';
 import { useT } from '@/lib/i18n';
 import { maskCep, maskPhone } from '@/lib/masks';
 import { useSafeBack } from '@/lib/safe-back';
+import { usePhotoPicker } from '@/lib/use-photo-picker';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import { useSessionUser } from '@/lib/use-session-user';
 import {
   useAccountCapabilitiesQuery,
   useProfileQuery,
+  useRemoveProfilePhotoMutation,
+  useSetProfilePhotoMutation,
   useUpdateProfileMutation,
 } from '@/services/account/account.service';
 
@@ -30,6 +33,33 @@ export function useEditarPerfilController() {
   const [cellPhone, setCellPhone] = useState('');
   const [cep, setCep] = useState('');
   const [formError, setFormError] = useState('');
+  const [photoError, setPhotoError] = useState('');
+  const setPhotoMutation = useSetProfilePhotoMutation();
+  const removePhotoMutation = useRemoveProfilePhotoMutation();
+  const photoPicker = usePhotoPicker(undefined, (base64) => {
+    setPhotoError('');
+    setPhotoMutation.mutate(base64, {
+      onSuccess: () => photoPicker.removePhoto(),
+      onError: (error) => {
+        photoPicker.removePhoto();
+        const { fields, message } = accountFormError(error);
+        setPhotoError(fields.photo ? t('A foto não foi aceita. Use JPEG ou PNG de até 2 MB.') : message);
+      },
+    });
+  });
+
+  const removePhoto = async () => {
+    const confirmed = await confirmAction({
+      title: t('Remover a foto?'),
+      message: t('Sua conta fica sem foto.'),
+      confirmLabel: t('Remover'),
+    });
+    if (!confirmed) return;
+    setPhotoError('');
+    removePhotoMutation.mutate(undefined, {
+      onError: (error) => setPhotoError(accountFormError(error).message),
+    });
+  };
 
   // Preenche o formulário uma vez, quando os dados chegam (sem apagar o que a pessoa já digitou).
   const profile = profileQuery.data;
@@ -68,6 +98,14 @@ export function useEditarPerfilController() {
     loadError: profileQuery.isError,
     retry: () => void profileQuery.refetch(),
     email: profile?.email ?? sessionUser?.email ?? '',
+    photoAvailable: capabilities.data?.profilePhoto === true,
+    /** Foto escolhida aparece na hora enquanto envia; depois, a que está salva na conta. */
+    photoUri: photoPicker.photoUri || photoDataUri(profile?.photo),
+    photoBusy: setPhotoMutation.isPending || removePhotoMutation.isPending,
+    photoError,
+    pickPhoto: photoPicker.pickPhoto,
+    removePhoto: () => void removePhoto(),
+    initials: (profile?.name || sessionUser?.name || '?').trim().charAt(0).toUpperCase(),
     googleLinked: profile?.googleLinked ?? false,
     name,
     setName: (value: string) => {

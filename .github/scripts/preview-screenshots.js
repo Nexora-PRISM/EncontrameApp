@@ -113,6 +113,9 @@ async function run(scheme) {
         ['33-editar-perfil', '/editar-perfil'],
         ['34-alterar-senha', '/alterar-senha'],
         ['35-aparelhos-conectados', '/sessoes'],
+        ['36-circulo-familiar', '/circulo'],
+        ['37-trajeto', '/trajeto'],
+        ['38-trajeto-do-circulo', '/trajeto/901'],
       ];
       for (const [name, route] of account) {
         await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });

@@ -134,7 +134,7 @@ export function useNotificationSettings(loggedIn: boolean) {
   };
 
   const anyOn = prefs
-    ? prefs.pendingReminder || prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates
+    ? prefs.pendingReminder || prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates || prefs.circleTrips
     : false;
 
   return {
@@ -148,5 +148,6 @@ export function useNotificationSettings(loggedIn: boolean) {
     toggleNearbyCases: (next: boolean) => toggleRemote('nearbyCases', next),
     toggleRegionNewCases: (next: boolean) => toggleRemote('regionNewCases', next),
     toggleFollowedUpdates: (next: boolean) => toggleRemote('followedUpdates', next),
+    toggleCircleTrips: (next: boolean) => toggleRemote('circleTrips', next),
   };
 }

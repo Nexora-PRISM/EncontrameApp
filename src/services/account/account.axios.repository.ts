@@ -18,6 +18,7 @@ interface ApiProfile {
   cep?: string;
   hasPassword?: boolean;
   googleLinked?: boolean;
+  photo?: string | null;
 }
 
 interface ApiSession {
@@ -36,6 +37,7 @@ function mapProfile(data: ApiProfile): UserProfile {
     cep: data.cep ?? '',
     hasPassword: Boolean(data.hasPassword),
     googleLinked: Boolean(data.googleLinked),
+    photo: data.photo || null,
   };
 }
 
@@ -57,6 +59,9 @@ export const accountAxiosRepository: AccountRepository = {
         changePassword: data?.changePassword === true,
         sessions: data?.sessions === true,
         passwordReset: data?.passwordReset === true,
+        profilePhoto: data?.profilePhoto === true,
+        familyCircle: data?.familyCircle === true,
+        trips: data?.trips === true,
       };
     } catch (error) {
       // API ainda sem a rota: nada disponível (continua "Em breve"). Sem internet: tenta de novo depois.
@@ -76,6 +81,16 @@ export const accountAxiosRepository: AccountRepository = {
       cellPhone: onlyDigits(payload.cellPhone),
       cep: onlyDigits(payload.cep) || null,
     });
+    return mapProfile(data);
+  },
+
+  async setPhoto(base64) {
+    const { data } = await api.put<ApiProfile>('/Auth/me/photo', { photo: base64 });
+    return mapProfile(data);
+  },
+
+  async removePhoto() {
+    const { data } = await api.delete<ApiProfile>('/Auth/me/photo');
     return mapProfile(data);
   },
 

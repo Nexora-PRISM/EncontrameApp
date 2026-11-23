@@ -36,7 +36,9 @@ export function InicioHeaderSection({ controller }: InicioHeaderSectionProps) {
           accessibilityLabel={loggedIn ? t('Meu perfil') : t('Entrar')}
         >
           <View style={styles.avatar}>
-            {loggedIn ? (
+            {loggedIn && controller.userPhotoUri ? (
+              <Image source={{ uri: controller.userPhotoUri }} style={styles.avatarPhoto} />
+            ) : loggedIn ? (
               <Text style={styles.avatarText}>{controller.userInitials}</Text>
             ) : (
               <MaterialCommunityIcons name="account" size={26} color={brand.navy} />
@@ -119,6 +121,11 @@ function makeStyles(brand: BrandColors, ink: string, glass: string) {
       backgroundColor: brand.cream,
       borderWidth: 2,
       borderColor: brand.orange,
+      overflow: 'hidden',
+    },
+    avatarPhoto: {
+      width: '100%',
+      height: '100%',
     },
     avatarText: {
       fontSize: 15,

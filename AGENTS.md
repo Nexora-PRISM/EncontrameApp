@@ -52,6 +52,9 @@ src/
     alterar-senha/index.tsx            # "/alterar-senha"            — troca com a senha atual (login)
     recuperar-senha/index.tsx          # "/recuperar-senha"          — código por e-mail e senha nova (sem login)
     sessoes/index.tsx                  # "/sessoes"                  — aparelhos conectados; desconectar (login)
+    circulo/index.tsx                  # "/circulo"                  — círculo familiar: convite por código, membros (login)
+    trajeto/index.tsx                  # "/trajeto"                  — compartilhar um trajeto com o círculo (login)
+    trajeto/[id].tsx                   # "/trajeto/<id>"             — acompanhar o trajeto de alguém do círculo (login)
     +html.tsx                  # HTML da versão web (lang="pt-BR"); não é rota
   features/                    # lógica de UI por página (FORA do diretório de rotas)
     <pagina>/
@@ -92,6 +95,7 @@ src/
     sighting-privacy.ts        # avistamentos públicos: 5 recentes, região de ~10 km, só cidade/estado
     account-rules.ts           # conta: validação do perfil, senha nova, código de recuperação, ordem dos aparelhos
     account-errors.ts          # erro das telas da conta (campo, 429, sem internet) sem modal
+    trip-rules.ts              # trajeto: quando mandar ponto, limites, minutos até chegar, lotes de pontos
     notifications.ts           # expo-notifications (só se o módulo nativo existir): permissão, token, canal, rota do toque
     notification-prefs.ts      # o que a pessoa escolheu receber (neste aparelho; tudo desligado por padrão)
     pending-reminder.ts        # lembrete diário local (19h) dos cadastros salvos no aparelho
@@ -209,8 +213,13 @@ Fluxo: **section → controller → service (React Query) → repository (mock |
 - **Conta** (`services/account/`, `GET /Auth/capabilities`): editar perfil, alterar senha, recuperar senha e aparelhos
   conectados só aparecem quando a API diz que tem o recurso; sem isso (API antiga ou fora do ar) continuam "Em breve".
   "Esqueci minha senha" sem a recuperação ligada leva à resposta da Central de Ajuda. A tela de recuperação nunca diz
-  se o e-mail tem conta, e o e-mail não vai na URL. E-mail e CPF não mudam pelo app. Foto do perfil, círculo familiar,
-  rotas e termos de uso continuam "Em breve".
+  se o e-mail tem conta, e o e-mail não vai na URL. E-mail e CPF não mudam pelo app. A foto do perfil só a própria
+  pessoa vê (avatar do Início e editar perfil). Termos de uso continuam "Em breve" até existir o texto oficial.
+- **Círculo familiar e trajetos** (`services/circle/`, `/circulo`, `/trajeto`): só com `familyCircle`/`trips` nas
+  capacidades. Vínculo dos dois lados por código (8 caracteres, 24 h, uso único); até 10 pessoas; sai quando quiser.
+  O trajeto é ligado pela pessoa (destino opcional + prazo); a posição só vai com a tela aberta (sem segundo plano) e o
+  caminho é apagado ao terminar. Nunca crie rastreamento contínuo nem mostre trajeto a quem não está no círculo. Aviso
+  de trajeto (push `circle-trip`, abre `/trajeto/<id>`) só com "Trajetos do círculo familiar" ligado nas notificações.
 - **Cadastro feito sem conta nunca é enviado sozinho.** Só pelo "Revisar e enviar"
   (`/cadastrar-pessoa?rascunho=<id local>`), com a pessoa logada aceitando a declaração de novo.
 - "Algo errado neste cadastro?": a correção vai por e-mail ao suporte com o id do caso (sem login; nunca diga que
