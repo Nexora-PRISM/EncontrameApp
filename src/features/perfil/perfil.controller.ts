@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { useSafeBack } from '@/lib/safe-back';
 import { isSofiaWelcomeComplete } from '@/lib/sofia-prefs';
 import { useSessionUser } from '@/lib/use-session-user';
+import { useAccountCapabilitiesQuery } from '@/services/account/account.service';
 import { listLocalPending } from '@/services/people/people.local.store';
 
 /** Iniciais para o avatar (ex.: "Maria Souza" → "MS"). */
@@ -28,6 +29,7 @@ export interface LocalDraftSummary {
 export function usePerfilController() {
   const router = useRouter();
   const user = useSessionUser();
+  const accountCapabilities = useAccountCapabilitiesQuery();
   const goBack = useSafeBack('/inicio');
   const [localDrafts, setLocalDrafts] = useState<LocalDraftSummary[] | null>(null);
 
@@ -65,6 +67,11 @@ export function usePerfilController() {
     goToSettings: () => router.push('/configuracoes' as Href),
     goToTrustedContacts: () => router.push('/contatos-confianca' as Href),
     goToShareLocation: () => router.push('/compartilhar-localizacao' as Href),
+    /** Círculo familiar e trajetos: só quando a API tem o recurso; senão, "Em breve". */
+    canUseCircle: accountCapabilities.data?.familyCircle === true,
+    canShareTrip: accountCapabilities.data?.familyCircle === true && accountCapabilities.data?.trips === true,
+    goToCircle: () => router.push('/circulo' as Href),
+    goToTrip: () => router.push('/trajeto' as Href),
     goToHelp: () => router.push('/ajuda' as Href),
     goToRegister: () => router.push('/cadastrar-pessoa'),
     goToAllPeople: () => router.push('/pessoas-desaparecidas' as Href),

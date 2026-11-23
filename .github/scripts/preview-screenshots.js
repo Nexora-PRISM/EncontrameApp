@@ -94,6 +94,35 @@ async function run(scheme) {
       await page.waitForLoadState('networkidle').catch(() => undefined);
       await shot(page, `${scheme}-${name}`, 1800, true);
     }
+
+    // Conta: recuperar senha (sem login); depois entra (no modo demonstração qualquer senha entra)
+    // e abre Configurações, editar perfil, alterar senha e aparelhos conectados.
+    await page.goto(`${base}/recuperar-senha`, { waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('networkidle').catch(() => undefined);
+    await shot(page, `${scheme}-30-recuperar-senha`, 1800, true);
+
+    await page.goto(`${base}/login`, { waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('networkidle').catch(() => undefined);
+    await page.getByPlaceholder('exemplo@email.com').first().fill('demo@encontra.me');
+    await page.getByPlaceholder('••••••••••••••').first().fill('senha123');
+    await shot(page, `${scheme}-31-entrar`, 600, true);
+    if (await tap(page, ['Entrar'])) {
+      await page.waitForTimeout(2500);
+      const account = [
+        ['32-configuracoes', '/configuracoes'],
+        ['33-editar-perfil', '/editar-perfil'],
+        ['34-alterar-senha', '/alterar-senha'],
+        ['35-aparelhos-conectados', '/sessoes'],
+        ['36-circulo-familiar', '/circulo'],
+        ['37-trajeto', '/trajeto'],
+        ['38-trajeto-do-circulo', '/trajeto/901'],
+      ];
+      for (const [name, route] of account) {
+        await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+        await page.waitForLoadState('networkidle').catch(() => undefined);
+        await shot(page, `${scheme}-${name}`, 2000, true);
+      }
+    }
   } catch (error) {
     console.log(`[${scheme}] parou: ${error.message}`);
     await page.screenshot({ path: path.join(out, `${scheme}-99-erro.png`) }).catch(() => undefined);

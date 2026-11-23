@@ -317,7 +317,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'rotas',
     question: msg('Posso acompanhar meu trajeto até chegar em casa?'),
     answer:
-      msg('O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.'),
+      msg('Sim, com o círculo familiar. Em Perfil > "Compartilhar um trajeto", diga para onde vai (opcional) e em quanto tempo chega. Seu círculo acompanha o caminho enquanto o trajeto está ligado; toque em "Cheguei" ou "Parar de compartilhar" para encerrar — o caminho é apagado. A posição só é enviada com a tela do trajeto aberta. Se passar do horário previsto, o círculo recebe um aviso (para quem ligou "Trajetos do círculo familiar" nas notificações). O app não avisa a polícia. Se a opção aparecer como "Em breve", a versão do servidor ainda não tem o recurso.'),
     keywords: msg('rota trajeto acompanhar caminho'),
   },
   {
@@ -325,7 +325,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'rotas',
     question: msg('O que é o círculo familiar?'),
     answer:
-      msg('É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.'),
+      msg('São até 10 pessoas de confiança que podem acompanhar os trajetos que você decidir compartilhar — e você os delas. Para entrar, uma pessoa gera um código de convite (vale 24 horas e uma vez só) e a outra digita no app dela. Qualquer um pode sair quando quiser. Ninguém vê sua localização o tempo todo: só durante um trajeto que você liga. Fica em Perfil > "Círculo familiar".'),
     keywords: msg('família círculo compartilhar'),
   },
   {
@@ -349,8 +349,24 @@ export const HELP_ARTICLES: HelpArticle[] = [
     category: 'conta',
     question: msg('Esqueci minha senha. E agora?'),
     answer:
-      msg('A recuperação de senha pelo próprio app ainda não está disponível. Use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha para ninguém, nem para o suporte.'),
+      msg('Na tela de entrada, toque em "Esqueci minha senha". Quando a recuperação pelo app estiver ligada, você digita o e-mail da conta, recebe um código de 8 caracteres e cria uma senha nova; depois disso, todos os aparelhos são desconectados. Se a tela disser que ainda não está disponível, use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha nem o código para ninguém, nem para o suporte.'),
     keywords: msg('senha esqueci recuperar acesso'),
+  },
+  {
+    id: 'alterar-dados',
+    category: 'conta',
+    question: msg('Como mudo meu nome, celular, CEP ou senha?'),
+    answer:
+      msg('Em Configurações > Minha conta: "Editar perfil" muda nome, celular, CEP e a foto (só você vê a foto); "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.'),
+    keywords: msg('editar perfil nome celular telefone cep trocar senha'),
+  },
+  {
+    id: 'aparelhos-conectados',
+    category: 'conta',
+    question: msg('Como vejo em quais aparelhos minha conta está aberta?'),
+    answer:
+      msg('Em Configurações > Segurança > "Aparelhos conectados". A lista mostra este aparelho e os outros, com a última atividade aproximada. Você pode desconectar um ou todos os outros. Por privacidade, o app não guarda o modelo do aparelho nem o lugar de cada acesso. Se não reconhecer um acesso, desconecte e troque sua senha.'),
+    keywords: msg('sessões aparelhos conectados desconectar acesso'),
   },
   {
     id: 'biometria',

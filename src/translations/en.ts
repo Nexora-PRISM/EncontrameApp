@@ -220,8 +220,6 @@ export const en: Readonly<Record<string, string>> = {
   'regras termos uso política privacidade responsabilidade':
     'rules terms use policy privacy responsibility',
   'Esqueci minha senha. E agora?': 'I forgot my password. What now?',
-  'A recuperação de senha pelo próprio app ainda não está disponível. Use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha para ninguém, nem para o suporte.':
-    'Password recovery in the app itself is not available yet. Use "Contact support", choose "Registration, sign-in or password" and write your account\'s email. Never send your password to anyone, not even to support.',
   'senha esqueci recuperar acesso': 'password forgot recover access',
   'Posso entrar com a digital ou o rosto?': 'Can I sign in with my fingerprint or face?',
   'Sim, no celular. Ative em Configurações > Segurança > "Entrar com biometria". Com ela ligada, o app pede a biometria assim que abre e, ao sair, só trava a conta; para sair de vez, desligue a biometria antes.':
@@ -595,7 +593,6 @@ export const en: Readonly<Record<string, string>> = {
   'Atualize o Encontra-me para usar este recurso.': 'Update Encontra-me to use this feature.',
   'Requer Android 7.1 ou mais recente.': 'Requires Android 7.1 or later.',
   'Minha conta': 'My account',
-  'Editar perfil e foto': 'Edit profile and photo',
   'Depende de atualização da API.': 'Depends on an API update.',
   'Alterar ou recuperar senha': 'Change or recover password',
   'Enquanto não está no app, peça pela Central de Ajuda.':
@@ -1187,10 +1184,6 @@ export const en: Readonly<Record<string, string>> = {
   'O servidor não confirmou o recebimento do alerta.':
     'The server did not confirm receipt of the alert.',
   // features/ajuda/help-content.ts — rotas e círculo familiar
-  'O monitoramento ampliado de trajetos é um recurso futuro e ainda não está disponível. Quando for lançado, só funcionará com sua permissão e terminará assim que você chegar ao destino. Mandar sua localização atual para um contato já funciona e é grátis.':
-    'Extended route monitoring is a future feature and is not available yet. When it is launched, it will only work with your permission and will end as soon as you reach your destination. Sending your current location to a contact already works and is free.',
-  'É um recurso futuro para compartilhar sua segurança com pessoas de confiança, sempre com convite e aceite de cada uma. Ele ainda não está disponível e nunca permitirá acompanhar alguém sem que essa pessoa saiba e concorde.':
-    "It is a future feature for sharing your safety with people you trust, always with each person's invitation and consent. It is not available yet and will never allow tracking someone without that person knowing and agreeing.",
   // Rodada 3 — Início novo, passo a passo e filtros por idade
   'Na tela Início, permita o acesso à localização. As fotos de "Alertas recentes" e o mapa mostram casos próximos. Arraste o mapa para baixo para abrir a lista e role para ver mais. Os botões ao lado de "Alertas recentes" trocam entre foto, com o nome embaixo, e cartão. Os botões no alto do mapa filtram por idade: a borda usa a cor do tema e o botão escolhido fica preenchido. O botão de satélite troca a imagem do mapa. Para buscar por nome ou ver a lista completa, toque na lupa no alto da tela ou em "Ver todos": lá dá para filtrar por cidade, estado, bairro, idade e situação. No celular, o botão Filtros fica acima dos atalhos de idade. Na lista, os botões ao lado do total trocam entre os cartões horizontais e fotos quadradas só com o nome embaixo. O número abaixo dos filtros é o total dessa busca.':
     'On the Home screen, allow location access. The photos in "Recent alerts" and the map show nearby cases. Drag the map down to open the list and scroll to see more. The buttons next to "Recent alerts" switch between a photo with the name underneath and a card. The buttons at the top of the map filter by age: the border uses the theme color and the chosen button fills in. The satellite button switches the map image. To search by name or see the full list, tap the magnifying glass at the top of the screen or "See all": there you can filter by city, state, neighborhood, age and status. On a phone, the Filters button sits above the age shortcuts. On the list, the buttons next to the total switch between the horizontal cards and square photos with only the name underneath. The number below the filters is the total for that search.',
@@ -1593,4 +1586,348 @@ export const en: Readonly<Record<string, string>> = {
     'Enter the police report number: it\'s required for children and teenagers and for anyone who is not family.',
   'Proteção e contestação': 'Protection and disputes',
   'Proteção de identidade e perseguição': 'Identity protection and stalking',
+  'Na tela de entrada, toque em "Esqueci minha senha". Quando a recuperação pelo app estiver ligada, você digita o e-mail da conta, recebe um código de 8 caracteres e cria uma senha nova; depois disso, todos os aparelhos são desconectados. Se a tela disser que ainda não está disponível, use "Falar com o suporte", escolha "Cadastro, login ou senha" e escreva o e-mail da sua conta. Nunca envie sua senha nem o código para ninguém, nem para o suporte.':
+    'On the sign-in screen, tap "I forgot my password". When recovery in the app is turned on, you type your account e-mail, get an 8-character code and create a new password; after that, every device is signed out. If the screen says it is not available yet, use "Contact support", choose "Registration, sign-in or password" and write your account e-mail. Never send your password or the code to anyone, not even to support.',
+  'Como mudo meu nome, celular, CEP ou senha?':
+    'How do I change my name, mobile number, postal code or password?',
+  'editar perfil nome celular telefone cep trocar senha':
+    'edit profile name mobile phone postal code change password',
+  'Como vejo em quais aparelhos minha conta está aberta?':
+    'How do I see which devices my account is signed in on?',
+  'Em Configurações > Segurança > "Aparelhos conectados". A lista mostra este aparelho e os outros, com a última atividade aproximada. Você pode desconectar um ou todos os outros. Por privacidade, o app não guarda o modelo do aparelho nem o lugar de cada acesso. Se não reconhecer um acesso, desconecte e troque sua senha.':
+    'In Settings > Security > "Connected devices". The list shows this device and the others, with their approximate last activity. You can sign out one or all of the others. For privacy, the app does not store the device model or where each sign-in happened. If you do not recognize a sign-in, sign it out and change your password.',
+  'sessões aparelhos conectados desconectar acesso':
+    'sessions connected devices sign out access',
+  'Senha alterada':
+    'Password changed',
+  'Os outros aparelhos conectados à sua conta foram desconectados. Neste aparelho você continua conectado.':
+    'The other devices signed in to your account were signed out. You stay signed in on this device.',
+  'Alterar a senha pelo app ainda não está disponível. Tente de novo mais tarde.':
+    'Changing your password in the app is not available yet. Try again later.',
+  'Sua conta entra com o Google e não tem senha. Continue entrando com o botão do Google.':
+    'Your account signs in with Google and has no password. Keep signing in with the Google button.',
+  'Criar uma senha pelo e-mail':
+    'Create a password by e-mail',
+  'Senha atual':
+    'Current password',
+  'Senha nova':
+    'New password',
+  'Repita a senha nova':
+    'Repeat the new password',
+  'Pelo menos 8 caracteres, com letras e números.':
+    'At least 8 characters, with letters and numbers.',
+  'Ao trocar a senha, os outros aparelhos conectados à sua conta são desconectados.':
+    'When you change your password, the other devices signed in to your account are signed out.',
+  'Alterar senha':
+    'Change password',
+  'Editar perfil':
+    'Edit profile',
+  'Nome, celular e CEP.':
+    'Name, mobile number and postal code.',
+  'Foto do perfil':
+    'Profile photo',
+  'Os outros aparelhos são desconectados ao trocar.':
+    'Your other devices are signed out when you change it.',
+  'Aparelhos conectados':
+    'Connected devices',
+  'Veja onde sua conta está aberta e desconecte.':
+    'See where your account is signed in and sign it out.',
+  'Entre na sua conta para ver.':
+    'Sign in to your account to see it.',
+  'Dados salvos':
+    'Details saved',
+  'Seu perfil foi atualizado.':
+    'Your profile was updated.',
+  'Editar o perfil ainda não está disponível. Tente de novo mais tarde.':
+    'Editing your profile is not available yet. Try again later.',
+  'Não foi possível carregar seus dados.':
+    'Could not load your details.',
+  'Tentar de novo':
+    'Try again',
+  'Celular':
+    'Mobile number',
+  'Sua conta entra com o Google. Para trocar o e-mail, fale com a equipe pela Central de Ajuda.':
+    'Your account signs in with Google. To change the e-mail, contact the team through the Help Center.',
+  'Para trocar o e-mail, fale com a equipe pela Central de Ajuda. Seu CPF não aparece no app e não muda.':
+    'To change the e-mail, contact the team through the Help Center. Your CPF is not shown in the app and does not change.',
+  'Salvar':
+    'Save',
+  'Esqueci minha senha':
+    'I forgot my password',
+  'Recuperar a senha pelo app ainda não está disponível. A Central de Ajuda explica como pedir à equipe.':
+    'Recovering your password in the app is not available yet. The Help Center explains how to ask the team.',
+  'Abrir a Central de Ajuda':
+    'Open the Help Center',
+  'Senha nova criada':
+    'New password created',
+  'Por segurança, todos os aparelhos foram desconectados. Entre de novo com a senha nova.':
+    'For safety, every device was signed out. Sign in again with the new password.',
+  'Digite o e-mail da sua conta. Se ele estiver cadastrado, mandamos um código para criar uma senha nova.':
+    'Type your account e-mail. If it is registered, we send a code to create a new password.',
+  'Mandar código':
+    'Send code',
+  'Se existir uma conta com {email}, o código chega em alguns minutos. Confira também a caixa de spam. Ele vale por 15 minutos.':
+    'If there is an account with {email}, the code arrives in a few minutes. Check your spam folder too. It is valid for 15 minutes.',
+  'Pedimos outro código. Use o mais recente.':
+    'We asked for another code. Use the most recent one.',
+  'Código do e-mail':
+    'Code from the e-mail',
+  'Criar senha nova':
+    'Create new password',
+  'Enviando…':
+    'Sending…',
+  'Mandar outro código':
+    'Send another code',
+  'Trocar o e-mail':
+    'Change the e-mail',
+  'A lista de aparelhos conectados ainda não está disponível. Tente de novo mais tarde.':
+    'The list of connected devices is not available yet. Try again later.',
+  'Não foi possível carregar a lista.':
+    'Could not load the list.',
+  'Cada item é um aparelho ou navegador em que sua conta está conectada. Por privacidade, o Encontra-me não guarda o modelo do aparelho nem o lugar de cada acesso.':
+    'Each item is a device or browser where your account is signed in. For privacy, Encontra-me does not store the device model or where each sign-in happened.',
+  'Desconectar':
+    'Sign out',
+  'Desconectar todos os outros':
+    'Sign out all the others',
+  'Sua conta só está conectada neste aparelho.':
+    'Your account is only signed in on this device.',
+  'Não reconhece algum acesso? Desconecte e troque sua senha.':
+    'Don\'t recognize a sign-in? Sign it out and change your password.',
+  'Este aparelho':
+    'This device',
+  'Outro aparelho ou navegador':
+    'Another device or browser',
+  'Você está usando agora.':
+    'You are using it now.',
+  'Última atividade por volta de {when}':
+    'Last activity around {when}',
+  'Desconectar este acesso?':
+    'Sign out this access?',
+  'Quem estiver usando a conta nesse aparelho vai precisar entrar de novo.':
+    'Whoever is using the account on that device will need to sign in again.',
+  'Acesso desconectado':
+    'Access signed out',
+  'Se você não reconhece esse acesso, troque também a sua senha.':
+    'If you do not recognize this access, change your password too.',
+  'Não foi possível desconectar':
+    'Could not sign out',
+  'Desconectar os outros aparelhos?':
+    'Sign out the other devices?',
+  'Só este aparelho continua conectado.':
+    'Only this device stays signed in.',
+  '1 aparelho foi desconectado.':
+    '1 device was signed out.',
+  '{count} aparelhos foram desconectados.':
+    '{count} devices were signed out.',
+  'Muitas tentativas. Espere alguns minutos e tente de novo.':
+    'Too many attempts. Wait a few minutes and try again.',
+  'Não confere.':
+    'Does not match.',
+  'Precisa ser diferente do atual.':
+    'Must be different from the current one.',
+  'Errado ou vencido.':
+    'Wrong or expired.',
+  'Não disponível para esta conta.':
+    'Not available for this account.',
+  'A senha atual não confere.':
+    'The current password does not match.',
+  'Sua conta entra com o Google e não tem senha para trocar.':
+    'Your account signs in with Google and has no password to change.',
+  'A senha nova precisa ser diferente da atual.':
+    'The new password must be different from the current one.',
+  'A confirmação não corresponde à senha nova.':
+    'The confirmation does not match the new password.',
+  'Código errado ou vencido. Confira o e-mail ou peça um novo.':
+    'Wrong or expired code. Check the e-mail or ask for a new one.',
+  'O código tem 8 caracteres.':
+    'The code has 8 characters.',
+  'Recuperar senha':
+    'Recover password',
+  'Sim, com o círculo familiar. Em Perfil > "Compartilhar um trajeto", diga para onde vai (opcional) e em quanto tempo chega. Seu círculo acompanha o caminho enquanto o trajeto está ligado; toque em "Cheguei" ou "Parar de compartilhar" para encerrar — o caminho é apagado. A posição só é enviada com a tela do trajeto aberta. Se passar do horário previsto, o círculo recebe um aviso (para quem ligou "Trajetos do círculo familiar" nas notificações). O app não avisa a polícia. Se a opção aparecer como "Em breve", a versão do servidor ainda não tem o recurso.':
+    'Yes, with your family circle. In Profile > "Share a trip", say where you are going (optional) and how soon you will arrive. Your circle follows the route while the trip is on; tap "I\'ve arrived" or "Stop sharing" to end it — the route is erased. Your position is only sent while the trip screen is open. If you pass the expected time, your circle gets an alert (those who turned on "Family circle trips" in notifications). The app does not alert the police. If the option shows "Coming soon", the server version does not have the feature yet.',
+  'São até 10 pessoas de confiança que podem acompanhar os trajetos que você decidir compartilhar — e você os delas. Para entrar, uma pessoa gera um código de convite (vale 24 horas e uma vez só) e a outra digita no app dela. Qualquer um pode sair quando quiser. Ninguém vê sua localização o tempo todo: só durante um trajeto que você liga. Fica em Perfil > "Círculo familiar".':
+    'Up to 10 trusted people who can follow the trips you choose to share — and you can follow theirs. To join, one person creates an invite code (valid for 24 hours and only once) and the other types it in their app. Anyone can leave whenever they want. Nobody sees your location all the time: only during a trip you turn on. It is in Profile > "Family circle".',
+  'Em Configurações > Minha conta: "Editar perfil" muda nome, celular, CEP e a foto (só você vê a foto); "Alterar senha" pede a senha atual e desconecta os outros aparelhos. O e-mail e o CPF não mudam pelo app — para o e-mail, fale com a equipe. Se essas opções aparecerem como "Em breve", a versão do servidor ainda não tem o recurso.':
+    'In Settings > My account: "Edit profile" changes your name, mobile number, postal code and photo (only you see the photo); "Change password" asks for your current password and signs out your other devices. Your e-mail and CPF cannot be changed in the app — for the e-mail, contact the team. If these options show "Coming soon", the server version does not have the feature yet.',
+  'Entre no meu círculo familiar do Encontra-me com o código {code}. Ele vale até {until} e serve uma vez só. No app: Perfil > Círculo familiar > Entrar com um código.':
+    'Join my family circle on Encontra-me with the code {code}. It is valid until {until} and works only once. In the app: Profile > Family circle > Join with a code.',
+  'O círculo chegou ao limite de 10 pessoas.':
+    'The circle has reached the limit of 10 people.',
+  'Digite o código que você recebeu.':
+    'Type the code you received.',
+  'Você e {name} agora estão no mesmo círculo familiar.':
+    'You and {name} are now in the same family circle.',
+  'Código errado, vencido ou já usado. Peça um novo.':
+    'Wrong, expired or already used code. Ask for a new one.',
+  'Vocês já estão no mesmo círculo.':
+    'You are already in the same circle.',
+  'Esse é o seu próprio convite. Mande para a outra pessoa digitar.':
+    'This is your own invite. Send it to the other person to type.',
+  'Um dos círculos chegou ao limite de 10 pessoas.':
+    'One of the circles has reached the limit of 10 people.',
+  'Tirar {name} do círculo?':
+    'Remove {name} from the circle?',
+  'Vocês deixam de ver os trajetos um do outro. Para voltar, é preciso um convite novo.':
+    'You stop seeing each other\'s trips. To come back, a new invite is needed.',
+  'Tirar do círculo':
+    'Remove from circle',
+  'Não foi possível tirar do círculo':
+    'Could not remove from the circle',
+  'No círculo desde {date}':
+    'In the circle since {date}',
+  'O círculo familiar ainda não está disponível. Tente de novo mais tarde.':
+    'The family circle is not available yet. Try again later.',
+  'Não foi possível carregar o seu círculo.':
+    'Could not load your circle.',
+  'Pessoas de confiança que podem acompanhar os trajetos que você decidir compartilhar — e você os delas. Ninguém vê sua localização o tempo todo: só durante um trajeto que você liga, e os pontos são apagados quando ele termina.':
+    'Trusted people who can follow the trips you choose to share — and you can follow theirs. Nobody sees your location all the time: only during a trip you turn on, and the points are erased when it ends.',
+  'No seu círculo ({count} de {max})':
+    'In your circle ({count} of {max})',
+  'Ninguém ainda. Convide alguém com um código.':
+    'Nobody yet. Invite someone with a code.',
+  'Compartilhar um trajeto':
+    'Share a trip',
+  'Convidar alguém':
+    'Invite someone',
+  'Mande este código para a pessoa digitar no app dela:':
+    'Send this code for the person to type in their app:',
+  'Vale até {until} e serve uma vez só.':
+    'Valid until {until} and works only once.',
+  'Compartilhar o código':
+    'Share the code',
+  'Gerar outro código':
+    'Create another code',
+  'Gerar código de convite':
+    'Create invite code',
+  'Entrar com um código':
+    'Join with a code',
+  'Código que você recebeu':
+    'Code you received',
+  'Entrar no círculo':
+    'Join the circle',
+  'Adicionar, trocar ou remover.':
+    'Add, change or remove.',
+  'Trajetos do círculo familiar':
+    'Family circle trips',
+  'Quando alguém do seu círculo começa a compartilhar um trajeto, chega ou passa do horário.':
+    'When someone in your circle starts sharing a trip, arrives or passes the expected time.',
+  'A foto não foi aceita. Use JPEG ou PNG de até 2 MB.':
+    'The photo was not accepted. Use a JPEG or PNG up to 2 MB.',
+  'Remover a foto?':
+    'Remove the photo?',
+  'Sua conta fica sem foto.':
+    'Your account will have no photo.',
+  'Trocar foto':
+    'Change photo',
+  'Só você vê esta foto. JPEG ou PNG, até 2 MB.':
+    'Only you see this photo. JPEG or PNG, up to 2 MB.',
+  'Pessoas de confiança que acompanham seus trajetos.':
+    'Trusted people who follow your trips.',
+  'Seu círculo acompanha até você chegar.':
+    'Your circle follows you until you arrive.',
+  'Compartilhar trajetos ainda não está disponível. Tente de novo mais tarde.':
+    'Sharing trips is not available yet. Try again later.',
+  'Este trajeto não está mais disponível: ele terminou ou vocês não estão mais no mesmo círculo.':
+    'This trip is no longer available: it ended or you are no longer in the same circle.',
+  'Não foi possível carregar.':
+    'Could not load.',
+  '{name} → {destination}':
+    '{name} → {destination}',
+  'Passou do horário previsto. Tente falar com a pessoa. Se achar que ela corre perigo, ligue 190 — o app não avisa a polícia.':
+    'The expected time has passed. Try to reach the person. If you think they are in danger, call 190 — the app does not alert the police.',
+  'A tela atualiza sozinha a cada 30 segundos.':
+    'The screen updates by itself every 30 seconds.',
+  '{name} avisou que chegou às {time}.':
+    '{name} said they arrived at {time}.',
+  'Este trajeto terminou. O caminho foi apagado.':
+    'This trip has ended. The route was erased.',
+  'Última posição recebida às {time}':
+    'Last position received at {time}',
+  'Ainda sem posição: o círculo vê só o horário previsto.':
+    'No position yet: the circle only sees the expected time.',
+  'Compartilhando com o seu círculo':
+    'Sharing with your circle',
+  'Indo para {destination}':
+    'Going to {destination}',
+  'Sem permissão de localização: o círculo vê só o horário previsto. Libere a localização nos ajustes do aparelho.':
+    'No location permission: the circle only sees the expected time. Allow location in your device settings.',
+  'O GPS não respondeu. Tocar para tentar de novo.':
+    'GPS did not respond. Tap to try again.',
+  'Sem conexão: os pontos vão quando a internet voltar.':
+    'No connection: the points will be sent when the internet is back.',
+  'Mantenha esta tela aberta: com o app fechado ou em segundo plano a posição para de ser enviada. Se passar do horário previsto, o círculo recebe um aviso.':
+    'Keep this screen open: with the app closed or in the background, your position stops being sent. If you pass the expected time, your circle gets an alert.',
+  'Cheguei':
+    'I\'ve arrived',
+  'Parar de compartilhar':
+    'Stop sharing',
+  'Para compartilhar um trajeto, primeiro chame alguém de confiança para o seu círculo familiar.':
+    'To share a trip, first invite someone you trust to your family circle.',
+  'Abrir o círculo familiar':
+    'Open the family circle',
+  'Seu círculo acompanha o caminho até você chegar. Você liga e desliga; quando termina, o caminho é apagado.':
+    'Your circle follows your route until you arrive. You turn it on and off; when it ends, the route is erased.',
+  'Para onde você vai? (opcional)':
+    'Where are you going? (optional)',
+  'Ex.: casa, escola, trabalho':
+    'E.g.: home, school, work',
+  'Em quanto tempo você chega?':
+    'How soon will you arrive?',
+  'Começar a compartilhar':
+    'Start sharing',
+  'Trajetos do seu círculo':
+    'Your circle\'s trips',
+  'Ninguém do seu círculo está compartilhando um trajeto agora.':
+    'Nobody in your circle is sharing a trip right now.',
+  'Passou do horário previsto ({time})':
+    'Past the expected time ({time})',
+  'Previsto para chegar em {minutes} min':
+    'Expected to arrive in {minutes} min',
+  'Previsto para chegar às {time}':
+    'Expected to arrive at {time}',
+  'Você':
+    'You',
+  'Confira o destino (até {max} caracteres).':
+    'Check the destination (up to {max} characters).',
+  'Chame alguém para o seu círculo familiar antes de compartilhar um trajeto.':
+    'Invite someone to your family circle before sharing a trip.',
+  'Não foi possível começar. Tente de novo.':
+    'Could not start. Try again.',
+  'Parar de compartilhar?':
+    'Stop sharing?',
+  'O círculo deixa de ver este trajeto e o caminho é apagado.':
+    'The circle stops seeing this trip and the route is erased.',
+  'Parar':
+    'Stop',
+  'Que bom que chegou':
+    'Glad you arrived',
+  'Trajeto encerrado':
+    'Trip ended',
+  'Avisamos o seu círculo. O caminho foi apagado.':
+    'We let your circle know. The route was erased.',
+  'O círculo não vê mais este trajeto. O caminho foi apagado.':
+    'The circle no longer sees this trip. The route was erased.',
+  'Não foi possível encerrar':
+    'Could not end it',
+  '{minutes} min':
+    '{minutes} min',
+  '{hours} h':
+    '{hours} h',
+  'Posição enviada às {time}':
+    'Position sent at {time}',
+  'Muito longo.':
+    'Too long.',
+  'Limite atingido.':
+    'Limit reached.',
+  'Use até 120 caracteres.':
+    'Use up to 120 characters.',
+  'Escolha entre 5 minutos e 12 horas.':
+    'Choose between 5 minutes and 12 hours.',
+  'Use uma foto JPEG ou PNG.':
+    'Use a JPEG or PNG photo.',
+  'Trajeto compartilhado':
+    'Shared trip',
+  'Trajeto do círculo':
+    'Circle trip',
 };

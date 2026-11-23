@@ -20,11 +20,18 @@ const CHANNEL_NAME = msg('Casos e lembretes');
 
 export type NotificationPermission = 'granted' | 'denied' | 'unsupported';
 
-export type NotificationType = 'nearby-case' | 'region-new-case' | 'followed-update' | 'pending-reminder';
+export type NotificationType =
+  | 'nearby-case'
+  | 'region-new-case'
+  | 'followed-update'
+  | 'pending-reminder'
+  | 'circle-trip';
 
 export interface NotificationData {
   type?: NotificationType;
   personId?: string;
+  /** Trajeto de alguém do círculo familiar (`circle-trip`). */
+  tripId?: string;
 }
 
 let cachedModule: NotificationsModule | null | undefined;
@@ -137,11 +144,13 @@ const PERSON_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 /** Lê `data` da notificação sem confiar no formato (pode vir de qualquer envio). */
 export function parseNotificationData(raw: unknown): NotificationData {
   if (!raw || typeof raw !== 'object') return {};
-  const { type, personId } = raw as Record<string, unknown>;
+  const { type, personId, tripId } = raw as Record<string, unknown>;
   const id = typeof personId === 'number' ? String(personId) : personId;
+  const trip = typeof tripId === 'number' ? String(tripId) : tripId;
   return {
     type: isNotificationType(type) ? type : undefined,
     personId: typeof id === 'string' && PERSON_ID_PATTERN.test(id) ? id : undefined,
+    tripId: typeof trip === 'string' && /^\d{1,12}$/.test(trip) ? trip : undefined,
   };
 }
 
@@ -149,6 +158,7 @@ export function parseNotificationData(raw: unknown): NotificationData {
 export function routeFromNotification(raw: unknown): Href | null {
   const data = parseNotificationData(raw);
   if (data.type === 'pending-reminder') return '/perfil' as Href;
+  if (data.type === 'circle-trip') return (data.tripId ? `/trajeto/${data.tripId}` : '/trajeto') as Href;
   if (data.personId) return `/pessoa/${data.personId}` as Href;
   return null;
 }
@@ -158,6 +168,7 @@ function isNotificationType(value: unknown): value is NotificationType {
     value === 'nearby-case' ||
     value === 'region-new-case' ||
     value === 'followed-update' ||
-    value === 'pending-reminder'
+    value === 'pending-reminder' ||
+    value === 'circle-trip'
   );
 }

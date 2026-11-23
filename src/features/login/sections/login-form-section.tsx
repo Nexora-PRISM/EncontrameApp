@@ -69,6 +69,16 @@ export function LoginFormSection({
         error={controller.fieldError('password')}
         onBlur={controller.blurPassword}
       />
+      <Pressable
+        onPress={controller.goToForgotPassword}
+        hitSlop={10}
+        style={styles.forgotHit}
+        accessibilityRole="link"
+      >
+        <Text style={[styles.forgotLink, tone === 'onDark' && styles.signupLinkOnDark]}>
+          {t('Esqueci minha senha')}
+        </Text>
+      </Pressable>
       {controller.formError ? (
         <Text style={styles.formError}>{controller.formError}</Text>
       ) : null}
@@ -119,6 +129,15 @@ function makeStyles(brand: BrandColors) {
     },
     formCompact: {
       marginTop: 0,
+    },
+    forgotHit: {
+      alignSelf: 'flex-end',
+      marginTop: -8,
+    },
+    forgotLink: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: brand.blue,
     },
     formError: {
       fontSize: 13,

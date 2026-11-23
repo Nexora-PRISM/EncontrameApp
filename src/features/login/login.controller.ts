@@ -16,6 +16,7 @@ import { useT } from '@/lib/i18n';
 import { msg } from '@/lib/i18n-msg';
 import { useFieldErrors } from '@/lib/use-field-errors';
 import { collectErrors, textError } from '@/lib/validation';
+import { useAccountCapabilitiesQuery } from '@/services/account/account.service';
 import { revokeStoredSession, useLoginMutation } from '@/services/auth/auth.service';
 
 const BIOMETRIC_OFFLINE = msg('Não foi possível conectar. Verifique sua internet.');
@@ -38,6 +39,7 @@ export function useLoginController() {
   const router = useRouter();
   const { returnTo } = useLocalSearchParams<{ returnTo?: string | string[] }>();
   const loginMutation = useLoginMutation();
+  const accountCapabilities = useAccountCapabilitiesQuery();
   const enroll = useBiometricEnroll();
   const { errors, setErrors, setFieldCode, markDirty, isDirty, fieldError } = useFieldErrors();
 
@@ -177,6 +179,11 @@ export function useLoginController() {
     handleGoogle: google.promptGoogle,
     handleLogin,
     goToSignup: () => router.push('/signup'),
+    /** Com a recuperação pelo app ligada na API, abre a tela do código; senão, a resposta da Central de Ajuda. */
+    goToForgotPassword: () =>
+      accountCapabilities.data?.passwordReset === true
+        ? router.push('/recuperar-senha' as Href)
+        : router.push({ pathname: '/ajuda', params: { assunto: 'esqueci-senha' } } as Href),
     enroll,
     biometricAvailable: biometricCopyState != null,
     biometricLabel: t(biometricCopyState?.loginButton ?? 'Entrar com a digital'),

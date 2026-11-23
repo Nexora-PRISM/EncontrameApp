@@ -91,6 +91,14 @@ export async function saveSession(session: Session): Promise<void> {
   ]);
 }
 
+/** Atualiza o nome/e-mail guardados da conta (depois de editar o perfil). Sem sessão aberta, não faz nada. */
+export async function updateSessionUser(patch: Partial<AuthUser>): Promise<void> {
+  if (!memoryUser) return;
+  memoryUser = { ...memoryUser, ...patch };
+  notifySessionListeners();
+  await storageSet(USER_KEY, JSON.stringify(memoryUser));
+}
+
 /** Lê tokens persistidos sem colocá-los na memória (sessão ainda travada). */
 export async function peekStoredSession(): Promise<Session | null> {
   return peekSessionFromStorage();

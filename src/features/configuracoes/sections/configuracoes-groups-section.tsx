@@ -87,18 +87,51 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
               description={c.user.email}
               onPress={c.goToProfile}
             />
-            <SettingsRow
-              icon="account-edit-outline"
-              label={t('Editar perfil e foto')}
-              description={t('Depende de atualização da API.')}
-              unavailable
-            />
-            <SettingsRow
-              icon="lock-reset"
-              label={t('Alterar ou recuperar senha')}
-              description={t('Enquanto não está no app, peça pela Central de Ajuda.')}
-              unavailable
-            />
+            {c.canEditProfile ? (
+              <SettingsRow
+                icon="account-edit-outline"
+                label={t('Editar perfil')}
+                description={t('Nome, celular e CEP.')}
+                onPress={c.goToEditProfile}
+              />
+            ) : (
+              <SettingsRow
+                icon="account-edit-outline"
+                label={t('Editar perfil')}
+                description={t('Depende de atualização da API.')}
+                unavailable
+              />
+            )}
+            {c.canEditPhoto ? (
+              <SettingsRow
+                icon="camera-account"
+                label={t('Foto do perfil')}
+                description={t('Adicionar, trocar ou remover.')}
+                onPress={c.goToEditProfile}
+              />
+            ) : (
+              <SettingsRow
+                icon="camera-account"
+                label={t('Foto do perfil')}
+                description={t('Depende de atualização da API.')}
+                unavailable
+              />
+            )}
+            {c.canChangePassword ? (
+              <SettingsRow
+                icon="lock-reset"
+                label={t('Alterar senha')}
+                description={t('Os outros aparelhos são desconectados ao trocar.')}
+                onPress={c.goToChangePassword}
+              />
+            ) : (
+              <SettingsRow
+                icon="lock-reset"
+                label={t('Alterar ou recuperar senha')}
+                description={t('Enquanto não está no app, peça pela Central de Ajuda.')}
+                unavailable
+              />
+            )}
             <SettingsRow
               icon="logout"
               label={c.signingOut ? t('Saindo…') : t('Sair da conta')}
@@ -245,7 +278,18 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           value={c.notificationPrefs?.followedUpdates ?? false}
           onChange={c.toggleFollowedUpdates}
         />
-        <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
+        {c.canUseCircle ? (
+          <RemoteNotificationRow
+            controller={c}
+            icon="map-marker-path"
+            label={t('Trajetos do círculo familiar')}
+            description={t('Quando alguém do seu círculo começa a compartilhar um trajeto, chega ou passa do horário.')}
+            value={c.notificationPrefs?.circleTrips ?? false}
+            onChange={c.toggleCircleTrips}
+          />
+        ) : (
+          <SettingsRow icon="map-marker-path" label={t('Rotas e círculo familiar')} unavailable />
+        )}
       </SettingsGroup>
 
       <SettingsGroup
@@ -324,7 +368,23 @@ export function ConfiguracoesGroupsSection({ controller: c }: Props) {
           label={t('Dicas contra golpes')}
           onPress={c.goToScamTips}
         />
-        <SettingsRow icon="devices" label={t('Sessões ativas')} unavailable />
+        {!c.canListSessions ? (
+          <SettingsRow icon="devices" label={t('Sessões ativas')} unavailable />
+        ) : c.loggedIn ? (
+          <SettingsRow
+            icon="devices"
+            label={t('Aparelhos conectados')}
+            description={t('Veja onde sua conta está aberta e desconecte.')}
+            onPress={c.goToSessions}
+          />
+        ) : (
+          <SettingsRow
+            icon="devices"
+            label={t('Aparelhos conectados')}
+            description={t('Entre na sua conta para ver.')}
+            onPress={c.goToLoginForSessions}
+          />
+        )}
       </SettingsGroup>
 
       <SettingsGroup

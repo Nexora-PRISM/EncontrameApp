@@ -13,7 +13,13 @@ export type ErrorCode =
   | 'already_registered'
   | 'photo_invalid'
   | 'photo_empty'
-  | 'photo_too_large';
+  | 'photo_too_large'
+  | 'incorrect'
+  | 'same_as_current'
+  | 'invalid_or_expired'
+  | 'not_available'
+  | 'too_long'
+  | 'limit_reached';
 
 /** Código de erro por campo do formulário. */
 export type FieldErrors = Record<string, ErrorCode>;

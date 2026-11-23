@@ -101,7 +101,24 @@ export function PerfilActivitySection({ controller }: Props) {
           label={t('Compartilhar minha localização')}
           onPress={controller.goToShareLocation}
         />
-        <SettingsRow icon="home-heart" label={t('Círculo familiar')} unavailable />
+        {controller.canUseCircle ? (
+          <SettingsRow
+            icon="home-heart"
+            label={t('Círculo familiar')}
+            description={t('Pessoas de confiança que acompanham seus trajetos.')}
+            onPress={controller.goToCircle}
+          />
+        ) : (
+          <SettingsRow icon="home-heart" label={t('Círculo familiar')} unavailable />
+        )}
+        {controller.canShareTrip ? (
+          <SettingsRow
+            icon="map-marker-path"
+            label={t('Compartilhar um trajeto')}
+            description={t('Seu círculo acompanha até você chegar.')}
+            onPress={controller.goToTrip}
+          />
+        ) : null}
       </SettingsGroup>
 
       <SettingsGroup title={t('Mais')}>

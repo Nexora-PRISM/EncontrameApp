@@ -13,6 +13,8 @@ export interface NotificationPrefs {
   regionNewCases: boolean;
   /** Atualizações dos casos que a pessoa acompanha. */
   followedUpdates: boolean;
+  /** Trajeto de alguém do círculo familiar: começou, chegou ou atrasou. */
+  circleTrips: boolean;
 }
 
 export type RemoteNotificationPref = Exclude<keyof NotificationPrefs, 'pendingReminder'>;
@@ -22,6 +24,7 @@ export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
   nearbyCases: false,
   regionNewCases: false,
   followedUpdates: false,
+  circleTrips: false,
 };
 
 const STORAGE_KEY = 'encontrame.notificationPrefs';
@@ -37,6 +40,7 @@ export function parseNotificationPrefs(raw: string | null): NotificationPrefs {
       nearbyCases: value.nearbyCases === true,
       regionNewCases: value.regionNewCases === true,
       followedUpdates: value.followedUpdates === true,
+      circleTrips: value.circleTrips === true,
     };
   } catch {
     return { ...DEFAULT_NOTIFICATION_PREFS };
@@ -53,5 +57,5 @@ export async function saveNotificationPrefs(prefs: NotificationPrefs): Promise<v
 
 /** Alguma opção depende do servidor — o aparelho precisa estar registrado na API. */
 export function wantsRemoteNotifications(prefs: NotificationPrefs): boolean {
-  return prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates;
+  return prefs.nearbyCases || prefs.regionNewCases || prefs.followedUpdates || prefs.circleTrips;
 }

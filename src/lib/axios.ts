@@ -114,7 +114,15 @@ function isQuietErrorPath(url: string) {
     url.includes('/Auth/refresh') ||
     url.includes('/Auth/logout') ||
     url.includes('/EmergencyAlert') ||
-    url.includes('/SafetyNote/nearby')
+    url.includes('/SafetyNote/nearby') ||
+    // Conta (perfil, senha, sessões): cada tela mostra o erro no campo ou abaixo do formulário.
+    url.includes('/Auth/capabilities') ||
+    url.includes('/Auth/me') ||
+    url.includes('/Auth/password') ||
+    url.includes('/Auth/sessions') ||
+    // Círculo familiar e trajetos: as telas mostram o erro e tentam de novo sozinhas.
+    url.includes('/Circle') ||
+    url.includes('/Trip')
   );
 }
 
@@ -123,7 +131,9 @@ function isAuthPublicPath(url: string) {
     url.includes('/Auth/login') ||
     url.includes('/Auth/register') ||
     url.includes('/Auth/refresh') ||
-    url.includes('/Auth/logout')
+    url.includes('/Auth/logout') ||
+    url.includes('/Auth/password/forgot') ||
+    url.includes('/Auth/password/reset')
   );
 }
 
