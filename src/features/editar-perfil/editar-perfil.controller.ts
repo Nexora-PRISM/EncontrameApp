@@ -39,9 +39,7 @@ export function useEditarPerfilController() {
   const photoPicker = usePhotoPicker(undefined, (base64) => {
     setPhotoError('');
     setPhotoMutation.mutate(base64, {
-      onSuccess: () => photoPicker.removePhoto(),
       onError: (error) => {
-        photoPicker.removePhoto();
         const { fields, message } = accountFormError(error);
         setPhotoError(fields.photo ? t('A foto não foi aceita. Use JPEG ou PNG de até 2 MB.') : message);
       },
@@ -100,7 +98,8 @@ export function useEditarPerfilController() {
     email: profile?.email ?? sessionUser?.email ?? '',
     photoAvailable: capabilities.data?.profilePhoto === true,
     /** Foto escolhida aparece na hora enquanto envia; depois, a que está salva na conta. */
-    photoUri: photoPicker.photoUri || photoDataUri(profile?.photo),
+    photoUri:
+      setPhotoMutation.isPending && photoPicker.photoUri ? photoPicker.photoUri : photoDataUri(profile?.photo),
     photoBusy: setPhotoMutation.isPending || removePhotoMutation.isPending,
     photoError,
     pickPhoto: photoPicker.pickPhoto,
